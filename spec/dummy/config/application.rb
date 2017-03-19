@@ -11,6 +11,7 @@ module Dummy
     # Application configuration should go into files in config/initializers
     # -- all .rb files in that directory are automatically loaded.
 
+    # TODO - fix autoload paths and railties order
     config.autoload_paths << "app/services"
     config.railties_order = [:main_app, Usman::Engine, :all]
     

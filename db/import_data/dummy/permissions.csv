@@ -1,0 +1,60 @@
+user,feature,can_create,can_read,can_update,can_delete
+kpvarma,Products,TRUE,TRUE,TRUE,TRUE
+kpvarma,Categories,TRUE,TRUE,TRUE,TRUE
+kpvarma,Brands,TRUE,TRUE,TRUE,TRUE
+kpvarma,Events & News,TRUE,TRUE,TRUE,TRUE
+kpvarma,Subscriptions,TRUE,TRUE,TRUE,TRUE
+kpvarma,Enquiries,TRUE,TRUE,TRUE,TRUE
+kpvarma,Teams,TRUE,TRUE,TRUE,TRUE
+kpvarma,Testimonials,TRUE,TRUE,TRUE,TRUE
+kpvarma,Careers / Jobs,TRUE,TRUE,TRUE,TRUE
+,,,,,
+vinodh,Products,TRUE,TRUE,TRUE,TRUE
+vinodh,Categories,TRUE,TRUE,TRUE,TRUE
+vinodh,Brands,TRUE,TRUE,TRUE,TRUE
+vinodh,Events & News,TRUE,TRUE,TRUE,TRUE
+vinodh,Subscriptions,TRUE,TRUE,TRUE,TRUE
+vinodh,Enquiries,TRUE,TRUE,TRUE,TRUE
+vinodh,Teams,TRUE,TRUE,TRUE,TRUE
+vinodh,Testimonials,TRUE,TRUE,TRUE,TRUE
+vinodh,Careers / Jobs,TRUE,TRUE,TRUE,TRUE
+,,,,,
+junaid.ramzan,Products,TRUE,TRUE,TRUE,TRUE
+junaid.ramzan,Categories,TRUE,TRUE,TRUE,TRUE
+junaid.ramzan,Brands,TRUE,TRUE,TRUE,TRUE
+junaid.ramzan,Events & News,TRUE,TRUE,TRUE,TRUE
+junaid.ramzan,Subscriptions,TRUE,TRUE,TRUE,TRUE
+junaid.ramzan,Enquiries,TRUE,TRUE,TRUE,TRUE
+junaid.ramzan,Teams,TRUE,TRUE,TRUE,TRUE
+junaid.ramzan,Testimonials,TRUE,TRUE,TRUE,TRUE
+junaid.ramzan,Careers / Jobs,TRUE,TRUE,TRUE,TRUE
+,,,,,
+angelo.joseph,Products,TRUE,TRUE,TRUE,TRUE
+angelo.joseph,Categories,TRUE,TRUE,TRUE,TRUE
+angelo.joseph,Brands,TRUE,TRUE,TRUE,TRUE
+angelo.joseph,Events & News,FALSE,FALSE,FALSE,FALSE
+angelo.joseph,Subscriptions,FALSE,FALSE,FALSE,FALSE
+angelo.joseph,Enquiries,FALSE,FALSE,FALSE,FALSE
+angelo.joseph,Teams,FALSE,FALSE,FALSE,FALSE
+angelo.joseph,Testimonials,FALSE,FALSE,FALSE,FALSE
+angelo.joseph,Careers / Jobs,FALSE,FALSE,FALSE,FALSE
+,,,,,
+guna.neweast,Products,TRUE,TRUE,TRUE,TRUE
+guna.neweast,Categories,TRUE,TRUE,TRUE,TRUE
+guna.neweast,Brands,TRUE,TRUE,TRUE,TRUE
+guna.neweast,Events & News,FALSE,FALSE,FALSE,FALSE
+guna.neweast,Subscriptions,FALSE,FALSE,FALSE,FALSE
+guna.neweast,Enquiries,FALSE,FALSE,FALSE,FALSE
+guna.neweast,Teams,FALSE,FALSE,FALSE,FALSE
+guna.neweast,Testimonials,FALSE,FALSE,FALSE,FALSE
+guna.neweast,Careers / Jobs,FALSE,FALSE,FALSE,FALSE
+,,,,,
+stephen.price,Products,TRUE,TRUE,TRUE,TRUE
+stephen.price,Categories,TRUE,TRUE,TRUE,TRUE
+stephen.price,Brands,TRUE,TRUE,TRUE,TRUE
+stephen.price,Events & News,FALSE,FALSE,FALSE,FALSE
+stephen.price,Subscriptions,FALSE,FALSE,FALSE,FALSE
+stephen.price,Enquiries,FALSE,FALSE,FALSE,FALSE
+stephen.price,Teams,FALSE,FALSE,FALSE,FALSE
+stephen.price,Testimonials,FALSE,FALSE,FALSE,FALSE
+stephen.price,Careers / Jobs,FALSE,FALSE,FALSE,FALSE

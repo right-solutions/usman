@@ -23,6 +23,7 @@ Gem::Specification.new do |s|
 
   s.add_dependency 'kuppayam', "~> 0.1.0"
   s.add_dependency "bcrypt"
+  s.add_dependency "colorize"
 
   s.add_development_dependency 'pry', "~> 0.10.1", ">= 0.10.0"
   s.add_development_dependency 'mysql2', "~> 0.4.4"

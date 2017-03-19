@@ -1,5 +1,7 @@
 class User < ActiveRecord::Base
 
+  require 'import_error_handler.rb'
+  extend Usman::ImportErrorHandler
   extend KuppayamValidators
   
   # including Password Methods
@@ -67,6 +69,59 @@ class User < ActiveRecord::Base
   scope :pending, -> { where(status: PENDING) }
   scope :approved, -> { where(status: APPROVED) }
   scope :suspended, -> { where(status: SUSPENDED) }
+
+  def self.save_row_data(row, base_path)
+
+    image_base_path = base_path + "images/"
+
+    row.headers.each{ |cell| row[cell] = row[cell].to_s.strip }
+
+    return if row[:name].blank?
+
+    user = User.find_by_username(row[:username]) || User.new
+    user.name = row[:name]
+    user.username = row[:username]
+    user.designation = row[:designation]
+    user.email = row[:email]
+    user.phone = row[:phone]
+
+    user.super_admin = ["true", "t","1","yes","y"].include?(row[:super_admin].to_s.downcase.strip)
+
+    user.status = User::PENDING
+    user.assign_default_password
+
+    # Initializing error hash for displaying all errors altogether
+    error_object = Usman::ErrorHash.new
+
+    ## Adding a profile picture
+    begin
+      image_path = image_base_path + "users/#{user.username}.png"
+      image_path = image_base_path + "users/#{user.username}.jpg" unless File.exists?(image_path)
+      if File.exists?(image_path)
+        user.build_profile_picture
+        user.profile_picture.image = File.open(image_path)
+      else
+        summary = "Profile Picture not found for user: #{user.name}"
+        details = "#{image_path}/png doesn't exists"
+        error_object.warnings << { summary: summary, details: details }
+      end
+    rescue => e
+      summary = "Error during processing: #{$!}"
+      details = "User: #{user.name}, Image Path: #{image_path}"
+      stack_trace = "Backtrace:\n\t#{e.backtrace.join("\n\t")}"
+      error_object.errors << { summary: summary, details: details, stack_trace: stack_trace }
+    end if user.profile_picture.blank?
+
+    if user.valid? && (user.profile_picture.blank? || user.profile_picture.valid?)
+      user.save!
+    else
+      summary = "Error while saving user: #{user.name}"
+      details = "Error! #{user.errors.full_messages.to_sentence}"
+      details << ", #{user.profile_picture.errors.full_messages.to_sentence}" if feature.feature_image
+      error_object.errors << { summary: summary, details: details }
+    end
+    return error_object
+  end
 
   # ------------------
   # Instance variables

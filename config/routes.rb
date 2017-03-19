@@ -1,8 +1,6 @@
 Usman::Engine.routes.draw do
 
-	root :to => 'sessions#sign_in'
-
-  # Sign In URLs for users
+	# Sign In URLs for users
   get  '/sign_in',                    to: "sessions#sign_in",               as: :sign_in
   post '/create_session',             to: "sessions#create_session",        as: :create_session
   get  '/forgot_password_form',       to: "sessions#forgot_password_form",  as: :forgot_password_form

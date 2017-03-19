@@ -9,9 +9,9 @@ Gem::Specification.new do |s|
   s.version     = Usman::VERSION
   s.authors     = ["kpvarma"]
   s.email       = ["krshnaprsad@gmail.com"]
-  s.homepage    = "http://kpvarma.com"
-  s.summary     = "Simple User Management"
-  s.description = "A Simple User Management"
+  s.homepage    = "https://github.com/right-solutions/usman"
+  s.summary     = "Simple User & Feature Permission Management"
+  s.description = "Usman gives you a user module with Admin Interface to Manage Features, Users and their permissions."
   s.license     = "MIT"
 
   s.files = Dir["{app,config,db,lib}/**/*", "MIT-LICENSE", "Rakefile", "README.md"]

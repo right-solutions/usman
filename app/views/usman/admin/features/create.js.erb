@@ -1,0 +1,16 @@
+<% if @feature.errors.blank? %>
+  closeGenericModal();
+  $('#div_feature_index table > tbody > tr:first').before("<%= escape_javascript(render(:partial=>'/usman/admin/features/row', locals: {feature: @feature})) %>")
+  $("#tr_feature_<%= @feature.id %>").css("background-color", "#fffddd");
+<% else %>
+  // Show the form in the modal
+	heading = "Add a Feature";
+	bodyContent = "<%= escape_javascript(render(:partial=>'/usman/admin/features/form')) %>";
+	showGenericModal(heading, bodyContent);
+	var $div = $('<iframe id="iframe_feature" name="iframe_feature" width="100%" style="display:none"></iframe>').appendTo('body');
+  <%
+    text = "You have few errors. They have been highlighted."
+    error_message = content_tag(:div, text, class: "alert alert-danger")
+  %>
+  $("#feature_form_error").html("<%= escape_javascript(error_message) %>");
+<% end %>

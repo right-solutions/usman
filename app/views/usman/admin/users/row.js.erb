@@ -1,0 +1,10 @@
+<% if @user.errors.blank? %>
+	<% status_hash = {approved: "success", pending: "default", suspeneded: "danger"} %>
+  $("#tr_user_<%= @user.id %>").replaceWith("<%= escape_javascript(render(:partial=>'/usman/admin/users/row', locals: {user: @user, i: -1})) %>")
+  // Close Modal
+  closeLargeModal();
+<% else %>
+  // Populate Server Side Errors
+  errorMessages = <%= @user.errors.full_messages.to_json.html_safe %>;
+  populateServerSideErrors('user', errorMessages);
+<% end %>

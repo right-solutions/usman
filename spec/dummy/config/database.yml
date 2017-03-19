@@ -1,0 +1,17 @@
+development:
+  adapter: mysql2
+  encoding: utf8
+  database: usman_development
+  username: root
+  password: 
+  port: 3306
+  host: localhost
+
+test:
+  adapter: mysql2
+  encoding: utf8
+  database: usman_test
+  username: root
+  password: 
+  port: 3306
+  host: localhost

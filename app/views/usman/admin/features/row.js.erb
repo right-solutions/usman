@@ -1,0 +1,10 @@
+<% if @feature.errors.blank? %>
+	<% status_hash = {approved: "success", pending: "default", suspeneded: "danger"} %>
+  $("#tr_feature_<%= @feature.id %>").replaceWith("<%= escape_javascript(render(:partial=>'/usman/admin/features/row', locals: {feature: @feature, i: -1})) %>")
+  // Close Modal
+  closeGenericModal();
+<% else %>
+  // Populate Server Side Errors
+  errorMessages = <%= @feature.errors.full_messages.to_json.html_safe %>;
+  populateServerSideErrors('feature', errorMessages);
+<% end %>

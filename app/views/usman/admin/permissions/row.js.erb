@@ -1,0 +1,10 @@
+<% if @permission.errors.blank? %>
+	<% status_hash = {approved: "success", pending: "default", suspeneded: "danger"} %>
+  $("#tr_permission_<%= @permission.id %>").replaceWith("<%= escape_javascript(render(:partial=>'/usman/admin/permissions/row', locals: {permission: @permission, i: -1})) %>")
+  // Close Modal
+  closeGenericModal();
+<% else %>
+  // Populate Server Side Errors
+  errorMessages = <%= @permission.errors.full_messages.to_json.html_safe %>;
+  populateServerSideErrors('permission', errorMessages);
+<% end %>

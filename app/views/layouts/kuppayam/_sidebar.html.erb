@@ -1,0 +1,78 @@
+<div class="sidebar-menu toggle-others fixed collapsed">
+	
+	<div class="sidebar-menu-inner">
+		
+		<header class="logo-env">
+			
+			<!-- logo -->
+			<div class="logo">
+				<a href="/" class="logo-expanded">
+					<img src="/assets/kuppayam/logo.png" width="180" alt="" />
+				</a>
+				
+				<a href="/" class="logo-collapsed">
+					<img src="/assets/kuppayam/logo.png" width="40" alt="" />
+				</a>
+			</div>
+			
+			<!-- This will toggle the mobile menu and will be visible only on mobile devices -->
+			<div class="mobile-menu-toggle visible-xs">
+				<a href="#" data-toggle="user-info-menu">
+					<i class="fa-bell-o"></i>
+					<span class="badge badge-success">7</span>
+				</a>
+				
+				<a href="#" data-toggle="mobile-menu">
+					<i class="fa-bars"></i>
+				</a>
+			</div>
+			
+		</header>
+		
+		
+		
+		<ul id="main-menu" class="main-menu">
+			
+			<!-- add class "multiple-expanded" to allow multiple submenus to open -->
+			
+			<!-- class "auto-inherit-active-class" will automatically add "active" class for parent elements who are marked already with class "active" -->
+			
+			<li class="<%= nav_active?('admin/dashboard') ? 'active' : ''  %>">
+				<%= link_to raw("<i class=\"linecons-desktop\"></i> <span class='title'>Dashboard</span>"), admin_dashboard_url %>
+			</li>
+
+			<li class="<%= nav_active?('admin/users') ? 'active' : ''  %>">
+				
+				<a href="#">
+					<i class="linecons-cog"></i>
+					<span class="title">Admin</span>
+				</a>
+
+				<ul>
+					<li class="<%= nav_class("admin/users") %>">
+				    <%= link_to raw("<i class=\"linecons-user\"></i> <span class='title'>Manage Users</span>"), admin_users_url %>
+				  </li>
+					
+					<li class="<%= nav_class("admin/users") %>">
+						<%= link_to raw("<i class=\"linecons-lock\"></i> <span class='title'>Manage Permissions</span>"), admin_permissions_url %>
+					</li>
+				</ul>
+
+			</li>
+
+			<li class="">
+				<a href="/xenon/xenon-files/html/dashboard-1.html">
+					<i class="linecons-database"></i>
+					<span class="title">Master Data</span>
+				</a>
+				<ul>
+					<li class="">
+						<%= link_to raw("<i class=\"linecons-diamond\"></i> <span class='title'>Manage Features</span>"), admin_features_url %>
+					</li>
+				</ul>
+			</li>
+		</ul>
+		
+	</div>
+	
+</div>

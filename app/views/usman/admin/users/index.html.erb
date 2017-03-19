@@ -1,0 +1,40 @@
+<div class="row">
+      
+  <div class="col-md-12">
+    <ul class="nav nav-tabs">
+
+      <%# Show Admin tab only for admins %>
+      <% if @current_user.is_super_admin? %>
+        <li class="<%= @super_admin == false ? 'active' : '' %>">
+          <%= link_to "Users", admin_users_path(sa: '0') %>
+        </li>
+        <li class="<%= @super_admin == true ? 'active' : '' %>">
+          <%= link_to "Administrators", admin_users_path(sa: '1') %>
+        </li>
+      <% else %>
+        <li class="active">
+          <%= link_to "Users", admin_users_path(sa: '0') %>
+        </li>
+      <% end %>
+
+    </ul>
+
+    <div class="tab-content">
+      <div class="tab-pane active">
+
+        <div id="div_user_action_buttons">
+          <%= render :partial=>"usman/admin/users/action_buttons" %>
+        </div>
+        <%= clear_tag(10) %>
+
+        <div id="div_user_index">
+          <%= render :partial=>"usman/admin/users/index" %>
+        </div>
+        <%= clear_tag(10) %>
+
+      </div>
+    </div>
+
+  </div>
+
+</div>

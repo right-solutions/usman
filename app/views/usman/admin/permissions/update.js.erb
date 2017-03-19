@@ -1,0 +1,16 @@
+<% if @permission.errors.blank? %>
+  $('#tr_permission_<%= @permission.id %>').replaceWith("<%= escape_javascript(render(:partial=>'/usman/admin/permissions/row', locals: {permission: @permission})) %>");
+  $("#tr_permission_<%= @permission.id %>").css("background-color", "#fffddd");
+  closeGenericModal();
+<% else %>
+	// Show the form in the modal
+	heading = "Edit '<%= raw @permission.name_was %>'";
+	bodyContent = "<%= escape_javascript(render(:partial=>'/usman/admin/permissions/form')) %>";
+	showGenericModal(heading, bodyContent);
+	var $div = $('<iframe id="iframe_permission" name="iframe_permission" width="100%" style="display:none"></iframe>').appendTo('body');
+  <%
+    text = "You have few errors. They have been highlighted."
+    error_message = content_tag(:div, text, class: "alert alert-danger")
+  %>
+  $("#permission_form_error").html("<%= escape_javascript(error_message) %>");
+<% end %>

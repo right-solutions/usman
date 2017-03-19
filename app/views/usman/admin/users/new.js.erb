@@ -1,0 +1,7 @@
+// Show the new form in the right box.
+heading = "Add a User";
+bodyContent = "<%= escape_javascript(render(:partial=>'/usman/admin/users/form')) %>";
+showLargeModal(heading, bodyContent);
+
+// When the image upload form is submitted, the server response will appear in this iframe -->
+var $div = $('<iframe id="iframe_user" name="iframe_user" width="100%" style="display:none"></iframe>').appendTo('body');

@@ -1,0 +1,38 @@
+.bundle/
+log/*.log
+pkg/
+spec/dummy/db/*.sqlite3
+spec/dummy/db/*.sqlite3-journal
+spec/dummy/log/*.log
+spec/dummy/tmp/
+spec/dummy/tmp/*.*
+
+
+*.rbc
+
+*.sassc
+.sass-cache
+
+# Ignore bundler config
+/.bundle
+/vendor/bundle
+
+# Ignore the default SQLite database.
+/db/*.sqlite3
+
+capybara-*.html
+.rspec
+/log
+/tmp
+/public/system
+/coverage/
+/spec/tmp
+/public/uploads/**/
+
+config/database.yml
+
+# For Mac
+*.DS_Store
+
+Gemfile.lock
+*.gem

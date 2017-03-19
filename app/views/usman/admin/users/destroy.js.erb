@@ -1,0 +1,16 @@
+<% if @destroyed %>
+  closeLargeModal();
+  $('#div_user_index').html("<%= escape_javascript(render(:partial=>'/usman/admin/users/index')) %>");
+<% else %>
+  // Show the error in a modal
+	<%
+    text = User::DELETE_MESSAGE
+    error_message = content_tag(:div, text, class: 'alert alert-danger')
+  %>
+  heading = "Remove '<%= @user.name %>'";
+	bodyContent = "<%= escape_javascript(error_message) %>";
+	showLargeModal(heading, bodyContent);
+	var $div = $('<iframe id="iframe_user" name="iframe_user" width="100%" style="display:none"></iframe>').appendTo('body');
+<% end %>
+
+

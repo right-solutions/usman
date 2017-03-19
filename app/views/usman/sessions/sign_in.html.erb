@@ -1,0 +1,63 @@
+<div class="login-container">
+	
+	<div class="row">
+
+		<div class="col-sm-offset-3 col-sm-6">
+
+			<% if defined?(flash) %>
+				<!-- Errors container -->
+				<div class="errors-container">
+					<%= flash_message(false) -%>
+				</div>
+			<% end %>
+
+			<!-- Add class "fade-in-effect" for login form effect -->
+			<%= render partial: "usman/sessions/form" %>
+
+		</div>
+
+	</div>
+	
+</div>
+
+<script type="text/javascript">
+	jQuery(document).ready(function($)
+	{
+		// Reveal Login form
+		setTimeout(function(){ $(".fade-in-effect").addClass('in'); }, 1);
+
+		// Validation and Ajax action
+		$("form#form_sign_in").validate({
+			rules: {
+				login_handle: {
+					required: true
+				},
+
+				password: {
+					required: true
+				}
+			},
+
+			messages: {
+				login_handle: {
+					required: 'Please enter your username or email.'
+				},
+
+				password: {
+					required: 'Please enter your password.'
+				}
+			},
+
+			// Form Processing via AJAX
+			submitHandler: function(form)
+			{
+				form.submit();
+			}
+		});
+
+		// Set Form focus
+		$("form#form_sign_in .form-group:has(.form-control):first .form-control").focus();
+	});
+</script>
+
+

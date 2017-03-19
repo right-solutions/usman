@@ -1,0 +1,11 @@
+<div class="row">
+	<div class="col-md-4">
+		<%= link_to raw("<i class='fa fa-plus mr-10'></i><span class='btn-text'> New Permission</span>"), new_admin_permission_path, :class=>"btn btn-primary pull-left mb-5", :remote=>true %>
+	</div>
+	<div class="col-md-8">
+		<%= search_form_kuppayam(Permission, admin_permissions_path, text: @filters[:query]) %>
+	</div>
+</div>
+
+
+

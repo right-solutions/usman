@@ -94,6 +94,14 @@ class User < Usman::ApplicationRecord
     # Initializing error hash for displaying all errors altogether
     error_object = Usman::ErrorHash.new
 
+    if user.valid?
+      user.save!
+    else
+      summary = "Error while saving user: #{user.name}"
+      details = "Error! #{user.errors.full_messages.to_sentence}"
+      error_object.errors << { summary: summary, details: details }
+    end
+
     ## Adding a profile picture
     begin
       image_path = image_base_path + "users/#{user.username}.png"
@@ -101,6 +109,14 @@ class User < Usman::ApplicationRecord
       if File.exists?(image_path)
         user.build_profile_picture
         user.profile_picture.image = File.open(image_path)
+        if user.profile_picture.valid?
+          user.profile_picture.save
+        else
+          summary = "Error while saving user: #{user.name}"
+          details = "Error! #{user.errors.full_messages.to_sentence}"
+          details << ", #{user.profile_picture.errors.full_messages.to_sentence}" if user.profile_picture
+          error_object.errors << { summary: summary, details: details }
+        end
       else
         summary = "Profile Picture not found for user: #{user.name}"
         details = "#{image_path}/png doesn't exists"
@@ -113,14 +129,6 @@ class User < Usman::ApplicationRecord
       error_object.errors << { summary: summary, details: details, stack_trace: stack_trace }
     end if user.profile_picture.blank?
 
-    if user.valid? && (user.profile_picture.blank? || user.profile_picture.valid?)
-      user.save!
-    else
-      summary = "Error while saving user: #{user.name}"
-      details = "Error! #{user.errors.full_messages.to_sentence}"
-      details << ", #{user.profile_picture.errors.full_messages.to_sentence}" if user.profile_picture
-      error_object.errors << { summary: summary, details: details }
-    end
     return error_object
   end
 

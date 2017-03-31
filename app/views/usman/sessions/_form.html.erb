@@ -1,4 +1,4 @@
-<%= form_tag create_session_path, :role=>"form", id: "form_sign_in", class: "login-form fade-in-effect" do %>
+<%= form_tag create_session_path, :role=>"form", id: "form_sign_in", class: "login-form" do %>
   
   <%= hidden_field_tag :customer_app, params[:customer_app] if params[:customer_app] %>
 

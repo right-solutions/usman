@@ -118,7 +118,7 @@ class User < Usman::ApplicationRecord
     else
       summary = "Error while saving user: #{user.name}"
       details = "Error! #{user.errors.full_messages.to_sentence}"
-      details << ", #{user.profile_picture.errors.full_messages.to_sentence}" if feature.feature_image
+      details << ", #{user.profile_picture.errors.full_messages.to_sentence}" if user.profile_picture
       error_object.errors << { summary: summary, details: details }
     end
     return error_object

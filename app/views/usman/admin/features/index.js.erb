@@ -1,8 +1,0 @@
-closeGenericModal();
-<% if @features.any? %>
-  // Fill the right box with first enquiry details in the list
-  $('#div_feature_index').html("<%= escape_javascript(render(:partial=>'/usman/admin/features/index')) %>");
-<% else %>
-	var noResultsText = "<%= escape_javascript(theme_panel_message(I18n.translate('forms.no_results')))%>";
-  $('#div_feature_index').html(noResultsText);
-<% end %>

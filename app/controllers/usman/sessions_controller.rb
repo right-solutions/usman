@@ -7,27 +7,38 @@ module Usman
     skip_before_action :set_navs
     
     def sign_in
+      set_title("Sign In")
       redirect_to_appropriate_page_after_sign_in if @current_user && !@current_user.token_expired?
     end
 
     def create_session
+      set_title("Sign In")
       @registration_details = Usman::AuthenticationService.new(params)
+
       if @registration_details.error
-        set_notification_messages(@registration_details.error, :error)
+        
+        text = "#{I18n.t("#{@registration_details.error}.heading")}: #{I18n.t("#{@registration_details.error}.message")}"
+        set_flash_message(text, :error, false) if defined?(flash) && flash
+
         redirect_or_popup_to_default_sign_in_page
         return
       else
         @user = @registration_details.user
         session[:id] = @user.id
         @current_user = @user
-        set_notification_messages("authentication.logged_in", :success)
+        
+        text = "#{I18n.t("authentication.logged_in.heading")}: #{I18n.t("authentication.logged_in.message")}"
+        set_flash_message(text, :success, false) if defined?(flash) && flash
+
         redirect_to_appropriate_page_after_sign_in
         return
       end
     end
 
     def sign_out
-      set_notification_messages("authentication.logged_out", :success)
+      text = "#{I18n.t("authentication.logged_out.heading")}: #{I18n.t("authentication.logged_out.message")}"
+      set_flash_message(text, :success, false) if defined?(flash) && flash
+
       @current_user.end_session
       session.delete(:id)
       restore_last_user

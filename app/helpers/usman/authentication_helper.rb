@@ -10,12 +10,12 @@ module Usman
     
     # Returns the default URL to which the system should redirect the user after successful authentication
     def default_redirect_url_after_sign_in
-      admin_dashboard_url    
+      usman.admin_dashboard_url    
     end
 
     # Returns the default URL to which the system should redirect the user after an unsuccessful attempt to authorise a resource/page
     def default_sign_in_url
-      sign_in_url
+      usman.sign_in_url
     end
 
     # Method to handle the redirection after unsuccesful authentication
@@ -65,17 +65,24 @@ module Usman
     # This method is usually used as a before filter to secure some of the actions which requires the user to be signed in.
     def require_user
       current_user
+
       if @current_user
         if @current_user.token_expired?
-          #binding.pry
           @current_user = nil
           session.delete(:id)
-          set_notification_messages("authentication.session_expired", :error)
+          
+          text = "#{I18n.t("authentication.session_expired.heading")}: #{I18n.t("authentication.session_expired.message")}"
+          set_flash_message(text, :error, false) if defined?(flash) && flash
+
           redirect_or_popup_to_default_sign_in_page
           return
+        else
+          @current_user.update_token if @current_user.token_about_to_expire?
         end
       else
-        set_notification_messages("authentication.permission_denied", :error)
+        text = "#{I18n.t("authentication.permission_denied.heading")}: #{I18n.t("authentication.permission_denied.message")}"
+        set_flash_message(text, :error, false) if defined?(flash) && flash
+
         redirect_or_popup_to_default_sign_in_page
         return
       end
@@ -84,7 +91,9 @@ module Usman
     # This method is usually used as a before filter from admin controllers to ensure that the logged in user is a super admin
     def require_super_admin
       unless @current_user.is_super_admin?
-        set_notification_messages("authentication.permission_denied", :error)
+        text = "#{I18n.t("authentication.permission_denied.heading")}: #{I18n.t("authentication.permission_denied.message")}"
+        set_flash_message(text, :error, false) if defined?(flash) && flash
+
         redirect_or_popup_to_default_sign_in_page
       end
     end
@@ -95,7 +104,7 @@ module Usman
       return @last_user if @last_user
       if session[:last_user_id].present?
         @last_user = User.find_by_id(session[:last_user_id])
-        message = translate("users.sign_in_back", user: @last_user.name)
+        message = translate("authentication.sign_in_back", user: @last_user.name)
         set_flash_message(message, :success, false)
         session.destroy()
         session[:id] = @last_user.id if @last_user.present?
@@ -104,16 +113,13 @@ module Usman
     end
 
     def masquerade_as_user(user)
-      #if ["development", "it", "test"].include?(Rails.env)
-        message = translate("users.masquerade", user: user.name)
-        set_flash_message(message, :success, false)
-        session[:last_user_id] = current_user.id if current_user
-        user.start_session
-        session[:id] = user.id
-        default_redirect_url_after_sign_in
-        url = admin_dashboard_url
-        redirect_to url
-      #end
+      message = translate("authentication.masquerade", user: user.name)
+      set_flash_message(message, :success, false)
+      session[:last_user_id] = current_user.id if current_user
+      user.start_session
+      session[:id] = user.id
+      default_redirect_url_after_sign_in
+      redirect_to default_redirect_url_after_sign_in
     end
 
   end

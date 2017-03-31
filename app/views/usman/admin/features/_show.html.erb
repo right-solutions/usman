@@ -3,7 +3,11 @@
 <div class="media <%= status_hash[@feature.status.to_sym] %>">
 
   <div class="pull-left pt-10 pr-10 pb-10" style="width:30%;">
-  	<%= edit_image(@feature, "feature_image.image.large.url", upload_image_link(@feature, :feature_image)) %>
+  	<%= edit_image(@feature, 
+	                  "feature_image.image.large.url",
+	                  upload_image_link(@feature, :feature_image, nil ),
+	                  remove_image_link(@feature, :feature_image, nil ),
+	                  image_options: {assoc_name: :feature_image }) %>
   </div>
 
   <div class="pull-left ml-10" style="width:65%;">

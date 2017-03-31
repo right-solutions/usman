@@ -1,7 +1,7 @@
-name,username,designation,email,phone,super_admin
-Krishna Prasad Varma,kpvarma,Site Admin,prasad@rightsolutions.io,,TRUE
-Vinodh Ellath,vinodh,Site Admin,vinodh@rightsolutions.io,,TRUE
-Junaid Ramzan,junaid.ramzan,Site Admin,junaid.ramzan@gmail.com,,TRUE
-Angelo Joseph,angelo.joseph,Manager,angelo@yopmail.com,,FALSE
-Guna,guna.neweast,IT Support,guna@yopmail.com,,FALSE
-Stephen Price,stephen.price,Director,stephen.price@yopmail.com,,FALSE
+name,username,designation,email,phone,super_admin,status
+Krishna Prasad Varma,kpvarma,Site Admin,prasad@rightsolutions.io,,TRUE,approved
+Vinodh Ellath,vinodh,Site Admin,vinodh@rightsolutions.io,,TRUE,approved
+Junaid Ramzan,junaid.ramzan,Site Admin,junaid.ramzan@gmail.com,,TRUE,approved
+Angelo Joseph,angelo.joseph,Manager,angelo@yopmail.com,,FALSE,pending
+Guna,guna.neweast,IT Support,guna@yopmail.com,,FALSE,pending
+Stephen Price,stephen.price,Director,stephen.price@yopmail.com,,FALSE,suspended

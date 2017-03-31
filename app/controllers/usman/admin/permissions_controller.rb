@@ -63,6 +63,21 @@ module Usman
         @filter_ui_settings = {}
       end
 
+      def resource_controller_configuration
+        {
+          view_path: "/demo/permissions"
+        }
+      end
+
+      def breadcrumbs_configuration
+        {
+          heading: "Manage Permissions",
+          description: "Listing all Permissions",
+          links: [{name: "Home", link: admin_dashboard_path, icon: 'fa-home'}, 
+                    {name: "Manage Permissions", link: admin_permissions_path, icon: 'fa-calendar', active: true}]
+        }
+      end
+
       def permitted_params
         params.require(:permission).permit(:user_id, :feature_id, :can_create, :can_read, :can_update, :can_delete)
       end

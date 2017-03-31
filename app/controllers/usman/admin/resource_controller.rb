@@ -6,6 +6,10 @@ module Usman
 
 	    before_action :configure_resource_controller
 
+	    def resource_url(obj)
+		    url_for([:admin, obj])
+		  end
+
 	  end
 	end
 end

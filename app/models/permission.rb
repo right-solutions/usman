@@ -1,4 +1,4 @@
-class Permission < ApplicationRecord
+class Permission < Usman::ApplicationRecord
   
   require 'import_error_handler.rb'
   extend Usman::ImportErrorHandler

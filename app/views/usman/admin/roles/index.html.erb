@@ -1,0 +1,32 @@
+<div class="row">
+      
+  <div class="col-md-12">
+    
+    <ul class="nav nav-tabs">
+    </ul>
+    <div class="tab-content">
+      <div class="tab-pane active">
+
+        <div id="div_role_action_buttons">
+          <div class="row">
+            <div class="col-md-4">
+              <%= link_to raw("<i class='fa fa-plus mr-10'></i><span class='btn-text'> New Role</span>"), new_admin_role_path, :class=>"btn btn-primary pull-left mb-5", :remote=>true %>
+            </div>
+            <div class="col-md-8">
+              <%= search_form_kuppayam(Role, admin_roles_path, text: @filters[:query]) %>
+            </div>
+          </div>
+        </div>
+        <%= clear_tag(10) %>
+
+        <div id="div_role_index">
+          <%= render :partial=>"usman/admin/roles/index" %>
+        </div>
+        <%= clear_tag(10) %>
+
+      </div>
+    </div>
+
+  </div>
+
+</div>

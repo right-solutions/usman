@@ -1,5 +1,5 @@
 FactoryGirl.define do
-  factory :picture, :class => Image::Base do
+  factory :picture, :class => Image::FeatureImage do
     image { Rack::Test::UploadedFile.new('spec/factories/test.jpg', 'image/jpg') }
   end
 

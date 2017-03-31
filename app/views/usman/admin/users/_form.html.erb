@@ -26,8 +26,11 @@
       </div>
     
       <div>
-        <%= link_to raw("<i class='fa fa-close mr-5'></i><span>Cancel</span>"), "#", onclick: "closeLargeModal();", class: "pull-left btn btn-white" %>
-        <%= submit_tag("Save", :class=>"btn btn-secondary pull-right") %>
+
+        <%= submit_tag("Save", :class=>"btn btn-primary pull-right ml-10") %>
+        
+        <%= link_to raw("<i class='fa fa-close mr-5'></i><span>Cancel</span>"), "#", onclick: "closeLargeModal();", class: "pull-right ml-10 btn btn-white" %>
+        
       </div>
       <%= clear_tag(10) %>
   </div>

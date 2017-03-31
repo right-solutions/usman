@@ -2,42 +2,40 @@ module Usman
   module Admin
     class UsersController < ResourceController
 
-      def index
-        @heading = "Manage Users"
-        @description = "Listing all users"
-        @links = [{name: "Dashboard", link: admin_dashboard_path, icon: 'fa-home'}, 
-                  {name: "Manage Users", link: admin_users_path, icon: 'fa-user', active: true}]
-        super
-      end
-
-      def create
-        @user = User.new
-        @user.assign_attributes(permitted_params)
-        #@user.assign_default_password
-        save_resource(@user)
-        get_collections
-      end
-
       def make_super_admin
-        @user = User.find(params[:id])
-        @user.update_attribute(:super_admin, true)
-        render :row
+        @user = @r_object = User.find(params[:id])
+        if @user
+          @user.super_admin = true
+          if @user.valid?
+            @user.save
+            set_notification(true, I18n.t('status.success'), I18n.t('state.changed', item: default_item_name.titleize, new_state: @user.status))
+          else
+            set_notification(false, I18n.t('status.error'), I18n.translate("error"), @user.errors.full_messages.join("<br>"))
+          end
+        else
+          set_notification(false, I18n.t('status.not_found'), I18n.t('status.not_found', item: default_item_name.titleize))
+        end
+        render_row
       end
 
       def remove_super_admin
-        @user = User.find(params[:id])
-        @user.update_attribute(:super_admin, false)
-        render :row
-      end
-
-      def update_status
-        @user = User.find(params[:id])
-        @user.update_attribute(:status, params[:status])
-        render :row
+        @user = @r_object = User.find(params[:id])
+        if @user
+          @user.super_admin = false
+          if @user.valid?
+            @user.save
+            set_notification(true, I18n.t('status.success'), I18n.t('state.changed', item: default_item_name.titleize, new_state: @user.status))
+          else
+            set_notification(false, I18n.t('status.error'), I18n.translate("error"), @user.errors.full_messages.join("<br>"))
+          end
+        else
+          set_notification(false, I18n.t('status.not_found'), I18n.t('status.not_found', item: default_item_name.titleize))
+        end
+        render_row
       end
 
       def masquerade
-        @user = User.find(params[:id])
+        @user = @r_object = User.find(params[:id])
         masquerade_as_user(@user)
       end
 
@@ -45,12 +43,12 @@ module Usman
 
       def get_collections
         # Fetching the users
-        @relation = User.where("")
+        @relation = User.includes(:profile_picture).where("")
 
         parse_filters
         apply_filters
         
-        @users = @relation.includes(:profile_picture).page(@current_page).per(@per_page)
+        @users = @r_objects = @relation.page(@current_page).per(@per_page)
 
         return true
       end
@@ -101,6 +99,21 @@ module Usman
             url_method_name: 'admin_users_url',
             show_all_filter_on_top: true
           }
+        }
+      end
+
+      def resource_controller_configuration
+        {
+          view_path: "usman/admin/users"
+        }
+      end
+
+      def breadcrumbs_configuration
+        {
+          heading: "Manage Users",
+          description: "Listing all Users",
+          links: [{name: "Home", link: admin_dashboard_path, icon: 'fa-home'}, 
+                    {name: "Manage Users", link: admin_users_path, icon: 'fa-user', active: true}]
         }
       end
 

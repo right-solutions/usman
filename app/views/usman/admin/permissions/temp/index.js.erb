@@ -1,0 +1,14 @@
+// Close Modal if it is opened
+closeLargeModal();
+
+<% if @permissions.any? %>
+  
+  // Refresh the list
+  $('#div_permission_index').html("<%= escape_javascript(render(:partial=>'/usman/admin/permissions/index')) %>");
+
+<% else %>
+
+	var noResultsText = "<%= escape_javascript(theme_panel_message(I18n.translate('success.no_results_found')))%>";
+  $('#div_permission_index').html(noResultsText);
+
+<% end %>

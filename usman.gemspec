@@ -21,13 +21,12 @@ Gem::Specification.new do |s|
   s.add_dependency 'kaminari', '~> 1.0', '>= 1.0.1'
   s.add_dependency 'bootstrap-kaminari-views', "~> 0.0.5"
 
-  s.add_dependency 'kuppayam', "~> 0.1.0"
+  s.add_dependency 'kuppayam', "~> 0.1.1"
   s.add_dependency "bcrypt"
   s.add_dependency "colorize"
 
   s.add_development_dependency 'pry', "~> 0.10.1", ">= 0.10.0"
   s.add_development_dependency 'mysql2', "~> 0.4.4"
-  s.add_development_dependency 'sqlite3', "~> 1.3.10", ">= 1.3.9"
   s.add_development_dependency 'carrierwave', "~> 0.10.0", ">= 0.9.0"
   s.add_development_dependency 'rmagick', "~> 2.13.3", ">= 2.13.2"
   s.add_development_dependency 'rspec-rails', "~> 3.5"

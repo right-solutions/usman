@@ -1,4 +1,4 @@
-class Feature < ApplicationRecord
+class Feature < Usman::ApplicationRecord
   
   require 'import_error_handler.rb'
   extend Usman::ImportErrorHandler

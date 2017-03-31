@@ -2,27 +2,6 @@ module Usman
   module Admin
     class FeaturesController < ResourceController
 
-      def index
-        @heading = "Manage Features"
-        @description = "Listing all features"
-        @links = [{name: "Dashboard", link: admin_dashboard_path, icon: 'fa-home'}, 
-                  {name: "Manage Features", link: admin_features_path, icon: 'fa-user', active: true}]
-        super
-      end
-
-      def create
-        @feature = Feature.new
-        @feature.assign_attributes(permitted_params)
-        save_resource(@feature)
-        get_collections
-      end
-
-      def update_status
-        @feature = Feature.find(params[:id])
-        @feature.update_attribute(:status, params[:status])
-        render :row
-      end
-
       private
 
       def get_collections
@@ -31,7 +10,7 @@ module Usman
         parse_filters
         apply_filters
         
-        @features = @relation.includes(:feature_image).page(@current_page).per(@per_page)
+        @features = @r_objects = @relation.includes(:feature_image).page(@current_page).per(@per_page)
 
         return true
       end
@@ -70,6 +49,21 @@ module Usman
             url_method_name: 'admin_users_url',
             show_all_filter_on_top: true
           }
+        }
+      end
+
+      def resource_controller_configuration
+        {
+          view_path: "/usman/admin/features"
+        }
+      end
+
+      def breadcrumbs_configuration
+        {
+          heading: "Manage Features",
+          description: "Listing all Features",
+          links: [{name: "Home", link: admin_dashboard_path, icon: 'fa-home'}, 
+                    {name: "Manage Features", link: admin_permissions_path, icon: 'fa-calendar', active: true}]
         }
       end
 

@@ -24,6 +24,8 @@ Usman::Engine.routes.draw do
       end
     end
 
+    resources :roles
+
     resources :features do
       member do
         put :update_status, as:  :update_status
@@ -31,12 +33,7 @@ Usman::Engine.routes.draw do
     end
 
     resources :permissions
-
-    resources :images do
-      member do
-        put :crop
-      end
-    end
+    
 
    end
 

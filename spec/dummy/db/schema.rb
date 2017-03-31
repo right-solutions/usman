@@ -10,13 +10,13 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170318100549) do
+ActiveRecord::Schema.define(version: 20170331071846) do
 
   create_table "features", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string   "name",       limit: 256
+    t.string   "status",     limit: 16,  default: "unpublished", null: false
     t.datetime "created_at",                                     null: false
     t.datetime "updated_at",                                     null: false
-    t.string   "status",     limit: 16,  default: "unpublished", null: false
   end
 
   create_table "images", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
@@ -40,6 +40,22 @@ ActiveRecord::Schema.define(version: 20170318100549) do
     t.index ["feature_id"], name: "index_permissions_on_feature_id", using: :btree
     t.index ["user_id", "feature_id"], name: "index_permissions_on_user_id_and_feature_id", unique: true, using: :btree
     t.index ["user_id"], name: "index_permissions_on_user_id", using: :btree
+  end
+
+  create_table "roles", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.string   "name",       limit: 256
+    t.datetime "created_at",             null: false
+    t.datetime "updated_at",             null: false
+  end
+
+  create_table "roles_users", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.integer  "user_id"
+    t.integer  "role_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["role_id"], name: "index_roles_users_on_role_id", using: :btree
+    t.index ["user_id", "role_id"], name: "index_roles_users_on_user_id_and_role_id", unique: true, using: :btree
+    t.index ["user_id"], name: "index_roles_users_on_user_id", using: :btree
   end
 
   create_table "users", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|

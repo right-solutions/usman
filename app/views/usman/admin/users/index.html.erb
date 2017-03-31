@@ -23,7 +23,31 @@
       <div class="tab-pane active">
 
         <div id="div_user_action_buttons">
-          <%= render :partial=>"usman/admin/users/action_buttons" %>
+          <div class="row">
+            <div class="col-md-6">
+              
+              <%= theme_button('Add a User', 'plus', new_admin_user_path(), classes: "pull-left", btn_type: "success") %>
+
+              <%= theme_button('Refresh', 'refresh', admin_users_path(), classes: "pull-left ml-10", btn_type: "white") %>
+
+              <!-- Single button -->
+              <div class="ml-10 btn-group">
+                <button type="button" class="btn btn-white dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                  More Actions <span class="caret"></span>
+                </button>
+                <ul class="dropdown-menu">
+                  <li><a href="#">Import Users</a></li>
+                  <li><a href="#">Import History</a></li>
+                  <li role="separator" class="divider"></li>
+                  <li><a href="#">Export Users</a></li>
+                </ul>
+              </div>
+
+            </div>
+            <div class="col-md-6">
+              <%= search_form_kuppayam(User, admin_users_path, text: @filters[:query]) %>
+            </div>
+          </div>
         </div>
         <%= clear_tag(10) %>
 

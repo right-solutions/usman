@@ -38,7 +38,7 @@
 			<!-- class "auto-inherit-active-class" will automatically add "active" class for parent elements who are marked already with class "active" -->
 			
 			<li class="<%= nav_active?('admin/dashboard') ? 'active' : ''  %>">
-				<%= link_to raw("<i class=\"linecons-desktop\"></i> <span class='title'>Dashboard</span>"), admin_dashboard_url %>
+				<%= link_to raw("<i class=\"linecons-desktop\"></i> <span class='title'>Dashboard</span>"), usman.admin_dashboard_url %>
 			</li>
 
 			<li class="<%= nav_active?('admin/users') ? 'active' : ''  %>">
@@ -50,11 +50,11 @@
 
 				<ul>
 					<li class="<%= nav_class("admin/users") %>">
-				    <%= link_to raw("<i class=\"linecons-user\"></i> <span class='title'>Manage Users</span>"), admin_users_url %>
+				    <%= link_to raw("<i class=\"linecons-user\"></i> <span class='title'>Manage Users</span>"), usman.admin_users_url %>
 				  </li>
 					
 					<li class="<%= nav_class("admin/users") %>">
-						<%= link_to raw("<i class=\"linecons-lock\"></i> <span class='title'>Manage Permissions</span>"), admin_permissions_url %>
+						<%= link_to raw("<i class=\"linecons-lock\"></i> <span class='title'>Manage Permissions</span>"), usman.admin_permissions_url %>
 					</li>
 				</ul>
 
@@ -67,7 +67,11 @@
 				</a>
 				<ul>
 					<li class="">
-						<%= link_to raw("<i class=\"linecons-diamond\"></i> <span class='title'>Manage Features</span>"), admin_features_url %>
+						<%= link_to raw("<i class=\"linecons-diamond\"></i> <span class='title'>Manage Features</span>"), usman.admin_features_url %>
+					</li>
+
+					<li class="">
+						<%= link_to raw("<i class=\"linecons-diamond\"></i> <span class='title'>Manage Roles</span>"), usman.admin_roles_url %>
 					</li>
 				</ul>
 			</li>

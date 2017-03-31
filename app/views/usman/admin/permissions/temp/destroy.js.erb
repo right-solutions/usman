@@ -1,0 +1,22 @@
+<% if @destroyed %>
+  
+  // Removing the item from the list
+  $('#tr_permission_<%= @permission.id %>').remove();
+
+  // Closing the modal if it is opened
+  closeLargeModal();
+
+  // Showing Growl Like Message
+  notifySuccess("<%= escape_javascript(@notification[:title]) %>", "<%= escape_javascript(@notification[:message]) %>");
+
+<% else %>
+  
+  // Show the error in a modal
+  showMessageModal("<%= escape_javascript(@notification[:title]) %>", "<%= escape_javascript(@notification[:message]) %>");
+
+  // Showing Growl Like Message
+  notifyError("<%= escape_javascript(@notification[:title]) %>", "<%= escape_javascript(@notification[:message]) %>");
+  
+<% end %>
+
+

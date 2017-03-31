@@ -1,4 +1,4 @@
-class User < ActiveRecord::Base
+class User < Usman::ApplicationRecord
 
   require 'import_error_handler.rb'
   extend Usman::ImportErrorHandler
@@ -29,7 +29,7 @@ class User < ActiveRecord::Base
   SESSION_TIME_OUT = 30.minutes
 
   # Validations
-  validate_string :name, mandatory: true
+  validates :name, presence: true
   validate_username :username
   validate_email :email
   validate_password :password, condition_method: :should_validate_password?
@@ -43,6 +43,7 @@ class User < ActiveRecord::Base
   has_one :profile_picture, :as => :imageable, :dependent => :destroy, :class_name => "Image::ProfilePicture"
   has_many :permissions
   has_many :features, through: :permissions
+  has_and_belongs_to_many :users
 
   
   # ------------------
@@ -87,7 +88,7 @@ class User < ActiveRecord::Base
 
     user.super_admin = ["true", "t","1","yes","y"].include?(row[:super_admin].to_s.downcase.strip)
 
-    user.status = User::PENDING
+    user.status = row[:status]
     user.assign_default_password
 
     # Initializing error hash for displaying all errors altogether
@@ -210,6 +211,14 @@ class User < ActiveRecord::Base
     self.update_attributes auth_token: SecureRandom.hex, token_created_at: nil
   end
 
+  def update_token
+    self.update_attribute(:token_created_at, Time.now)
+  end
+
+  def token_about_to_expire?
+    return self.token_created_at.nil? || (Time.now > self.token_created_at + (SESSION_TIME_OUT - 1.minute))
+  end
+
   def assign_default_password
     self.password = DEFAULT_PASSWORD
     self.password_confirmation = DEFAULT_PASSWORD
@@ -271,8 +280,24 @@ class User < ActiveRecord::Base
     permission && permission.can_delete?
   end
 
-  def can_be_destroyed?
+  def can_be_approved?
+    pending? or suspended?
+  end
+
+  def can_be_marked_as_pending?
+    approved? or suspended?
+  end
+
+  def can_be_suspended?
+    approved? or pending?
+  end
+
+  def can_be_deleted?
     return true
+  end
+
+  def can_be_edited?
+    !suspended?
   end
 
   private
@@ -297,6 +322,27 @@ class User < ActiveRecord::Base
       raise "Feature with name '#{feature.name}' doesn't exist" unless feature
     end
     return feature
+  end
+
+  def get_role(role_name)
+    self.roles.find_by_id(role_name) || self.roles.find_by_name(role_name)
+  end
+
+  def add_role(role_name)
+    role = self.get_role(role_name)
+    self.roles << role if role && role.persists?
+  end
+
+  def remove_role(role_name)
+    role = self.get_role(role_name)
+    if role
+      self.roles.delete(role)
+    end
+  end
+
+  def has_role?(role_name)
+    role = self.get_role(role_name)
+    role && role.persists?
   end
 
 end

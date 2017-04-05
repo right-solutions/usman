@@ -54,6 +54,8 @@ module Usman
 
       def resource_controller_configuration
         {
+          page_title: "Features",
+          js_view_path: "/kuppayam/workflows/parrot",
           view_path: "/usman/admin/features"
         }
       end

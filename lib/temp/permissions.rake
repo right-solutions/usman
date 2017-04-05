@@ -2,23 +2,21 @@ require 'csv'
 require 'open-uri'
 require 'time'
 
-RAILS_ENV = ENV["RAILS_ENV"] || "development" unless defined?(RAILS_ENV)
-
 namespace 'usman' do
   namespace 'import' do
-    desc "Import Features"
-    task 'features' => :environment do
+    desc "Import Permissions"
+    task 'permissions' => :environment do
       verbose = true
       verbose = false if ["false", "f","0","no","n"].include?(ENV["verbose"].to_s.downcase.strip)
-      Feature.import_from_csv(false, verbose)
+      path = ENV['path']
+      Permission.import_data(Usman::Engine, path, false, verbose)
     end
     namespace 'dummy' do
-      desc "Load Dummy Features"
-      task 'features' => :environment do
-        path = "db/import_data/dummy/features.csv"
+      desc "Load Dummy Permissions"
+      task 'permissions' => :environment do
         verbose = true
         verbose = false if ["false", "f","0","no","n"].include?(ENV["verbose"].to_s.downcase.strip)
-        Feature.import_from_csv(true, verbose)
+        Permission.import_data(Usman::Engine, nil, true, verbose)        
       end
     end
   end

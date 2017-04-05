@@ -61,7 +61,7 @@
 	    <% end %>
 
 	    <!-- Approve -->
-	    <%= link_to raw("<i class=\"fa fa-circle-o mr-5\"></i> Approve"), update_status_admin_user_path(:id =>@user.id, :status =>'approved'), :method =>'PUT', :remote=>true, role: "menuitem", tabindex: "-1", :class=>"btn btn-block btn-success btn-only-hover" if @user.can_be_approved? %>
+	    <%= link_to raw("<i class=\"fa fa-circle-o mr-5\"></i> Approve"), update_status_admin_user_path(:id =>@user.id, :status =>'approved'), :method =>'PUT', :remote=>true, role: "menuitem", tabindex: "-1", :class=>"btn btn-block btn-success btn-only-hover" if @user.can_be_approved? && (@current_user != @user) %>
 
 	    <!-- Mark as Pending -->
 	    <%= link_to raw("<i class=\"fa fa-circle mr-5\"></i> Mark as Pending"), update_status_admin_user_path(:id =>@user.id, :status =>'pending'), :method =>'PUT', :remote=>true, role: "menuitem", tabindex: "-1", :class=>"btn btn-block btn-gray btn-only-hover" if @user.can_be_marked_as_pending? && (@current_user != @user) %>

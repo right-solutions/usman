@@ -1,9 +1,6 @@
 class Permission < Usman::ApplicationRecord
   
-  require 'import_error_handler.rb'
-  extend Usman::ImportErrorHandler
-
-	# Associations
+  # Associations
   belongs_to :user
   belongs_to :feature
 
@@ -30,16 +27,14 @@ class Permission < Usman::ApplicationRecord
                                         LOWER(f.name) LIKE LOWER('%#{query}%')")}
 
 
-  def self.save_row_data(row, base_path)
-
-    image_base_path = base_path + "images/"
+  def self.save_row_data(row)
 
     row.headers.each{ |cell| row[cell] = row[cell].to_s.strip }
 
     return if row[:user].blank? || row[:feature].blank?
 
     # Initializing error hash for displaying all errors altogether
-    error_object = Usman::ErrorHash.new
+    error_object = Kuppayam::Importer::ErrorHash.new
 
     user = User.find_by_username(row[:user])
     unless user

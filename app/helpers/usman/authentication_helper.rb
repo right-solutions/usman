@@ -10,7 +10,14 @@ module Usman
     
     # Returns the default URL to which the system should redirect the user after successful authentication
     def default_redirect_url_after_sign_in
-      usman.admin_dashboard_url    
+      main_app.user_landing_url
+      # if @current_user.has_role?("Admin")
+      #   main_app.admin_dashboard_url
+      # elsif @current_user.has_role?("Admin")
+      #   main_app.store_dashboard_url
+      # else
+      #   main_app.admin_dashboard_url
+      # end
     end
 
     # Returns the default URL to which the system should redirect the user after an unsuccessful attempt to authorise a resource/page
@@ -22,11 +29,11 @@ module Usman
     # This method should also handle the redirection if it has come through a client appliction for authentication
     # In that case, it should persist the params passed by the client application
     def redirect_after_unsuccessful_authentication
-      params_hsh = {}
-      params_hsh[:client_app] = params[:client_app] if params[:client_app]
-      params_hsh[:redirect_back_url] = params[:redirect_back_url] if params[:redirect_back_url]
-      params_hsh[:requested_url] = request.original_url if request.get?
-      redirect_to add_query_params(default_sign_in_url, params_hsh)
+      @params_hsh = {}
+      @params_hsh[:client_app] = params[:client_app] if params[:client_app]
+      @params_hsh[:redirect_back_url] = params[:redirect_back_url] if params[:redirect_back_url]
+      @params_hsh[:requested_url] = request.original_url if request.get?
+      redirect_to add_query_params(default_sign_in_url, @params_hsh)
       return
     end
 
@@ -49,6 +56,11 @@ module Usman
           redirect_after_unsuccessful_authentication
         }
         format.js {
+          @params_hsh = {}
+          @params_hsh[:client_app] = params[:client_app] if params[:client_app]
+          @params_hsh[:redirect_back_url] = params[:redirect_back_url] if params[:redirect_back_url]
+          @params_hsh[:requested_url] = request.original_url if request.get?
+          
           render(:partial => 'usman/sessions/sign_in.js.erb', :handlers => [:erb], :formats => [:js])
         }
       end
@@ -118,7 +130,6 @@ module Usman
       session[:last_user_id] = current_user.id if current_user
       user.start_session
       session[:id] = user.id
-      default_redirect_url_after_sign_in
       redirect_to default_redirect_url_after_sign_in
     end
 

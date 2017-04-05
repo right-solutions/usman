@@ -18,7 +18,7 @@ module Usman
       def apply_filters
         @relation = @relation.search(@query) if @query
         
-        @order_by = "created_at desc" unless @order_by
+        @order_by = "name ASC" unless @order_by
         @relation = @relation.order(@order_by)
       end
 
@@ -39,7 +39,8 @@ module Usman
 
       def resource_controller_configuration
         {
-          js_view_path: "/kuppayam/workflows/parrot",
+          page_title: "Roles",
+          js_view_path: "/kuppayam/workflows/peacock",
           view_path: "/usman/admin/roles"
         }
       end

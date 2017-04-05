@@ -10,7 +10,7 @@ module Usman
 
 	    def breadcrumbs_configuration
 	      {
-	        heading: "Usman Dashboard",
+	        heading: "User Dashboard",
 	        description: "A Quick view of users and roles",
 	        links: [{name: "Dashboard", link: admin_dashboard_path, icon: 'fa-dashboard'}]
 	      }

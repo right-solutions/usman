@@ -37,6 +37,7 @@
 			
 			<!-- class "auto-inherit-active-class" will automatically add "active" class for parent elements who are marked already with class "active" -->
 			
+			<!-- Admin Dashboard -->
 			<li class="<%= nav_active?('admin/dashboard') ? 'active' : ''  %>">
 				<%= link_to raw("<i class=\"linecons-desktop\"></i> <span class='title'>Dashboard</span>"), usman.admin_dashboard_url %>
 			</li>
@@ -52,29 +53,29 @@
 					<li class="<%= nav_class("admin/users") %>">
 				    <%= link_to raw("<i class=\"linecons-user\"></i> <span class='title'>Manage Users</span>"), usman.admin_users_url %>
 				  </li>
-					
+				</ul>
+			</li>
+
+			<% if @current_user.super_admin? %>
+			<li class="">
+				<a href="/xenon/xenon-files/html/dashboard-1.html">
+					<i class="linecons-database"></i>
+					<span class="title">Master Data</span>
+				</a>
+
+				<ul>
+					<li class="">
+						<%= link_to raw("<i class=\"linecons-diamond\"></i> <span class='title'>Manage Features</span>"), usman.admin_features_url %>
+					</li>
+
 					<li class="<%= nav_class("admin/users") %>">
 						<%= link_to raw("<i class=\"linecons-lock\"></i> <span class='title'>Manage Permissions</span>"), usman.admin_permissions_url %>
 					</li>
 				</ul>
 
 			</li>
+			<% end %>
 
-			<li class="">
-				<a href="/xenon/xenon-files/html/dashboard-1.html">
-					<i class="linecons-database"></i>
-					<span class="title">Master Data</span>
-				</a>
-				<ul>
-					<li class="">
-						<%= link_to raw("<i class=\"linecons-diamond\"></i> <span class='title'>Manage Features</span>"), usman.admin_features_url %>
-					</li>
-
-					<li class="">
-						<%= link_to raw("<i class=\"linecons-diamond\"></i> <span class='title'>Manage Roles</span>"), usman.admin_roles_url %>
-					</li>
-				</ul>
-			</li>
 		</ul>
 		
 	</div>

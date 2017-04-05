@@ -30,8 +30,10 @@
 
               <%= theme_button('Refresh', 'refresh', admin_users_path(), classes: "pull-left ml-10", btn_type: "white") %>
 
+              <%= theme_button('Manage Roles', 'nothing linecons-graduation-cap', admin_roles_path(), classes: "pull-left ml-10", btn_type: "white", remote: false) %>
+
               <!-- Single button -->
-              <div class="ml-10 btn-group">
+              <div class="ml-10 btn-group hidden">
                 <button type="button" class="btn btn-white dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                   More Actions <span class="caret"></span>
                 </button>

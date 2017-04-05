@@ -1,9 +1,5 @@
 class User < Usman::ApplicationRecord
 
-  require 'import_error_handler.rb'
-  extend Usman::ImportErrorHandler
-  extend KuppayamValidators
-  
   # including Password Methods
   has_secure_password
 
@@ -26,7 +22,7 @@ class User < Usman::ApplicationRecord
 
   EXCLUDED_JSON_ATTRIBUTES = [:confirmation_token, :password_digest, :reset_password_token, :unlock_token, :status, :reset_password_sent_at, :remember_created_at, :sign_in_count, :current_sign_in_at, :last_sign_in_at, :current_sign_in_ip, :last_sign_in_ip, :confirmed_at, :confirmation_sent_at, :unconfirmed_email, :failed_attempts, :locked_at, :created_at, :updated_at]
   DEFAULT_PASSWORD = "Password@1"
-  SESSION_TIME_OUT = 30.minutes
+  SESSION_TIME_OUT = 120.minutes
 
   # Validations
   validates :name, presence: true
@@ -43,7 +39,7 @@ class User < Usman::ApplicationRecord
   has_one :profile_picture, :as => :imageable, :dependent => :destroy, :class_name => "Image::ProfilePicture"
   has_many :permissions
   has_many :features, through: :permissions
-  has_and_belongs_to_many :users
+  has_and_belongs_to_many :roles
 
   
   # ------------------
@@ -59,10 +55,10 @@ class User < Usman::ApplicationRecord
   # == Examples
   #   >>> user.search(query)
   #   => ActiveRecord::Relation object
-  scope :search, lambda {|query| where("LOWER(name) LIKE LOWER('%#{query}%') OR\
-                                        LOWER(username) LIKE LOWER('%#{query}%') OR\
-                                        LOWER(email) LIKE LOWER('%#{query}%') OR\
-                                        LOWER(designation) LIKE LOWER('%#{query}%')")
+  scope :search, lambda {|query| where("LOWER(users.name) LIKE LOWER('%#{query}%') OR\
+                                        LOWER(users.username) LIKE LOWER('%#{query}%') OR\
+                                        LOWER(users.email) LIKE LOWER('%#{query}%') OR\
+                                        LOWER(users.designation) LIKE LOWER('%#{query}%')")
                         }
 
   scope :status, lambda { |status| where("LOWER(status)='#{status}'") }
@@ -70,10 +66,11 @@ class User < Usman::ApplicationRecord
   scope :pending, -> { where(status: PENDING) }
   scope :approved, -> { where(status: APPROVED) }
   scope :suspended, -> { where(status: SUSPENDED) }
+  
+  scope :super_admins, -> { where(super_admin: TRUE) }
+  scope :normal_users, -> { where(super_admin: FALSE) }
 
-  def self.save_row_data(row, base_path)
-
-    image_base_path = base_path + "images/"
+  def self.save_row_data(row)
 
     row.headers.each{ |cell| row[cell] = row[cell].to_s.strip }
 
@@ -92,7 +89,7 @@ class User < Usman::ApplicationRecord
     user.assign_default_password
 
     # Initializing error hash for displaying all errors altogether
-    error_object = Usman::ErrorHash.new
+    error_object = Kuppayam::Importer::ErrorHash.new
 
     if user.valid?
       user.save!
@@ -101,33 +98,6 @@ class User < Usman::ApplicationRecord
       details = "Error! #{user.errors.full_messages.to_sentence}"
       error_object.errors << { summary: summary, details: details }
     end
-
-    ## Adding a profile picture
-    begin
-      image_path = image_base_path + "users/#{user.username}.png"
-      image_path = image_base_path + "users/#{user.username}.jpg" unless File.exists?(image_path)
-      if File.exists?(image_path)
-        user.build_profile_picture
-        user.profile_picture.image = File.open(image_path)
-        if user.profile_picture.valid?
-          user.profile_picture.save
-        else
-          summary = "Error while saving user: #{user.name}"
-          details = "Error! #{user.errors.full_messages.to_sentence}"
-          details << ", #{user.profile_picture.errors.full_messages.to_sentence}" if user.profile_picture
-          error_object.errors << { summary: summary, details: details }
-        end
-      else
-        summary = "Profile Picture not found for user: #{user.name}"
-        details = "#{image_path}/png doesn't exists"
-        error_object.warnings << { summary: summary, details: details }
-      end
-    rescue => e
-      summary = "Error during processing: #{$!}"
-      details = "User: #{user.name}, Image Path: #{image_path}"
-      stack_trace = "Backtrace:\n\t#{e.backtrace.join("\n\t")}"
-      error_object.errors << { summary: summary, details: details, stack_trace: stack_trace }
-    end if user.profile_picture.blank?
 
     return error_object
   end
@@ -223,6 +193,10 @@ class User < Usman::ApplicationRecord
     self.update_attribute(:token_created_at, Time.now)
   end
 
+  def expire_token!
+    self.update_attribute(:token_created_at, (Time.now - (SESSION_TIME_OUT + 1.minute)))
+  end
+
   def token_about_to_expire?
     return self.token_created_at.nil? || (Time.now > self.token_created_at + (SESSION_TIME_OUT - 1.minute))
   end
@@ -301,11 +275,38 @@ class User < Usman::ApplicationRecord
   end
 
   def can_be_deleted?
-    return true
+    suspended?
   end
 
   def can_be_edited?
     !suspended?
+  end
+
+  def add_role(role)
+    return false unless self.approved?
+    role = Role.find_by_name(role) if role.is_a?(String)
+    if role
+      self.roles << role unless self.has_role?(role)
+      return true
+    else
+      return false
+    end
+  end
+
+  def remove_role(role)
+    role = Role.find_by_name(role) if role.is_a?(String)
+    self.roles.delete(role) if role
+  end
+
+  def has_role?(role)
+    role = Role.find_by_name(role) if role.is_a?(String)
+    if role && role.persisted?
+      return true if self.super_admin
+      self.roles.exists?(:id => [role.id])
+    else
+      return false
+    end
+    
   end
 
   private
@@ -330,27 +331,6 @@ class User < Usman::ApplicationRecord
       raise "Feature with name '#{feature.name}' doesn't exist" unless feature
     end
     return feature
-  end
-
-  def get_role(role_name)
-    self.roles.find_by_id(role_name) || self.roles.find_by_name(role_name)
-  end
-
-  def add_role(role_name)
-    role = self.get_role(role_name)
-    self.roles << role if role && role.persists?
-  end
-
-  def remove_role(role_name)
-    role = self.get_role(role_name)
-    if role
-      self.roles.delete(role)
-    end
-  end
-
-  def has_role?(role_name)
-    role = self.get_role(role_name)
-    role && role.persists?
   end
 
 end

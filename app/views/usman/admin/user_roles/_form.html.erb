@@ -1,0 +1,24 @@
+<%= form_for([:admin, @role, @user], :html => {:id=>"form_user", :class=>"mb-0 form-horizontal", :user => "form", :method => (@user.new_record? ? :post : :put), :remote=>true}) do |f| %>
+
+      <div id="user_form_error">
+        <%= @user.errors[:base].to_sentence %>
+      </div>
+
+      <div class="form-inputs mb-30 mt-30">
+        <% options = {assoc_collection: User.approved.normal_users.select("id, name").order("name ASC").all, required: false, editable: true, assoc_display_method: :name} %>
+        <%= theme_form_assoc_group(@user, :id, label: "Select User", **options) %>
+      </div>
+    
+      <div>
+
+        <%= submit_tag("Save", :class=>"btn btn-primary pull-right ml-10") %>
+        
+        <%= link_to raw("<i class='fa fa-close mr-5'></i><span>Cancel</span>"), "#", onclick: "closeGenericModal();", class: "pull-right ml-10 btn btn-white" %>
+        
+      </div>
+      <%= clear_tag(10) %>
+
+  </div>
+
+<% end %>
+

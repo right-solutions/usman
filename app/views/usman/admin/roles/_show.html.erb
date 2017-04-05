@@ -1,3 +1,5 @@
+<% @users = @role.users.page(@current_page).per(@per_page) %>
+
 <div id="div_role_show">
 	
 	<div class="row">
@@ -19,9 +21,9 @@
 	  	<% edit_link = edit_admin_role_path(id: @role.id) %>
 			<% delete_link = admin_role_path(id: @role.id) %>
 
-			<%= link_to raw("<i class=\"linecons-pencil\"></i> Edit Role"), edit_link, :remote=>true, class: "btn btn-block btn-success" if @role.can_be_edited? %>
+			<%= link_to raw("<i class=\"linecons-pencil\"></i> Edit Role"), edit_link, :remote=>true, class: "btn btn-block btn-success" if @current_user.super_admin? and @role.can_be_edited? %>
 
-	    <%= link_to raw("<i class=\"linecons-trash\"></i> Delete Role"), delete_link, method: :delete, role: "menuitem", tabindex: "-1", data: { confirm: 'Are you sure?' }, :remote=>true, class: "btn btn-block btn-danger btn-only-hover" if @role.can_be_deleted? %>
+	    <%= link_to raw("<i class=\"linecons-trash\"></i> Delete Role"), delete_link, method: :delete, role: "menuitem", tabindex: "-1", data: { confirm: 'Are you sure?' }, :remote=>true, class: "btn btn-block btn-danger btn-only-hover" if @current_user.super_admin? and @role.can_be_deleted? %>
 
 	    <div class="visible-sm visible-xs mb-50"></div>
 
@@ -32,7 +34,15 @@
 	<%= clear_tag(50) %>
 
 	<ul class="nav nav-pills">
-	  <li class="active">
+
+		<li class="active">
+	    <a href="#user_roles" data-toggle="tab" aria-expanded="false">
+	      <span class="visible-xs"><i class="fa-database"></i></span>
+	      <span class="hidden-xs">Users</span>
+	    </a>
+	  </li>
+
+	  <li class="">
 	    <a href="#technical_details" data-toggle="tab" aria-expanded="false">
 	      <span class="visible-xs"><i class="fa-database"></i></span>
 	      <span class="hidden-xs">Technical Details</span>
@@ -41,7 +51,32 @@
 	</ul>
 
 	<div class="tab-content">
-	  <div class="tab-pane active" id="technical_details">
+
+		<div class="tab-pane active" id="user_roles" style="border: 1px solid #000;min-height:200px;padding:20px;margin-bottom:20px;max-height: 400px;overflow-y: auto;">
+	    
+	    <%= clear_tag(20) %>
+
+	    <div id="div_user_action_buttons">
+        <div class="row">
+          <div class="col-md-6">
+
+            <%= theme_button('Add a User', 'plus', new_admin_role_user_path(@role), classes: "pull-left", btn_type: "success") %>
+
+            <%= theme_button('Refresh', 'refresh', admin_role_users_path(@role), classes: "pull-left ml-10", btn_type: "white") %>
+          </div>
+          <div class="col-md-6">
+            <%= search_form_kuppayam(User, admin_role_users_path(@role), text: "") %>
+          </div>
+        </div>
+      </div>
+      <%= clear_tag(10) %>
+
+      <div id="div_user_index">
+      	<%= render :partial=>"usman/admin/user_roles/index" %>
+      </div>
+	  </div>
+
+	  <div class="tab-pane" id="technical_details">
 	    
 	    <%= clear_tag(20) %>
 
@@ -60,13 +95,12 @@
 
 					</tbody>
 				</table>
-				
 			</div>
-
 	  </div>
+
 	</div>
 
-	<%= link_to "Close", "#", onclick: "closeGenericModal();", class: "btn btn-primary pull-right" %>
+	<%= link_to "Close", "#", onclick: "closeLargeModal();", class: "btn btn-primary pull-right" %>
 
 	<%= clear_tag %>
 </div>

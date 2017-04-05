@@ -1,17 +1,9 @@
-<% status_hash = {published: "success", unpublished: "default", disabled: "danger"} %>
-
-<div class="media <%= status_hash[@permission.status.to_sym] %>">
-
-  <div class="pull-left pt-10 pr-10 pb-10" style="width:30%;">
-  	<%= edit_image(@permission, "permission_image.image.large.url", upload_image_link(@permission, :permission_image)) %>
-  </div>
+<div class="media">
 
   <div class="pull-left ml-10" style="width:65%;">
 
-  	<h1><%= @permission.name %></h1>
+  	<h1><%= @permission.id %></h1>
     
-    <span class="ml-5 mt-5 label label-<%= status_hash[@permission.status.to_sym] %>"><%= @permission.status.titleize %></span>
-
     <%= clear_tag %>
   </div>
 

@@ -24,7 +24,9 @@ Usman::Engine.routes.draw do
       end
     end
 
-    resources :roles
+    resources :roles do
+      resources :users, :controller => "user_roles"
+    end
 
     resources :features do
       member do

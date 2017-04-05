@@ -2,29 +2,20 @@ module Usman
   module Admin
     class PermissionsController < ResourceController
 
-      def index
-        @heading = "Manage Permissions"
-        @description = "Listing all permissions"
-        @links = [{name: "Dashboard", link: admin_dashboard_path, icon: 'fa-home'}, 
-                  {name: "Manage Permissions", link: admin_permissions_path, icon: 'fa-user', active: true}]
-        super
-      end
-
       def create
-        @permission = Permission.where(" user_id = ? AND feature_id = ? ", permitted_params[:user_id], permitted_params[:feature_id]).first || Permission.new
+        @permission = @r_object = Permission.where(" user_id = ? AND feature_id = ? ", permitted_params[:user_id], permitted_params[:feature_id]).first || Permission.new
         @permission.assign_attributes(permitted_params)
-        save_resource(@permission)
-
+        save_resource
         get_collections
       end
 
       def update
-        @permission = Permission.find_by_id(params[:id])
+        @permission = @r_object = Permission.find_by_id(params[:id])
         # The form will not submit can_create 0 if it is not selected
         # hence making it false by default and letting it update by itself.
         @permission.assign_attributes({"can_create": "0", "can_read": "0", "can_update": "0", "can_delete": "0"})
         @permission.assign_attributes(permitted_params)
-        save_resource(@permission)
+        save_resource
         get_collections
       end
 
@@ -36,7 +27,7 @@ module Usman
         parse_filters
         apply_filters
         
-        @permissions = @relation.includes(:user, :feature).page(@current_page).per(@per_page)
+        @permissions = @r_objects = @relation.includes(:user, :feature).page(@current_page).per(@per_page)
 
         return true
       end
@@ -65,7 +56,9 @@ module Usman
 
       def resource_controller_configuration
         {
-          view_path: "/demo/permissions"
+          page_title: "Permissions",
+          js_view_path: "/kuppayam/workflows/parrot",
+          view_path: "/usman/admin/permissions"
         }
       end
 

@@ -2,48 +2,72 @@ require 'csv'
 require 'open-uri'
 require 'time'
 
-RAILS_ENV = ENV["RAILS_ENV"] || "development"
-
 namespace 'usman' do
   namespace 'import' do
 
     desc "Import all data in sequence"
     task 'all' => :environment do
 
-      import_list = ["users", "features", "permissions"]
+      import_list = ["users", "features", "permissions", "roles"]
       
       import_list.each do |item|
-        puts ""
-        puts "Importing #{item.titleize}".yellow
+        print "Importing #{item.titleize} \t".yellow
         begin
           Rake::Task["usman:import:#{item}"].invoke
+        rescue ArgumentError => e
+            puts "Loading #{item} - Failed - #{e.message}".red
         rescue Exception => e
           puts "Importing #{item.titleize} - Failed - #{e.message}".red
           puts "Backtrace:\n\t#{e.backtrace.join("\n\t")}"
         end
       end
+      puts " "
+    end
 
+    ["Feature", "User", "Role", "Permission"].each do |cls_name|
+      name = cls_name.underscore.pluralize
+      desc "Import #{cls_name.pluralize}"
+      task name => :environment do
+        verbose = true
+        verbose = false if ["false", "f","0","no","n"].include?(ENV["verbose"].to_s.downcase.strip)
+        path = ENV['path']
+        cls_name.constantize.import_data(Usman::Engine, path, false, verbose)
+      end
     end
 
     namespace 'dummy' do
+      
       desc "Import all dummy data in sequence"
       task 'all' => :environment do
 
-        import_list = ["dummy:users", "dummy:features", "dummy:permissions"]
+        import_list = ["dummy:users", "dummy:features", "dummy:permissions", "dummy:roles"]
         
         import_list.each do |item|
-          puts ""
-          puts "Importing #{item}".yellow
+          print "Loading #{item.split(':').last.titleize} \t".yellow
           begin
             Rake::Task["usman:import:#{item}"].invoke
+          rescue ArgumentError => e
+            puts "Loading #{item} - Failed - #{e.message}".red
           rescue Exception => e
-            puts "Importing #{item} - Failed - #{e.message}".red
+            puts "Loading #{item} - Failed - #{e.message}".red
             puts "Backtrace:\n\t#{e.backtrace.join("\n\t")}"
           end
         end
-
+        puts " "
       end
+
+      ["Feature", "User", "Role", "Permission"].each do |cls_name|
+        name = cls_name.underscore.pluralize
+        desc "Load Dummy #{cls_name.pluralize}"
+        task name => :environment do
+          verbose = true
+          verbose = false if ["false", "f","0","no","n"].include?(ENV["verbose"].to_s.downcase.strip)
+          cls_name.constantize.import_data(Usman::Engine, nil, true, verbose)                
+        end
+      end
+      
     end
 
   end
 end
+    

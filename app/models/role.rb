@@ -1,8 +1,5 @@
 class Role < Usman::ApplicationRecord
   
-  require 'import_error_handler.rb'
-  extend Usman::ImportErrorHandler
-  
   # Associations
   has_and_belongs_to_many :users
 
@@ -18,10 +15,10 @@ class Role < Usman::ApplicationRecord
   # == Examples
   #   >>> role.search(query)
   #   => ActiveRecord::Relation object
-  scope :search, lambda {|query| where("LOWER(name) LIKE LOWER('%#{query}%')")
+  scope :search, lambda {|query| where("LOWER(roles.name) LIKE LOWER('%#{query}%')")
                         }
 
-  def self.save_row_data(row, base_path)
+  def self.save_row_data(row)
 
     row.headers.each{ |cell| row[cell] = row[cell].to_s.strip }
 
@@ -31,7 +28,7 @@ class Role < Usman::ApplicationRecord
     role.name = row[:name]
     
     # Initializing error hash for displaying all errors altogether
-    error_object = Usman::ErrorHash.new
+    error_object = Kuppayam::Importer::ErrorHash.new
 
     if role.valid?
       role.save!

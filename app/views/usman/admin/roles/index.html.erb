@@ -9,10 +9,29 @@
 
         <div id="div_role_action_buttons">
           <div class="row">
-            <div class="col-md-4">
-              <%= link_to raw("<i class='fa fa-plus mr-10'></i><span class='btn-text'> New Role</span>"), new_admin_role_path, :class=>"btn btn-primary pull-left mb-5", :remote=>true %>
+            <div class="col-md-6">
+              
+              <%= theme_button('Add a Role', 'plus', new_admin_role_path(), classes: "pull-left", btn_type: "success") if @current_user.super_admin? %>
+
+              <%= theme_button('Refresh', 'refresh', admin_roles_path(), classes: "pull-left ml-10", btn_type: "white") %>
+
+              <%= theme_button('Manage Users', 'nothing linecons-graduation-cap', admin_users_path(), classes: "pull-left ml-10", btn_type: "white", remote: false) %>
+
+              <!-- Single button -->
+              <div class="ml-10 btn-group hidden">
+                <button type="button" class="btn btn-white dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                  More Actions <span class="caret"></span>
+                </button>
+                <ul class="dropdown-menu">
+                  <li><a href="#">Import Users</a></li>
+                  <li><a href="#">Import History</a></li>
+                  <li role="separator" class="divider"></li>
+                  <li><a href="#">Export Users</a></li>
+                </ul>
+              </div>
+
             </div>
-            <div class="col-md-8">
+            <div class="col-md-6">
               <%= search_form_kuppayam(Role, admin_roles_path, text: @filters[:query]) %>
             </div>
           </div>

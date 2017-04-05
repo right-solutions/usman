@@ -8,8 +8,6 @@ module Usman
     
     isolate_namespace Usman
 
-    config.autoload_paths << File.expand_path("../extras", __FILE__)
-
     config.before_initialize do                                                      
       config.i18n.load_path += Dir["#{config.root}/config/locales/**/*.yml"]
     end

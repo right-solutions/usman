@@ -1,8 +1,5 @@
 class Feature < Usman::ApplicationRecord
   
-  require 'import_error_handler.rb'
-  extend Usman::ImportErrorHandler
-  
   # Constants
   UNPUBLISHED = "unpublished"
   PUBLISHED = "published"
@@ -47,9 +44,7 @@ class Feature < Usman::ApplicationRecord
   scope :published, -> { where(status: PUBLISHED) }
   scope :disabled, -> { where(status: DISABLED) }
 
-  def self.save_row_data(row, base_path)
-
-    image_base_path = base_path + "images/"
+  def self.save_row_data(row)
 
     row.headers.each{ |cell| row[cell] = row[cell].to_s.strip }
 
@@ -60,33 +55,13 @@ class Feature < Usman::ApplicationRecord
     feature.status = Feature::UNPUBLISHED
     
     # Initializing error hash for displaying all errors altogether
-    error_object = Usman::ErrorHash.new
+    error_object = Kuppayam::Importer::ErrorHash.new
 
-    ## Adding a profile picture
-    begin
-      image_path = image_base_path + "features/#{feature.name.parameterize}.png"
-      image_path = image_base_path + "features/#{feature.name.parameterize}}.jpg" unless File.exists?(image_path)
-      if File.exists?(image_path)
-        feature.build_feature_image
-        feature.feature_image.image = File.open(image_path)
-      else
-        summary = "Feature Image not found for feature: #{feature.name}"
-        details = "#{image_path}/png doesn't exists"
-        error_object.warnings << { summary: summary, details: details }
-      end
-    rescue => e
-      summary = "Error during processing: #{$!}"
-      details = "Feature: #{feature.name}, Image Path: #{image_path}"
-      stack_trace = "Backtrace:\n\t#{e.backtrace.join("\n\t")}"
-      error_object.errors << { summary: summary, details: details, stack_trace: stack_trace }
-    end if feature.feature_image.blank?
-
-    if feature.valid? && (feature.feature_image.blank? || feature.feature_image.valid?)
+    if feature.valid?
       feature.save!
     else
       summary = "Error while saving feature: #{feature.name}"
       details = "Error! #{feature.errors.full_messages.to_sentence}"
-      details << ", #{feature.feature_image.errors.full_messages.to_sentence}" if feature.feature_image
       error_object.errors << { summary: summary, details: details }
     end
     return error_object
@@ -153,6 +128,18 @@ class Feature < Usman::ApplicationRecord
 
   def can_be_destroyed?
     return true
+  end
+
+  def can_be_published?
+    unpublished? or disabled?
+  end
+
+  def can_be_unpublished?
+    published? or disabled?
+  end
+
+  def can_be_removed?
+    published? or unpublished? or disabled?
   end
 	
 end

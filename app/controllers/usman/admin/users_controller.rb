@@ -104,7 +104,9 @@ module Usman
 
       def resource_controller_configuration
         {
-          view_path: "usman/admin/users"
+          page_title: "Users",
+          js_view_path: "/kuppayam/workflows/peacock",
+          view_path: "/usman/admin/users"
         }
       end
 

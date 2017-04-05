@@ -2,7 +2,8 @@
 	<table class="table table-hover members-table middle-align">
 	  <thead> 
 			<tr> 
-				<th style="text-align: center;width:30px">#</th> 
+				<th style="text-align: center;width:60px">#</th> 
+				<th style="text-align: center;width:100px"><i class="fa fa-photo"></i></th> 
 				<th>Name</th>
 				<th style="width:100px;">Status</th>
 				<th style="text-align: center;" colspan="2">Actions</th>
@@ -15,6 +16,8 @@
 				<% delete_link = admin_feature_path(id: feature.id) %>
 				
 		    <tr id="tr_feature_<%= feature.id %>">
+		      
+		      <td class="feature-image"></td>
 		      
 		      <td class="feature-image">
 		        <%= link_to(admin_feature_path(feature), remote: true) do %>

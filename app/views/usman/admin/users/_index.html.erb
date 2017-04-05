@@ -2,14 +2,12 @@
 	<table class="table table-hover members-table middle-align">
 	  <thead> 
 			<tr> 
-				<th style="text-align: center;width:10px">#</th> 
-				<th style="text-align: center;width:30px">Image</th> 
+				<th style="text-align: center;width:60px">#</th> 
+				<th style="text-align: center;width:100px"><i class="fa fa-photo"></i></th> 
 				<th>Name</th>
 				<th class="hidden-xs hidden-sm">Username</th>
 				<th class="hidden-xs hidden-sm">Email</th>
-				<% if @current_user.is_super_admin? %>
-					<th class="hidden-xs hidden-sm">Role</th>
-				<% end %>
+				<th class="hidden-xs hidden-sm">Roles</th>
 				<th>Status</th>
 				<th style="text-align: center;" colspan="2">Actions</th>
 			</tr> 
@@ -47,13 +45,21 @@
 					<td class="hidden-xs hidden-sm"><%= link_to user.email, admin_user_path(user), remote: true, class: "email" %></td>
 					
 					<% if @current_user.is_super_admin? %>
-					<td class="hidden-xs hidden-sm">
-						<% if user.super_admin %>
-			        <span class="mr-10 mt-5 label label-warning">Super Admin</span>
-			      <% else %>
-			      	<span class="mr-10 mt-5 label label-default">Normal</span>
-			      <% end %>
-					</td>
+						<td class="hidden-xs hidden-sm">
+							<% if user.super_admin? %>
+				        <span class="mr-10 mt-5 label label-warning">Super Admin</span>
+				      <% else %>
+				      	<% user.roles.collect(&:name).each do |r| %>
+				      		<span class="ml-5 label label-primary"><%= r %></span>
+				      	<% end %>
+				      <% end %>
+						</td>
+					<% else %>
+						<td class="user-name">
+			      	<% user.roles.collect(&:name).each do |r| %>
+			      		<span class="ml-5 label label-primary"><%= r %></span>
+			      	<% end %>
+			      </td>
 					<% end %>
 
 					<td>
@@ -77,13 +83,13 @@
 		      <td class="action-links" style="width:15%">
 
 		      	<!-- Approve -->
-				    <%= link_to raw("<i class=\"fa fa-circle-o mr-5\"></i> Approve"), update_status_admin_user_path(:id =>user.id, :status =>'approved'), :method =>'PUT', :remote=>true, role: "menuitem", tabindex: "-1" if user.can_be_approved? %>
+				    <%= link_to raw("<i class=\"fa fa-circle-o mr-5\"></i> Approve"), update_status_admin_user_path(:id =>user.id, :status =>'approved'), :method =>'PUT', :remote=>true, role: "menuitem", tabindex: "-1" if user.can_be_approved? && (@current_user != user) %>
 
 				    <!-- Mark as Pending -->
-				    <%= link_to raw("<i class=\"fa fa-circle mr-5\"></i> Mark as Pending"), update_status_admin_user_path(:id =>user.id, :status =>'pending'), :method =>'PUT', :remote=>true, role: "menuitem", tabindex: "-1" if user.can_be_marked_as_pending? %>
+				    <%= link_to raw("<i class=\"fa fa-circle mr-5\"></i> Mark as Pending"), update_status_admin_user_path(:id =>user.id, :status =>'pending'), :method =>'PUT', :remote=>true, role: "menuitem", tabindex: "-1" if user.can_be_marked_as_pending? && (@current_user != user) %>
 				      
 				    <!-- Suspend -->
-				    <%= link_to raw("<i class=\"fa fa-edit mr-5\"></i> Suspend"), update_status_admin_user_path(:id =>user.id, :status =>'suspended'), :method =>'PUT', :remote=>true, role: "menuitem", tabindex: "-1" if user.can_be_suspended? %>
+				    <%= link_to raw("<i class=\"fa fa-edit mr-5\"></i> Suspend"), update_status_admin_user_path(:id =>user.id, :status =>'suspended'), :method =>'PUT', :remote=>true, role: "menuitem", tabindex: "-1" if user.can_be_suspended? && (@current_user != user) %>
 
 		      </td>
 

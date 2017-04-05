@@ -1,10 +1,22 @@
-<%= form_tag create_session_path, :role=>"form", id: "form_sign_in", class: "login-form" do %>
+<%= form_tag usman.create_session_path, :role=>"form", id: "form_sign_in", class: "login-form" do %>
   
-  <%= hidden_field_tag :customer_app, params[:customer_app] if params[:customer_app] %>
+  <% if params[:customer_app] %>
+    <%= hidden_field_tag :customer_app, params[:customer_app] %>
+  <% elsif @params_hsh && @params_hsh[:customer_app] %>
+    <%= hidden_field_tag :customer_app, @params_hsh[:customer_app] %>
+  <% end %>
 
-  <%= hidden_field_tag :redirect_back_url, params[:redirect_back_url] if params[:redirect_back_url] %>
+  <% if params[:redirect_back_url] %>
+    <%= hidden_field_tag :redirect_back_url, params[:redirect_back_url] %>
+  <% elsif @params_hsh && @params_hsh[:redirect_back_url] %>
+    <%= hidden_field_tag :redirect_back_url, @params_hsh[:redirect_back_url] %>
+  <% end %>
 
-  <%= hidden_field_tag :requested_url, params[:requested_url] if params[:requested_url] %>  
+  <% if params[:requested_url] %>
+    <%= hidden_field_tag :requested_url, params[:requested_url] %>
+  <% elsif @params_hsh && @params_hsh[:requested_url] %>
+    <%= hidden_field_tag :requested_url, @params_hsh[:requested_url] %>
+  <% end %>
 
   <div class="row pt-10">
     <div class="col-sm-offset-3 col-sm-4">

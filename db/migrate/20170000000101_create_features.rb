@@ -2,7 +2,7 @@ class CreateFeatures < ActiveRecord::Migration[5.0]
   
   def change
     create_table(:features) do |t|
-      t.string :name, limit: 256
+      t.string :name
       t.string :status, :null => false, :default=>"unpublished", :limit=>16
       t.timestamps
     end

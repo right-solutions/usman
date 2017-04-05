@@ -1,3 +1,3 @@
 module Usman
-  VERSION = '0.1.5dev1'
+  VERSION = '0.1.5dev2'
 end

@@ -54,7 +54,7 @@ RSpec.describe User, type: :model do
     it { should_not allow_value('ED').for(:password )}
     it { should_not allow_value("a"*257).for(:password )}
 
-    it { should validate_inclusion_of(:status).in_array(User::STATUS_LIST)  }
+    it { should validate_inclusion_of(:status).in_array(User::STATUS.keys)  }
   end
 
   context "Associations" do
@@ -92,92 +92,112 @@ RSpec.describe User, type: :model do
       suspended_user = FactoryGirl.create(:suspended_user)
       expect(User.suspended.all).to match_array [suspended_user]
     end
-    
+
+    context "Import Methods" do
+      it "save_row_data" do
+        skip "To Be Implemented"
+      end
+    end
+
   end
 
   context "Instance Methods" do
 
-    it "token_expired?" do
-      token_created_at = Time.now - 30.minute
-      u = FactoryGirl.build(:user, token_created_at: token_created_at)
-      expect(u.token_expired?).to be_truthy
+    context "Status Methods" do
 
-      token_created_at = Time.now - 29.minute
-      u = FactoryGirl.build(:user, token_created_at: token_created_at)
-      expect(u.token_expired?).to be_falsy
+      it "approve!" do
+        u = FactoryGirl.create(:pending_user)
+        expect(u.status).to match "pending"
+        u.approve!
+        expect(u.status).to match "approved"
+      end
+
+      it "pending!" do
+        u = FactoryGirl.create(:approved_user)
+        expect(u.status).to match "approved"
+        u.pending!
+        expect(u.status).to match "pending"
+      end
+
+      it "suspend!" do
+        u = FactoryGirl.create(:approved_user)
+        expect(u.status).to match "approved"
+        u.suspend!
+        expect(u.status).to match "suspended"
+      end
     end
 
-    it "is_super_admin?" do
-      u = FactoryGirl.build(:user)
-      expect(u.is_super_admin?).to be_falsy
+    context "Authentication Methods" do
+      it "token_expired?" do
+        token_created_at = Time.now - 121.minute
+        u = FactoryGirl.build(:user, token_created_at: token_created_at)
+        expect(u.token_expired?).to be_truthy
 
-      u = FactoryGirl.build(:super_admin_user)
-      expect(u.is_super_admin?).to be_truthy
+        token_created_at = Time.now - 119.minute
+        u = FactoryGirl.build(:user, token_created_at: token_created_at)
+        expect(u.token_expired?).to be_falsy
+      end
+
+      it "token_about_to_expire?" do
+        token_created_at = Time.now - 119.minute
+        u = FactoryGirl.build(:user, token_created_at: token_created_at)
+        expect(u.token_about_to_expire?).to be_truthy
+
+        token_created_at = Time.now - 100.minute
+        u = FactoryGirl.build(:user, token_created_at: token_created_at)
+        expect(u.token_about_to_expire?).to be_falsy
+      end
+
+      it "start_session" do
+        skip "To Be Implemented"
+      end
+
+      it "end_session" do
+        skip "To Be Implemented"
+      end
+
+      it "generate_reset_password_token" do
+        expect(ram.reset_password_token).to be_nil
+        expect(ram.reset_password_sent_at).to be_nil
+
+        ram.generate_reset_password_token
+        expect(ram.reset_password_token).not_to be_nil
+        expect(ram.reset_password_sent_at).not_to be_nil
+      end
     end
 
-    it "approved" do
-      pending_user = FactoryGirl.create(:pending_user)
-      expect(pending_user.status).to match "pending"
-      pending_user.approve!
-      expect(pending_user.status).to match "approved"
+    context "Permission Methods" do
+      it "set_permission & verify permission methods" do
+        authorised_user = FactoryGirl.create(:approved_user)
+        product_feature = FactoryGirl.create(:feature, name: "Products")
+        
+        authorised_user.set_permission(product_feature)
+        expect(authorised_user.can_create?(product_feature)).to be_falsy
+        expect(authorised_user.can_read?(product_feature)).to be_truthy
+        expect(authorised_user.can_update?("Products")).to be_falsy
+        expect(authorised_user.can_delete?("Products")).to be_falsy
+
+        authorised_user.set_permission("Products", can_create: true, can_update: true)
+        expect(authorised_user.can_create?(product_feature)).to be_truthy
+        expect(authorised_user.can_read?(product_feature)).to be_truthy
+        expect(authorised_user.can_update?("Products")).to be_truthy
+        expect(authorised_user.can_delete?("Products")).to be_falsy
+      end
     end
 
-    it "pending" do
-      approved_user = FactoryGirl.create(:approved_user)
-      expect(approved_user.status).to match "approved"
-      approved_user.pending!
-      expect(approved_user.status).to match "pending"
+    context "Role Methods" do
     end
 
-    it "suspended" do
-      approved_user = FactoryGirl.create(:approved_user)
-      expect(approved_user.status).to match "approved"
-      approved_user.suspend!
-      expect(approved_user.status).to match "suspended"
-    end
+    context "Other Methods" do
+      it "display_name" do
+        expect(ram.display_name).to match("Ram")
+      end
 
-    it "display_name" do
-      expect(ram.display_name).to match("Ram")
-    end
-
-    it "start_session" do
-      skip
-    end
-
-    it "end_session" do
-      skip
-    end
-
-    it "generate_reset_password_token" do
-      expect(ram.reset_password_token).to be_nil
-      expect(ram.reset_password_sent_at).to be_nil
-
-      ram.generate_reset_password_token
-      expect(ram.reset_password_token).not_to be_nil
-      expect(ram.reset_password_sent_at).not_to be_nil
-    end
-
-    it "default_image_url" do
-      new_user = FactoryGirl.build(:pending_user)
-      expect(new_user.default_image_url).to match("/assets/kuppayam/defaults/user-medium.png")
-      expect(new_user.default_image_url("large")).to match("/assets/kuppayam/defaults/user-large.png")
-    end
-
-    it "set_permission & verify permission methods" do
-      authorised_user = FactoryGirl.create(:approved_user)
-      product_feature = FactoryGirl.create(:feature, name: "Products")
-      
-      authorised_user.set_permission(product_feature)
-      expect(authorised_user.can_create?(product_feature)).to be_falsy
-      expect(authorised_user.can_read?(product_feature)).to be_truthy
-      expect(authorised_user.can_update?("Products")).to be_falsy
-      expect(authorised_user.can_delete?("Products")).to be_falsy
-
-      authorised_user.set_permission("Products", can_create: true, can_update: true)
-      expect(authorised_user.can_create?(product_feature)).to be_truthy
-      expect(authorised_user.can_read?(product_feature)).to be_truthy
-      expect(authorised_user.can_update?("Products")).to be_truthy
-      expect(authorised_user.can_delete?("Products")).to be_falsy
+      it "default_image_url" do
+        u = FactoryGirl.build(:pending_user)
+        expect(u.default_image_url).to match("/assets/kuppayam/defaults/user-small.png")
+        expect(u.default_image_url("large")).to match("/assets/kuppayam/defaults/user-large.png")
+      end
     end
 
   end
@@ -203,7 +223,6 @@ RSpec.describe User, type: :model do
       new_user.send :generate_auth_token
       expect(new_user.auth_token).not_to be_nil
     end
-
   end
 
 end

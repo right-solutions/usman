@@ -8,6 +8,7 @@ require 'carrierwave/orm/activerecord'
 #require 'rspec/autorun'
 require 'shoulda/matchers'
 require 'factory_girl_rails'
+require 'kuppayam'
 
 
 # Load Dummy Factories
@@ -15,6 +16,8 @@ ENGINE_RAILS_ROOT=File.join(File.dirname(__FILE__), 'dummy/')
 Dir[File.join(ENGINE_RAILS_ROOT, "spec/factories/**/*.rb")].each {|f| require f }
 
 Rails.backtrace_cleaner.remove_silencers!
+
+ActiveRecord::Migrator.migrations_paths = 'spec/dummy/db/migrate'
 
 # Load support files
 #Dir["#{File.dirname(__FILE__)}/support/**/*.rb"].each { |f| require f }

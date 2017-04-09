@@ -23,7 +23,7 @@ class Feature < Usman::ApplicationRecord
   has_one :feature_image, :as => :imageable, :dependent => :destroy, :class_name => "Image::FeatureImage"
 
 	# Validations
-	validates :name, presence: true
+	validates :name, presence: true, length: {minimum: 3, maximum: 250}
 	validates :status, :presence => true, :inclusion => {:in => STATUS.keys, :presence_of => :status, :message => "%{value} is not a valid status" }
 
   # ------------------
@@ -67,13 +67,12 @@ class Feature < Usman::ApplicationRecord
     return error_object
   end
 
-  # * Return full name
-  # == Examples
-  #   >>> feature.display_name
-  #   => "Products"
-  def display_name
-    "#{name}"
-  end
+  # ------------------
+  # Instance Methods
+  # ------------------
+
+  # Status Methods
+  # --------------
 
   # * Return true if the user is not published, else false.
   # == Examples
@@ -126,6 +125,9 @@ class Feature < Usman::ApplicationRecord
     self.update_attribute(:status, DISABLED)
   end
 
+  # Permission Methods
+  # ------------------
+
   def can_be_destroyed?
     return true
   end
@@ -140,6 +142,17 @@ class Feature < Usman::ApplicationRecord
 
   def can_be_removed?
     published? or unpublished? or disabled?
+  end
+
+  # Other Methods
+  # -------------
+
+  # * Return full name
+  # == Examples
+  #   >>> feature.display_name
+  #   => "Products"
+  def display_name
+    "#{name}"
   end
 	
 end

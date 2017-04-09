@@ -25,7 +25,7 @@ class User < Usman::ApplicationRecord
   SESSION_TIME_OUT = 120.minutes
 
   # Validations
-  validates :name, presence: true
+  validates :name, presence: true, length: {minimum: 3, maximum: 250}
   validate_username :username
   validate_email :email
   validate_password :password, condition_method: :should_validate_password?
@@ -105,14 +105,9 @@ class User < Usman::ApplicationRecord
   # ------------------
   # Instance variables
   # ------------------
-
-  # * Return full name
-  # == Examples
-  #   >>> user.display_name
-  #   => "Joe Black"
-  def display_name
-    "#{name}"
-  end
+  
+  # Status Methods
+  # --------------
 
   # * Return true if the user is not approved, else false.
   # == Examples
@@ -165,9 +160,8 @@ class User < Usman::ApplicationRecord
     self.update_attribute(:status, SUSPENDED)
   end
 
-  def is_super_admin?
-    super_admin
-  end
+  # Authentication Methods
+  # ----------------------
 
   def start_session
     # FIX ME - specs are not written to ensure that all these data are saved
@@ -185,11 +179,12 @@ class User < Usman::ApplicationRecord
 
   def end_session
     # Reseting the auth token for user when he logs out.
+    # Resetting the token_created_at to nil
     # (Time.now - 1.second)
     self.update_attributes auth_token: SecureRandom.hex, token_created_at: nil
   end
 
-  def update_token
+  def update_token!
     self.update_attribute(:token_created_at, Time.now)
   end
 
@@ -215,9 +210,8 @@ class User < Usman::ApplicationRecord
      self.reset_password_sent_at = Time.now unless self.reset_password_sent_at
   end
 
-  def default_image_url(size="small")
-    "/assets/kuppayam/defaults/user-#{size}.png"
-  end
+  # Permission Methods
+  # ------------------
 
   def set_permission(feature_name, **options)
     options.reverse_merge!(
@@ -282,6 +276,9 @@ class User < Usman::ApplicationRecord
     !suspended?
   end
 
+  # Role Methods
+  # ------------
+
   def add_role(role)
     return false unless self.approved?
     role = Role.find_by_name(role) if role.is_a?(String)
@@ -306,7 +303,21 @@ class User < Usman::ApplicationRecord
     else
       return false
     end
-    
+  end
+
+  # Other Methods
+  # -------------
+
+  # * Return full name
+  # == Examples
+  #   >>> user.display_name
+  #   => "Joe Black"
+  def display_name
+    "#{name}"
+  end
+
+  def default_image_url(size="small")
+    "/assets/kuppayam/defaults/user-#{size}.png"
   end
 
   private

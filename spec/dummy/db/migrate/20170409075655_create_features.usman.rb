@@ -1,4 +1,4 @@
-# This migration comes from usman (originally 20140402113214)
+# This migration comes from usman (originally 20170000000101)
 class CreateFeatures < ActiveRecord::Migration[5.0]
   
   def change

@@ -27,7 +27,7 @@
 
   <td class="hidden-xs hidden-sm"><%= link_to user.email, admin_user_path(user), remote: true, class: "email" %></td>
 
-  <% if @current_user.is_super_admin? %>
+  <% if @current_user.super_admin? %>
   <td class="hidden-xs hidden-sm">
   	<% if user.super_admin %>
       <span class="mr-10 mt-5 label label-warning">Super Admin</span>

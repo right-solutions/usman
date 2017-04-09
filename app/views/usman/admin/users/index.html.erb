@@ -4,7 +4,7 @@
     <ul class="nav nav-tabs">
 
       <%# Show Admin tab only for admins %>
-      <% if @current_user.is_super_admin? %>
+      <% if @current_user.super_admin? %>
         <li class="<%= @super_admin == false ? 'active' : '' %>">
           <%= link_to "Users", admin_users_path(sa: '0') %>
         </li>

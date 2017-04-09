@@ -59,7 +59,7 @@ module Usman
         
         # Normal users should not be able to view super admins
         # He should not be seeing admins even while searching
-        if @current_user.is_super_admin?
+        if @current_user.super_admin?
           @relation = @relation.where("super_admin IS #{@super_admin.to_s.upcase}") if @super_admin.nil? == false && @query.nil?
         else
           @relation = @relation.where("super_admin IS FALSE")

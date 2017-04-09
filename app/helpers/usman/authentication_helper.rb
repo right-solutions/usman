@@ -89,7 +89,7 @@ module Usman
           redirect_or_popup_to_default_sign_in_page
           return
         else
-          @current_user.update_token if @current_user.token_about_to_expire?
+          @current_user.update_token! if @current_user.token_about_to_expire?
         end
       else
         text = "#{I18n.t("authentication.permission_denied.heading")}: #{I18n.t("authentication.permission_denied.message")}"
@@ -102,7 +102,7 @@ module Usman
 
     # This method is usually used as a before filter from admin controllers to ensure that the logged in user is a super admin
     def require_super_admin
-      unless @current_user.is_super_admin?
+      unless @current_user.super_admin?
         text = "#{I18n.t("authentication.permission_denied.heading")}: #{I18n.t("authentication.permission_denied.message")}"
         set_flash_message(text, :error, false) if defined?(flash) && flash
 

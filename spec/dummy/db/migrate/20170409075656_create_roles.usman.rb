@@ -1,4 +1,4 @@
-# This migration comes from usman (originally 20140402113215)
+# This migration comes from usman (originally 20170000000102)
 class CreateRoles < ActiveRecord::Migration[5.0]
   
   def change

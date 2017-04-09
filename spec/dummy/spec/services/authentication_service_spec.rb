@@ -68,5 +68,6 @@ describe Usman::AuthenticationService do
         expect(auth_service.error).to eq("authentication.user_is_suspended")
       end
     end
+
   end
 end

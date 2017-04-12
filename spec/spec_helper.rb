@@ -8,7 +8,6 @@ require 'carrierwave/orm/activerecord'
 #require 'rspec/autorun'
 require 'shoulda/matchers'
 require 'factory_girl_rails'
-require 'kuppayam'
 
 
 # Load Dummy Factories

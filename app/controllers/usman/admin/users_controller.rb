@@ -113,6 +113,7 @@ module Usman
       def breadcrumbs_configuration
         {
           heading: "Manage Users",
+          icon: "fa-user",
           description: "Listing all Users",
           links: [{name: "Home", link: admin_dashboard_path, icon: 'fa-home'}, 
                     {name: "Manage Users", link: admin_users_path, icon: 'fa-user', active: true}]

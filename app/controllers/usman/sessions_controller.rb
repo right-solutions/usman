@@ -3,17 +3,20 @@ module Usman
 
     layout 'kuppayam/blank'
 
+    rescue_from ActionController::InvalidAuthenticityToken, :with => :rescue_from_invalid_authenticity_token
+
     before_action :require_user, :only => :sign_out
     skip_before_action :set_navs
     
     def sign_in
       set_title("Sign In")
-      redirect_to_appropriate_page_after_sign_in if @current_user && !@current_user.token_expired?
+      redirect_to_appropriate_page_after_sign_in if @current_user # && !@current_user.token_expired?
     end
 
     def create_session
       set_title("Sign In")
-      @registration_details = Usman::AuthenticationService.new(params)
+      registration_params = { login_handle: params[:login_handle], password: params[:password], remote_ip: request.remote_ip}
+      @registration_details = Usman::AuthenticationService.new(registration_params)
 
       if @registration_details.error
         

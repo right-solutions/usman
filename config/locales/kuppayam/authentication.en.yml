@@ -1,5 +1,8 @@
 en:
   authentication:
+    login_required:
+        heading: "Login Required / Session Expired"
+        message: "You need to login to perform this action."
     permission_denied:
         heading: "Permission Denied"
         message: "You don't have permission to perform this action"

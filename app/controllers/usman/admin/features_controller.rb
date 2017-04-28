@@ -63,9 +63,10 @@ module Usman
       def breadcrumbs_configuration
         {
           heading: "Manage Features",
+          icon: "lincons-diamond",
           description: "Listing all Features",
           links: [{name: "Home", link: admin_dashboard_path, icon: 'fa-home'}, 
-                    {name: "Manage Features", link: admin_permissions_path, icon: 'fa-calendar', active: true}]
+                    {name: "Manage Features", link: admin_features_path, icon: 'fa-calendar', active: true}]
         }
       end
 

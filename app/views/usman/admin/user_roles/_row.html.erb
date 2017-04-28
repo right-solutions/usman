@@ -19,7 +19,11 @@
 
   <td class="user-name"><%= user.display_name %></td>
 
-  <td class="user-name"><%= user.roles.collect(&:name) %></td>
+  <td class="user-name">
+    <% user.roles.collect(&:name).each do |r| %>
+      <span class="ml-5 label label-primary"><%= r %></span>
+    <% end %>
+  </td>
 
   <td class="action-links" style="width:10%">
 

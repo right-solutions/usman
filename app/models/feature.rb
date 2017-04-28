@@ -1,19 +1,19 @@
 class Feature < Usman::ApplicationRecord
   
   # Constants
-  UNPUBLISHED = "unpublished"
   PUBLISHED = "published"
+  UNPUBLISHED = "unpublished"
   DISABLED = "disabled"
   
   STATUS = { 
-    UNPUBLISHED => "Un-Published", 
     PUBLISHED => "Published", 
+    UNPUBLISHED => "Un-Published", 
     DISABLED => "Disabled"
   }
 
   STATUS_REVERSE = { 
-    "Un-Published" => UNPUBLISHED, 
-    "Published" => PUBLISHED, 
+    "Published" => PUBLISHED,
+    "Un-Published" => UNPUBLISHED,
     "Disabled" => DISABLED
   }
   
@@ -119,17 +119,21 @@ class Feature < Usman::ApplicationRecord
   # change the status to :suspended
   # Return the status
   # == Examples
-  #   >>> feature.suspend!
-  #   => "suspended"
-  def suspend!
+  #   >>> feature.disable!
+  #   => "disabled"
+  def disable!
     self.update_attribute(:status, DISABLED)
   end
 
   # Permission Methods
   # ------------------
 
-  def can_be_destroyed?
-    return true
+  def can_be_edited?
+    published? or unpublished?
+  end
+
+  def can_be_deleted?
+    false
   end
 
   def can_be_published?
@@ -140,8 +144,8 @@ class Feature < Usman::ApplicationRecord
     published? or disabled?
   end
 
-  def can_be_removed?
-    published? or unpublished? or disabled?
+  def can_be_disabled?
+    published? or unpublished?
   end
 
   # Other Methods

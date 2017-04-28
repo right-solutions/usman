@@ -163,25 +163,23 @@ class User < Usman::ApplicationRecord
   # Authentication Methods
   # ----------------------
 
-  def start_session
-    # FIX ME - specs are not written to ensure that all these data are saved
-    self.token_created_at = Time.now
-    self.sign_in_count = self.sign_in_count ? self.sign_in_count + 1 : 1
-    self.last_sign_in_at = self.current_sign_in_at
-    self.last_sign_in_ip = self.current_sign_in_ip
-    self.current_sign_in_at = self.token_created_at
+  def start_session(remote_ip)
+    self.current_sign_in_at = Time.now
+    self.current_sign_in_ip = remote_ip
 
-    # FIX ME - pass remote_ip to this method.
-    # Make necessary changes to authentication service to make it work
-    # self.current_sign_in_ip = remote_ip if remote_ip
+    self.sign_in_count = self.sign_in_count ? self.sign_in_count + 1 : 1
+
     self.save
   end
 
   def end_session
-    # Reseting the auth token for user when he logs out.
-    # Resetting the token_created_at to nil
-    # (Time.now - 1.second)
-    self.update_attributes auth_token: SecureRandom.hex, token_created_at: nil
+    self.last_sign_in_at = self.current_sign_in_at
+    self.last_sign_in_ip = self.current_sign_in_ip
+    
+    self.current_sign_in_at = nil
+    self.current_sign_in_ip = nil
+
+    self.save
   end
 
   def update_token!
@@ -323,13 +321,14 @@ class User < Usman::ApplicationRecord
   private
 
   def should_validate_password?
-    self.new_record? || (self.new_record? == false and self.password.present?)
+    self.new_record? || (self.new_record? == false and self.password_digest_changed?)
   end
 
   def generate_auth_token
     self.auth_token = SecureRandom.hex unless self.auth_token
   end
 
+  # FIXME - this should be either removed or moved to feature model
   def get_feature(feature_name)
     case feature_name
     when Feature

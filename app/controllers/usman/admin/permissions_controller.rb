@@ -65,6 +65,7 @@ module Usman
       def breadcrumbs_configuration
         {
           heading: "Manage Permissions",
+          icon: "fa-lock",
           description: "Listing all Permissions",
           links: [{name: "Home", link: admin_dashboard_path, icon: 'fa-home'}, 
                     {name: "Manage Permissions", link: admin_permissions_path, icon: 'fa-calendar', active: true}]

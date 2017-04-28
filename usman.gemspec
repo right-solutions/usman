@@ -20,7 +20,9 @@ Gem::Specification.new do |s|
   s.add_dependency 'jquery-rails', '~> 4.2', '>= 4.2.2'
   s.add_dependency 'kaminari', '~> 1.0', '>= 1.0.1'
   s.add_dependency 'bootstrap-kaminari-views', "~> 0.0.5"
+  # s.add_dependency 'config', '~> 1.0'
 
+  # s.add_dependency 'kuppayam', "~> 0.1.6dev1"
   s.add_dependency 'kuppayam', "~> 0.1.5dev4"
   s.add_dependency "bcrypt"
   s.add_dependency "colorize"

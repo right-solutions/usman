@@ -10,15 +10,16 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170409075656) do
+ActiveRecord::Schema.define(version: 20170427132819) do
 
   create_table "documents", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string   "document"
     t.string   "document_type"
     t.integer  "documentable_id"
     t.string   "documentable_type"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",        null: false
+    t.datetime "updated_at",        null: false
+    t.index ["document_type"], name: "index_documents_on_document_type", using: :btree
     t.index ["documentable_id", "documentable_type"], name: "index_documents_on_documentable_id_and_documentable_type", using: :btree
   end
 
@@ -36,6 +37,7 @@ ActiveRecord::Schema.define(version: 20170409075656) do
     t.string   "imageable_type"
     t.datetime "created_at",     null: false
     t.datetime "updated_at",     null: false
+    t.index ["image_type"], name: "index_images_on_image_type", using: :btree
     t.index ["imageable_id", "imageable_type"], name: "index_images_on_imageable_id_and_imageable_type", using: :btree
   end
 
@@ -44,8 +46,8 @@ ActiveRecord::Schema.define(version: 20170409075656) do
     t.string   "importable_type"
     t.string   "data_type"
     t.string   "status",          limit: 16, default: "pending", null: false
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",                                     null: false
+    t.datetime "updated_at",                                     null: false
     t.index ["data_type"], name: "index_import_data_on_data_type", using: :btree
     t.index ["importable_id", "importable_type"], name: "index_import_data_on_importable_id_and_importable_type", using: :btree
     t.index ["status"], name: "index_import_data_on_status", using: :btree

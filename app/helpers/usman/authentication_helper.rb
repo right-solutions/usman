@@ -50,6 +50,19 @@ module Usman
       return
     end
 
+    def rescue_from_invalid_authenticity_token
+      text = "#{I18n.t("authentication.session_expired.heading")}"
+      set_flash_message(text, :error, false) if defined?(flash) && flash
+      respond_to do |format|
+        format.html {
+          redirect_to add_query_params(default_sign_in_url)
+        }
+        format.js {
+          render(:partial => 'usman/sessions/sign_in.js.erb', :handlers => [:erb], :formats => [:js])
+        }
+      end
+    end
+
     def redirect_or_popup_to_default_sign_in_page
       respond_to do |format|
         format.html {
@@ -77,22 +90,8 @@ module Usman
     # This method is usually used as a before filter to secure some of the actions which requires the user to be signed in.
     def require_user
       current_user
-
-      if @current_user
-        if @current_user.token_expired?
-          @current_user = nil
-          session.delete(:id)
-          
-          text = "#{I18n.t("authentication.session_expired.heading")}: #{I18n.t("authentication.session_expired.message")}"
-          set_flash_message(text, :error, false) if defined?(flash) && flash
-
-          redirect_or_popup_to_default_sign_in_page
-          return
-        else
-          @current_user.update_token! if @current_user.token_about_to_expire?
-        end
-      else
-        text = "#{I18n.t("authentication.permission_denied.heading")}: #{I18n.t("authentication.permission_denied.message")}"
+      unless @current_user
+        text = "#{I18n.t("authentication.login_required.heading")}"
         set_flash_message(text, :error, false) if defined?(flash) && flash
 
         redirect_or_popup_to_default_sign_in_page

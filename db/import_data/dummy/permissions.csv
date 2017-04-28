@@ -58,3 +58,20 @@ stephen.price,Enquiries,FALSE,FALSE,FALSE,FALSE
 stephen.price,Teams,FALSE,FALSE,FALSE,FALSE
 stephen.price,Testimonials,FALSE,FALSE,FALSE,FALSE
 stephen.price,Careers / Jobs,FALSE,FALSE,FALSE,FALSE
+,,,,,
+silk.smitha,Users,TRUE,TRUE,TRUE,TRUE
+silk.smitha,Roles,TRUE,TRUE,TRUE,TRUE
+silk.smitha,Products,TRUE,TRUE,TRUE,TRUE
+silk.smitha,Categories,TRUE,TRUE,TRUE,TRUE
+silk.smitha,Brands,TRUE,TRUE,TRUE,TRUE
+silk.smitha,Stores,TRUE,TRUE,TRUE,TRUE
+silk.smitha,Suppliers,TRUE,TRUE,TRUE,TRUE
+silk.smitha,Countries,TRUE,TRUE,TRUE,TRUE
+silk.smitha,Regions,TRUE,TRUE,TRUE,TRUE
+silk.smitha,Exchange Rates,TRUE,TRUE,TRUE,TRUE
+silk.smitha,Events & News,TRUE,TRUE,TRUE,TRUE
+silk.smitha,Subscriptions,TRUE,TRUE,TRUE,TRUE
+silk.smitha,Enquiries,TRUE,TRUE,TRUE,TRUE
+silk.smitha,Teams,TRUE,TRUE,TRUE,TRUE
+silk.smitha,Testimonials,TRUE,TRUE,TRUE,TRUE
+silk.smitha,Careers / Jobs,TRUE,TRUE,TRUE,TRUE

@@ -1,20 +1,21 @@
 module Usman
   class AuthenticationService
 
-    attr_reader :login_handle, :password, :error, :user
+    attr_reader :login_handle, :password, :error, :user, :remote_ip
 
     def initialize(params)
       @login_handle = params[:login_handle]
       @password = params[:password]
+      @remote_ip = params[:remote_ip]
       @error = nil
-
+      
       check_if_user_exists
       if @user
         authenticate
         check_if_user_is_approved
       end
 
-      @user.start_session unless @error
+      @user.start_session(remote_ip) unless @error
     end
 
     def invalid_login_error

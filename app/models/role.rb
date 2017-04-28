@@ -4,7 +4,7 @@ class Role < Usman::ApplicationRecord
   has_and_belongs_to_many :users
 
 	# Validations
-	validates :name, presence: true
+	validates :name, presence: true, length: {minimum: 3, maximum: 250}
 	
   # ------------------
   # Class Methods

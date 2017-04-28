@@ -113,7 +113,7 @@ module Usman
           collection_name: :users,
           item_name: :user,
           class: User,
-          show_modal_after_update: false,
+          show_modal_after_create: false,
           show_modal_after_update: false,
           page_title: "Manage User Roles",
           js_view_path: "/kuppayam/workflows/parrot",

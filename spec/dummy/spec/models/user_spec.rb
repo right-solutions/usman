@@ -10,17 +10,42 @@ RSpec.describe User, type: :model do
   context "Factory" do
     it "should validate all the factories" do
       expect(FactoryGirl.build(:user).valid?).to be true
-      expect(FactoryGirl.build(:pending_user).valid?).to be true
-      expect(FactoryGirl.build(:approved_user).valid?).to be true
-      expect(FactoryGirl.build(:suspended_user).valid?).to be true
-      expect(FactoryGirl.build(:super_admin_user).valid?).to be true
-    end
-    it "should set right status for all factories" do
-      expect(FactoryGirl.build(:user).status).to match "pending"
-      expect(FactoryGirl.build(:pending_user).status).to match "pending"
-      expect(FactoryGirl.build(:approved_user).status).to match "approved"
-      expect(FactoryGirl.build(:suspended_user).status).to match "suspended"
-      expect(FactoryGirl.build(:super_admin_user).status).to match "approved"
+
+      pending_user = FactoryGirl.build(:pending_user)
+      expect(pending_user.status).to match("pending")
+      expect(pending_user.valid?).to be true
+
+      approved_user = FactoryGirl.build(:approved_user)
+      expect(approved_user.status).to match("approved")
+      expect(approved_user.valid?).to be true
+
+      suspended_user = FactoryGirl.build(:suspended_user)
+      expect(suspended_user.status).to match("suspended")
+      expect(suspended_user.valid?).to be true
+
+      super_admin_user = FactoryGirl.build(:super_admin_user)
+      expect(super_admin_user.super_admin).to be_truthy
+      expect(super_admin_user.valid?).to be true
+
+      site_admin_role = FactoryGirl.create(:role, name: "Site Admin")
+      site_admin_user = FactoryGirl.create(:site_admin_user)
+      expect(site_admin_user.valid?).to be true
+      expect(site_admin_user.roles.first.name).to match("Site Admin")
+
+      warehouse_manager_role = FactoryGirl.create(:role, name: "Warehouse Manager")
+      warehouse_manager = FactoryGirl.create(:warehouse_manager)
+      expect(warehouse_manager.valid?).to be true
+      expect(warehouse_manager.roles.first.name).to match("Warehouse Manager")
+
+      pos_sales_manager_role = FactoryGirl.create(:role, name: "POS Sales Manager")
+      pos_sales_manager = FactoryGirl.create(:pos_sales_manager)
+      expect(pos_sales_manager.valid?).to be true
+      expect(pos_sales_manager.roles.first.name).to match("POS Sales Manager")
+
+      pos_sales_staff_role = FactoryGirl.create(:role, name: "POS Sales Staff")
+      pos_sales_staff = FactoryGirl.create(:pos_sales_staff)
+      expect(pos_sales_staff.valid?).to be true
+      expect(pos_sales_staff.roles.first.name).to match("POS Sales Staff")
     end
   end
 
@@ -98,7 +123,6 @@ RSpec.describe User, type: :model do
         skip "To Be Implemented"
       end
     end
-
   end
 
   context "Instance Methods" do
@@ -107,23 +131,23 @@ RSpec.describe User, type: :model do
 
       it "approve!" do
         u = FactoryGirl.create(:pending_user)
-        expect(u.status).to match "pending"
         u.approve!
         expect(u.status).to match "approved"
+        expect(u.approved?).to be_truthy
       end
 
       it "pending!" do
         u = FactoryGirl.create(:approved_user)
-        expect(u.status).to match "approved"
         u.pending!
         expect(u.status).to match "pending"
+        expect(u.pending?).to be_truthy
       end
 
       it "suspend!" do
         u = FactoryGirl.create(:approved_user)
-        expect(u.status).to match "approved"
         u.suspend!
         expect(u.status).to match "suspended"
+        expect(u.suspended?).to be_truthy
       end
     end
 
@@ -148,12 +172,49 @@ RSpec.describe User, type: :model do
         expect(u.token_about_to_expire?).to be_falsy
       end
 
-      it "start_session" do
-        skip "To Be Implemented"
-      end
+      it "start_session and end session" do
 
-      it "end_session" do
-        skip "To Be Implemented"
+        # Fresh user who has never started a session
+        user = FactoryGirl.create(:user)
+
+        expect(user.last_sign_in_at).to be_nil
+        expect(user.last_sign_in_ip).to be_nil
+
+        expect(user.current_sign_in_at).to be_nil
+        expect(user.current_sign_in_ip).to be_nil
+
+        expect(user.sign_in_count).to be(0)
+
+        # Start session
+        user.start_session('1.2.3.4')
+
+        expect(user.last_sign_in_at).to be_nil
+        expect(user.last_sign_in_ip).to be_nil
+
+        expect(user.current_sign_in_at.utc.to_s).not_to be_nil
+        expect(user.current_sign_in_ip).to match('1.2.3.4')
+
+        expect(user.sign_in_count).to be(1)
+
+        # end session
+        current_sign_in_at = user.current_sign_in_at
+        user.end_session
+
+        expect(user.current_sign_in_at).to be_nil
+        expect(user.current_sign_in_ip).to be_nil
+
+        expect(user.last_sign_in_at.utc.to_s).to eq(current_sign_in_at.utc.to_s)
+        expect(user.last_sign_in_ip).to match('1.2.3.4')
+
+        # start session once again
+        user.start_session('5.6.7.8')
+
+        expect(user.last_sign_in_at.utc.to_s).to eq(current_sign_in_at.utc.to_s)
+        expect(user.last_sign_in_ip).to match('1.2.3.4')
+
+        expect(user.current_sign_in_at.utc.to_s).not_to be_nil
+        expect(user.current_sign_in_ip).to match('5.6.7.8')
+        expect(user.sign_in_count).to be(2)
       end
 
       it "generate_reset_password_token" do
@@ -199,18 +260,14 @@ RSpec.describe User, type: :model do
         expect(u.default_image_url("large")).to match("/assets/kuppayam/defaults/user-large.png")
       end
     end
-
   end
 
   context "Private Instance Methods" do
-
     it "should_validate_password?" do
-      skip
       new_user = FactoryGirl.build(:pending_user)
       expect(new_user.send(:should_validate_password?)).to be_truthy
 
       saved_user = FactoryGirl.create(:pending_user)
-      binding.pry
       expect(saved_user.send(:should_validate_password?)).to be_falsy
 
       saved_user.password = "something"

@@ -48,6 +48,7 @@ module Usman
       def breadcrumbs_configuration
         {
           heading: "Manage Roles",
+          icon: "fa-lock",
           description: "Listing all Roles",
           links: [{name: "Home", link: admin_dashboard_path, icon: 'fa-home'}, 
                     {name: "Manage Roles", link: admin_roles_path, icon: 'fa-calendar', active: true}]

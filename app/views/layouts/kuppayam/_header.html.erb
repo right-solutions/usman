@@ -33,7 +33,7 @@
     <% if @current_user %>
         <span style="color:#898989;">Welcome</span> <span style="color:#4b4b4b;"><%= @current_user.name %></span>
         &nbsp;&nbsp;|&nbsp;&nbsp;
-        <%= link_to raw("Sign Out"), sign_out_path, method: :delete %>
+        <%= link_to raw("Sign Out"), usman.sign_out_path, method: :delete %>
     <% else %>
       <%= link_to raw("Sign In"), "#" %>
     <% end %>

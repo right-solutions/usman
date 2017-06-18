@@ -10,7 +10,7 @@ module Usman
     
     def sign_in
       set_title("Sign In")
-      redirect_to_appropriate_page_after_sign_in if @current_user # && !@current_user.token_expired?
+      redirect_to_appropriate_page_after_sign_in if @current_user
     end
 
     def create_session

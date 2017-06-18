@@ -127,7 +127,7 @@ module Usman
       message = translate("authentication.masquerade", user: user.name)
       set_flash_message(message, :success, false)
       session[:last_user_id] = current_user.id if current_user
-      user.start_session
+      user.start_session(params[:remote_ip])
       session[:id] = user.id
       redirect_to default_redirect_url_after_sign_in
     end

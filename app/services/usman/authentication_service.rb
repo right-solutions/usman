@@ -15,7 +15,7 @@ module Usman
         check_if_user_is_approved
       end
 
-      @user.start_session(remote_ip) unless @error
+      @user.start_session(@remote_ip) unless @error
     end
 
     def invalid_login_error

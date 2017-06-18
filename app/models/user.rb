@@ -182,25 +182,9 @@ class User < Usman::ApplicationRecord
     self.save
   end
 
-  def update_token!
-    self.update_attribute(:token_created_at, Time.now)
-  end
-
-  def expire_token!
-    self.update_attribute(:token_created_at, (Time.now - (SESSION_TIME_OUT + 1.minute)))
-  end
-
-  def token_about_to_expire?
-    return self.token_created_at.nil? || (Time.now > self.token_created_at + (SESSION_TIME_OUT - 1.minute))
-  end
-
   def assign_default_password
     self.password = DEFAULT_PASSWORD
     self.password_confirmation = DEFAULT_PASSWORD
-  end
-
-  def token_expired?
-    return self.token_created_at.nil? || (Time.now > self.token_created_at + SESSION_TIME_OUT)
   end
 
   def generate_reset_password_token

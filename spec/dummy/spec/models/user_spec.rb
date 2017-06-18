@@ -152,26 +152,7 @@ RSpec.describe User, type: :model do
     end
 
     context "Authentication Methods" do
-      it "token_expired?" do
-        token_created_at = Time.now - 121.minute
-        u = FactoryGirl.build(:user, token_created_at: token_created_at)
-        expect(u.token_expired?).to be_truthy
-
-        token_created_at = Time.now - 119.minute
-        u = FactoryGirl.build(:user, token_created_at: token_created_at)
-        expect(u.token_expired?).to be_falsy
-      end
-
-      it "token_about_to_expire?" do
-        token_created_at = Time.now - 119.minute
-        u = FactoryGirl.build(:user, token_created_at: token_created_at)
-        expect(u.token_about_to_expire?).to be_truthy
-
-        token_created_at = Time.now - 100.minute
-        u = FactoryGirl.build(:user, token_created_at: token_created_at)
-        expect(u.token_about_to_expire?).to be_falsy
-      end
-
+      
       it "start_session and end session" do
 
         # Fresh user who has never started a session

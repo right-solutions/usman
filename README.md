@@ -32,6 +32,7 @@ Run the below command
 $ bundle exec rake railties:install:migrations
 ```
 
+
 This will copy migrations from kuppayam and usman engines
 which will have migrations to create images, documents, users, features and permissions respectively. 
 
@@ -66,6 +67,19 @@ in main application.rb
 config.autoload_paths << "app/services"
 config.railties_order = [:main_app, Usman::Engine, Kuppayam::Engine, :all]
 ```
+
+## Testing the gem
+
+cd spec/dummy
+rails db:create db:migrate
+
+rails s -p <port>
+
+## Running rspec
+rails db:create db:migrate RAILS_ENV
+
+# run rspec from the rails root folder and not from dummy folder as spec helper has been linked to dummy.
+rspec 
 
 
 ## Contributing

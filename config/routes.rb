@@ -37,6 +37,12 @@ Usman::Engine.routes.draw do
     resources :permissions
     
 
-   end
+  end
+
+  namespace :api do
+    namespace :v1 do
+      resources :users
+    end
+  end
 
 end

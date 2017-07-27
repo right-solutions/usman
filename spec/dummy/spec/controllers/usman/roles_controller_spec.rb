@@ -3,12 +3,12 @@ require 'rails_helper'
 describe Usman::Admin::RolesController, :type => :controller do
 
   let(:role) {FactoryGirl.create(:role)}
-  let(:approved_user) {FactoryGirl.create(:approved_user)}
+  let(:super_admin_user) { user = FactoryGirl.create(:super_admin_user) }
   
   describe "index" do
     it "should display all roles" do
       3.times { FactoryGirl.create(:role) }
-      session[:id] = approved_user.id
+      session[:id] = super_admin_user.id
       get :index, params: { use_route: 'usman' }
       expect(response.status).to eq(200)
     end
@@ -22,7 +22,7 @@ describe Usman::Admin::RolesController, :type => :controller do
 
   describe "show" do
     it "should display all roles" do
-      session[:id] = approved_user.id
+      session[:id] = super_admin_user.id
       get :show, params: { use_route: 'usman', id: role.id }
       expect(response.status).to eq(200)
     end
@@ -36,7 +36,7 @@ describe Usman::Admin::RolesController, :type => :controller do
 
   describe "new" do
     it "should show a new form" do
-      session[:id] = approved_user.id
+      session[:id] = super_admin_user.id
       get :new, params: { use_route: 'usman' }, xhr: true
       expect(response.status).to eq(200)
     end
@@ -50,7 +50,7 @@ describe Usman::Admin::RolesController, :type => :controller do
 
   describe "edit" do
     it "should show an edit form" do
-      session[:id] = approved_user.id
+      session[:id] = super_admin_user.id
       get :edit, params: { use_route: 'usman', id: role.id }, xhr: true
       expect(response.status).to eq(200)
     end
@@ -64,7 +64,7 @@ describe Usman::Admin::RolesController, :type => :controller do
 
   describe "create" do
     it "should create a new role" do
-      session[:id] = approved_user.id
+      session[:id] = super_admin_user.id
       role_params = FactoryGirl.build(:role).attributes
       expect do
         post :create, params: { use_route: 'usman', role: role_params }
@@ -81,7 +81,7 @@ describe Usman::Admin::RolesController, :type => :controller do
 
   describe "update" do
     it "should update the role" do
-      session[:id] = approved_user.id
+      session[:id] = super_admin_user.id
       role_params = FactoryGirl.create(:role).attributes
       role_params["name"] = "Changed Name"
       put :update, params: { use_route: 'usman', id: role.id, role: role_params }
@@ -97,7 +97,7 @@ describe Usman::Admin::RolesController, :type => :controller do
 
   describe "destroy" do
     it "should destroy the role" do
-      session[:id] = approved_user.id
+      session[:id] = super_admin_user.id
       f = FactoryGirl.create(:role)
       expect do
         delete :destroy, params: { use_route: 'usman', id: f.id }  

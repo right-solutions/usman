@@ -27,31 +27,6 @@ FactoryGirl.define do
 
   factory :approved_user, parent: :user do
     status "approved"
-
-    factory :site_admin_user do
-      after(:create) do |user|
-        user.add_role("Site Admin")
-      end
-    end
-
-    factory :warehouse_manager do
-      after(:create) do |user|
-        user.add_role("Warehouse Manager")
-      end
-    end
-
-    factory :pos_sales_manager do
-      after(:create) do |user|
-        user.add_role("POS Sales Manager")
-      end
-    end
-
-    factory :pos_sales_staff do
-      after(:create) do |user|
-        user.add_role("POS Sales Staff")
-      end
-    end
-
   end
 
   factory :suspended_user, parent: :user do

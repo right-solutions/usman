@@ -1,7 +1,7 @@
 # Usman
-Simple User & Feature Permission Management
 
-## Usage
+Simple User & Feature Permission Management with APIs.
+
 Usman is a mountable plugin and it requires another full pluggin named kuppayam to run. Kuppayam offers usman the UI skin with basic modules for running like Polymorphic Image and Document Models etc.
 
 ## Installation
@@ -21,24 +21,19 @@ Or install it yourself as:
 $ gem install usman
 ```
 
-# Installation Instructions
+# Usage
 
-## Copy the migrations
+## Installing the kuppayam & usman migrations
 
-Copy the migrations from the engines you are using
-Run the below command 
+Usman uses kuppayam skins and hence it requires the basic migrations from kuppayam to run
+Run the below command to copy the migrations from the kuppayam engine.
 
 ```bash
 $ bundle exec rake railties:install:migrations
 ```
 
+This will copy migrations from kuppayam and usman engines which will have migrations to create images, documents, users, features and permissions respectively. 
 
-This will copy migrations from kuppayam and usman engines
-which will have migrations to create images, documents, users, features and permissions respectively. 
-
-## Create Dummy Data 
-
-run rake task for loading dummy data for users and features to start with.
 
 ## Mount the engine
 
@@ -50,22 +45,45 @@ mount Usman::Engine => "/"
 
 open browser and go to /sign_in url
 
+## Railties order
 
+Specify the railties order if required in main application.rb
 
+``
+config.autoload_paths << "app/services"
+config.railties_order = [:main_app, Usman::Engine, Kuppayam::Engine, :all]
+```
+
+# Seeding Data 
+
+run rake task for loading dummy data for users and features to start with.
 
 ```bash
 $ bundle exec rake usman:import:dummy:all verbose=false
 ```
 
+["users", "features", "permissions", "roles"]
 
+You could also do it individually but the above command will run in the following order - users, features, permissions, roles. This order is important as features need users to be imported first.
 
-## Specify the railties order if required
-
-in main application.rb
-
+```bash
+$ bundle exec rake usman:import:dummy:users verbose=false
+$ bundle exec rake usman:import:dummy:features verbose=false
+$ bundle exec rake usman:import:dummy:permissions verbose=false
+$ bundle exec rake usman:import:dummy:roles verbose=false
 ```
-config.autoload_paths << "app/services"
-config.railties_order = [:main_app, Usman::Engine, Kuppayam::Engine, :all]
+
+# Import Data
+
+You could override the seed files with your data.
+just create db/import_data in your project folder and create the following files filled with your data in the required format (checkout the dummy csvs in usman db/import_data/dummy/features.csv) for the columns required
+
+for e.g:
+
+create users.csv in db/import_data/ foler and fill data in it and run 
+
+```bash
+$ bundle exec rake usman:import:users verbose=false
 ```
 
 ## Testing the gem

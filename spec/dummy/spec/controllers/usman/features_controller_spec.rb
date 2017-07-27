@@ -3,12 +3,12 @@ require 'rails_helper'
 describe Usman::Admin::FeaturesController, :type => :controller do
 
   let(:feature) {FactoryGirl.create(:feature)}
-  let(:approved_user) {FactoryGirl.create(:approved_user)}
+  let(:super_admin_user) {FactoryGirl.create(:super_admin_user)}
   
   describe "index" do
     it "should display all features" do
       3.times { FactoryGirl.create(:published_feature) }
-      session[:id] = approved_user.id
+      session[:id] = super_admin_user.id
       get :index, params: { use_route: 'usman' }
       expect(response.status).to eq(200)
     end
@@ -22,7 +22,7 @@ describe Usman::Admin::FeaturesController, :type => :controller do
 
   describe "show" do
     it "should display all features" do
-      session[:id] = approved_user.id
+      session[:id] = super_admin_user.id
       get :show, params: { use_route: 'usman', id: feature.id }
       expect(response.status).to eq(200)
     end
@@ -36,7 +36,7 @@ describe Usman::Admin::FeaturesController, :type => :controller do
 
   describe "new" do
     it "should show a new form" do
-      session[:id] = approved_user.id
+      session[:id] = super_admin_user.id
       get :new, params: { use_route: 'usman' }, xhr: true
       expect(response.status).to eq(200)
     end
@@ -50,7 +50,7 @@ describe Usman::Admin::FeaturesController, :type => :controller do
 
   describe "edit" do
     it "should show an edit form" do
-      session[:id] = approved_user.id
+      session[:id] = super_admin_user.id
       get :edit, params: { use_route: 'usman', id: feature.id }, xhr: true
       expect(response.status).to eq(200)
     end
@@ -64,7 +64,7 @@ describe Usman::Admin::FeaturesController, :type => :controller do
 
   describe "create" do
     it "should create a new feature" do
-      session[:id] = approved_user.id
+      session[:id] = super_admin_user.id
       feature_params = FactoryGirl.build(:feature).attributes
       expect do
         post :create, params: { use_route: 'usman', feature: feature_params }
@@ -81,7 +81,7 @@ describe Usman::Admin::FeaturesController, :type => :controller do
 
   describe "update" do
     it "should update a feature" do
-      session[:id] = approved_user.id
+      session[:id] = super_admin_user.id
       feature_params = FactoryGirl.create(:feature).attributes
       feature_params["name"] = "Changed Name"
       put :update, params: { use_route: 'usman', id: feature.id, feature: feature_params }
@@ -97,7 +97,7 @@ describe Usman::Admin::FeaturesController, :type => :controller do
 
   describe "destroy" do
     it "should not destroy a feature" do
-      session[:id] = approved_user.id
+      session[:id] = super_admin_user.id
       f = FactoryGirl.create(:feature)
       expect do
         delete :destroy, params: { use_route: 'usman', id: f.id }  

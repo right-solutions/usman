@@ -62,7 +62,9 @@ describe Usman::SessionsController, :type => :controller do
 
   describe "destroy a session" do
     it "should delete session of user" do
-      delete :sign_out, params: {:id => approved_user.id, use_route: 'usman'}, cookies: {id: approved_user.id}
+      request.cookies[:id] = approved_user.id
+      delete :sign_out, params: {:id => approved_user.id, use_route: 'usman'} 
+      #, cookies: {id: approved_user.id}
       expect(response).to redirect_to("/sign_in?locale=en")
     end
   end

@@ -38,6 +38,7 @@ Kuppayam::ImportDataController.class_eval do
   end
 
   def require_site_admin
+    return true if @current_user && @current_user.super_admin?
     unless @current_user.has_role?("Site Admin")
       text = "#{I18n.t("authentication.permission_denied.heading")}: #{I18n.t("authentication.permission_denied.message")}"
       set_flash_message(text, :error, false) if defined?(flash) && flash
@@ -62,6 +63,7 @@ Kuppayam::DocumentsController.class_eval do
   end
 
   def require_site_admin
+    return true if @current_user && @current_user.super_admin?
     unless @current_user.has_role?("Site Admin")
       text = "#{I18n.t("authentication.permission_denied.heading")}: #{I18n.t("authentication.permission_denied.message")}"
       set_flash_message(text, :error, false) if defined?(flash) && flash

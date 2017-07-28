@@ -16,9 +16,21 @@ module Usman
       def require_site_admin
         return true if @current_user && @current_user.super_admin?
         unless @current_user && @current_user.has_role?("Site Admin")
-          text = "#{I18n.t("authentication.permission_denied.heading")}: #{I18n.t("authentication.permission_denied.message")}"
-          set_flash_message(text, :error, false) if defined?(flash) && flash
-          redirect_to default_redirect_url_after_sign_in
+          respond_to do |format|
+            format.html {
+              #text = "#{I18n.t("authentication.permission_denied.heading")}: #{I18n.t("authentication.permission_denied.message")}"
+              #set_flash_message(text, :error, false) if defined?(flash) && flash
+              redirect_after_unsuccessful_authentication
+            }
+            format.js {
+              @params_hsh = {}
+              @params_hsh[:client_app] = params[:client_app] if params[:client_app]
+              @params_hsh[:redirect_back_url] = params[:redirect_back_url] if params[:redirect_back_url]
+              @params_hsh[:requested_url] = request.original_url if request.get?
+              
+              render(:partial => 'usman/sessions/sign_in.js.erb', :handlers => [:erb], :formats => [:js])
+            }
+          end
         end
       end
 

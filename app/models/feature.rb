@@ -133,7 +133,7 @@ class Feature < Usman::ApplicationRecord
   end
 
   def can_be_deleted?
-    false
+    true
   end
 
   def can_be_published?

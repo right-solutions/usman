@@ -21,6 +21,12 @@ ActiveRecord::Migrator.migrations_paths = 'spec/dummy/db/migrate'
 # Load support files
 #Dir["#{File.dirname(__FILE__)}/support/**/*.rb"].each { |f| require f }
 RSpec.configure do |config|
+
+  config.before(:suite) do
+    DatabaseCleaner.clean_with :truncation  # clean DB of any leftover data
+    DatabaseCleaner.strategy = :transaction # rollback transactions between each test
+  end
+
   config.mock_with :rspec
   config.use_transactional_fixtures = true
   config.infer_base_class_for_anonymous_controllers = false
@@ -33,7 +39,6 @@ RSpec.configure do |config|
   config.after(:each) do
     DatabaseCleaner.clean
   end
-
 end
 
 Shoulda::Matchers.configure do |config|

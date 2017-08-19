@@ -37,3 +37,4 @@ config/database.yml
 
 Gemfile.lock
 *.gem
+spec/dummy/public/uploads

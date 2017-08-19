@@ -111,9 +111,9 @@ RSpec.describe Feature, type: :model do
       end
 
       it "can_be_deleted?" do
-        expect(published_feature.can_be_deleted?).to be_falsy
-        expect(unpublished_feature.can_be_deleted?).to be_falsy
-        expect(disabled_feature.can_be_deleted?).to be_falsy
+        expect(published_feature.can_be_deleted?).to be_truthy
+        expect(unpublished_feature.can_be_deleted?).to be_truthy
+        expect(disabled_feature.can_be_deleted?).to be_truthy
       end
 
       it "can_be_published?" do

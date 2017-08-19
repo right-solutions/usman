@@ -1,5 +1,6 @@
 class ProfilePictureUploader < ImageUploader
-	def store_dir
+
+  def store_dir
     "uploads/profile_pictures/#{model.id}"
   end
 

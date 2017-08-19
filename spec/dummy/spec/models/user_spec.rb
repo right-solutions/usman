@@ -26,26 +26,6 @@ RSpec.describe User, type: :model do
       super_admin_user = FactoryGirl.build(:super_admin_user)
       expect(super_admin_user.super_admin).to be_truthy
       expect(super_admin_user.valid?).to be true
-
-      site_admin_role = FactoryGirl.create(:role, name: "Site Admin")
-      site_admin_user = FactoryGirl.create(:site_admin_user)
-      expect(site_admin_user.valid?).to be true
-      expect(site_admin_user.roles.first.name).to match("Site Admin")
-
-      warehouse_manager_role = FactoryGirl.create(:role, name: "Warehouse Manager")
-      warehouse_manager = FactoryGirl.create(:warehouse_manager)
-      expect(warehouse_manager.valid?).to be true
-      expect(warehouse_manager.roles.first.name).to match("Warehouse Manager")
-
-      pos_sales_manager_role = FactoryGirl.create(:role, name: "POS Sales Manager")
-      pos_sales_manager = FactoryGirl.create(:pos_sales_manager)
-      expect(pos_sales_manager.valid?).to be true
-      expect(pos_sales_manager.roles.first.name).to match("POS Sales Manager")
-
-      pos_sales_staff_role = FactoryGirl.create(:role, name: "POS Sales Staff")
-      pos_sales_staff = FactoryGirl.create(:pos_sales_staff)
-      expect(pos_sales_staff.valid?).to be true
-      expect(pos_sales_staff.roles.first.name).to match("POS Sales Staff")
     end
   end
 

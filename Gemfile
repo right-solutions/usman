@@ -13,5 +13,5 @@ gemspec
 # To use a debugger
 # gem 'byebug', group: [:development, :test]
 
-gem 'kuppayam', path: "/Users/rightsolutions/Projects/Products/kuppayam"
+# gem 'kuppayam', path: "/Users/rightsolutions/Projects/Products/kuppayam"
 # gem 'uglifier'

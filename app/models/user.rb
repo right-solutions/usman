@@ -46,9 +46,7 @@ class User < Usman::ApplicationRecord
   # Class Methods
   # ------------------
 
-  def self.find_by_email_or_username(query)
-    self.where("LOWER(email) = LOWER('#{query}') OR LOWER(username) = LOWER('#{query}')").first
-  end
+  # Scopes Methods
 
   # return an active record relation object with the search query in its where clause
   # Return the ActiveRecord::Relation object
@@ -69,6 +67,8 @@ class User < Usman::ApplicationRecord
   
   scope :super_admins, -> { where(super_admin: TRUE) }
   scope :normal_users, -> { where(super_admin: FALSE) }
+
+  # Import Methods
 
   def self.save_row_data(row)
 
@@ -103,7 +103,7 @@ class User < Usman::ApplicationRecord
   end
 
   # ------------------
-  # Instance variables
+  # Instance Methods
   # ------------------
   
   # Status Methods
@@ -325,6 +325,10 @@ class User < Usman::ApplicationRecord
       raise "Feature with name '#{feature.name}' doesn't exist" unless feature
     end
     return feature
+  end
+
+  def self.find_by_email_or_username(query)
+    self.where("LOWER(email) = LOWER('#{query}') OR LOWER(username) = LOWER('#{query}')").first
   end
 
 end

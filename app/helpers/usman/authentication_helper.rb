@@ -11,13 +11,6 @@ module Usman
     # Returns the default URL to which the system should redirect the user after successful authentication
     def default_redirect_url_after_sign_in
       main_app.user_landing_url
-      # if @current_user.has_role?("Admin")
-      #   main_app.admin_dashboard_url
-      # elsif @current_user.has_role?("Admin")
-      #   main_app.store_dashboard_url
-      # else
-      #   main_app.admin_dashboard_url
-      # end
     end
 
     # Returns the default URL to which the system should redirect the user after an unsuccessful attempt to authorise a resource/page

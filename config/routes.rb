@@ -11,32 +11,27 @@ Usman::Engine.routes.draw do
   # Logout Url
   delete  '/sign_out' ,               to: "sessions#sign_out",  as:  :sign_out
 
-  namespace :admin do
-
-    get   '/dashboard',         to: "dashboard#index",  as:   :dashboard
-    
-    resources :users do
-      member do
-        put :masquerade, as: :masquerade
-        put :update_status, as:  :update_status
-        put :make_super_admin, as:  :make_super_admin
-        put :remove_super_admin, as:  :remove_super_admin
-      end
+  get   '/dashboard/usman',   to: "dashboard#index",  as:   :dashboard
+  
+  resources :users do
+    member do
+      put :masquerade, as: :masquerade
+      put :update_status, as:  :update_status
+      put :make_super_admin, as:  :make_super_admin
+      put :remove_super_admin, as:  :remove_super_admin
     end
+  end
 
-    resources :roles do
-      resources :users, :controller => "user_roles"
+  resources :roles do
+    resources :users, :controller => "user_roles"
+  end
+
+  resources :features do
+    member do
+      put :update_status, as:  :update_status
     end
+  end
 
-    resources :features do
-      member do
-        put :update_status, as:  :update_status
-      end
-    end
-
-    resources :permissions
-    
-
-   end
+  resources :permissions
 
 end

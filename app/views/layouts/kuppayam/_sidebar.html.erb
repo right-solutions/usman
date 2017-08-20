@@ -38,23 +38,43 @@
 			<!-- class "auto-inherit-active-class" will automatically add "active" class for parent elements who are marked already with class "active" -->
 			
 			<!-- Admin Dashboard -->
-			<li class="<%= nav_active?('admin/dashboard') ? 'active' : ''  %>">
-				<%= link_to raw("<i class=\"linecons-desktop\"></i> <span class='title'>Dashboard</span>"), usman.admin_dashboard_url %>
-			</li>
+			<% if @current_user.super_admin? || @current_user.has_role?("Site Admin") %>
+				<li class="<%= nav_active?('admin/dashboard') ? 'active' : ''  %>">
+					<%= link_to raw("<i class=\"linecons-desktop\"></i> <span class='title'>Dashboard</span>"), usman.dashboard_url %>
+				</li>
 
-			<li class="<%= nav_active?('admin/users') ? 'active' : ''  %>">
-				
-				<a href="#">
-					<i class="linecons-cog"></i>
-					<span class="title">Admin</span>
-				</a>
+				<li class="<%= nav_active?('admin/users') ? 'active' : ''  %>">
+					
+					<a href="#">
+						<i class="linecons-cog"></i>
+						<span class="title">Admin</span>
+					</a>
 
-				<ul>
-					<li class="<%= nav_class("admin/users") %>">
-				    <%= link_to raw("<i class=\"linecons-user\"></i> <span class='title'>Manage Users</span>"), usman.admin_users_url %>
-				  </li>
-				</ul>
-			</li>
+					<ul>
+						<li class="<%= nav_class("admin/users") %>">
+					    <%= link_to raw("<i class=\"linecons-user\"></i> <span class='title'>Manage Users</span>"), usman.users_url %>
+					  </li>
+					</ul>
+				</li>
+			<% else %>
+				<li class="<%= nav_active?('profile/dashboard') ? 'active' : ''  %>">
+				<%= link_to raw("<i class=\"linecons-desktop\"></i> <span class='title'>Dashboard</span>"), usman.profile_dashboard_url %>
+				</li>
+
+				<li class="<%= nav_active?('profile/profile') ? 'active' : ''  %>">
+					
+					<a href="#">
+						<i class="linecons-user"></i>
+						<span class="title">My Profile</span>
+					</a>
+
+					<ul>
+						<li class="<%= nav_class("profile/settings") %>">
+					    <%= link_to raw("<i class=\"linecons-cog\"></i> <span class='title'>Settings</span>"), "#" %>
+					  </li>
+					</ul>
+				</li>
+			<% end %>
 
 			<% if @current_user.super_admin? %>
 			<li class="">
@@ -65,11 +85,11 @@
 
 				<ul>
 					<li class="">
-						<%= link_to raw("<i class=\"linecons-diamond\"></i> <span class='title'>Manage Features</span>"), usman.admin_features_url %>
+						<%= link_to raw("<i class=\"linecons-diamond\"></i> <span class='title'>Manage Features</span>"), usman.features_url %>
 					</li>
 
 					<li class="<%= nav_class("admin/users") %>">
-						<%= link_to raw("<i class=\"linecons-lock\"></i> <span class='title'>Manage Permissions</span>"), usman.admin_permissions_url %>
+						<%= link_to raw("<i class=\"linecons-lock\"></i> <span class='title'>Manage Permissions</span>"), usman.permissions_url %>
 					</li>
 				</ul>
 

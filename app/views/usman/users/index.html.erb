@@ -1,0 +1,66 @@
+<div class="row">
+      
+  <div class="col-md-12">
+    <ul class="nav nav-tabs">
+
+      <%# Show Admin tab only for admins %>
+      <% if @current_user.super_admin? %>
+        <li class="<%= @super_admin == false ? 'active' : '' %>">
+          <%= link_to "Users", users_path(sa: '0') %>
+        </li>
+        <li class="<%= @super_admin == true ? 'active' : '' %>">
+          <%= link_to "Administrators", users_path(sa: '1') %>
+        </li>
+      <% else %>
+        <li class="active">
+          <%= link_to "Users", users_path(sa: '0') %>
+        </li>
+      <% end %>
+
+    </ul>
+
+    <div class="tab-content">
+      <div class="tab-pane active">
+
+        <div id="div_user_action_buttons">
+          <div class="row">
+            <div class="col-md-6">
+              
+              <%= theme_button('Add a User', 'plus', new_user_path(), classes: "pull-left", btn_type: "success") %>
+
+              <%= theme_button('Refresh', 'refresh', users_path(), classes: "pull-left ml-10", btn_type: "white") %>
+
+              <%= theme_button('Manage Roles', 'nothing linecons-graduation-cap', roles_path(), classes: "pull-left ml-10", btn_type: "white", remote: false) %>
+
+              <!-- Single button -->
+              <div class="ml-10 btn-group hidden">
+                <button type="button" class="btn btn-white dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                  More Actions <span class="caret"></span>
+                </button>
+                <ul class="dropdown-menu">
+                  <li><a href="#">Import Users</a></li>
+                  <li><a href="#">Import History</a></li>
+                  <li role="separator" class="divider"></li>
+                  <li><a href="#">Export Users</a></li>
+                </ul>
+              </div>
+
+            </div>
+            <div class="col-md-6">
+              <%= search_form_kuppayam(User, users_path, text: @filters[:query]) %>
+            </div>
+          </div>
+        </div>
+        <%= clear_tag(10) %>
+
+        <div id="div_user_index">
+          <%= render :partial=>"usman/users/index" %>
+        </div>
+        <%= clear_tag(10) %>
+
+      </div>
+    </div>
+
+  </div>
+
+</div>

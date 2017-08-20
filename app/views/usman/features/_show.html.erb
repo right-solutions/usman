@@ -1,0 +1,52 @@
+<% status_hash = {published: "success", unpublished: "default", disabled: "danger"} %>
+
+<div class="media <%= status_hash[@feature.status.to_sym] %>">
+
+  <div class="pull-left pt-10 pr-10 pb-10" style="width:30%;">
+  	<%= edit_image(@feature, 
+	                  "feature_image.image.large.url",
+	                  upload_image_link(@feature, :feature_image, nil ),
+	                  remove_image_link(@feature, :feature_image, nil ),
+	                  image_options: {assoc_name: :feature_image }) %>
+  </div>
+
+  <div class="pull-left ml-10" style="width:65%;">
+
+  	<h1><%= @feature.name %></h1>
+    
+    <span class="ml-5 mt-5 label label-<%= status_hash[@feature.status.to_sym] %>"><%= @feature.status.titleize %></span>
+
+    <%= clear_tag %>
+  </div>
+
+</div>
+
+<h4 class="mb-20">Technical Details</h4>
+
+<div class="table-responsive mb-50"> 
+	<table class="table table-striped table-condensed table-bordered"> 
+		<tbody>
+
+			<tr>
+				<th>Created At</th><td><%= @feature.created_at.strftime("%m/%d/%Y - %H:%M:%S") if @feature.created_at %></td>
+				<th>Updated At</th><td><%= @feature.updated_at.strftime("%m/%d/%Y - %H:%M:%S") if @feature.updated_at %></td>
+			</tr>
+			
+		</tbody>
+	</table>
+</div>
+
+<div>
+	<% 
+		edit_link = edit_feature_url(id: @feature.id)
+		delete_link = feature_url(id: @feature.id) 
+	%>
+	
+	<%= link_to raw("<i class=\"fa fa-close mr-5\"></i> <span>Cancel</span>"), "#", onclick: "closeGenericModal();", class: "btn btn-white pull-left" %>
+
+	<%= link_to raw("<i class=\"fa fa-trash mr-5\"></i> <span>Delete</span>"), delete_link, method: :delete, :remote=>true, class: "btn btn-gray pull-right" %>
+
+	<%= link_to raw("<i class=\"fa fa-edit mr-5\"></i> Edit"), edit_link, method: :get, :remote=>true, class: "btn btn-gray pull-right mr-10" %>
+</div>
+
+<%= clear_tag %>

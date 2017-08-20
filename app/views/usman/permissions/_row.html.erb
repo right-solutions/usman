@@ -1,0 +1,27 @@
+<% edit_link = edit_permission_path(id: permission.id) %>
+<% delete_link = permission_path(id: permission.id) %>
+
+<tr id="tr_permission_<%= permission.id %>">
+
+  <td class="permission-name"><%= permission.user.try(:name) %></td>
+
+  <td class="permission-name"><%= permission.feature.try(:name) %></td>
+
+  <td class="permission-name" style="text-align: center"><%= permission.can_create ? raw("<i class='fa fa-check'></i>") : "-" %></td>
+
+  <td class="permission-name" style="text-align: center"><%= permission.can_read ? raw("<i class='fa fa-check'></i>") : "-" %></td>
+
+  <td class="permission-name" style="text-align: center"><%= permission.can_update ? raw("<i class='fa fa-check'></i>") : "-" %></td>
+
+  <td class="permission-name" style="text-align: center"><%= permission.can_delete ? raw("<i class='fa fa-check'></i>") : "-" %></td>
+
+
+  <td class="action-links1" style="width:10%;text-align: center;">
+
+    <%= link_to raw("<i class=\"linecons-pencil\"></i>"), edit_link, :remote=>true, class: "edit" %>
+
+    <%= link_to raw("<i class=\"linecons-trash\"></i>"), delete_link, method: :delete, role: "menuitem", tabindex: "-1", data: { confirm: 'Are you sure?' }, :remote=>true, class: "delete" %>
+
+  </td>
+
+</tr>

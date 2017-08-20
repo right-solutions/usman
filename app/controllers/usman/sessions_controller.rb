@@ -1,5 +1,5 @@
 module Usman 
-  class SessionsController < Usman::ApplicationController
+  class SessionsController < ApplicationController
 
     layout 'kuppayam/blank'
 

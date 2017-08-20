@@ -1,0 +1,49 @@
+<div class="row">
+      
+  <div class="col-md-12">
+    
+    <ul class="nav nav-tabs">
+    </ul>
+    <div class="tab-content">
+      <div class="tab-pane active">
+
+      <div id="div_permission_action_buttons">
+          <div class="row">
+            <div class="col-md-6">
+
+              <%= theme_button('Add a Permission', 'plus', new_permission_path(), classes: "pull-left", btn_type: "success") %>
+
+              <%= theme_button('Refresh', 'refresh', permissions_path(), classes: "pull-left ml-10", btn_type: "white") %>
+
+              <!-- Single button -->
+              <div class="ml-10 btn-group hidden">
+                <button type="button" class="btn btn-white dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                  More Actions <span class="caret"></span>
+                </button>
+                <ul class="dropdown-menu">
+                  <li><a href="#">Import Users</a></li>
+                  <li><a href="#">Import History</a></li>
+                  <li role="separator" class="divider"></li>
+                  <li><a href="#">Export Users</a></li>
+                </ul>
+              </div>
+
+            </div>
+            <div class="col-md-6">
+              <%= search_form_kuppayam(Permission, permissions_path, text: @filters[:query]) %>
+            </div>
+          </div>
+        </div>
+        <%= clear_tag(10) %>
+
+        <div id="div_permission_index">
+          <%= render :partial=>"usman/permissions/index" %>
+        </div>
+        <%= clear_tag(10) %>
+
+      </div>
+    </div>
+
+  </div>
+
+</div>

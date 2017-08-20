@@ -21,7 +21,7 @@ describe Usman::Admin::UsersController, :type => :controller do
     it "should return the list of users" do
       #arr = [user_1, user_2, user_3]
       get :index, params: { use_route: 'usman' }, session: { id: user_1.id }
-      #get admin_users_url, params: { id: user_1.id, use_route: 'usman' }
+      #get users_url, params: { id: user_1.id, use_route: 'usman' }
       #expect(assigns[:users]).to match_array(arr)
       expect(response.status).to eq(200)
 

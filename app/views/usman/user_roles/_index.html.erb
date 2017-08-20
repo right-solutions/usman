@@ -1,0 +1,59 @@
+<div class="table-responsive"> 
+	<table class="table table-hover members-table middle-align">
+	  <thead> 
+			<tr> 
+				<th style="text-align: center;width:60px">#</th> 
+				<th style="text-align: center;width:100px"><i class="fa fa-photo"></i></th> 
+				<th>Name</th>
+				<th>Roles</th>
+				<th style="text-align: center;" colspan="2">Actions</th>
+			</tr>  
+		</thead>
+		
+	  <tbody>
+	  	<% @users.each_with_index do |user, i| %>
+	  			
+	  		<% delete_link = role_user_path(@role, user) %>
+				
+		    <tr id="tr_user_<%= user.id %>">
+		      
+		      <th scope="row" style="text-align: center;">
+						<% if i < 0 %>
+							<i class="fa fa-check text-success"></i>
+						<% else %>
+							<%= i + 1 + (@per_page.to_i * (@current_page.to_i - 1)) %>
+						<% end %>
+					</th>
+
+					<td class="user-image">
+		        <%= link_to(user_path(user), remote: true) do %>
+		        	<%= display_image(user, "profile_picture.image.small.url", width: "120", height: "auto", class: "img-rectangle", alt: user.display_name) %>
+		        <% end %>
+		      </td>
+
+					<td class="user-name"><%= user.display_name %></td>
+
+		      <td class="user-name">
+		      	<% user.roles.collect(&:name).each do |r| %>
+		      		<span class="ml-5 label label-primary"><%= r %></span>
+		      	<% end %>
+		      </td>
+
+		      <td class="action-links" style="width:10%">
+
+		      	<%= link_to raw("<i class=\"linecons-trash\"></i> Remove Role"), delete_link, method: :delete, user: "menuitem", tabindex: "-1", data: { confirm: 'Are you sure?' }, :remote=>true, class: "delete" %>
+
+		      </td>
+
+		    </tr>
+		  <% end %>
+	  </tbody>
+	</table>
+</div>
+
+<div class="row">
+  <div class="col-sm-12">
+    <%= paginate_kuppayam(@users) %>
+  </div>
+</div>
+

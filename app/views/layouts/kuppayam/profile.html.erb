@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!-- Head -->
+    <%= render :partial=>"/layouts/kuppayam/head" -%>
+  </head>
+
+  <body class="page-body">
+
+    <!-- <div class="settings-pane" id="settings_pane">
+      <%#= render :partial=>"/layouts/kuppayam/settings_pane" -%>
+    </div> -->
+
+    <div class="page-container">
+      
+      <!-- Sidebar Navigation -->
+      <%= render :partial=>"/layouts/kuppayam/sidebar" -%>
+
+      <div class="main-content">
+
+        <!-- Top Navigation -->
+        <%= render :partial=>"/layouts/kuppayam/navbar" -%>
+
+        <!-- Heading & Breadcrumbs -->
+        <%= render :partial=>"/layouts/kuppayam/heading" -%>
+
+        <%#* Show flash messages if controller has set any. -%>
+        <div id="div_flash_message" class="mt-10">
+          <%= flash_message(false) if defined?(flash) -%>
+        </div>
+
+        <%#* Page Content Starts here -%>
+        <div id="div_page_content_main">
+          <%= yield %>
+        </div>
+
+        <!-- Footer -->
+        <%= render :partial=>"/layouts/kuppayam/footer" -%>
+
+      </div>
+
+    </div>
+
+    <div id="div_modal_generic" class="modal" style="z-index: 1056;">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            <h3 class="modal-title">Modal title</h3>
+          </div>
+          <div class="modal-body-main"></div>
+        </div><!-- /.modal-content -->
+      </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
+
+    <div id="div_modal_large" class="modal">
+      <div class="modal-dialog modal-lg" style="width: 96%">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            <h3 class="modal-title">Modal title</h3>
+          </div>
+          <div class="modal-body-main"></div>
+        </div><!-- /.modal-content -->
+      </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
+
+    <div id="div_modal_message" class="modal fade">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            <h3 class="modal-title">Modal title</h3>
+          </div>
+          <div class="modal-body">
+            <p>One fine body&hellip;</p>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+          </div>
+        </div><!-- /.modal-content -->
+      </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
+
+    <div id="div_modal_image_upload" class="modal" style="z-index: 1057;">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            <h3 class="modal-title">Modal title</h3>
+          </div>
+          <div class="modal-body-main"></div>
+        </div><!-- /.modal-content -->
+      </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
+
+    <script type="text/javascript">
+      $('.modal').on('shown.bs.modal', function(e){
+        $(this).modal('handleUpdate'); //Update backdrop on modal show
+        $(this).scrollTop(0); //reset modal to top position
+      });
+    </script>
+
+    <!-- Page Loading Overlay -->
+    <!-- <div class="page-loading-overlay">
+      <div class="loader-3"></div>
+    </div> -->
+
+    <%#* Loading Javascripts -%>
+    <%= javascript_include_tag @javascript_filename -%>
+
+    <%= yield :javascript_footer -%>
+
+    <iframe id="iframe_document" name="iframe_document" width="100%" style="display:none"></iframe>
+
+    <iframe id="iframe_image" name="iframe_image" width="100%" style="display:none"></iframe>
+
+  </body>
+
+</html>

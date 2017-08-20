@@ -3,11 +3,11 @@ require 'rails_helper'
 describe Usman::Admin::FeaturesController, :type => :controller do
 
   let(:feature) {FactoryGirl.create(:feature)}
-  let(:site_admin_role) {FactoryGirl.create(:role, name: "Site Admin")}
+  let(:site_role) {FactoryGirl.create(:role, name: "Site Admin")}
   
   let(:super_admin_user) {FactoryGirl.create(:super_admin_user)}
   let(:site_admin_user) { 
-    site_admin_role
+    site_role
     user = FactoryGirl.create(:approved_user)
     user.add_role("Site Admin")
     user 

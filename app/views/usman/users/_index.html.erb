@@ -1,0 +1,107 @@
+<div class="table-responsive"> 
+	<table class="table table-hover members-table middle-align">
+	  <thead> 
+			<tr> 
+				<th style="text-align: center;width:60px">#</th> 
+				<th style="text-align: center;width:100px"><i class="fa fa-photo"></i></th> 
+				<th>Name</th>
+				<th class="hidden-xs hidden-sm">Username</th>
+				<th class="hidden-xs hidden-sm">Email</th>
+				<th class="hidden-xs hidden-sm">Roles</th>
+				<th>Status</th>
+				<th style="text-align: center;" colspan="2">Actions</th>
+			</tr> 
+		</thead>
+	  <tbody>
+	  	<% @users.each_with_index do |user, i| %>
+	  		
+	  		<% edit_link = edit_user_path(id: user.id) %>
+				<% delete_link = user_path(id: user.id) %>
+				
+		    <tr id="tr_user_<%= user.id %>">
+		      
+		      <!-- <td class="user-cb">
+		        <input type="checkbox" class="cbr" name="users[]" value="1" checked />
+		      </td> -->
+
+		    	<th scope="row" style="text-align: center;">
+						<% if i < 0 %>
+							<i class="fa fa-check text-success"></i>
+						<% else %>
+							<%= i + 1 + (@per_page.to_i * (@current_page.to_i - 1)) %>
+						<% end %>
+					</th>
+
+					<td class="user-image">
+		        <%= link_to(user_path(user), remote: true) do %>
+		        	<%= display_image(user, "profile_picture.image.small.url", width: "120", height: "auto", class: "img-rectangle", alt: user.display_name) %>
+		        <% end %>
+		      </td>
+
+					<td class="user-name"><%= link_to user.name, user_path(user), remote: true %></td>
+
+					<td class="hidden-xs hidden-sm"><%= link_to user.username, user_path(user), remote: true %></td>
+
+					<td class="hidden-xs hidden-sm"><%= link_to user.email, user_path(user), remote: true, class: "email" %></td>
+					
+					<% if @current_user.super_admin? %>
+						<td class="hidden-xs hidden-sm">
+							<% if user.super_admin? %>
+				        <span class="mr-10 mt-5 label label-warning">Super Admin</span>
+				      <% else %>
+				      	<% user.roles.collect(&:name).each do |r| %>
+				      		<span class="ml-5 label label-primary"><%= r %></span>
+				      	<% end %>
+				      <% end %>
+						</td>
+					<% else %>
+						<td class="user-name">
+			      	<% user.roles.collect(&:name).each do |r| %>
+			      		<span class="ml-5 label label-primary"><%= r %></span>
+			      	<% end %>
+			      </td>
+					<% end %>
+
+					<td>
+						<% if user.pending? %>
+							<span class="ml-5 mt-5 label label-default">Pending</span>
+						<% elsif user.approved? %>
+							<span class="ml-5 mt-5 label label-success">Approved</span>
+						<% elsif user.suspended? %>
+							<span class="ml-5 mt-5 label label-danger">Suspended</span>
+						<% end %>
+					</td>
+
+					<td class="action-links" style="width:15%">
+
+		      	<%= link_to raw("<i class=\"linecons-pencil\"></i> Edit User"), edit_link, :remote=>true, class: "edit" if user.can_be_edited? %>
+
+		        <%= link_to raw("<i class=\"linecons-trash\"></i> Delete"), delete_link, method: :delete, role: "menuitem", tabindex: "-1", data: { confirm: 'Are you sure?' }, :remote=>true, class: "delete" if user.can_be_deleted? && (@current_user != user) %>
+		        
+		      </td>
+
+		      <td class="action-links" style="width:15%">
+
+		      	<!-- Approve -->
+				    <%= link_to raw("<i class=\"fa fa-circle-o mr-5\"></i> Approve"), update_status_user_path(:id =>user.id, :status =>'approved'), :method =>'PUT', :remote=>true, role: "menuitem", tabindex: "-1" if user.can_be_approved? && (@current_user != user) %>
+
+				    <!-- Mark as Pending -->
+				    <%= link_to raw("<i class=\"fa fa-circle mr-5\"></i> Mark as Pending"), update_status_user_path(:id =>user.id, :status =>'pending'), :method =>'PUT', :remote=>true, role: "menuitem", tabindex: "-1" if user.can_be_marked_as_pending? && (@current_user != user) %>
+				      
+				    <!-- Suspend -->
+				    <%= link_to raw("<i class=\"fa fa-edit mr-5\"></i> Suspend"), update_status_user_path(:id =>user.id, :status =>'suspended'), :method =>'PUT', :remote=>true, role: "menuitem", tabindex: "-1" if user.can_be_suspended? && (@current_user != user) %>
+
+		      </td>
+
+		    </tr>
+		  <% end %>
+	  </tbody>
+	</table>
+</div>
+
+<div class="row">
+  <div class="col-sm-12">
+    <%= paginate_kuppayam(@users) %>
+  </div>
+</div>
+

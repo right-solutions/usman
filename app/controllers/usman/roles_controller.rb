@@ -1,6 +1,8 @@
 module Usman
   class RolesController < ResourceController
 
+    before_action :require_site_admin
+    
     private
 
     def get_collections

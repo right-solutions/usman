@@ -11,6 +11,7 @@ Usman::Engine.routes.draw do
   # Logout Url
   delete  '/sign_out' ,               to: "sessions#sign_out",  as:  :sign_out
 
+  get   '/my_account',        to: "my_account#index",  as:   :my_account
   get   '/dashboard/usman',   to: "dashboard#index",  as:   :dashboard
   
   resources :users do

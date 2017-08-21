@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-describe Usman::Admin::RolesController, :type => :controller do
+describe Usman::RolesController, :type => :controller do
 
   let(:role) {FactoryGirl.create(:role, name: "Some Name")}
   let(:site_role) {FactoryGirl.create(:role, name: "Site Admin")}

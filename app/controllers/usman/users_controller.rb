@@ -1,6 +1,8 @@
 module Usman
   class UsersController < ResourceController
 
+    before_action :require_site_admin
+    
     def make_super_admin
       @user = @r_object = User.find(params[:id])
       if @user

@@ -18,20 +18,24 @@ class Role < Usman::ApplicationRecord
   scope :search, lambda {|query| where("LOWER(roles.name) LIKE LOWER('%#{query}%')")
                         }
 
-  def self.save_row_data(row)
+  def self.save_row_data(hsh)
 
-    row.headers.each{ |cell| row[cell] = row[cell].to_s.strip }
+    return if hsh[:name].blank?
 
-    return if row[:name].blank?
-
-    role = Role.find_by_name(row[:name]) || Role.new
-    role.name = row[:name]
+    role = Role.find_by_name(hsh[:name]) || Role.new
+    role.name = hsh[:name]
     
     # Initializing error hash for displaying all errors altogether
     error_object = Kuppayam::Importer::ErrorHash.new
 
     if role.valid?
-      role.save!
+      begin
+        role.save!
+      rescue Exception => e
+        summary = "uncaught #{e} exception while handling connection: #{e.message}"
+        details = "Stack trace: #{e.backtrace.map {|l| "  #{l}\n"}.join}"
+        error_object.errors << { summary: summary, details: details }        
+      end
     else
       summary = "Error while saving role: #{role.name}"
       details = "Error! #{role.errors.full_messages.to_sentence}"

@@ -5,7 +5,7 @@ module Usman
     require 'kuppayam'
     require 'colorize'
     require 'colorized_string'
-    require 'pry'
+    # require 'pry'
     
     isolate_namespace Usman
 

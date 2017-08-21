@@ -1,6 +1,8 @@
 module Usman
   class PermissionsController < ResourceController
 
+    before_action :require_site_admin
+    
     def create
       @permission = @r_object = Permission.where(" user_id = ? AND feature_id = ? ", permitted_params[:user_id], permitted_params[:feature_id]).first || Permission.new
       @permission.assign_attributes(permitted_params)

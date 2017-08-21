@@ -44,21 +44,25 @@ class Feature < Usman::ApplicationRecord
   scope :published, -> { where(status: PUBLISHED) }
   scope :disabled, -> { where(status: DISABLED) }
 
-  def self.save_row_data(row)
+  def self.save_row_data(hsh)
 
-    row.headers.each{ |cell| row[cell] = row[cell].to_s.strip }
+    return if hsh[:name].blank?
 
-    return if row[:name].blank?
-
-    feature = Feature.find_by_name(row[:name]) || Feature.new
-    feature.name = row[:name]
+    feature = Feature.find_by_name(hsh[:name]) || Feature.new
+    feature.name = hsh[:name]
     feature.status = Feature::UNPUBLISHED
     
     # Initializing error hash for displaying all errors altogether
     error_object = Kuppayam::Importer::ErrorHash.new
 
     if feature.valid?
-      feature.save!
+      begin
+        feature.save!
+      rescue Exception => e
+        summary = "uncaught #{e} exception while handling connection: #{e.message}"
+        details = "Stack trace: #{e.backtrace.map {|l| "  #{l}\n"}.join}"
+        error_object.errors << { summary: summary, details: details }        
+      end
     else
       summary = "Error while saving feature: #{feature.name}"
       details = "Error! #{feature.errors.full_messages.to_sentence}"

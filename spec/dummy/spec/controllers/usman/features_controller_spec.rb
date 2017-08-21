@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-describe Usman::Admin::FeaturesController, :type => :controller do
+describe Usman::FeaturesController, :type => :controller do
 
   let(:feature) {FactoryGirl.create(:feature)}
   let(:site_role) {FactoryGirl.create(:role, name: "Site Admin")}

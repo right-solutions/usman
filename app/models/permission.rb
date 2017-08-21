@@ -27,25 +27,23 @@ class Permission < Usman::ApplicationRecord
                                         LOWER(f.name) LIKE LOWER('%#{query}%')")}
 
 
-  def self.save_row_data(row)
+  def self.save_row_data(hsh)
 
-    row.headers.each{ |cell| row[cell] = row[cell].to_s.strip }
-
-    return if row[:user].blank? || row[:feature].blank?
+    return if hsh[:user].blank? || hsh[:feature].blank?
 
     # Initializing error hash for displaying all errors altogether
     error_object = Kuppayam::Importer::ErrorHash.new
 
-    user = User.find_by_username(row[:user])
+    user = User.find_by_username(hsh[:user])
     unless user
-      summary = "User '#{row[:user]}' doesn't exist"
+      summary = "User '#{hsh[:user]}' doesn't exist"
       error_object.errors << { summary: summary }
       return error_object
     end
 
-    feature = Feature.find_by_name(row[:feature])
+    feature = Feature.find_by_name(hsh[:feature])
     unless feature
-      summary = "Feature '#{row[:feature]}' doesn't exist"
+      summary = "Feature '#{hsh[:feature]}' doesn't exist"
       error_object.errors << { summary: summary }
       return error_object
     end
@@ -53,13 +51,19 @@ class Permission < Usman::ApplicationRecord
     permission = Permission.where("user_id = ? AND feature_id = ?", user.id, feature.id).first || Permission.new
     permission.user = user
     permission.feature = feature
-    permission.can_create = row[:can_create]
-    permission.can_read = row[:can_read]
-    permission.can_update = row[:can_update]
-    permission.can_delete = row[:can_delete]
+    permission.can_create = hsh[:can_create]
+    permission.can_read = hsh[:can_read]
+    permission.can_update = hsh[:can_update]
+    permission.can_delete = hsh[:can_delete]
     
     if permission.valid?
-      permission.save!
+      begin
+        permission.save!
+      rescue Exception => e
+        summary = "uncaught #{e} exception while handling connection: #{e.message}"
+        details = "Stack trace: #{e.backtrace.map {|l| "  #{l}\n"}.join}"
+        error_object.errors << { summary: summary, details: details }        
+      end
     else
       summary = "Error while saving permission: #{user.name} - #{feature.name}"
       details = "Error! #{permission.errors.full_messages.to_sentence}"

@@ -1,51 +1,118 @@
+<%
+	items = {
+		users: {
+			counts: {
+				total: User.normal_users.count,
+				approved: User.normal_users.approved.count,
+				pending: User.normal_users.pending.count,
+				suspended: User.normal_users.suspended.count
+			},
+			text: "Users",
+			icon_class: "fa-user",
+			url: usman.users_url
+		}
+	}
+%>
+
+<h3 class="text-gray mt-50 mb-10">
+	Admin <br>
+	<small class="text-muted">Manage Users and much more...</small>
+</h3>
+<hr class="mb-30" style="border-top:1px solid #ddd;">
+
 <div class="row">
 
-	<div class="col-sm-3">
-		<div class="xe-widget xe-counter" data-count=".num" data-from="0" data-to="99.9" data-suffix="%" data-duration="2">
+	<% items.each do |key, values| %>
+	<div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
+		
+		<div class="xe-widget xe-vertical-counter xe-vertical-counter-white" data-count=".num" data-from="0" data-to="128" data-duration="4">
 			<div class="xe-icon">
-				<i class="linecons-cloud"></i>
+				<i class="<%= values[:icon_class] %>"></i>
 			</div>
+			
 			<div class="xe-label">
-				<strong class="num">99.9%</strong>
-				<span>Server Uptime</span>
+				<strong class="num"><%= values[:text] %></strong>
 			</div>
-		</div>
-	</div>
 
-	<div class="col-sm-3">
-		<div class="xe-widget xe-counter xe-counter-red" data-count=".num" data-from="0" data-to="57" data-prefix="-," data-suffix="%" data-duration="5" data-easing="true" data-delay="1">
-			<div class="xe-icon">
-				<i class="linecons-lightbulb"></i>
+			<div class="xe-label" style="margin-top:10px; margin-bottom: 10px;height: 100px; overflow-y: auto;">
+				<% values[:counts].each do |count_text, count_value| %>
+				<span><%= count_text.to_s.titleize %>: <strong><%= count_value %></strong></span>
+				<% end %>
 			</div>
-			<div class="xe-label">
-				<strong class="num">2 Hours Ago</strong>
-				<span>Server Up Since</span>
-			</div>
-		</div>
-	</div>
-	
-	<div class="col-sm-3">
-		<div class="xe-widget xe-counter xe-counter-blue" data-count=".num" data-from="1" data-to="117" data-suffix="k" data-duration="3" data-easing="false">
-			<div class="xe-icon">
-				<i class="linecons-user"></i>
-			</div>
-			<div class="xe-label">
-				<strong class="num"><%= User.approved.where("super_admin is FALSE").count %></strong>
-				<span>Total Users</span>
-			</div>
-		</div>
-	</div>
 
-	<div class="col-sm-3">
-		<div class="xe-widget xe-counter xe-counter-info" data-count=".num" data-from="1000" data-to="2470" data-duration="4" data-easing="true">
-			<div class="xe-icon">
-				<i class="linecons-diamond"></i>
-			</div>
 			<div class="xe-label">
-				<strong class="num"><%= Feature.published.count %></strong>
-				<span>Activated Features</span>
+				<span><%= link_to("Manage", values[:url], class: "btn btn-sm btn-primary btn-block") %></span>
 			</div>
 		</div>
+		
 	</div>
-
+	<% end %>
 </div>
+
+<% if @current_user.super_admin? %>
+	<%
+		items = {
+			features: {
+				counts: {
+					total: Feature.published.count
+				},
+				text: "Features",
+				icon_class: "linecons-diamond",
+				url: usman.features_url
+			},
+			roles: {
+				counts: {
+					total: Role.count
+				},
+				text: "Roles",
+				icon_class: "linecons-graduation-cap",
+				url: usman.roles_url
+			},
+			permissions: {
+				counts: {
+					total: Permission.count
+				},
+				text: "Permissions",
+				icon_class: "fa-lock",
+				url: usman.permissions_url
+			},
+			
+		}
+	%>
+
+	<h3 class="text-gray mt-50 mb-10">
+		Super Admin <br>
+		<small class="text-muted">Manage Features, Permissions and other super admin modules</small>
+	</h3>
+	<hr class="mb-30" style="border-top:1px solid #ddd;">
+
+	<div class="row">
+
+		<% items.each do |key, values| %>
+		<div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
+			
+			<div class="xe-widget xe-vertical-counter xe-vertical-counter-white" data-count=".num" data-from="0" data-to="128" data-duration="4">
+				<div class="xe-icon">
+					<i class="<%= values[:icon_class] %>"></i>
+				</div>
+				
+				<div class="xe-label">
+					<strong class="num"><%= values[:text] %></strong>
+				</div>
+
+				<div class="xe-label" style="margin-top:10px; margin-bottom: 10px;height: 100px; overflow-y: auto;">
+					<% values[:counts].each do |count_text, count_value| %>
+					<span><%= count_text.to_s.titleize %>: <strong><%= count_value %></strong></span>
+					<% end %>
+				</div>
+
+				<div class="xe-label">
+					<span><%= link_to("Manage", values[:url], class: "btn btn-sm btn-primary btn-block") %></span>
+				</div>
+			</div>
+			
+		</div>
+		<% end %>
+		
+	</div>
+<% end %>

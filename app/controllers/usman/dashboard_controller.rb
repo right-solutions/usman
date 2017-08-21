@@ -1,6 +1,8 @@
 module Usman
-  class DashboardController < ApplicationController
+  class DashboardController < AdminController
 
+    before_action :require_site_admin
+    
   	# GET /dashboard
     def index
     end

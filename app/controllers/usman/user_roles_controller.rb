@@ -1,6 +1,7 @@
 module Usman
   class UserRolesController < ResourceController
 
+    before_action :require_site_admin
     before_action :get_role
     
     def index

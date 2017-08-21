@@ -1,10 +1,13 @@
 module Usman 
-  class SessionsController < ApplicationController
+  class SessionsController < Kuppayam::BaseController
 
+    include Usman::AuthenticationHelper
+    
     layout 'kuppayam/blank'
 
     rescue_from ActionController::InvalidAuthenticityToken, :with => :rescue_from_invalid_authenticity_token
 
+    before_action :current_user
     before_action :require_user, :only => :sign_out
     skip_before_action :set_navs
     

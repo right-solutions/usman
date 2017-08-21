@@ -1,0 +1,8 @@
+name,username,designation,email,phone,super_admin,status
+Krishna Prasad Varma,kpvarma,Site Admin,krishna@rightsolutions.ae,,TRUE,approved
+Junaid Ramzan,junaid.ramzan,Site Admin,junaid.ramzan@gmail.com,,TRUE,approved
+Sanoop S Nair,sanoop,Site Admin,sanoop@rightsolutions.io,,TRUE,approved
+Amer,amer.helal,Founder,amer@yopmail.com,,FALSE,approved
+Abdullah Naji,abdullah.naji, Partner,abdullah.naji@yopmail.com,,FALSE,approved
+Staff User 1,staff_user.1,Sales Girl,staff_user_1@yopmail.com,,FALSE,pending
+Staff User 2,staff_user.2,Sales Girl,staff_user_2@yopmail.com,,FALSE,suspended

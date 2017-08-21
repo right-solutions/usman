@@ -1,5 +1,5 @@
 module Usman
-  class ApplicationController < Kuppayam::BaseController
+  class AdminController < Kuppayam::BaseController
     
     include Usman::AuthenticationHelper
 
@@ -7,7 +7,8 @@ module Usman
     
     before_action :current_user
     before_action :require_user
-    
+    before_action :require_site_admin
+
     private
 
     def set_default_title

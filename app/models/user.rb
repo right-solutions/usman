@@ -70,29 +70,33 @@ class User < Usman::ApplicationRecord
 
   # Import Methods
 
-  def self.save_row_data(row)
+  def self.save_row_data(hsh)
 
-    row.headers.each{ |cell| row[cell] = row[cell].to_s.strip }
+    return if hsh[:name].blank?
 
-    return if row[:name].blank?
+    user = User.find_by_username(hsh[:username]) || User.new
+    user.name = hsh[:name]
+    user.username = hsh[:username]
+    user.designation = hsh[:designation]
+    user.email = hsh[:email]
+    user.phone = hsh[:phone]
 
-    user = User.find_by_username(row[:username]) || User.new
-    user.name = row[:name]
-    user.username = row[:username]
-    user.designation = row[:designation]
-    user.email = row[:email]
-    user.phone = row[:phone]
+    user.super_admin = ["true", "t","1","yes","y"].include?(hsh[:super_admin].to_s.downcase.strip)
 
-    user.super_admin = ["true", "t","1","yes","y"].include?(row[:super_admin].to_s.downcase.strip)
-
-    user.status = row[:status]
+    user.status = hsh[:status]
     user.assign_default_password
 
     # Initializing error hash for displaying all errors altogether
     error_object = Kuppayam::Importer::ErrorHash.new
 
     if user.valid?
-      user.save!
+      begin
+        user.save!
+      rescue Exception => e
+        summary = "uncaught #{e} exception while handling connection: #{e.message}"
+        details = "Stack trace: #{e.backtrace.map {|l| "  #{l}\n"}.join}"
+        error_object.errors << { summary: summary, details: details }        
+      end
     else
       summary = "Error while saving user: #{user.name}"
       details = "Error! #{user.errors.full_messages.to_sentence}"

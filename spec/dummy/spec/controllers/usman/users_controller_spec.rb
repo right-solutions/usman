@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-describe Usman::Admin::UsersController, :type => :controller do
+describe Usman::UsersController, :type => :controller do
 
   let(:user) {FactoryGirl.create(:user)}
   let(:suspended_user) {FactoryGirl.create(:suspended_user)}

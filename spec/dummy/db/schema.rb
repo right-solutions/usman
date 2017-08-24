@@ -10,7 +10,74 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170427132819) do
+ActiveRecord::Schema.define(version: 20170822064622) do
+
+  create_table "cities", id: :integer, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.string "name", limit: 128
+    t.string "alternative_names", limit: 256
+    t.string "iso_code", limit: 128
+    t.integer "country_id"
+    t.integer "region_id"
+    t.decimal "latitude", precision: 10, scale: 6
+    t.decimal "longitude", precision: 10, scale: 6
+    t.integer "population"
+    t.integer "priority", default: 1000
+    t.boolean "show_in_api", default: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["country_id"], name: "index_cities_on_country_id"
+    t.index ["iso_code"], name: "index_cities_on_iso_code"
+    t.index ["region_id"], name: "index_cities_on_region_id"
+  end
+
+  create_table "countries", id: :integer, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.string "name", limit: 128
+    t.string "official_name", limit: 128
+    t.string "iso_name", limit: 128
+    t.string "fips", limit: 56
+    t.string "iso_alpha_2", limit: 5
+    t.string "iso_alpha_3", limit: 5
+    t.string "itu_code", limit: 5
+    t.string "dialing_prefix", limit: 56
+    t.string "tld", limit: 16
+    t.decimal "latitude", precision: 10, scale: 6
+    t.decimal "longitude", precision: 10, scale: 6
+    t.string "capital", limit: 64
+    t.string "continent", limit: 64
+    t.string "currency_code", limit: 16
+    t.string "currency_name", limit: 64
+    t.string "is_independent", limit: 56
+    t.string "languages", limit: 256
+    t.integer "priority", default: 1000
+    t.boolean "show_in_api", default: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["fips"], name: "index_countries_on_fips"
+    t.index ["iso_alpha_2"], name: "index_countries_on_iso_alpha_2"
+    t.index ["iso_alpha_3"], name: "index_countries_on_iso_alpha_3"
+  end
+
+  create_table "devices", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.bigint "user_id"
+    t.bigint "registration_id"
+    t.string "uuid", limit: 1024
+    t.string "device_token", limit: 1024
+    t.string "device_name", limit: 64
+    t.string "device_type", limit: 64
+    t.string "operating_system", limit: 64
+    t.string "software_version", limit: 64
+    t.datetime "last_accessed_at"
+    t.string "last_accessed_api", limit: 1024
+    t.integer "otp"
+    t.datetime "otp_sent_at"
+    t.string "api_token", limit: 256
+    t.datetime "token_created_at"
+    t.string "status", limit: 16, default: "pending", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["registration_id"], name: "index_devices_on_registration_id"
+    t.index ["user_id"], name: "index_devices_on_user_id"
+  end
 
   create_table "documents", id: :integer, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string "document"
@@ -67,6 +134,34 @@ ActiveRecord::Schema.define(version: 20170427132819) do
     t.index ["user_id"], name: "index_permissions_on_user_id"
   end
 
+  create_table "regions", id: :integer, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.string "name", limit: 128
+    t.string "iso_code", limit: 128
+    t.integer "country_id"
+    t.decimal "latitude", precision: 10, scale: 6
+    t.decimal "longitude", precision: 10, scale: 6
+    t.integer "priority", default: 1000
+    t.boolean "show_in_api", default: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["country_id"], name: "index_regions_on_country_id"
+    t.index ["iso_code"], name: "index_regions_on_iso_code"
+  end
+
+  create_table "registrations", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.bigint "user_id"
+    t.bigint "country_id"
+    t.bigint "city_id"
+    t.string "dialing_prefix"
+    t.string "mobile_number"
+    t.string "status", limit: 16, default: "pending", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["city_id"], name: "index_registrations_on_city_id"
+    t.index ["country_id"], name: "index_registrations_on_country_id"
+    t.index ["user_id"], name: "index_registrations_on_user_id"
+  end
+
   create_table "roles", id: :integer, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string "name"
     t.datetime "created_at", null: false
@@ -111,11 +206,14 @@ ActiveRecord::Schema.define(version: 20170427132819) do
     t.datetime "token_created_at"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "registration_id"
     t.index ["auth_token"], name: "index_users_on_auth_token", unique: true
     t.index ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true
     t.index ["email"], name: "index_users_on_email", unique: true
+    t.index ["registration_id"], name: "index_users_on_registration_id"
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
     t.index ["unlock_token"], name: "index_users_on_unlock_token", unique: true
   end
 
+  add_foreign_key "users", "registrations"
 end

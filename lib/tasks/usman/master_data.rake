@@ -7,7 +7,7 @@ namespace 'usman' do
     namespace 'master_data' do
 
       desc "Import all data in sequence"
-      task 'all_usman' => :environment do
+      task 'all' => :environment do
 
         import_list = ["roles"]
         

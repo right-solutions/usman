@@ -1,0 +1,14 @@
+en:
+  mobile_registration:
+    device_blocked:
+      heading: "This device is blocked."
+      message: "You must have done some mal-practices."
+    invalid_inputs:
+      heading: "Registring new mobile number FAILED."
+      message: "Check if all mandatory details are passed. Refer the error details for technical information."
+    otp_sent:
+      heading: "An OTP has been sent to you"
+      message: "Check your mobile for new message from us."
+    otp_not_sent:
+      heading: "OTP was not sent"
+      message: "There was some technical glitch and OTP was not sent. Try after some time."  

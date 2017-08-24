@@ -1,6 +1,7 @@
 require 'rails_helper'
 
 describe Usman::AuthenticationService do
+  
   let(:approved_user) {FactoryGirl.create(:approved_user)}
   let(:pending_user) {FactoryGirl.create(:pending_user)}
   let(:suspended_user) {FactoryGirl.create(:suspended_user)}

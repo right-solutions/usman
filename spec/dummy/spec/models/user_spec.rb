@@ -66,6 +66,8 @@ RSpec.describe User, type: :model do
     it { should have_one(:profile_picture) }
     it { should have_many(:permissions) }
     it { should have_many(:features) }
+    it { should have_one(:registration) }
+    it { should have_many(:devices) }
   end
 
   context "Class Methods" do

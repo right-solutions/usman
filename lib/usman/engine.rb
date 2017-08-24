@@ -1,11 +1,12 @@
 module Usman
   class Engine < ::Rails::Engine
     
+    # require 'pry'
     require 'kaminari'
     require 'kuppayam'
+    require 'pattana'
     require 'colorize'
     require 'colorized_string'
-    # require 'pry'
     
     isolate_namespace Usman
 

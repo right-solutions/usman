@@ -39,6 +39,8 @@ class User < Usman::ApplicationRecord
   has_one :profile_picture, :as => :imageable, :dependent => :destroy, :class_name => "Image::ProfilePicture"
   has_many :permissions
   has_many :features, through: :permissions
+  has_many :devices
+  has_one :registration
   has_and_belongs_to_many :roles
 
   

@@ -158,6 +158,9 @@ RSpec.describe Device, type: :model do
     end
 
     context "Other Methods" do
+      it "as_json" do
+        skip "To Be Implemented"
+      end
       it "display_name" do
         r = FactoryGirl.create(:device, device_name: "Samsung Galaxy", uuid: "1234567890")
         expect(r.display_name).to match("Samsung Galaxy - 1234567890")

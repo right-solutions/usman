@@ -213,6 +213,10 @@ RSpec.describe User, type: :model do
     end
 
     context "Other Methods" do
+      it "as_json" do
+        skip "To Be Implemented"
+      end
+
       it "display_name" do
         expect(ram.display_name).to match("Ram")
       end

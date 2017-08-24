@@ -43,7 +43,8 @@ module Usman
     end
 
     def embed_stack_in_json_response?
-      ["true", "t", "1", "yes"].include?(params[:debug].to_s.downcase.strip) # || Rails.env == "development"
+      return true if Rails.env.development?
+      Rails.env.production? && ["true", "t", "1", "yes"].include?(params[:debug].to_s.downcase.strip)
     end
 
     ## This method will accept a proc, execute it and render the json
@@ -55,9 +56,9 @@ module Usman
       rescue Exception => e
         @success = false
         @errors = { 
-                    heading: I18n.translate("response.unexpected_failure.heading"),
-                    message: e.message.underscore,
-                    details: I18n.translate("response.#{e.message.underscore}.details"),
+                    heading: I18n.translate("general.unexpected_failure.heading"),
+                    message: I18n.translate("general.unexpected_failure.message"),
+                    details: e.message,
                     stacktrace: (embed_stack_in_json_response? ? e.backtrace : nil)
                   }
       end

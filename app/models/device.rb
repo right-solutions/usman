@@ -1,6 +1,8 @@
 class Device < ApplicationRecord
   
   # Constants
+  EXCLUDED_JSON_ATTRIBUTES = [:last_accessed_at, :last_accessed_api, :otp, :otp_sent_at, :api_token, :token_created_at, :status, :created_at, :updated_at]
+
   PENDING = "pending"
   VERIFIED = "verified"
   BLOCKED = "blocked"
@@ -63,6 +65,15 @@ class Device < ApplicationRecord
   # Instance Methods
   # ------------------
 
+  # Exclude some attributes info from json output.
+  def as_json(options={})
+    options[:except] ||= EXCLUDED_JSON_ATTRIBUTES
+    #options[:include] ||= []
+    #options[:methods] = []
+    #options[:methods] << :profile_image
+    super(options)
+  end
+  
   # Status Methods
   # --------------
 

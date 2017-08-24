@@ -41,7 +41,6 @@ RSpec.describe Api::V1::RegistrationsController, :type => :request do
         expect(data["registration"]["city_id"]).to  eq(city.id)
         expect(data["registration"]["dialing_prefix"]).to  eq("+971")
         expect(data["registration"]["mobile_number"]).to  eq("554455339")
-        expect(data["registration"]["status"]).to eq(Registration::PENDING)
         expect(data["registration"]["user_id"]).to  be_blank
 
         expect(data["device"]["user_id"]).to  be_blank
@@ -52,7 +51,6 @@ RSpec.describe Api::V1::RegistrationsController, :type => :request do
         expect(data["device"]["device_type"]).to  match("iPhone 7 Plus")
         expect(data["device"]["operating_system"]).to  match("iPhone 7 Plus")
         expect(data["device"]["software_version"]).to  match("Apple iOS")
-        expect(data["device"]["status"]).to eq(Device::PENDING)
       end
 
       it "should register and reuse an existing device information" do
@@ -90,7 +88,6 @@ RSpec.describe Api::V1::RegistrationsController, :type => :request do
         expect(data["registration"]["city_id"]).to  eq(reg.city.id)
         expect(data["registration"]["dialing_prefix"]).to  eq(reg.dialing_prefix)
         expect(data["registration"]["mobile_number"]).to  eq(reg.mobile_number)
-        expect(data["registration"]["status"]).to eq(reg.status)
         expect(data["registration"]["user_id"]).to  eq(reg.user.id)
         
         expect(data["device"]["registration_id"]).to  be(reg.id)
@@ -100,7 +97,6 @@ RSpec.describe Api::V1::RegistrationsController, :type => :request do
         expect(data["device"]["device_type"]).to  match("iPhone 7 Plus")
         expect(data["device"]["operating_system"]).to  match("iPhone 7 Plus")
         expect(data["device"]["software_version"]).to  match("Apple iOS")
-        expect(data["device"]["status"]).to eq(Device::PENDING)
         expect(data["device"]["user_id"]).to  be(reg.user.id)
       end
 
@@ -139,7 +135,6 @@ RSpec.describe Api::V1::RegistrationsController, :type => :request do
         expect(data["registration"]["city_id"]).to  eq(reg.city.id)
         expect(data["registration"]["dialing_prefix"]).to  eq(reg.dialing_prefix)
         expect(data["registration"]["mobile_number"]).to  eq(reg.mobile_number)
-        expect(data["registration"]["status"]).to eq(reg.status)
         expect(data["registration"]["user_id"]).to  eq(reg.user.id)
         
         expect(data["device"]["registration_id"]).to  be(reg.id)
@@ -149,7 +144,6 @@ RSpec.describe Api::V1::RegistrationsController, :type => :request do
         expect(data["device"]["device_type"]).to  match(dev.device_type)
         expect(data["device"]["operating_system"]).to  match(dev.operating_system)
         expect(data["device"]["software_version"]).to  match(dev.software_version)
-        expect(data["device"]["status"]).to eq(dev.status)
         expect(data["device"]["user_id"]).to  be(dev.user.id)
       end
     end
@@ -276,7 +270,6 @@ RSpec.describe Api::V1::RegistrationsController, :type => :request do
   #       expect(data["registration"]["city_id"]).to  eq(city.id)
   #       expect(data["registration"]["dialing_prefix"]).to  eq("+971")
   #       expect(data["registration"]["mobile_number"]).to  eq("554455339")
-  #       expect(data["registration"]["status"]).to eq(Registration::PENDING)
   #       expect(data["registration"]["user_id"]).to  be_blank
 
   #       expect(data["device"]["user_id"]).to  be_blank
@@ -287,7 +280,6 @@ RSpec.describe Api::V1::RegistrationsController, :type => :request do
   #       expect(data["device"]["device_type"]).to  match("iPhone 7 Plus")
   #       expect(data["device"]["operating_system"]).to  match("iPhone 7 Plus")
   #       expect(data["device"]["software_version"]).to  match("Apple iOS")
-  #       expect(data["device"]["status"]).to eq(Device::PENDING)
   #     end
   #   end
   #   context "Negative Case" do

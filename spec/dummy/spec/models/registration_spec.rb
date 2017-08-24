@@ -35,7 +35,7 @@ RSpec.describe Registration, type: :model do
   end
 
   context "Associations" do
-    it { should have_one(:user) }
+    it { should belong_to(:user) }
     it { should belong_to(:country) }
     it { should belong_to(:city) }
     it { should have_many(:devices) }
@@ -88,6 +88,9 @@ RSpec.describe Registration, type: :model do
       end
     end
     context "Other Methods" do
+      it "as_json" do
+        skip "To Be Implemented"
+      end
       it "display_name" do
         r = FactoryGirl.create(:registration, dialing_prefix: "+961", mobile_number: "123412345")
         expect(r.display_name).to match("+961 123412345")

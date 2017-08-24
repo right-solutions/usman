@@ -1,6 +1,8 @@
 class Registration < ApplicationRecord
   
   # Constants
+  EXCLUDED_JSON_ATTRIBUTES = [:status, :created_at, :updated_at]
+
   PENDING = "pending"
   VERIFIED = "verified"
   
@@ -15,7 +17,7 @@ class Registration < ApplicationRecord
   }
   
 	# Associations
-  has_one :user
+  belongs_to :user, optional: true
   belongs_to :country
   belongs_to :city, optional: true
   has_many :devices
@@ -45,6 +47,15 @@ class Registration < ApplicationRecord
   # ------------------
   # Instance Methods
   # ------------------
+
+  # Exclude some attributes info from json output.
+  def as_json(options={})
+    options[:except] ||= EXCLUDED_JSON_ATTRIBUTES
+    #options[:include] ||= []
+    #options[:methods] = []
+    #options[:methods] << :profile_image
+    super(options)
+  end
 
   # Status Methods
   # --------------

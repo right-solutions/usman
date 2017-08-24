@@ -4,6 +4,9 @@ class User < Usman::ApplicationRecord
   has_secure_password
 
   # Constants
+
+  EXCLUDED_JSON_ATTRIBUTES = [:confirmation_token, :password_digest, :reset_password_token, :unlock_token, :status, :reset_password_sent_at, :remember_created_at, :sign_in_count, :current_sign_in_at, :last_sign_in_at, :current_sign_in_ip, :last_sign_in_ip, :confirmed_at, :confirmation_sent_at, :unconfirmed_email, :failed_attempts, :locked_at, :created_at, :updated_at]
+  
   PENDING = "pending"
   APPROVED = "approved"
   SUSPENDED = "suspended"
@@ -48,6 +51,15 @@ class User < Usman::ApplicationRecord
   # Class Methods
   # ------------------
 
+  # Exclude some attributes info from json output.
+  def as_json(options={})
+    options[:except] ||= EXCLUDED_JSON_ATTRIBUTES
+    #options[:include] ||= []
+    #options[:methods] = []
+    #options[:methods] << :profile_image
+    super(options)
+  end
+  
   # Scopes Methods
 
   # return an active record relation object with the search query in its where clause

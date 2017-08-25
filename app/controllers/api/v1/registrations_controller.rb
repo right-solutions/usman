@@ -1,8 +1,8 @@
 module Api
   module V1
-    class RegistrationsController < ActionController::API
+    class RegistrationsController < BaseController
 
-      include Usman::ApiHelper
+      skip_before_action :require_auth_token      
 
       def register
         proc_code = Proc.new do

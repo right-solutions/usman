@@ -3,9 +3,9 @@ module Api
     class BaseController < ActionController::API
 
       include ActionController::HttpAuthentication::Token::ControllerMethods
-      include ApiHelper
+      include Usman::ApiHelper
       
-      before_filter :require_auth_token
+      before_action :require_auth_token
 
     end
   end

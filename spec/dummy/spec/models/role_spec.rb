@@ -6,7 +6,7 @@ RSpec.describe Role, type: :model do
   
   context "Factory" do
     it "should validate all the factories" do
-      expect(FactoryGirl.build(:role).valid?).to be true
+      expect(FactoryGirl.build(:role).valid?).to be_truthy
     end
   end
 

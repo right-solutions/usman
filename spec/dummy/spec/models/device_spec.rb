@@ -6,19 +6,19 @@ RSpec.describe Device, type: :model do
   
   context "Factory" do
     it "should validate all the factories" do
-      expect(FactoryGirl.build(:device).valid?).to be true
+      expect(FactoryGirl.build(:device).valid?).to be_truthy
 
       pending_device = FactoryGirl.build(:pending_device)
       expect(pending_device.status).to match("pending")
-      expect(pending_device.valid?).to be true
+      expect(pending_device.valid?).to be_truthy
 
       verified_device = FactoryGirl.build(:verified_device)
       expect(verified_device.status).to match("verified")
-      expect(verified_device.valid?).to be true
+      expect(verified_device.valid?).to be_truthy
 
       blocked_device = FactoryGirl.build(:blocked_device)
       expect(blocked_device.status).to match("blocked")
-      expect(blocked_device.valid?).to be true
+      expect(blocked_device.valid?).to be_truthy
     end
   end
 

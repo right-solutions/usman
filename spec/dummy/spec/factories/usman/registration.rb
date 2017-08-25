@@ -5,11 +5,14 @@ FactoryGirl.define do
   factory :registration do
 
     user
-    country
     city
 
     dialing_prefix "+971"
     mobile_number "501122333"
+
+    after :build do |reg|
+      reg.country = reg.city.country
+    end
 
   end
 

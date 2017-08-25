@@ -4,11 +4,11 @@ RSpec.describe Permission, type: :model do
 
   context "Factory" do
     it "should validate all the factories" do
-      expect(FactoryGirl.build(:permission).valid?).to be true
-      expect(FactoryGirl.build(:create_permission).valid?).to be true
-      expect(FactoryGirl.build(:update_permission).valid?).to be true
-      expect(FactoryGirl.build(:delete_permission).valid?).to be true
-      expect(FactoryGirl.build(:all_permission).valid?).to be true
+      expect(FactoryGirl.build(:permission).valid?).to be_truthy
+      expect(FactoryGirl.build(:create_permission).valid?).to be_truthy
+      expect(FactoryGirl.build(:update_permission).valid?).to be_truthy
+      expect(FactoryGirl.build(:delete_permission).valid?).to be_truthy
+      expect(FactoryGirl.build(:all_permission).valid?).to be_truthy
     end
 
     it "should set correct permissions" do

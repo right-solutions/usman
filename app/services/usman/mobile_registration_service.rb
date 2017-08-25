@@ -13,6 +13,8 @@ module Usman
       @dialing_prefix = params[:dialing_prefix]
       @mobile_number = params[:mobile_number]
       
+      @country = nil
+      @city = nil
       @country = Country.find_by_id(params[:country_id])
       @city = City.find_by_id(params[:city_id])
 
@@ -50,8 +52,8 @@ module Usman
     def check_if_device_is_already_registered
       @registration = Registration.where("LOWER(mobile_number) = LOWER('#{@mobile_number}')").first
       if @registration
-        @country = @registration.country unless @country
-        @city = @registration.city unless @city
+        @registration.country = @country
+        @registration.city = @city
       end
       @device = Device.where("LOWER(uuid) = LOWER('#{@uuid}')").first if @registration
     end

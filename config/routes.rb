@@ -38,8 +38,8 @@ Usman::Engine.routes.draw do
   namespace :api do
     namespace :v1 do
       post :register, :controller => "/api/v1/registrations"
-      #post :resend_otp, :controller => "/api/v1/registrations"
-      #post :verify, :controller => "/api/v1/registrations"
+      post :resend_otp, :controller => "/api/v1/registrations"
+      post :verify, :controller => "/api/v1/registrations"
     end
   end
 

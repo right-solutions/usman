@@ -9,23 +9,23 @@ RSpec.describe User, type: :model do
 
   context "Factory" do
     it "should validate all the factories" do
-      expect(FactoryGirl.build(:user).valid?).to be true
+      expect(FactoryGirl.build(:user).valid?).to be_truthy
 
       pending_user = FactoryGirl.build(:pending_user)
       expect(pending_user.status).to match("pending")
-      expect(pending_user.valid?).to be true
+      expect(pending_user.valid?).to be_truthy
 
       approved_user = FactoryGirl.build(:approved_user)
       expect(approved_user.status).to match("approved")
-      expect(approved_user.valid?).to be true
+      expect(approved_user.valid?).to be_truthy
 
       suspended_user = FactoryGirl.build(:suspended_user)
       expect(suspended_user.status).to match("suspended")
-      expect(suspended_user.valid?).to be true
+      expect(suspended_user.valid?).to be_truthy
 
       super_admin_user = FactoryGirl.build(:super_admin_user)
       expect(super_admin_user.super_admin).to be_truthy
-      expect(super_admin_user.valid?).to be true
+      expect(super_admin_user.valid?).to be_truthy
     end
   end
 

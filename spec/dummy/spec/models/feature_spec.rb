@@ -14,19 +14,19 @@ RSpec.describe Feature, type: :model do
   
   context "Factory" do
     it "should validate all the factories" do
-      expect(FactoryGirl.build(:feature).valid?).to be true
+      expect(FactoryGirl.build(:feature).valid?).to be_truthy
       
       published_feature = FactoryGirl.build(:published_feature)
       expect(published_feature.status).to match("published")
-      expect(published_feature.valid?).to be true
+      expect(published_feature.valid?).to be_truthy
 
       unpublished_feature = FactoryGirl.build(:unpublished_feature)
       expect(unpublished_feature.status).to match("unpublished")
-      expect(unpublished_feature.valid?).to be true
+      expect(unpublished_feature.valid?).to be_truthy
 
       disabled_feature = FactoryGirl.build(:disabled_feature)
       expect(disabled_feature.status).to match("disabled")
-      expect(disabled_feature.valid?).to be true
+      expect(disabled_feature.valid?).to be_truthy
     end
   end
 

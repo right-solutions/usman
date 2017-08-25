@@ -6,15 +6,21 @@ RSpec.describe Registration, type: :model do
   
   context "Factory" do
     it "should validate all the factories" do
-      expect(FactoryGirl.build(:registration).valid?).to be true
+      expect(FactoryGirl.build(:registration).valid?).to be_truthy
+      
+      reg = FactoryGirl.create(:registration)
+      expect(reg.valid?).to be_truthy
+      expect(reg.city).not_to be_nil
+      expect(reg.country).not_to be_nil
+      expect(reg.city.country).to eq(reg.country)
 
       pending_registration = FactoryGirl.build(:pending_registration)
       expect(pending_registration.status).to match("pending")
-      expect(pending_registration.valid?).to be true
+      expect(pending_registration.valid?).to be_truthy
 
       verified_registration = FactoryGirl.build(:verified_registration)
       expect(verified_registration.status).to match("verified")
-      expect(verified_registration.valid?).to be true
+      expect(verified_registration.valid?).to be_truthy
     end
   end
 

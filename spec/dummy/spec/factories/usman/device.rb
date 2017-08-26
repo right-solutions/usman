@@ -29,6 +29,9 @@ FactoryGirl.define do
 
   factory :verified_device, parent: :device do
     status "verified"
+    otp { rand(10000..99999) }
+    otp_sent_at { Time.now }
+    otp_verified_at { Time.now }
   end
 
   factory :blocked_device, parent: :device do

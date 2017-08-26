@@ -146,14 +146,20 @@ RSpec.describe Device, type: :model do
         expect(u.status).to match "blocked"
         expect(u.blocked?).to be_truthy
       end
-
-      
     end
 
     context "Authentication Methods" do
       it "generate_otp" do
         device.generate_otp
         expect(device.otp).not_to be_nil
+      end
+
+      it "validate_otp" do
+        skip "To Be Implemented"
+      end
+
+      it "send_otp" do
+        expect(device.send_otp).to eq(true)
       end
     end
 

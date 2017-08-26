@@ -78,6 +78,7 @@ module Usman
         @device.registration = @registration
         @device.user = @registration.user
         @device.uuid = @uuid
+        @device.api_token = SecureRandom.hex
         @device.device_token = @device_token
         @device.device_name = @device_name
         @device.device_type = @device_type
@@ -100,15 +101,11 @@ module Usman
 
     def generate_new_otp
       @device.generate_otp
-      if send_otp
+      if @device.send_otp
         @device.update_attribute(:otp_sent_at, Time.now)
       else
         set_error("mobile_registration.otp_not_sent")
       end
-    end
-
-    def send_otp
-      return true
     end
 
     def set_error(key, hsh={})

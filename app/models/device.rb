@@ -144,6 +144,7 @@ class Device < ApplicationRecord
 
   def generate_otp
     self.otp = rand(10000..99999)
+    self.otp_sent_at = Time.now
   end
 
   def validate_otp(otp, dialing_prefix, mobile_number)
@@ -151,34 +152,49 @@ class Device < ApplicationRecord
     # Validate OTP and other parameters
     validation_errors = {}
 
+    # Check if this OTP was already verified
+    if !self.otp_verified_at.blank?
+      validation_errors[:otp_verified_at] = "This OTP was already used."
+      return false, validation_errors
+    end
+
     # TODO - remove 11111 after implementing Twilio
-    validation_errors[:otp] = "doesn't match with our database" unless (self.otp.to_s == otp.to_s || self.otp.to_s == "11111")
+    validation_errors[:otp] = "doesn't match with our database" unless (self.otp.to_s == otp.to_s or otp.to_s == "11111")
     validation_errors[:mobile_number] = "doesn't match with our database" unless self.registration.mobile_number.to_s == mobile_number.to_s
     validation_errors[:dialing_prefix] = "doesn't match with our database" unless self.registration.dialing_prefix.to_s == dialing_prefix.to_s
     
-    if validation_errors.empty?
-      if self.otp_verified_at.blank?
+    return false, validation_errors unless validation_errors.empty?
+    
+    # Create API Token if OTP is verified
+    self.otp_verified_at = Time.now
+    self.api_token = SecureRandom.hex
+    self.token_created_at = Time.now
+    self.save
 
-        # Create API Token if OTP is verified
-        self.otp_verified_at = Time.now
-        self.api_token = SecureRandom.hex
-        self.token_created_at = Time.now
-        self.save
+    self.verify!
+    self.registration.verify!
 
-        self.verify!
-        self.registration.verify!
+    return true, {}
+  end
 
-        return true, {}
-      else
+  def resend_otp(dialing_prefix, mobile_number)
+    # Validate OTP and other parameters
+    validation_errors = {}
 
-        # Check if this OTP was already verified
-        validation_errors[:otp_verified_at] = "This OTP was already used."
+    validation_errors[:mobile_number] = "doesn't match with our database" unless self.registration.mobile_number.to_s == mobile_number.to_s
+    validation_errors[:dialing_prefix] = "doesn't match with our database" unless self.registration.dialing_prefix.to_s == dialing_prefix.to_s
+    
+    return false, validation_errors unless validation_errors.empty?
+    
+    self.send_otp
 
-        return false, validation_errors
-      end
-    else
-      return false, validation_errors
-    end
+    return true, {}
+  end
+
+  def send_otp
+    self.generate_otp
+    self.save
+    return true
   end
 
   # Other Methods

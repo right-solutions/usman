@@ -43,4 +43,10 @@ Usman::Engine.routes.draw do
     end
   end
 
+  get '/api/v1/docs/usman',         to: "docs#index",  as:   :docs_index
+  
+  #get "/api/v1/docs/register", :controller => "/usman/api_docs"
+  #get "/api/v1/docs/resend_otp", :controller => "/usman/api_docs"
+  #get "/api/v1/docs/verify", :controller => "/usman/api_docs"
+
 end

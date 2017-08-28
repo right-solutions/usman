@@ -1,0 +1,502 @@
+<div class="tabs-vertical-env">
+  
+  <ul class="nav tabs-vertical">
+    <li class="active">
+      <a href="#register" data-toggle="tab">
+        <i class="fa-globe visible-xs"></i>
+        <span class="hidden-xs">Register</span>
+      </a>
+    </li>
+    <li class="">
+      <a href="#resend_otp" data-toggle="tab">
+        <i class="fa-globe visible-xs"></i>
+        <span class="hidden-xs">Resend OTP</span>
+      </a>
+    </li>
+    <li class="">
+      <a href="#verify" data-toggle="tab">
+        <i class="fa-globe visible-xs"></i>
+        <span class="hidden-xs">Verify</span>
+      </a>
+    </li>
+    <li class="">
+      <a href="#terms_and_conditions" data-toggle="tab">
+        <i class="fa-globe visible-xs"></i>
+        <span class="hidden-xs">Terms & Conditions</span>
+      </a>
+    </li>
+    <li class="">
+      <a href="#create_profile" data-toggle="tab">
+        <i class="fa-globe visible-xs"></i>
+        <span class="hidden-xs">Create Profile</span>
+      </a>
+    </li>
+    <li class="">
+      <a href="#create_profile" data-toggle="tab">
+        <i class="fa-globe visible-xs"></i>
+        <span class="hidden-xs">Update Profile</span>
+      </a>
+    </li>
+  </ul>
+  
+  <div class="tab-content">
+    
+    <!-- Sample Search Results Tab -->
+    <div class="tab-pane active" id="register">
+      
+      <h3>
+        <span class="text-success">Register API</span><br>
+        <small>/api/v1/register</small>
+      </h3>
+
+      <div class="panel-group panel-group-joined">
+        
+        <div class="panel panel-default panel-positive" style="width:100%;">
+          <div class="panel-heading">
+            <h4 class="panel-title">
+              <a data-toggle="collapse" data-parent="#register-pos-1" href="#register-pos-1" class="collapsed" aria-expanded="false">
+                Positive Case - 1 - should register and add a new device
+              </a>
+            </h4>
+          </div>
+          <div id="register-pos-1" class="panel-collapse collapse" aria-expanded="false" style="height: 0px;">
+            <div class="panel-body">
+              <div class="mt-10 mb-20">Input</div>
+              <pre>
+                {
+                  "country_id": "1",
+                  "city_id": "2",
+                  "dialing_prefix": "+91",
+                  "mobile_number": "501370321",
+                  "uuid": "jh01u2g01h301h21h232",
+                  "device_token": "0182y3b28107b31",
+                  "device_name": "Apple iPhone",
+                  "device_type": "iPhone 7 Plus",
+                  "operating_system": "iOS",
+                  "software_version": "iOS 11.2.2"
+                }</pre>
+
+              <div class="mt-10 mb-20">Output</div>
+              <pre>
+                {
+                    "success": true,
+                    "alert": {
+                        "heading": "An OTP has been sent to you",
+                        "message": "Check your mobile for new message from us."
+                    },
+                    "data": {
+                        "registration": {
+                            "id": 5,
+                            "user_id": null,
+                            "country_id": 1,
+                            "city_id": null,
+                            "dialing_prefix": "+91",
+                            "mobile_number": "501370321"
+                        },
+                        "device": {
+                            "id": 6,
+                            "user_id": null,
+                            "registration_id": 5,
+                            "uuid": "jh01u2g01h301h21h232",
+                            "device_token": "0182y3b28107b31",
+                            "device_name": "Apple iPhone",
+                            "device_type": "iPhone 7 Plus",
+                            "operating_system": "iOS",
+                            "software_version": "iOS 11.2.2",
+                            "otp_verified_at": null
+                        }
+                    },
+                    "errors": {
+                        "heading": null,
+                        "message": null,
+                        "details": {}
+                    }
+                }</pre>
+            </div>
+          </div>
+        </div>
+
+        <div class="panel panel-default panel-negative" style="width:100%;">
+          <div class="panel-heading">
+            <h4 class="panel-title">
+              <a data-toggle="collapse" data-parent="#register-neg-1" href="#register-neg-1" class="collapsed" aria-expanded="false">
+                Negative Case - 1 - should set proper errors if no input is given
+              </a>
+            </h4>
+          </div>
+          <div id="register-neg-1" class="panel-collapse collapse" aria-expanded="false" style="height: 0px;">
+            <div class="panel-body">
+              <div class="mt-10 mb-20">Input</div>
+              <pre>
+                {}</pre>
+
+              <div class="mt-10 mb-20">Output</div>
+              <pre>
+                {
+                  "success": false,
+                  "errors": {
+                      "heading": "Registring new mobile number FAILED.",
+                      "message": "Check if all mandatory details are passed. Refer the error details for technical information.",
+                      "details": {
+                          "country": [
+                              "must exist"
+                          ],
+                          "dialing_prefix": [
+                              "can't be blank",
+                              "is too short (minimum is 2 characters)"
+                          ],
+                          "mobile_number": [
+                              "can't be blank",
+                              "is too short (minimum is 9 characters)"
+                          ],
+                          "uuid": [
+                              "can't be blank"
+                          ],
+                          "device_token": [
+                              "can't be blank"
+                          ]
+                      }
+                  }
+              }</pre>
+            </div>
+          </div>
+        </div>
+      
+        <div class="panel panel-default panel-negative" style="width:100%;">
+          <div class="panel-heading">
+            <h4 class="panel-title">
+              <a data-toggle="collapse" data-parent="#register-neg-2" href="#register-neg-2" class="collapsed" aria-expanded="false">
+                Negative Case - 2 - should set proper errors when device information is missing
+              </a>
+            </h4>
+          </div>
+          <div id="register-neg-2" class="panel-collapse collapse" aria-expanded="false" style="height: 0px;">
+            <div class="panel-body">
+              <div class="mt-10 mb-20">Input</div>
+              <pre>
+                {
+                  "country_id": "1",
+                  "dialing_prefix": "+92",
+                  "mobile_number": "501370323"
+                }</pre>
+
+              <div class="mt-10 mb-20">Output</div>
+              <pre>
+                {
+                  "success": false,
+                  "errors": {
+                      "heading": "Registring new mobile number FAILED.",
+                      "message": "Check if all mandatory details are passed. Refer the error details for technical information.",
+                      "details": {
+                          "uuid": [
+                              "can't be blank"
+                          ],
+                          "device_token": [
+                              "can't be blank"
+                          ]
+                      }
+                  }
+                }</pre>
+            </div>
+          </div>
+        </div>
+      
+        <div class="panel panel-default panel-negative" style="width:100%;">
+          <div class="panel-heading">
+            <h4 class="panel-title">
+              <a data-toggle="collapse" data-parent="#register-neg-3" href="#register-neg-3" class="collapsed" aria-expanded="false">
+                Negative Case - 3 - should set proper errors when registration information is missing
+              </a>
+            </h4>
+          </div>
+          <div id="register-neg-3" class="panel-collapse collapse" aria-expanded="false" style="height: 0px;">
+            <div class="panel-body">
+              <div class="mt-10 mb-20">Input</div>
+              <pre>
+                {
+                  "uuid": "jh01u2g01h301h21h23",
+                  "device_token": "0182y3b28107b31",
+                  "device_name": "Apple iPhone",
+                  "device_type": "iPhone 7 Plus",
+                  "operating_system": "iOS",
+                  "software_version": "iOS 11.2.2"
+                }</pre>
+
+              <div class="mt-10 mb-20">Output</div>
+              <pre>
+                {
+                  "success": false,
+                  "errors": {
+                      "heading": "Registring new mobile number FAILED.",
+                      "message": "Check if all mandatory details are passed. Refer the error details for technical information.",
+                      "details": {
+                          "country": [
+                              "must exist"
+                          ],
+                          "dialing_prefix": [
+                              "can't be blank",
+                              "is too short (minimum is 2 characters)"
+                          ],
+                          "mobile_number": [
+                              "can't be blank",
+                              "is too short (minimum is 9 characters)"
+                          ]
+                      }
+                  }
+              }</pre>
+            </div>
+          </div>
+        </div>
+        
+      </div>
+    </div>
+    
+    <!-- Search Results Tab -->
+    <div class="tab-pane" id="resend_otp">
+      <h3>
+        <span class="text-success">Resend OTP</span><br>
+        <small>/api/v1/resend_otp</small>
+      </h3>
+
+      <div class="panel-group panel-group-joined">
+        <div class="panel panel-default panel-positive" style="width:100%;">
+          <div class="panel-heading">
+            <h4 class="panel-title">
+              <a data-toggle="collapse" data-parent="#resend-otp-pos-1" href="#resend-otp-pos-1" class="collapsed" aria-expanded="false">
+                Positive Case - 1 - should resend the otp for valid inputs
+              </a>
+            </h4>
+          </div>
+          <div id="resend-otp-pos-1" class="panel-collapse collapse" aria-expanded="false" style="height: 0px;">
+            <div class="panel-body">
+              <div class="mt-10 mb-20">Input</div>
+              <pre>
+                {
+                  "uuid": "asd907asdba78sbda",
+                  "mobile_number": "292991230",
+                  "dialing_prefix": "+91"
+                }</pre>
+
+              <div class="mt-10 mb-20">Output</div>
+              <pre>
+                {
+                  "success": true,
+                  "alert": {
+                      "heading": "An new OTP has been sent to you",
+                      "message": "Check your mobile for new message from us."
+                  }
+              }</pre>
+            </div>
+          </div>
+        </div>
+      
+        <div class="panel panel-default panel-negative" style="width:100%;">
+          <div class="panel-heading">
+            <h4 class="panel-title">
+              <a data-toggle="collapse" data-parent="#resend-otp-neg-1" href="#resend-otp-neg-1" class="collapsed" aria-expanded="false">
+                Negative Case - 1 - should set proper errors if no input is given
+              </a>
+            </h4>
+          </div>
+          <div id="resend-otp-neg-1" class="panel-collapse collapse" aria-expanded="false" style="height: 0px;">
+            <div class="panel-body">
+              <div class="mt-10 mb-20">Input</div>
+              <pre>
+                {}</pre>
+
+              <div class="mt-10 mb-20">Output</div>
+              <pre>
+                {
+                  "success": false,
+                  "errors": {
+                      "heading": "Unexpected Failure",
+                      "message": "We're sorry, but something went wrong (500)",
+                      "details": {
+                          "uuid": "is invalid"
+                      }
+                  }
+              }</pre>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Search Results Tab -->
+    <div class="tab-pane" id="verify">
+      <h3>
+        <span class="text-success">Verify API</span><br>
+        <small>/api/v1/verify</small>
+      </h3>
+
+      <div class="panel-group panel-group-joined">
+        <div class="panel panel-default panel-positive" style="width:100%;">
+          <div class="panel-heading">
+            <h4 class="panel-title">
+              <a data-toggle="collapse" data-parent="#verify-pos-1" href="#verify-pos-1" class="collapsed" aria-expanded="false">
+                Positive Case - 1 - should verify an otp verification request from a pending device
+              </a>
+            </h4>
+          </div>
+          <div id="verify-pos-1" class="panel-collapse collapse" aria-expanded="false" style="height: 0px;">
+            <div class="panel-body">
+              <div class="mt-10 mb-20">Input</div>
+              <pre>
+                {
+                  "otp": "11111",
+                  "uuid": "90a0dadsand",
+                  "mobile_number": "9102993912",
+                  "dialing_prefix": "+91"
+                }</pre>
+
+              <div class="mt-10 mb-20">Output</div>
+              <pre>
+                {
+                  "success": true,
+                  "alert": {
+                      "heading": "OTP was verified succesfully",
+                      "message": "Store and use the API token for further communication"
+                  },
+                  "data": {
+                      "api_token": "cfc0eb18c8f3b5922e702f1e10437fa1"
+                  }
+              }</pre>
+            </div>
+          </div>
+        </div>
+      
+        <div class="panel panel-default panel-negative" style="width:100%;">
+          <div class="panel-heading">
+            <h4 class="panel-title">
+              <a data-toggle="collapse" data-parent="#verify-neg-1" href="#verify-neg-1" class="collapsed" aria-expanded="false">
+                Negative Case - 1 - should set proper errors if no input is given
+              </a>
+            </h4>
+          </div>
+          <div id="verify-neg-1" class="panel-collapse collapse" aria-expanded="false" style="height: 0px;">
+            <div class="panel-body">
+              <div class="mt-10 mb-20">Input</div>
+              <pre>
+                {
+                  "uuid": "asd907asdba78sbda",
+                  "mobile_number": "292991230",
+                  "dialing_prefix": "+91"
+                }</pre>
+
+              <div class="mt-10 mb-20">Output</div>
+              <pre>
+                {
+                  "success": false,
+                  "errors": {
+                      "heading": "OTP verification was failed",
+                      "message": "Make sure that you enter the OTP correctly.",
+                      "details": {
+                          "otp": "doesn't match with our database"
+                      }
+                  }
+              }</pre>
+            </div>
+          </div>
+        </div>
+      
+        <div class="panel panel-default panel-negative" style="width:100%;">
+          <div class="panel-heading">
+            <h4 class="panel-title">
+              <a data-toggle="collapse" data-parent="#verify-neg-2" href="#verify-neg-2" class="collapsed" aria-expanded="false">
+                Negative Case - 2 - should respond with proper errors if the otp is already used once
+              </a>
+            </h4>
+          </div>
+          <div id="verify-neg-2" class="panel-collapse collapse" aria-expanded="false" style="height: 0px;">
+            <div class="panel-body">
+              <div class="mt-10 mb-20">Input</div>
+              <pre>
+                {
+                  "otp": "11111",
+                  "uuid": "asd907asdba78sbda",
+                  "mobile_number": "292991230",
+                  "dialing_prefix": "+91"
+                }</pre>
+
+              <div class="mt-10 mb-20">Output</div>
+              <pre>
+                {
+                  "success": false,
+                  "errors": {
+                      "heading": "OTP verification was failed",
+                      "message": "Make sure that you enter the OTP correctly.",
+                      "details": {
+                          "otp_verified_at": "This OTP was already used."
+                      }
+                  }
+              }</pre>
+            </div>
+          </div>
+        </div>
+      
+        <div class="panel panel-default panel-negative" style="width:100%;">
+          <div class="panel-heading">
+            <h4 class="panel-title">
+              <a data-toggle="collapse" data-parent="#verify-neg-3" href="#verify-neg-3" class="collapsed" aria-expanded="false">
+                Negative Case - 2 - should respond with proper errors if the device is blocked
+              </a>
+            </h4>
+          </div>
+          <div id="verify-neg-3" class="panel-collapse collapse" aria-expanded="false" style="height: 0px;">
+            <div class="panel-body">
+              <div class="mt-10 mb-20">Input</div>
+              <pre>
+                {
+                  "otp": "11111",
+                  "uuid": "asd907asdba78sbda",
+                  "mobile_number": "292991230",
+                  "dialing_prefix": "+91"
+                }</pre>
+
+              <div class="mt-10 mb-20">Output</div>
+              <pre>
+                {
+                  "success": false,
+                  "errors": {
+                      "heading": "This device is blocked.",
+                      "message": "You must have done some mal-practices.",
+                      "details": {}
+                  }
+              }</pre>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Search Results Tab -->
+    <div class="tab-pane" id="terms_and_conditions">
+      <h3>
+        <span class="text-success">Accept TAC API</span><br>
+        <small>/api/v1/accept_tac</small>
+      </h3>
+    </div>
+    
+    <!-- Search Results Tab -->
+    <div class="tab-pane" id="create_profile">
+      <h3>
+        <span class="text-success">Create Profile API</span><br>
+        <small>/api/v1/create_profile</small>
+      </h3>
+    </div>
+
+    <!-- Search Results Tab -->
+    <div class="tab-pane" id="create_profile">
+      <h3>
+        <span class="text-success">Update Profile API</span><br>
+        <small>/api/v1/update_profile</small>
+      </h3>
+    </div>
+  </div>
+  
+</div>
+
+<style type="text/css">
+  .panel-positive h4.panel-title a { color: #68b828 !important; }
+  .panel-negative h4.panel-title a { color: #cc3f44 !important; }
+</style>

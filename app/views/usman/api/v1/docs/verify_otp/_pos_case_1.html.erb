@@ -1,0 +1,35 @@
+<%
+
+api_title = "Positive Case - 1 - should verify an otp verification request from a pending device"
+
+api_input = <<-eos
+{
+  "otp": "11111",
+  "uuid": "90a0dadsand",
+  "mobile_number": "9102993912",
+  "dialing_prefix": "+91"
+}
+eos
+
+api_output = <<-eos
+{
+  "success": true,
+  "alert": {
+      "heading": "OTP was verified succesfully",
+      "message": "Store and use the API token for further communication"
+  },
+  "data": {
+      "api_token": "cfc0eb18c8f3b5922e702f1e10437fa1"
+  }
+}
+eos
+
+%>
+
+<%= render partial: "kuppayam/api/docs/example", locals: {
+                                        negative_case: false,
+                                        example_id: "pos_case_1",
+                                        api_title: api_title,
+                                        api_input: api_input,
+                                        api_output: api_output 
+                                      } %>

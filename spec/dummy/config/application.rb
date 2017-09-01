@@ -13,7 +13,7 @@ module Dummy
 
     # TODO - fix autoload paths and railties order
     config.autoload_paths << "app/services"
-    config.railties_order = [:main_app, Usman::Engine, :all]
+    config.railties_order = [:main_app, Usman::Engine, Kuppayam::Engine, :all]
     
   end
 end

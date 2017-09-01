@@ -1,0 +1,31 @@
+<%
+
+api_title = "Positive Case - 1 - should resend the otp for valid inputs"
+
+api_input = <<-eos
+{
+  "uuid": "asd907asdba78sbda",
+  "mobile_number": "292991230",
+  "dialing_prefix": "+91"
+}
+eos
+
+api_output = <<-eos
+{
+  "success": true,
+  "alert": {
+      "heading": "An new OTP has been sent to you",
+      "message": "Check your mobile for new message from us."
+  }
+}
+eos
+
+%>
+
+<%= render partial: "kuppayam/api/docs/example", locals: {
+                                        negative_case: false,
+                                        example_id: "pos_case_1",
+                                        api_title: api_title,
+                                        api_input: api_input,
+                                        api_output: api_output 
+                                      } %>

@@ -1,0 +1,34 @@
+<%
+
+api_title = "Negative Case - 1 - should set proper errors if no input is given"
+
+api_input = <<-eos
+{
+  "uuid": "asd907asdba78sbda",
+  "mobile_number": "292991230",
+  "dialing_prefix": "+91"
+}
+eos
+
+api_output = <<-eos
+{
+  "success": false,
+  "errors": {
+      "heading": "OTP verification was failed",
+      "message": "Make sure that you enter the OTP correctly.",
+      "details": {
+          "otp": "doesn't match with our database"
+      }
+  }
+}
+eos
+
+%>
+
+<%= render partial: "kuppayam/api/docs/example", locals: {
+                                        negative_case: true,
+                                        example_id: "neg_case_1",
+                                        api_title: api_title,
+                                        api_input: api_input,
+                                        api_output: api_output 
+                                      } %>

@@ -1,0 +1,43 @@
+<ul class="nav tabs-vertical">
+  <li class="<%= nav_active?('docs/register') ? 'active' : ''  %>">
+    <a href="/docs/api/v1/register">
+      <i class="fa-globe visible-xs"></i>
+      <span class="hidden-xs">Register</span>
+    </a>
+  </li>
+  <li class="<%= nav_active?('docs/resend_otp') ? 'active' : ''  %>">
+    <a href="/docs/api/v1/resend_otp">
+      <i class="fa-globe visible-xs"></i>
+      <span class="hidden-xs">Resend OTP</span>
+    </a>
+  </li>
+  <li class="<%= nav_active?('docs/verify_otp') ? 'active' : ''  %>">
+    <a href="/docs/api/v1/verify_otp">
+      <i class="fa-globe visible-xs"></i>
+      <span class="hidden-xs">Verify OTP</span>
+    </a>
+  </li>
+  <li class="<%= nav_active?('docs/accept_tac') ? 'active' : ''  %>">
+    <a href="/docs/api/v1/accept_tac">
+      <i class="fa-globe visible-xs"></i>
+      <span class="hidden-xs">Terms & Conditions</span>
+    </a>
+  </li>
+  <li class="<%= nav_active?('docs/create_profile') ? 'active' : ''  %>">
+    <a href="/docs/api/v1/create_profile">
+      <i class="fa-globe visible-xs"></i>
+      <span class="hidden-xs">Create Profile</span>
+    </a>
+  </li>
+  <li class="<%= nav_active?('docs/update_profile') ? 'active' : ''  %>">
+    <a href="/docs/api/v1/update_profile">
+      <i class="fa-globe visible-xs"></i>
+      <span class="hidden-xs">Update Profile</span>
+    </a>
+  </li>
+</ul>
+
+<style type="text/css">
+  .panel-positive h4.panel-title a { color: #68b828 !important; }
+  .panel-negative h4.panel-title a { color: #cc3f44 !important; }
+</style>

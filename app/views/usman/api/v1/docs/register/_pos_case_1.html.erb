@@ -1,0 +1,65 @@
+<%
+
+api_title = "Positive Case - 1 - should register and add a new device"
+
+api_input = <<-eos
+{
+  "country_id": "1",
+  "city_id": "2",
+  "dialing_prefix": "+91",
+  "mobile_number": "501370321",
+  "uuid": "jh01u2g01h301h21h232",
+  "device_token": "0182y3b28107b31",
+  "device_name": "Apple iPhone",
+  "device_type": "iPhone 7 Plus",
+  "operating_system": "iOS",
+  "software_version": "iOS 11.2.2"
+}
+eos
+
+api_output = <<-eos
+{
+  "success": true,
+  "alert": {
+      "heading": "An OTP has been sent to you",
+      "message": "Check your mobile for new message from us."
+  },
+  "data": {
+      "registration": {
+          "id": 5,
+          "user_id": null,
+          "country_id": 1,
+          "city_id": null,
+          "dialing_prefix": "+91",
+          "mobile_number": "501370321"
+      },
+      "device": {
+          "id": 6,
+          "user_id": null,
+          "registration_id": 5,
+          "uuid": "jh01u2g01h301h21h232",
+          "device_token": "0182y3b28107b31",
+          "device_name": "Apple iPhone",
+          "device_type": "iPhone 7 Plus",
+          "operating_system": "iOS",
+          "software_version": "iOS 11.2.2",
+          "otp_verified_at": null
+      }
+  },
+  "errors": {
+      "heading": null,
+      "message": null,
+      "details": {}
+  }
+}
+eos
+
+%>
+
+<%= render partial: "kuppayam/api/docs/example", locals: {
+                                        negative_case: false,
+                                        example_id: "pos_case_1",
+                                        api_title: api_title,
+                                        api_input: api_input,
+                                        api_output: api_output 
+                                      } %>

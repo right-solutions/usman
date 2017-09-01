@@ -34,19 +34,27 @@ Usman::Engine.routes.draw do
   end
 
   resources :permissions
-
+  
   namespace :api do
     namespace :v1 do
-      post :register, :controller => "/api/v1/registrations"
-      post :resend_otp, :controller => "/api/v1/registrations"
-      post :verify, :controller => "/api/v1/registrations"
+      post :register, :controller => "registrations"
+      post :resend_otp, :controller => "registrations"
+      post :verify, :controller => "registrations"
     end
   end
-
-  get '/api/v1/docs/usman',         to: "docs#index",  as:   :docs_index
   
-  #get "/api/v1/docs/register", :controller => "/usman/api_docs"
-  #get "/api/v1/docs/resend_otp", :controller => "/usman/api_docs"
-  #get "/api/v1/docs/verify", :controller => "/usman/api_docs"
+  scope :docs do
+    namespace :api do
+      namespace :v1 do
+        get 'index', :controller => "docs"
+        get 'register', :controller => "docs"
+        get 'resend_otp', :controller => "docs"
+        get 'verify_otp', :controller => "docs"
+        get 'accept_tac', :controller => "docs"
+        get 'create_profile', :controller => "docs"
+        get 'update_profile', :controller => "docs"
+      end
+    end
+  end
 
 end

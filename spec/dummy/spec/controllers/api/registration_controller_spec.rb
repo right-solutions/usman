@@ -1,6 +1,6 @@
 require "rails_helper"
 
-RSpec.describe Api::V1::RegistrationsController, :type => :request do  
+RSpec.describe Usman::Api::V1::RegistrationsController, :type => :request do  
 
   let(:country) {FactoryGirl.create(:country)}
   let(:city) {FactoryGirl.create(:city, country: country)}

@@ -22,8 +22,8 @@ Gem::Specification.new do |s|
   s.add_dependency 'bootstrap-kaminari-views', "~> 0.0.5"
   # s.add_dependency 'config', '~> 1.0'
 
-  s.add_dependency 'kuppayam', "~> 0.1.7"
-  s.add_dependency 'pattana', "~> 0.1.1"
+  s.add_dependency 'kuppayam', "~> 0.1.9"
+  s.add_dependency 'pattana', "~> 0.1.2"
   s.add_dependency 'bcrypt', "~> 3.0"
   s.add_dependency "colorize", "~> 0.8"
 

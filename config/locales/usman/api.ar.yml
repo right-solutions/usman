@@ -25,3 +25,9 @@ en:
       verification_success:
         heading: "OTP was verified succesfully"
         message: "Store and use the API token for further communication"
+      tac_accepted:
+        heading: "You have successfully accepted the Terms & Conditions. Proceed with Registration process if any."
+        message: "You have accepted T&C and your device has been registered."      
+      tac_not_accepted:
+        heading: "You have not accepted the Terms & Conditions. Registration is complete only if you accept the T&C."
+        message: "Accept the T&C to finish the Registration. Pass true"

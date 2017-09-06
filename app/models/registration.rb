@@ -36,8 +36,8 @@ class Registration < ApplicationRecord
   # == Examples
   #   >>> registration.search(query)
   #   => ActiveRecord::Relation object
-  scope :search, lambda {|query| joins("INNER JOIN users on users.id = registrations.user_id").
-                                where("LOWER(mobile_number) LIKE LOWER('%#{query}%') OR 
+  scope :search, lambda {|query| joins("LEFT JOIN users on users.id = registrations.user_id").
+                                where("LOWER(registrations.mobile_number) LIKE LOWER('%#{query}%') OR 
                                        LOWER(users.name) LIKE LOWER('%#{query}%')")}
   scope :status, lambda { |status| where("LOWER(status)='#{status}'") }
 
@@ -54,7 +54,8 @@ class Registration < ApplicationRecord
     #options[:include] ||= []
     #options[:methods] = []
     #options[:methods] << :profile_image
-    super(options)
+    json = super(options)
+    Hash[*json.map{|k, v| [k, v || ""]}.flatten]
   end
 
   # Status Methods
@@ -114,6 +115,14 @@ class Registration < ApplicationRecord
   #   => "+919880123456"
   def display_name
     "#{self.dialing_prefix} #{self.mobile_number}"
+  end
+
+  # * Return city, country or just country if there is no city
+  # == Examples
+  #   >>> registration.display_location
+  #   => "Dubai, United Arab Emirates"
+  def display_location
+    [self.city.try(:name), self.country.try(:name)].compact.join(",")
   end
 	
 end

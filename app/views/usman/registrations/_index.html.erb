@@ -1,0 +1,60 @@
+<div class="table-responsive"> 
+	<table class="table table-hover members-table middle-align">
+	  <thead> 
+			<tr> 
+				<th style="text-align: center;width:50px;">#</th> 
+				<th style="text-align: left;">Mobile</th>
+				<th style="text-align: left;width:200px;">Location</th>
+				<th style="text-align: left;width:200px;">User</th>
+				<th style="text-align: left;width:200px;">Status</th>
+			</tr> 
+		</thead>
+		
+	  <tbody>
+	  	<% @registrations.each_with_index do |registration, i| %>
+	  		
+	  		<%# edit_link = edit_registration_path(id: registration.id) %>
+				<%# delete_link = registration_path(id: registration.id) %>
+				
+		    <tr id="tr_registration_<%= registration.id %>">
+		      
+		      <th scope="row" style="text-align: center;">
+						<% if i < 0 %>
+							<i class="fa fa-check text-success"></i>
+						<% else %>
+							<%= i + 1 + (@per_page.to_i * (@current_page.to_i - 1)) %>
+						<% end %>
+					</th>
+
+		      <td class="registration-name"><%= link_to registration.display_name, registration_path(registration), remote: true %></td>
+		      <td class="registration-name"><%= link_to registration.display_location, registration_path(registration), remote: true %></td>
+		      <td class="registration-name"><%= link_to registration.display_name, registration_path(registration), remote: true %></td>
+		      
+		      <td>
+						<% if registration.pending? %>
+							<span class="ml-5 mt-5 label label-default">Pending</span>
+						<% elsif registration.verified? %>
+							<span class="ml-5 mt-5 label label-success">Verified</span>
+						<% end %>
+					</td>
+		      
+					<!-- <td class="action-links" style="width:10%">
+
+		      	<%#= link_to raw("<i class=\"linecons-pencil\"></i> Edit Registration"), edit_link, :remote=>true, class: "edit" if @current_user.super_admin? and registration.can_be_edited? %>
+
+		        <%#= link_to raw("<i class=\"linecons-trash\"></i> Delete"), delete_link, method: :delete, registration: "menuitem", tabindex: "-1", data: { confirm: 'Are you sure?' }, :remote=>true, class: "delete" if @current_user.super_admin? and registration.can_be_deleted? %>
+
+		      </td> -->
+
+		    </tr>
+		  <% end %>
+	  </tbody>
+	</table>
+</div>
+
+<div class="row">
+  <div class="col-sm-12">
+    <%= paginate_kuppayam(@registrations) %>
+  </div>
+</div>
+

@@ -46,7 +46,6 @@ module Usman
         errors = @registration.errors.to_hash.merge(@device.errors.to_hash)
         set_error("api.mobile_registration.invalid_inputs", errors)
       end
-
     end
 
     def check_if_device_is_already_registered
@@ -96,7 +95,6 @@ module Usman
           raise ActiveRecord::Rollback 
         end
       end
-
     end
 
     def generate_new_otp

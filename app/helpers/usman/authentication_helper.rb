@@ -7,7 +7,7 @@ module Usman
       # Return if @current_user is already initialized else check if the user exists with the auth token present in request header
       @current_user ||= authenticate_with_http_token { |token, options| User.find_by(auth_token: token)}
     end
-    
+
     # Returns the default URL to which the system should redirect the user after successful authentication
     def default_redirect_url_after_sign_in
       main_app.user_landing_url

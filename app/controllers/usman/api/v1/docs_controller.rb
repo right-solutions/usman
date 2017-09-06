@@ -9,6 +9,10 @@ module Usman
           @end_point = "/api/v1/register"
           @description = "This API will register the user and the devise and will send an OTP for verification"
 
+          @input_headers = {
+            "Content-Type" => { value: "application/json", description: "The MIME media type for JSON text is application/json. This is to make sure that a valid json is returned. The default encoding is UTF-8. " }
+          }
+
           @input_params = {
             country_id: { mandatory: true, description: "Country ID is an integer. You may get it from Countries API", example: "100", default: "" },
             city_id: { mandatory: false, description: "City ID is an integer. You may get it from Cities API", example: "1030", default: "" },
@@ -36,8 +40,12 @@ module Usman
           @end_point = "/api/v1/resend_otp"
           @description = "This API will resend the OTP for verification"
 
-          @warning = "A maximum of 5 attempt is allowed for resending the OTP. 6th request will block the device."
+          @warning = "A maximum of 3 attempt is allowed for resending the OTP. 6th request will block the device."
           
+          @input_headers = {
+            "Content-Type" => { value: "application/json", description: "The MIME media type for JSON text is application/json. This is to make sure that a valid json is returned. The default encoding is UTF-8. " }
+          }
+
           @input_params = {
             uuid: { mandatory: true, description: "Universal Unique Identifier. iOS or Android will give you this programatically.", example: "", default: "" },
             dialing_prefix: { mandatory: true, description: "International Dialing Prefix for countries", example: "+971", default: "" },
@@ -58,6 +66,10 @@ module Usman
           @end_point = "/api/v1/verify_otp"
           @description = "This API verify the OTP and returns the API token for further communication"
           
+          @input_headers = {
+            "Content-Type" => { value: "application/json", description: "The MIME media type for JSON text is application/json. This is to make sure that a valid json is returned. The default encoding is UTF-8. " }
+          }
+
           @input_params = {
             otp: { mandatory: true, description: "One Time Password you have received via SMS. (Five Digit)", example: "", default: "" },
             uuid: { mandatory: true, description: "Universal Unique Identifier. iOS or Android will give you this programatically.", example: "", default: "" },
@@ -81,6 +93,10 @@ module Usman
           
           @info = "The user will have to accept terms and conditions everytime he registers a new device"
           
+          @input_headers = {
+            "Content-Type" => { value: "application/json", description: "The MIME media type for JSON text is application/json. This is to make sure that a valid json is returned. The default encoding is UTF-8. " }
+          }
+
           @input_params = {
             uuid: { mandatory: true, description: "Universal Unique Identifier. iOS or Android will give you this programatically.", example: "", default: "" },
             dialing_prefix: { mandatory: true, description: "International Dialing Prefix for countries", example: "+971", default: "" },
@@ -101,6 +117,10 @@ module Usman
           @end_point = "/api/v1/accept_tac"
           @description = "This API will return so and so and create blah blah blah"
           
+          @input_headers = {
+            "Content-Type" => { value: "application/json", description: "The MIME media type for JSON text is application/json. This is to make sure that a valid json is returned. The default encoding is UTF-8. " }
+          }
+
           @input_params = {
             uuid: { mandatory: true, description: "Universal Unique Identifier. iOS or Android will give you this programatically.", example: "", default: "" },
             dialing_prefix: { mandatory: true, description: "International Dialing Prefix for countries", example: "+971", default: "" },
@@ -121,6 +141,10 @@ module Usman
           @end_point = "/api/v1/accept_tac"
           @description = "This API will return so and so and create blah blah blah"
           
+          @input_headers = {
+            "Content-Type" => { value: "application/json", description: "The MIME media type for JSON text is application/json. This is to make sure that a valid json is returned. The default encoding is UTF-8. " }
+          }
+
           @input_params = {
             uuid: { mandatory: true, description: "Universal Unique Identifier. iOS or Android will give you this programatically.", example: "", default: "" },
             dialing_prefix: { mandatory: true, description: "International Dialing Prefix for countries", example: "+971", default: "" },

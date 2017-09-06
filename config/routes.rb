@@ -14,6 +14,10 @@ Usman::Engine.routes.draw do
   get   '/my_account',        to: "my_account#index",  as:   :my_account
   get   '/dashboard/usman',   to: "dashboard#index",  as:   :dashboard
   
+  resources :registrations, only: [:index, :show] do
+    resources :devices, :controller => "registration_devices"
+  end
+
   resources :users do
     member do
       put :masquerade, as: :masquerade
@@ -37,9 +41,16 @@ Usman::Engine.routes.draw do
   
   namespace :api do
     namespace :v1 do
+      
+      # Registrations
       post :register, :controller => "registrations"
       post :resend_otp, :controller => "registrations"
       post :verify, :controller => "registrations"
+      post :accept_tac, :controller => "registrations"
+
+      # Profile
+      post :create_profile, :controller => "profile"
+      post :update_profile, :controller => "profile"
     end
   end
   

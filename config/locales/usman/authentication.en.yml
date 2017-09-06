@@ -1,26 +1,25 @@
-ar:
-  api:
-    authentication:
-      permission_denied:
-        heading: "Permission Denied"
-        message: "You don't have permission to perform this action"
-      session_expired:
-        heading: "Session Expired"
-        message: "Your session has been expired. Please sign in again"
-      invalid_login:
-        heading: "Invalid Login"
-        message: "Invalid Username/Email or password."
-      user_is_pending:
-        heading: "Account Pending"
-        message: "Your account is not yet approved, please contact administrator to activate your account"
-      user_is_suspended:
-        heading: "Account Suspended"
-        message: "Your account is suspended, please contact administrator"
-      logged_in:
-        heading: "Signed In"
-        message: "You have successfully signed in"
-      logged_out:
-        heading: "Signed Out"
-        message: "You have successfully signed out"
-      masquerade: "لقد سجلت الدخول بنجاح - %{user}"
-      sign_in_back: "You have successfully signed in back as %{user}"
+en:
+  authentication:
+    permission_denied:
+      heading: "Permission Denied"
+      message: "You don't have permission to perform this action"
+    session_expired:
+      heading: "Session Expired"
+      message: "Your session has been expired. Please sign in again"
+    invalid_login:
+      heading: "Invalid Login"
+      message: "Invalid Username/Email or password."
+    user_is_pending:
+      heading: "Account Pending"
+      message: "Your account is not yet approved, please contact administrator to activate your account"
+    user_is_suspended:
+      heading: "Account Suspended"
+      message: "Your account is suspended, please contact administrator"
+    logged_in:
+      heading: "Signed In"
+      message: "You have successfully signed in"
+    logged_out:
+      heading: "Signed Out"
+      message: "You have successfully signed out"
+    masquerade: "لقد سجلت الدخول بنجاح - %{user}"
+    sign_in_back: "You have successfully signed in back as %{user}"

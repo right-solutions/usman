@@ -1,7 +1,7 @@
 class Device < ApplicationRecord
   
   # Constants
-  EXCLUDED_JSON_ATTRIBUTES = [:last_accessed_at, :last_accessed_api, :otp, :otp_sent_at, :api_token, :token_created_at, :status, :created_at, :updated_at]
+  EXCLUDED_JSON_ATTRIBUTES = [:last_accessed_at, :last_accessed_api, :otp, :otp_sent_at, :api_token, :token_created_at, :status, :tac_accepted_at, :created_at, :updated_at]
 
   PENDING = "pending"
   VERIFIED = "verified"
@@ -71,7 +71,8 @@ class Device < ApplicationRecord
     #options[:include] ||= []
     #options[:methods] = []
     #options[:methods] << :profile_image
-    super(options)
+    json = super(options)
+    Hash[*json.map{|k, v| [k, v || ""]}.flatten]
   end
   
   # Status Methods
@@ -195,6 +196,32 @@ class Device < ApplicationRecord
     self.generate_otp
     self.save
     return true
+  end
+
+  def accept_tac(tac, dialing_prefix, mobile_number)
+
+    # Validate OTP and other parameters
+    validation_errors = {}
+
+    # Check if terms and conditions was accepted
+    unless ["true", "yes", "t", "y"].include?(tac.to_s.downcase)
+      validation_errors[:terms_and_conditions] = "T&C should be true"
+      return false, validation_errors
+    end
+
+    validation_errors[:mobile_number] = "doesn't match with our database" unless self.registration.mobile_number.to_s == mobile_number.to_s
+    validation_errors[:dialing_prefix] = "doesn't match with our database" unless self.registration.dialing_prefix.to_s == dialing_prefix.to_s
+    
+    return false, validation_errors unless validation_errors.empty?
+    
+    # Create API Token if OTP is verified
+    self.tac_accepted_at = Time.now
+    self.save
+
+    self.verify!
+    self.registration.verify!
+
+    return true, {}
   end
 
   # Other Methods

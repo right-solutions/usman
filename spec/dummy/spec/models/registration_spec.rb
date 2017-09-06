@@ -49,7 +49,6 @@ RSpec.describe Registration, type: :model do
 
   context "Class Methods" do
     it "search" do
-
       registration
 
       user = FactoryGirl.create(:user, name: "Mahathma Gandhi")
@@ -64,6 +63,11 @@ RSpec.describe Registration, type: :model do
       expect(Registration.search("123412345")).to match_array([mg])
       expect(Registration.search("123456789")).to match_array([sp])
       expect(Registration.search("1234")).to match_array([mg, sp])
+    end
+
+    it "search registrations without user" do
+      u = FactoryGirl.create(:pending_registration, user: nil, mobile_number: "123412345")
+      expect(Registration.search("123412345")).to match_array([u])
     end
 
     it "scope pending" do

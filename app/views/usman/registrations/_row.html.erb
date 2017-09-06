@@ -1,0 +1,24 @@
+<% edit_link = edit_registration_path(id: registration.id) %>
+<% delete_link = registration_path(id: registration.id) %>
+
+<tr id="tr_registration_<%= registration.id %>">
+
+  <th scope="row" style="text-align: center;">
+    <% if i < 0 %>
+      <i class="fa fa-check text-success"></i>
+    <% else %>
+      <%= i + 1 + (@per_page.to_i * (@current_page.to_i - 1)) %>
+    <% end %>
+  </th>
+
+  <td class="registration-name"><%= link_to registration.name, registration_path(registration), remote: true %></td>
+
+  <td class="action-links" style="width:10%">
+
+    <%= link_to raw("<i class=\"linecons-pencil\"></i> Edit Registration"), edit_link, :remote=>true, class: "edit" if @current_user.super_admin? and registration.can_be_edited? %>
+
+    <%= link_to raw("<i class=\"linecons-trash\"></i> Delete"), delete_link, method: :delete, registration: "menuitem", tabindex: "-1", data: { confirm: 'Are you sure?' }, :remote=>true, class: "delete" if @current_user.super_admin? and registration.can_be_deleted? %>
+
+  </td>
+
+</tr>

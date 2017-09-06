@@ -60,6 +60,7 @@ RSpec.describe User, type: :model do
     it { should_not allow_value("a"*257).for(:password )}
 
     it { should validate_inclusion_of(:status).in_array(User::STATUS.keys)  }
+    it { should validate_inclusion_of(:gender).in_array(User::GENDER.keys)  }
   end
 
   context "Associations" do
@@ -130,6 +131,26 @@ RSpec.describe User, type: :model do
         u.suspend!
         expect(u.status).to match "suspended"
         expect(u.suspended?).to be_truthy
+      end
+    end
+
+    context "Gender Methods" do
+      it "male?" do
+        u = FactoryGirl.build(:pending_user, gender: :male)
+        expect(u.gender).to match "male"
+        expect(u.male?).to be_truthy
+      end
+
+      it "female?" do
+        u = FactoryGirl.build(:pending_user, gender: :female)
+        expect(u.gender).to match "female"
+        expect(u.female?).to be_truthy
+      end
+
+      it "nogender?" do
+        u = FactoryGirl.build(:pending_user, gender: :nogender)
+        expect(u.gender).to match "nogender"
+        expect(u.nogender?).to be_truthy
       end
     end
 

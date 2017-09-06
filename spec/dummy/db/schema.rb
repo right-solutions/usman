@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170825023035) do
+ActiveRecord::Schema.define(version: 20170905041856) do
 
   create_table "cities", id: :integer, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string "name", limit: 128
@@ -76,6 +76,7 @@ ActiveRecord::Schema.define(version: 20170825023035) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.datetime "otp_verified_at"
+    t.datetime "tac_accepted_at"
     t.index ["registration_id"], name: "index_devices_on_registration_id"
     t.index ["user_id"], name: "index_devices_on_user_id"
   end
@@ -208,6 +209,8 @@ ActiveRecord::Schema.define(version: 20170825023035) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.bigint "registration_id"
+    t.string "gender"
+    t.date "date_of_birth"
     t.index ["auth_token"], name: "index_users_on_auth_token", unique: true
     t.index ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true
     t.index ["email"], name: "index_users_on_email", unique: true

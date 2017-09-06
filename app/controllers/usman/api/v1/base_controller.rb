@@ -4,10 +4,10 @@ module Usman
       class BaseController < ActionController::API
 
         include ActionController::HttpAuthentication::Token::ControllerMethods
-        include ApiHelper
+        include RenderApiHelper
         include Usman::ApiHelper
         
-        before_action :require_auth_token
+        before_action :require_api_token
 
       end
     end

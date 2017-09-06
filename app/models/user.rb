@@ -20,6 +20,22 @@ class User < Usman::ApplicationRecord
     "Suspended" => SUSPENDED
   }
 
+  MALE = "male"
+  FEMALE = "female"
+  NOGENDER = "nogender"
+
+  GENDER = { 
+    MALE => "Male", 
+    FEMALE => "Female", 
+    NOGENDER => "No Gender"
+  }
+
+  GENDER_REVERSE = { 
+    "Male" => MALE, 
+    "Female" => FEMALE, 
+    "No Gender" => NOGENDER
+  }
+
   EXCLUDED_JSON_ATTRIBUTES = [:confirmation_token, :password_digest, :reset_password_token, :unlock_token, :status, :reset_password_sent_at, :remember_created_at, :sign_in_count, :current_sign_in_at, :last_sign_in_at, :current_sign_in_ip, :last_sign_in_ip, :confirmed_at, :confirmation_sent_at, :unconfirmed_email, :failed_attempts, :locked_at, :created_at, :updated_at]
   DEFAULT_PASSWORD = "Password@1"
   SESSION_TIME_OUT = 120.minutes
@@ -31,6 +47,7 @@ class User < Usman::ApplicationRecord
   validate_password :password, condition_method: :should_validate_password?
 
   validates :status, :presence => true, :inclusion => {:in => STATUS.keys, :presence_of => :status, :message => "%{value} is not a valid status" }
+  validates :gender, :inclusion => {:in => GENDER.keys, :presence_of => :status, :message => "%{value} is not a valid gender" }, :allow_nil => true
 
   # Callbacks
   before_validation :generate_auth_token
@@ -54,7 +71,8 @@ class User < Usman::ApplicationRecord
     #options[:include] ||= []
     #options[:methods] = []
     #options[:methods] << :profile_image
-    super(options)
+    json = super(options)
+    Hash[*json.map{|k, v| [k, v || ""]}.flatten]
   end
   
   # Scopes Methods
@@ -173,6 +191,33 @@ class User < Usman::ApplicationRecord
   #   => "suspended"
   def suspend!
     self.update_attribute(:status, SUSPENDED)
+  end
+
+  # Gender Methods
+  # --------------
+
+  # * Return true if the user is male, else false.
+  # == Examples
+  #   >>> user.male?
+  #   => true
+  def male?
+    (gender == MALE)
+  end
+
+  # * Return true if the user is female, else false.
+  # == Examples
+  #   >>> user.female?
+  #   => true
+  def female?
+    (gender == FEMALE)
+  end
+
+  # * Return true if the user is nogender, else false.
+  # == Examples
+  #   >>> user.nogender?
+  #   => true
+  def nogender?
+    (gender == NOGENDER)
   end
 
   # Authentication Methods
@@ -315,6 +360,14 @@ class User < Usman::ApplicationRecord
 
   def default_image_url(size="small")
     "/assets/kuppayam/defaults/user-#{size}.png"
+  end
+
+  def generate_username_and_password
+    self.username = SecureRandom.hex(4) unless self.username
+    # Password should contain at least one special character, integer and one upper case character
+    passwd = SecureRandom.hex(8) + "A@1" unless self.password
+    self.password = passwd
+    self.password_confirmation = passwd
   end
 
   private

@@ -19,6 +19,8 @@ FactoryGirl.define do
     auth_token {SecureRandom.hex}
     token_created_at {Time.now}
 
+    gender User::MALE
+
   end
 
   factory :pending_user, parent: :user do

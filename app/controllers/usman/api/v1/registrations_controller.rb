@@ -3,7 +3,7 @@ module Usman
     module V1
       class RegistrationsController < Usman::Api::V1::BaseController
 
-        skip_before_action :require_auth_token      
+        skip_before_action :require_api_token      
 
         def register
           proc_code = Proc.new do

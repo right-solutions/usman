@@ -209,8 +209,8 @@ describe Usman::MobileRegistrationService do
         expect(mrs.software_version).to be_nil
         expect(mrs.remote_ip).to be_nil
 
-        expect(mrs.error_heading).to match("Registring new mobile number FAILED.")
-        expect(mrs.error_message).to match("Check if all mandatory details are passed. Refer the error details for technical information.")
+        expect(mrs.error_heading).to match("Registring new mobile number FAILED")
+        expect(mrs.error_message).to match("Check if all mandatory details are passed. Refer the error details for technical information")
         expect(mrs.error_details).not_to be_empty
 
         expect(mrs.registration.persisted?).to be_falsy
@@ -236,8 +236,8 @@ describe Usman::MobileRegistrationService do
         expect(mrs.software_version).to be_nil
         expect(mrs.remote_ip).to be_nil
 
-        expect(mrs.error_heading).to match("Registring new mobile number FAILED.")
-        expect(mrs.error_message).to match("Check if all mandatory details are passed. Refer the error details for technical information.")
+        expect(mrs.error_heading).to match("Registring new mobile number FAILED")
+        expect(mrs.error_message).to match("Check if all mandatory details are passed. Refer the error details for technical information")
         expect(mrs.error_details).not_to be_empty
 
         expect(mrs.registration.persisted?).to be_falsy
@@ -274,8 +274,8 @@ describe Usman::MobileRegistrationService do
         expect(mrs.software_version).to be_nil
         expect(mrs.remote_ip).to be_nil
 
-        expect(mrs.error_heading).to match("Registring new mobile number FAILED.")
-        expect(mrs.error_message).to match("Check if all mandatory details are passed. Refer the error details for technical information.")
+        expect(mrs.error_heading).to match("Registring new mobile number FAILED")
+        expect(mrs.error_message).to match("Check if all mandatory details are passed. Refer the error details for technical information")
         expect(mrs.error_details).not_to be_empty
 
         expect(mrs.registration.persisted?).to be_falsy
@@ -311,8 +311,8 @@ describe Usman::MobileRegistrationService do
         expect(mrs.software_version).to eq(blocked_dev.software_version)
         expect(mrs.remote_ip).to eq("1.2.3.4")
 
-        expect(mrs.error_heading).to match("This device is blocked.")
-        expect(mrs.error_message).to match("You must have done some mal-practices.")
+        expect(mrs.error_heading).to match("This device is blocked")
+        expect(mrs.error_message).to match("You must have done some mal-practices")
         expect(mrs.error_details).to be_empty
 
         expect(mrs.registration.persisted?).to be_truthy

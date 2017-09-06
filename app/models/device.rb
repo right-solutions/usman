@@ -155,7 +155,7 @@ class Device < ApplicationRecord
 
     # Check if this OTP was already verified
     if !self.otp_verified_at.blank?
-      validation_errors[:otp_verified_at] = "This OTP was already used."
+      validation_errors[:otp_verified_at] = "This OTP was already used"
       return false, validation_errors
     end
 

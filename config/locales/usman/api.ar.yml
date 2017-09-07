@@ -1,8 +1,9 @@
 en:
   api:
     general:
-      heading: "Invalid API Token"
-      message: "Use the API Token you have received after accepting the terms and agreement"
+      permission_denied:
+        heading: "Invalid API Token"
+        message: "Use the API Token you have received after accepting the terms and agreement"
     register:
       device_blocked:
         heading: "This device is blocked"
@@ -80,6 +81,12 @@ en:
       user_already_exists:
         heading: "A profile already exists for the mobile number you have provided"
         message: "You are trying to create a profile once again when you already have a profile. Use Profile API with your API Token, to get your profile details and use them instead of creating a new one."
+      user_does_not_exists:
+        heading: "Profile doesn't exists for the mobile number you have provided"
+        message: "You are trying to create a profile once again when you already have a profile. Use Profile API with your API Token, to get your profile details and use them instead of creating a new one."
       profile_created: 
-        heading: "The Profile has been created successfully"
+        heading: "The Profile has been saved successfully"
         message: "You may access the profile API with API token to get the profile details in future"
+      invalid_inputs:
+        heading: "Saving Profile Failed"
+        message: "Check if all mandatory details are passed. Refer the error details for technical information"

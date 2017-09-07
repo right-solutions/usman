@@ -1,0 +1,34 @@
+<%
+
+api_title = "Negative Case - 2 - should set proper errors if the profile already exists"
+
+api_input = <<-eos
+{
+  "name": "Name",
+  "gender": "male",
+  "date_of_birth": "10/10/1980",
+  "email": "name@domain.com",
+  "country_id": "1",
+  "city_id": "2"
+}
+eos
+
+api_output = <<-eos
+{
+  "success": false,
+  "errors": {
+    "heading": "A profile already exists for the mobile number you have provided",
+    "message": "You are trying to create a profile once again when you already have a profile. Use Profile API with your API Token, to get your profile details and use them instead of creating a new one."
+  }
+}
+eos
+
+%>
+
+<%= render partial: "kuppayam/api/docs/example", locals: {
+                                        negative_case: true,
+                                        example_id: "neg_case_2",
+                                        api_title: api_title,
+                                        api_input: api_input,
+                                        api_output: api_output 
+                                      } %>

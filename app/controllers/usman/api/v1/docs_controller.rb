@@ -114,11 +114,12 @@ module Usman
         def create_profile
           set_title("Create Profile API")
           @request_type = "POST"
-          @end_point = "/api/v1/accept_tac"
-          @description = "This API will return so and so and create blah blah blah"
+          @end_point = "/api/v1/create_profile"
+          @description = "This API will create a profile for a newly registered user"
           
           @input_headers = {
-            "Content-Type" => { value: "application/json", description: "The MIME media type for JSON text is application/json. This is to make sure that a valid json is returned. The default encoding is UTF-8. " }
+            "Content-Type" => { value: "application/json", description: "The MIME media type for JSON text is application/json. This is to make sure that a valid json is returned. The default encoding is UTF-8. " },
+            "Authorization" => { value: "Token token=\"87b01adbba90824b57add8cc06ad8738\"", description: "Put the API Token here. This is must for creating a profile. You need to register with your mobile number and verify the otp before you could create a profile" }
           }
 
           @input_params = {
@@ -128,7 +129,7 @@ module Usman
           }
 
           @example_path = "usman/api/v1/docs/"# 
-          # @examples = ["pos_case_1", "neg_case_1", "neg_case_2", "neg_case_3"]
+          @examples = ["pos_case_1", "neg_case_1", "neg_case_2", "neg_case_3"]
 
           set_nav("docs/create_profile")
 
@@ -138,11 +139,12 @@ module Usman
         def update_profile
           set_title("Update Profile API")
           @request_type = "POST"
-          @end_point = "/api/v1/accept_tac"
-          @description = "This API will return so and so and create blah blah blah"
+          @end_point = "/api/v1/update_profile"
+          @description = "This API will update the profile details"
           
           @input_headers = {
-            "Content-Type" => { value: "application/json", description: "The MIME media type for JSON text is application/json. This is to make sure that a valid json is returned. The default encoding is UTF-8. " }
+            "Content-Type" => { value: "application/json", description: "The MIME media type for JSON text is application/json. This is to make sure that a valid json is returned. The default encoding is UTF-8. " },
+            "Authorization" => { value: "Token token=\"87b01adbba90824b57add8cc06ad8738\"", description: "Put the API Token here. This is must for creating a profile. You need to register with your mobile number and verify the otp before you could create a profile" }
           }
 
           @input_params = {
@@ -152,7 +154,7 @@ module Usman
           }
 
           @example_path = "usman/api/v1/docs/"# 
-          # @examples = ["pos_case_1", "neg_case_1", "neg_case_2", "neg_case_3"]
+          @examples = ["pos_case_1", "neg_case_1", "neg_case_2", "neg_case_3"]
 
           set_nav("docs/update_profile")
 

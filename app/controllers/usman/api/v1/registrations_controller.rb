@@ -27,7 +27,7 @@ module Usman
 
         def resend_otp
           proc_code = Proc.new do
-            @registration = Registration.where("mobile_number = ?", params[:mobile_number]).first
+            @registration = Registration.where("mobile_number = ? AND dialing_prefix = ?", params[:mobile_number], params[:dialing_prefix]).first
             if @registration
               @device = @registration.devices.where("uuid = ?", params[:uuid]).first
               if @device
@@ -82,7 +82,7 @@ module Usman
 
         def verify_otp
           proc_code = Proc.new do
-            @registration = Registration.where("mobile_number = ?", params[:mobile_number]).first
+            @registration = Registration.where("mobile_number = ? AND dialing_prefix = ?", params[:mobile_number], params[:dialing_prefix]).first
             if @registration
               @device = @registration.devices.where("uuid = ?", params[:uuid]).first
               if @device
@@ -137,7 +137,7 @@ module Usman
 
         def accept_tac
           proc_code = Proc.new do
-            @registration = Registration.where("mobile_number = ?", params[:mobile_number]).first
+            @registration = Registration.where("mobile_number = ? AND dialing_prefix = ?", params[:mobile_number], params[:dialing_prefix]).first
             if @registration
               @device = @registration.devices.where("uuid = ?", params[:uuid]).first
               if @device

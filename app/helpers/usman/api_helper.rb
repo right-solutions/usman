@@ -28,8 +28,11 @@ module Usman
       current_device
       unless @current_device
         proc_code = Proc.new do
-          set_notification_messages("authentication.permission_denied", :error)
-          raise AuthenticationError
+          @success = false
+          @errors = {
+            heading: I18n.translate("api.general.permission_denied.heading"),
+            message: I18n.translate("api.general.permission_denied.message")
+          }
         end
         render_json_response(proc_code)
         return

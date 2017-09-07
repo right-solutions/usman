@@ -1,0 +1,49 @@
+<%
+
+api_title = "Positive Case - 1 - should create the profile"
+
+api_input = <<-eos
+{
+  "name": "Name",
+  "gender": "male",
+  "date_of_birth": "10/10/1980",
+  "email": "name@domain.com",
+  "country_id": "1",
+  "city_id": "2"
+}
+eos
+
+api_output = <<-eos
+{
+  "success": true,
+  "alert": {
+    "heading": "The Profile has been updated successfully",
+    "message": "You may access the profile API with API token to get the profile details in future"
+  },
+  "data": {
+    "user": {
+      "id": 8,
+      "name": "K P Varma",
+      "username": "4106947a",
+      "email": "kpv@kpvarma.com",
+      "phone": "",
+      "designation": "",
+      "super_admin": "",
+      "token_created_at": "",
+      "registration_id": "",
+      "gender": "male",
+      "date_of_birth": "1954-10-27"
+    }
+  }
+}
+eos
+
+%>
+
+<%= render partial: "kuppayam/api/docs/example", locals: {
+                                        negative_case: false,
+                                        example_id: "pos_case_1",
+                                        api_title: api_title,
+                                        api_input: api_input,
+                                        api_output: api_output 
+                                      } %>

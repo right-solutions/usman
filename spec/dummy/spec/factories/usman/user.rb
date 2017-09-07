@@ -11,6 +11,7 @@ FactoryGirl.define do
 
     phone "123-456-7890"
     designation "My Designation"
+    date_of_birth "01/01/1980"
     
     password_digest { SecureRandom.hex }
     password ConfigCenter::Defaults::PASSWORD

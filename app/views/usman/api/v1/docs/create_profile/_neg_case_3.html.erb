@@ -1,0 +1,31 @@
+<%
+
+api_title = "Negative Case - 3 - should set proper errors if the inputs are not correct"
+
+api_input = <<-eos
+{}
+eos
+
+api_output = <<-eos
+{
+  "success": false,
+  "errors": {
+      "heading": "Creating Profile Failed",
+      "message": "Check if all mandatory details are passed. Refer the error details for technical information",
+      "details": {
+          "name": ["can't be blank", "is too short (minimum is 3 characters)"]
+          "email": ["can't be blank", "is too short (minimum is 3 characters)"]
+      }
+  }
+}
+eos
+
+%>
+
+<%= render partial: "kuppayam/api/docs/example", locals: {
+                                        negative_case: true,
+                                        example_id: "neg_case_3",
+                                        api_title: api_title,
+                                        api_input: api_input,
+                                        api_output: api_output 
+                                      } %>

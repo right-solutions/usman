@@ -3,37 +3,79 @@ en:
     general:
       heading: "Invalid API Token"
       message: "Use the API Token you have received after accepting the terms and agreement"
-    mobile_registration:
+    register:
       device_blocked:
         heading: "This device is blocked"
         message: "You must have done some mal-practices"
-      invalid_inputs:
-        heading: "Registring new mobile number FAILED"
-        message: "Check if all mandatory details are passed. Refer the error details for technical information"
       otp_sent:
         heading: "An OTP has been sent to you"
-        message: "Check your mobile for new message from us"
-      new_otp_sent:
-        heading: "An new OTP has been sent to you"
         message: "Check your mobile for new message from us"
       otp_not_sent:
         heading: "OTP was not sent"
         message: "There was some technical glitch and OTP was not sent. Try after some time"
+      invalid_inputs:
+        heading: "Registring new mobile number FAILED"
+        message: "Check if all mandatory details are passed. Refer the error details for technical information"
+    resend_otp:
+      device_blocked:
+        heading: "This device is blocked"
+        message: "You must have done some mal-practices"
+      new_otp_sent:
+        heading: "An new OTP has been sent to you"
+        message: "Check your mobile for new message from us"
+      otp_not_sent:
+        heading: "OTP sent failed"
+        message: "Check if all the inputs are valid"
       otp_not_matching:
         heading: "OTP verification was failed"
-        message: "Make sure that you enter the OTP correctly"  
+        message: "Make sure that you enter the OTP correctly"
+      mobile_number_not_registered:
+        heading: "The mobile number is not registered"
+        message: "Resending OTP Failed. Check if the mobile number entered is valid"
+      device_not_registered:
+        heading: "The device is not registered"
+        message: "Resending OTP Failed. Check if the UUID entered is valid"
+    verify_otp:
+      device_blocked:
+        heading: "This device is blocked"
+        message: "You must have done some mal-practices"
+      device_verified:
+        heading: "OTP sent failed"
+        message: "This device may be already verified"
+      otp_not_matching:
+        heading: "OTP verification was failed"
+        message: "Make sure that you enter the OTP correctly"
+      mobile_number_not_registered:
+        heading: "The mobile number is not registered"
+        message: "Verifying OTP Failed. Check if the mobile number entered is valid"
+      device_not_registered:
+        heading: "The device is not registered"
+        message: "Verifying OTP Failed. Check if the UUID entered is valid"
       verification_failed:
         heading: "OTP verification was failed"
         message: "Check if you have properly given the OTP along with dialing prefix, mobile number & UUID"
       verification_success:
         heading: "OTP was verified succesfully"
-        message: "Now, accept the terms and conditions to finish the registration process and get API token"
+        message: "You may need to accept the terms and conditions to get the API token if you have not yet finised the registration"
+    accept_tac:
       tac_accepted:
         heading: "You have successfully accepted the Terms & Conditions. Proceed with Registration process if any"
         message: "Store and use the API token for further communication"
       tac_not_accepted:
         heading: "You have not accepted the Terms & Conditions. Registration is complete only if you accept the T&C"
         message: "Accept the T&C to finish the Registration. Pass true"
+      device_blocked:
+        heading: "This device is blocked"
+        message: "You must have done some mal-practices"
+      device_pending:
+        heading: "This device is not verified"
+        message: "You need to verify this device before you can accept the terms and conditions"
+      mobile_number_not_registered:
+        heading: "The mobile number is not registered"
+        message: "Accepting T&C Failed. Check if the mobile number entered is valid"
+      device_not_registered:
+        heading: "The device is not registered"
+        message: "Accepting T&C Failed. Check if the UUID entered is valid"
     profile:
       user_already_exists:
         heading: "A profile already exists for the mobile number you have provided"

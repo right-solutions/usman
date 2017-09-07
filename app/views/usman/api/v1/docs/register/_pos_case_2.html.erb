@@ -1,13 +1,13 @@
 <%
 
-api_title = "Positive Case - 1 - should register and add a new device"
+api_title = "Positive Case - 2 - should register and reuse an existing registration information"
 
 api_input = <<-eos
 {
   "country_id": "1",
   "city_id": "2",
   "dialing_prefix": "+91",
-  "mobile_number": "<NEW MOBILE NUMBER>",
+  "mobile_number": "<ALREADY REGISTERED MOBILE NUMBER>",
   "uuid": "<NEW UUID>",
   "device_token": "<NEW DEVICE TOKEN>",
   "device_name": "Apple iPhone",
@@ -32,7 +32,7 @@ api_output = <<-eos
       "city_id": null,
       "dialing_prefix": "+91",
       "mobile_number": "501370321",
-      "status": "pending"
+      "status": "verified"
     },
     "device": {
       "id": 6,
@@ -60,7 +60,7 @@ eos
 
 <%= render partial: "kuppayam/api/docs/example", locals: {
                                         negative_case: false,
-                                        example_id: "pos_case_1",
+                                        example_id: "pos_case_2",
                                         api_title: api_title,
                                         api_input: api_input,
                                         api_output: api_output 

@@ -13,8 +13,8 @@ module Usman
             if @errors[:heading].blank?
               @success = true
               @alert = {
-                heading: I18n.translate("api.mobile_registration.otp_sent.heading"),
-                message: I18n.translate("api.mobile_registration.otp_sent.message")
+                heading: I18n.translate("api.register.otp_sent.heading"),
+                message: I18n.translate("api.register.otp_sent.message")
               }
               @data = {
                         registration: @reg_data.registration,
@@ -27,40 +27,52 @@ module Usman
 
         def resend_otp
           proc_code = Proc.new do
-            @device = Device.where("uuid = ?", params[:uuid]).first
-            if @device
-              if @device.blocked?
-                @success = false
-                @errors = {
-                  heading: I18n.translate("api.mobile_registration.device_blocked.heading"),
-                  message: I18n.translate("api.mobile_registration.device_blocked.message"),
-                  details: {}
-                }
-              else
-                valid, validation_errors = @device.resend_otp(params[:dialing_prefix], params[:mobile_number])
-                if valid
-                  @success = true
-                  @alert = {
-                    heading: I18n.translate("api.mobile_registration.new_otp_sent.heading"),
-                    message: I18n.translate("api.mobile_registration.new_otp_sent.message")
-                  }
-                  @data = {}
-                else
+            @registration = Registration.where("mobile_number = ?", params[:mobile_number]).first
+            if @registration
+              @device = @registration.devices.where("uuid = ?", params[:uuid]).first
+              if @device
+                if @device.blocked?
                   @success = false
                   @errors = {
-                    heading: I18n.translate("api.mobile_registration.otp_not_matching.heading"),
-                    message: I18n.translate("api.mobile_registration.otp_not_matching.message"),
-                    details: validation_errors
+                    heading: I18n.translate("api.resend_otp.device_blocked.heading"),
+                    message: I18n.translate("api.resend_otp.device_blocked.message"),
+                    details: {}
                   }
+                else
+                  valid, validation_errors = @device.resend_otp(params[:dialing_prefix], params[:mobile_number])
+                  if valid
+                    @success = true
+                    @alert = {
+                      heading: I18n.translate("api.resend_otp.new_otp_sent.heading"),
+                      message: I18n.translate("api.resend_otp.new_otp_sent.message")
+                    }
+                    @data = {}
+                  else
+                    @success = false
+                    @errors = {
+                      heading: I18n.translate("api.resend_otp.otp_not_matching.heading"),
+                      message: I18n.translate("api.resend_otp.otp_not_matching.message"),
+                      details: validation_errors
+                    }
+                  end
                 end
+              else
+                @success = false
+                @errors = {
+                  heading: I18n.translate("api.resend_otp.device_not_registered.heading"),
+                  message: I18n.translate("api.resend_otp.device_not_registered.message"),
+                  details: {
+                    uuid: "is invalid"
+                  }
+                }
               end
             else
               @success = false
               @errors = {
-                heading: I18n.translate("api.general.unexpected_failure.heading"),
-                message: I18n.translate("api.general.unexpected_failure.message"),
+                heading: I18n.translate("api.resend_otp.mobile_number_not_registered.heading"),
+                message: I18n.translate("api.resend_otp.mobile_number_not_registered.message"),
                 details: {
-                  uuid: "is invalid"
+                  mobile_number: "is invalid"
                 }
               }
             end
@@ -68,41 +80,54 @@ module Usman
           render_json_response(proc_code)
         end
 
-        def verify
+        def verify_otp
           proc_code = Proc.new do
-            @device = Device.where("uuid = ?", params[:uuid]).first
-            if @device
-              if @device.blocked?
-                @success = false
-                @errors = {
-                  heading: I18n.translate("api.mobile_registration.device_blocked.heading"),
-                  message: I18n.translate("api.mobile_registration.device_blocked.message"),
-                  details: {}
-                }
-              else
-                valid, validation_errors = @device.validate_otp(params[:otp], params[:dialing_prefix], params[:mobile_number])
-                if valid
-                  @success = true
-                  @alert = {
-                    heading: I18n.translate("api.mobile_registration.verification_success.heading"),
-                    message: I18n.translate("api.mobile_registration.verification_success.message")
-                  }
-                else
+            @registration = Registration.where("mobile_number = ?", params[:mobile_number]).first
+            if @registration
+              @device = @registration.devices.where("uuid = ?", params[:uuid]).first
+              if @device
+                if @device.blocked?
                   @success = false
                   @errors = {
-                    heading: I18n.translate("api.mobile_registration.otp_not_matching.heading"),
-                    message: I18n.translate("api.mobile_registration.otp_not_matching.message"),
-                    details: validation_errors
+                    heading: I18n.translate("api.verify_otp.device_blocked.heading"),
+                    message: I18n.translate("api.verify_otp.device_blocked.message"),
+                    details: {}
                   }
+                else
+                  valid, validation_errors = @device.validate_otp(params[:otp], params[:dialing_prefix], params[:mobile_number])
+                  if valid
+                    @success = true
+                    @alert = {
+                      heading: I18n.translate("api.verify_otp.verification_success.heading"),
+                      message: I18n.translate("api.verify_otp.verification_success.message")
+                    }
+                    @data = { api_token: @device.api_token } if @device.verified? && @device.tac_accepted?
+                  else
+                    @success = false
+                    @errors = {
+                      heading: I18n.translate("api.verify_otp.otp_not_matching.heading"),
+                      message: I18n.translate("api.verify_otp.otp_not_matching.message"),
+                      details: validation_errors
+                    }
+                  end
                 end
+              else
+                @success = false
+                @errors = {
+                  heading: I18n.translate("api.verify_otp.device_not_registered.heading"),
+                  message: I18n.translate("api.verify_otp.device_not_registered.message"),
+                  details: {
+                    uuid: "is invalid"
+                  }
+                }
               end
             else
               @success = false
               @errors = {
-                heading: I18n.translate("api.general.unexpected_failure.heading"),
-                message: I18n.translate("api.general.unexpected_failure.message"),
+                heading: I18n.translate("api.verify_otp.mobile_number_not_registered.heading"),
+                message: I18n.translate("api.verify_otp.mobile_number_not_registered.message"),
                 details: {
-                  uuid: "is invalid"
+                  mobile_number: "is invalid"
                 }
               }
             end
@@ -111,6 +136,68 @@ module Usman
         end
 
         def accept_tac
+          proc_code = Proc.new do
+            @registration = Registration.where("mobile_number = ?", params[:mobile_number]).first
+            if @registration
+              @device = @registration.devices.where("uuid = ?", params[:uuid]).first
+              if @device
+                if @device.blocked?
+                  @success = false
+                  @errors = {
+                    heading: I18n.translate("api.accept_tac.device_blocked.heading"),
+                    message: I18n.translate("api.accept_tac.device_blocked.message"),
+                    details: {}
+                  }
+                elsif @device.pending?
+                  @success = false
+                  @errors = {
+                    heading: I18n.translate("api.accept_tac.device_pending.heading"),
+                    message: I18n.translate("api.accept_tac.device_pending.message"),
+                    details: {}
+                  }
+                else
+                  valid, validation_errors = @device.accept_tac(params[:terms_and_conditions], params[:dialing_prefix], params[:mobile_number])
+                  if valid
+                    @success = true
+                    @alert = {
+                      heading: I18n.translate("api.accept_tac.tac_accepted.heading"),
+                      message: I18n.translate("api.accept_tac.tac_accepted.message")
+                    }
+                    @data = { api_token: @device.api_token } if @device.verified? && @device.tac_accepted?
+                  else
+                    @success = false
+                    @errors = {
+                      heading: I18n.translate("api.accept_tac.tac_not_accepted.heading"),
+                      message: I18n.translate("api.accept_tac.tac_not_accepted.message"),
+                      details: validation_errors
+                    }
+                  end
+                end
+              else
+                @success = false
+                @errors = {
+                  heading: I18n.translate("api.accept_tac.device_not_registered.heading"),
+                  message: I18n.translate("api.accept_tac.device_not_registered.message"),
+                  details: {
+                    uuid: "is invalid"
+                  }
+                }
+              end
+            else
+              @success = false
+              @errors = {
+                heading: I18n.translate("api.verify_otp.mobile_number_not_registered.heading"),
+                message: I18n.translate("api.verify_otp.mobile_number_not_registered.message"),
+                details: {
+                  mobile_number: "is invalid"
+                }
+              }
+            end
+          end
+          render_json_response(proc_code)
+        end
+
+        def accept_tac1
           proc_code = Proc.new do
             @device = Device.where("uuid = ?", params[:uuid]).first
             if @device

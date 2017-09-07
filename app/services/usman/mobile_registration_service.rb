@@ -44,7 +44,7 @@ module Usman
 
       if @registration.errors.any? or @device.errors.any?
         errors = @registration.errors.to_hash.merge(@device.errors.to_hash)
-        set_error("api.mobile_registration.invalid_inputs", errors)
+        set_error("api.register.invalid_inputs", errors)
       end
     end
 
@@ -55,12 +55,14 @@ module Usman
         @registration.city = @city
       end
       @device = Device.where("LOWER(uuid) = LOWER('#{@uuid}')").first if @registration
+
+      @device.generate_otp if @device
     end
 
     def register_new_device
       
       if @device && @device.blocked?
-        set_error("api.mobile_registration.device_blocked")
+        set_error("api.register.device_blocked")
         return
       end
 
@@ -102,7 +104,7 @@ module Usman
       if @device.send_otp
         @device.update_attribute(:otp_sent_at, Time.now)
       else
-        set_error("api.mobile_registration.otp_not_sent")
+        set_error("api.register.otp_not_sent")
       end
     end
 

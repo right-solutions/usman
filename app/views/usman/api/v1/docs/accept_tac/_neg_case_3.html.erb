@@ -1,13 +1,13 @@
 <%
 
-api_title = "Negative Case - 3 - should respond with proper errors if uuid is not registered"
+api_title = "Negative Case - 3 - should respond with proper errors if T&C is not accepted"
 
 api_input = <<-eos
 {
-  "otp": "11111",
-  "dialing_prefix": "+91",
-  "mobile_number": "<REGISTERED MOBILE NUMBER>",
-  "uuid": "<NEW UUID>"
+  "terms_and_conditions": 0,
+  "uuid": "<VERIFIED UUID>",
+  "mobile_number": "<VERIFIED MOBILE NUMBER>",
+  "dialing_prefix": "+91"
 }
 eos
 
@@ -15,10 +15,10 @@ api_output = <<-eos
 {
   "success": false,
   "errors": {
-      "heading": "The device is not registered",
-      "message": "Resending OTP Failed. Check if the UUID entered is valid",
+      "heading": "You have not accepted the Terms & Conditions. Registration is complete only if you accept the T&C",
+      "message": "Accept the T&C to finish the Registration. Pass true",
       "details": {
-        "uuid": "is invalid"
+        "terms_and_conditions": "must be true"
       }
   }
 }

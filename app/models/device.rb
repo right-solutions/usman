@@ -1,7 +1,7 @@
 class Device < ApplicationRecord
   
   # Constants
-  EXCLUDED_JSON_ATTRIBUTES = [:last_accessed_at, :last_accessed_api, :otp, :otp_sent_at, :api_token, :token_created_at, :status, :tac_accepted_at, :created_at, :updated_at]
+  EXCLUDED_JSON_ATTRIBUTES = [:last_accessed_at, :last_accessed_api, :otp, :otp_sent_at, :api_token, :token_created_at, :tac_accepted_at, :created_at, :updated_at]
 
   PENDING = "pending"
   VERIFIED = "verified"
@@ -68,9 +68,8 @@ class Device < ApplicationRecord
   # Exclude some attributes info from json output.
   def as_json(options={})
     options[:except] ||= EXCLUDED_JSON_ATTRIBUTES
-    #options[:include] ||= []
     #options[:methods] = []
-    #options[:methods] << :profile_image
+    #options[:methods] << :api_token
     json = super(options)
     Hash[*json.map{|k, v| [k, v || ""]}.flatten]
   end
@@ -145,19 +144,15 @@ class Device < ApplicationRecord
 
   def generate_otp
     self.otp = rand(10000..99999)
-    self.otp_sent_at = Time.now
+    self.otp_sent_at = nil
+    self.otp_verified_at = nil
+    self.save
   end
 
   def validate_otp(otp, dialing_prefix, mobile_number)
 
     # Validate OTP and other parameters
     validation_errors = {}
-
-    # Check if this OTP was already verified
-    if !self.otp_verified_at.blank?
-      validation_errors[:otp_verified_at] = "This OTP was already used"
-      return false, validation_errors
-    end
 
     # TODO - remove 11111 after implementing Twilio
     validation_errors[:otp] = "doesn't match with our database" unless (self.otp.to_s == otp.to_s or otp.to_s == "11111")
@@ -174,6 +169,10 @@ class Device < ApplicationRecord
 
     self.verify!
     self.registration.verify!
+
+    # Clearing the OTP so that next time if he uses the same, it shows error
+    self.otp = nil
+    self.save
 
     return true, {}
   end
@@ -194,7 +193,6 @@ class Device < ApplicationRecord
 
   def send_otp
     self.generate_otp
-    self.save
     return true
   end
 
@@ -204,8 +202,8 @@ class Device < ApplicationRecord
     validation_errors = {}
 
     # Check if terms and conditions was accepted
-    unless ["true", "yes", "t", "y"].include?(tac.to_s.downcase)
-      validation_errors[:terms_and_conditions] = "T&C should be true"
+    unless ["true", "yes", "t", "y", "1"].include?(tac.to_s.downcase)
+      validation_errors[:terms_and_conditions] = "must be true"
       return false, validation_errors
     end
 
@@ -218,10 +216,11 @@ class Device < ApplicationRecord
     self.tac_accepted_at = Time.now
     self.save
 
-    self.verify!
-    self.registration.verify!
-
     return true, {}
+  end
+
+  def tac_accepted?
+    self.tac_accepted_at.present? && self.tac_accepted_at < Time.now
   end
 
   # Other Methods

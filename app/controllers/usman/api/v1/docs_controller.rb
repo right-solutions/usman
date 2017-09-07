@@ -7,7 +7,7 @@ module Usman
           set_title("Register API")
           @request_type = "POST"
           @end_point = "/api/v1/register"
-          @description = "This API will register the user and the devise and will send an OTP for verification"
+          @description = "This API will register the user and the device and will send an OTP for verification. API will return the api_token if the device is already registered."
 
           @input_headers = {
             "Content-Type" => { value: "application/json", description: "The MIME media type for JSON text is application/json. This is to make sure that a valid json is returned. The default encoding is UTF-8. " }
@@ -27,7 +27,7 @@ module Usman
           }
 
           @example_path = "usman/api/v1/docs/"
-          @examples = ["pos_case_1", "neg_case_1", "neg_case_2", "neg_case_3"]
+          @examples = ["pos_case_1", "pos_case_2", "pos_case_3", "neg_case_1", "neg_case_2", "neg_case_3"]
 
           set_nav("docs/register")
 
@@ -53,7 +53,7 @@ module Usman
           }
 
           @example_path = "usman/api/v1/docs/"
-          @examples = ["pos_case_1", "neg_case_1"]
+          @examples = ["pos_case_1", "neg_case_1", "neg_case_2", "neg_case_3", "neg_case_4"]
 
           set_nav("docs/resend_otp")
 
@@ -78,7 +78,7 @@ module Usman
           }
 
           @example_path = "usman/api/v1/docs/"
-          @examples = ["pos_case_1", "neg_case_1", "neg_case_2", "neg_case_3"]
+          @examples = ["pos_case_1", "pos_case_2", "neg_case_1", "neg_case_2", "neg_case_3", "neg_case_4"]
 
           set_nav("docs/verify_otp")
 
@@ -104,7 +104,7 @@ module Usman
           }
 
           @example_path = "usman/api/v1/docs/"# 
-          # @examples = ["pos_case_1", "neg_case_1", "neg_case_2", "neg_case_3"]
+          @examples = ["pos_case_1", "neg_case_1", "neg_case_2", "neg_case_3"]
 
           set_nav("docs/accept_tac")
 

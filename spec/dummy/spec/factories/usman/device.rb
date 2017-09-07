@@ -1,7 +1,6 @@
 FactoryGirl.define do
 
   factory :device do
-
     user
     registration
 
@@ -14,13 +13,6 @@ FactoryGirl.define do
     
     last_accessed_at {Time.now}
     last_accessed_api "/api/v1/register"
-
-    otp 12345
-    otp_sent_at {Time.now}
-
-    api_token {SecureRandom.hex}
-    token_created_at {Time.now}
-
   end
 
   factory :pending_device, parent: :device do
@@ -29,7 +21,7 @@ FactoryGirl.define do
 
   factory :verified_device, parent: :device do
     status "verified"
-    otp { rand(10000..99999) }
+    otp nil
     otp_sent_at { Time.now }
     otp_verified_at { Time.now }
   end

@@ -42,18 +42,21 @@ RSpec.describe Usman::Api::V1::RegistrationsController, :type => :request do
         expect(data["registration"]["dialing_prefix"]).to eq("+971")
         expect(data["registration"]["mobile_number"]).to eq("554455339")
         expect(data["registration"]["user_id"]).to be_blank
+        expect(data["registration"]["status"]).to match("pending")
 
         expect(data["device"]["user_id"]).to be_blank
         expect(data["device"]["registration_id"]).not_to be_blank
         expect(data["device"]["uuid"]).to match(uuid)
-        expect(data["device"]["device_token"]).to  match(device_token)
-        expect(data["device"]["device_name"]).to  match("Apple iPhone")
-        expect(data["device"]["device_type"]).to  match("iPhone 7 Plus")
-        expect(data["device"]["operating_system"]).to  match("iPhone 7 Plus")
-        expect(data["device"]["software_version"]).to  match("Apple iOS")
+        expect(data["device"]["device_token"]).to match(device_token)
+        expect(data["device"]["device_name"]).to match("Apple iPhone")
+        expect(data["device"]["device_type"]).to match("iPhone 7 Plus")
+        expect(data["device"]["operating_system"]).to match("iPhone 7 Plus")
+        expect(data["device"]["software_version"]).to match("Apple iOS")
+        expect(data["device"]["status"]).to match("pending")
+        expect(data["device"]["api_token"]).to be_blank
       end
 
-      it "should register and reuse an existing device information" do
+      it "should register and reuse an existing registration information" do
         reg = FactoryGirl.create(:verified_registration)
         uuid = SecureRandom.hex
         device_token = SecureRandom.hex
@@ -75,7 +78,7 @@ RSpec.describe Usman::Api::V1::RegistrationsController, :type => :request do
         expect(response.status).to eq(200)
 
         response_body = JSON.parse(response.body)
-
+        
         expect(response_body["success"]).to eq(true)
 
         expect(response_body["alert"]["heading"]).to eq("An OTP has been sent to you")
@@ -89,15 +92,18 @@ RSpec.describe Usman::Api::V1::RegistrationsController, :type => :request do
         expect(data["registration"]["dialing_prefix"]).to eq(reg.dialing_prefix)
         expect(data["registration"]["mobile_number"]).to eq(reg.mobile_number)
         expect(data["registration"]["user_id"]).to eq(reg.user.id)
+        expect(data["registration"]["status"]).to match("verified")
         
         expect(data["device"]["registration_id"]).to be(reg.id)
         expect(data["device"]["uuid"]).to match(uuid)
-        expect(data["device"]["device_token"]).to  match(device_token)
-        expect(data["device"]["device_name"]).to  match("Apple iPhone")
-        expect(data["device"]["device_type"]).to  match("iPhone 7 Plus")
-        expect(data["device"]["operating_system"]).to  match("iPhone 7 Plus")
-        expect(data["device"]["software_version"]).to  match("Apple iOS")
+        expect(data["device"]["device_token"]).to match(device_token)
+        expect(data["device"]["device_name"]).to match("Apple iPhone")
+        expect(data["device"]["device_type"]).to match("iPhone 7 Plus")
+        expect(data["device"]["operating_system"]).to match("iPhone 7 Plus")
+        expect(data["device"]["software_version"]).to match("Apple iOS")
         expect(data["device"]["user_id"]).to be(reg.user.id)
+        expect(data["device"]["status"]).to match("pending")
+        expect(data["device"]["api_token"]).to be_blank
       end
 
       it "should reuse existing registration & device information" do
@@ -136,15 +142,18 @@ RSpec.describe Usman::Api::V1::RegistrationsController, :type => :request do
         expect(data["registration"]["dialing_prefix"]).to eq(reg.dialing_prefix)
         expect(data["registration"]["mobile_number"]).to eq(reg.mobile_number)
         expect(data["registration"]["user_id"]).to eq(reg.user.id)
+        expect(data["registration"]["status"]).to match("verified")
         
         expect(data["device"]["registration_id"]).to be(reg.id)
         expect(data["device"]["uuid"]).to match(dev.uuid)
-        expect(data["device"]["device_token"]).to  match(dev.device_token)
-        expect(data["device"]["device_name"]).to  match(dev.device_name)
-        expect(data["device"]["device_type"]).to  match(dev.device_type)
-        expect(data["device"]["operating_system"]).to  match(dev.operating_system)
-        expect(data["device"]["software_version"]).to  match(dev.software_version)
+        expect(data["device"]["device_token"]).to match(dev.device_token)
+        expect(data["device"]["device_name"]).to match(dev.device_name)
+        expect(data["device"]["device_type"]).to match(dev.device_type)
+        expect(data["device"]["operating_system"]).to match(dev.operating_system)
+        expect(data["device"]["software_version"]).to match(dev.software_version)
         expect(data["device"]["user_id"]).to be(dev.user.id)
+        expect(data["device"]["status"]).to match("verified")
+        expect(data["device"]["api_token"]).to be_blank
       end
     end
     context 'Negative Cases' do
@@ -266,11 +275,30 @@ RSpec.describe Usman::Api::V1::RegistrationsController, :type => :request do
         expect(response_body["alert"]["heading"]).to  eq("An new OTP has been sent to you")
         expect(response_body["alert"]["message"]).to  eq("Check your mobile for new message from us")
       end
-    end
-    context "Negative Case" do
-      it "should respond with proper errors if invalid parameters are passed" do
+      it "should resend the otp even if the device is verified" do
         reg = FactoryGirl.create(:registration)
         dev = FactoryGirl.create(:verified_device, registration: reg)
+        post "/api/v1/resend_otp", params: {
+                                          uuid: dev.uuid,
+                                          dialing_prefix: reg.dialing_prefix, 
+                                          mobile_number: reg.mobile_number
+                                        }
+
+        expect(response.status).to eq(200)
+
+        response_body = JSON.parse(response.body)
+
+        expect(response_body["success"]).to be(true)
+        expect(response_body["errors"]).to be_blank
+
+        expect(response_body["alert"]["heading"]).to  eq("An new OTP has been sent to you")
+        expect(response_body["alert"]["message"]).to  eq("Check your mobile for new message from us")
+      end
+    end
+    context "Negative Case" do
+      it "should respond with proper errors if no parameters are passed" do
+        reg = FactoryGirl.create(:registration)
+        dev = FactoryGirl.create(:pending_device, registration: reg)
         post "/api/v1/resend_otp", params: {}
 
         expect(response.status).to eq(200)
@@ -280,14 +308,13 @@ RSpec.describe Usman::Api::V1::RegistrationsController, :type => :request do
         expect(response_body["success"]).to be(false)
         expect(response_body["alert"]).to be_blank
 
-        expect(response_body["errors"]["heading"]).to  eq("Unexpected Failure")
-        expect(response_body["errors"]["message"]).to  eq("We're sorry, but something went wrong (500)")
-        expect(response_body["errors"]["details"]["uuid"]).to  eq("is invalid")
+        expect(response_body["errors"]["heading"]).to  eq("The mobile number is not registered")
+        expect(response_body["errors"]["message"]).to  eq("Resending OTP Failed. Check if the mobile number entered is valid")
+        expect(response_body["errors"]["details"]["mobile_number"]).to  eq("is invalid")
+      end
 
-
-        reg = FactoryGirl.create(:registration)
-        dev = FactoryGirl.create(:verified_device, registration: reg)
-        post "/api/v1/resend_otp", params: { uuid: dev.uuid }
+      it "should respond with proper errors if mobile number is not registered" do
+        post "/api/v1/resend_otp", params: { dialing_prefix: "+91", mobile_number: "1234512345" }
 
         expect(response.status).to eq(200)
 
@@ -296,14 +323,33 @@ RSpec.describe Usman::Api::V1::RegistrationsController, :type => :request do
         expect(response_body["success"]).to be(false)
         expect(response_body["alert"]).to be_blank
 
-        expect(response_body["errors"]["heading"]).to  eq("OTP verification was failed")
-        expect(response_body["errors"]["message"]).to  eq("Make sure that you enter the OTP correctly")
-        expect(response_body["errors"]["details"]["mobile_number"]).to  eq("doesn't match with our database")
-        expect(response_body["errors"]["details"]["dialing_prefix"]).to  eq("doesn't match with our database")
+        expect(response_body["errors"]["heading"]).to  eq("The mobile number is not registered")
+        expect(response_body["errors"]["message"]).to  eq("Resending OTP Failed. Check if the mobile number entered is valid")
+        expect(response_body["errors"]["details"]["mobile_number"]).to  eq("is invalid")
+      end
+
+      it "should respond with proper errors if uuid is not registered" do
+        reg = FactoryGirl.create(:registration)
+        dev = FactoryGirl.create(:pending_device, registration: reg)
+        post "/api/v1/resend_otp", params: {
+          dialing_prefix: reg.dialing_prefix,
+          mobile_number: reg.mobile_number,
+          uuid: "1072031b20312b3",
+        }
+
+        expect(response.status).to eq(200)
+
+        response_body = JSON.parse(response.body)
+        
+        expect(response_body["success"]).to be(false)
+        expect(response_body["alert"]).to be_blank
+
+        expect(response_body["errors"]["heading"]).to  eq("The device is not registered")
+        expect(response_body["errors"]["message"]).to  eq("Resending OTP Failed. Check if the UUID entered is valid")
+        expect(response_body["errors"]["details"]["uuid"]).to  eq("is invalid")
       end
 
       it "should respond with proper errors if the device is blocked" do
-        
         reg = FactoryGirl.create(:registration)
         dev = FactoryGirl.create(:blocked_device, registration: reg)
         post "/api/v1/resend_otp", params: {
@@ -328,10 +374,14 @@ RSpec.describe Usman::Api::V1::RegistrationsController, :type => :request do
   describe "verify" do
     context "Positive Case" do
       it "should verify an otp verification request from a pending device" do
-        
-        reg = FactoryGirl.create(:registration)
+        reg = FactoryGirl.create(:pending_registration)
         dev = FactoryGirl.create(:pending_device, registration: reg)
-        post "/api/v1/verify", params: {
+
+        # Generating a new OTP
+        dev.generate_otp
+        dev.reload
+
+        post "/api/v1/verify_otp", params: {
                                           otp: dev.otp,
                                           uuid: dev.uuid,
                                           dialing_prefix: reg.dialing_prefix, 
@@ -346,91 +396,22 @@ RSpec.describe Usman::Api::V1::RegistrationsController, :type => :request do
         expect(response_body["errors"]).to be_blank
 
         expect(response_body["alert"]["heading"]).to  eq("OTP was verified succesfully")
-        expect(response_body["alert"]["message"]).to  eq("Now, accept the terms and conditions to finish the registration process and get API token")
+        expect(response_body["alert"]["message"]).to  eq("You may need to accept the terms and conditions to get the API token if you have not yet finised the registration")
 
         dev.reload
         expect(response_body["data"]).to be_nil
       end
-    end
-    context "Negative Case" do
-      it "should respond with proper errors if invalid parameters are passed" do
-        
-        reg = FactoryGirl.create(:registration)
+      it "should verify the otp if the device is verified, tac is accpted and return the api token" do
+        reg = FactoryGirl.create(:verified_registration)
         dev = FactoryGirl.create(:verified_device, registration: reg)
-        post "/api/v1/verify", params: {
+
+        # Generating a new OTP
+        dev.generate_otp
+        dev.update_attribute(:tac_accepted_at, Time.now)
+        dev.reload
+
+        post "/api/v1/verify_otp", params: {
                                           otp: dev.otp,
-                                          uuid: dev.uuid,
-                                          dialing_prefix: reg.dialing_prefix, 
-                                          mobile_number: reg.mobile_number
-                                        }
-
-        expect(response.status).to eq(200)
-
-        response_body = JSON.parse(response.body)
-
-        expect(response_body["success"]).to be(false)
-        expect(response_body["alert"]).to be_blank
-
-        expect(response_body["errors"]["heading"]).to  eq("OTP verification was failed")
-        expect(response_body["errors"]["message"]).to  eq("Make sure that you enter the OTP correctly")
-        expect(response_body["errors"]["details"]["otp_verified_at"]).to  eq("This OTP was already used")
-      end
-
-      it "should respond with proper errors if the otp is already used once" do
-        
-        reg = FactoryGirl.create(:registration)
-        dev = FactoryGirl.create(:verified_device, registration: reg)
-        post "/api/v1/verify", params: {
-                                          otp: dev.otp,
-                                          uuid: dev.uuid,
-                                          dialing_prefix: reg.dialing_prefix, 
-                                          mobile_number: reg.mobile_number
-                                        }
-
-        expect(response.status).to eq(200)
-
-        response_body = JSON.parse(response.body)
-
-        expect(response_body["success"]).to be(false)
-        expect(response_body["alert"]).to be_blank
-
-        expect(response_body["errors"]["heading"]).to  eq("OTP verification was failed")
-        expect(response_body["errors"]["message"]).to  eq("Make sure that you enter the OTP correctly")
-        expect(response_body["errors"]["details"]["otp_verified_at"]).to  eq("This OTP was already used")
-      end
-
-      it "should respond with proper errors if the device is blocked" do
-        
-        reg = FactoryGirl.create(:registration)
-        dev = FactoryGirl.create(:blocked_device, registration: reg)
-        post "/api/v1/verify", params: {
-                                          otp: dev.otp,
-                                          uuid: dev.uuid,
-                                          dialing_prefix: reg.dialing_prefix, 
-                                          mobile_number: reg.mobile_number
-                                        }
-
-        expect(response.status).to eq(200)
-
-        response_body = JSON.parse(response.body)
-
-        expect(response_body["success"]).to be(false)
-        expect(response_body["alert"]).to be_blank
-
-        expect(response_body["errors"]["heading"]).to  eq("This device is blocked")
-        expect(response_body["errors"]["message"]).to  eq("You must have done some mal-practices")
-      end
-    end
-  end
-
-  describe "accept_tac" do
-    context "Positive Case" do
-      it "should accept the terms and conditions if all inputs are valid" do
-        
-        reg = FactoryGirl.create(:registration)
-        dev = FactoryGirl.create(:pending_device, registration: reg)
-        post "/api/v1/accept_tac", params: {
-                                          terms_and_conditions: true,
                                           uuid: dev.uuid,
                                           dialing_prefix: reg.dialing_prefix, 
                                           mobile_number: reg.mobile_number
@@ -443,18 +424,24 @@ RSpec.describe Usman::Api::V1::RegistrationsController, :type => :request do
         expect(response_body["success"]).to be(true)
         expect(response_body["errors"]).to be_blank
 
-        expect(response_body["alert"]["heading"]).to  eq("You have successfully accepted the Terms & Conditions. Proceed with Registration process if any")
-        expect(response_body["alert"]["message"]).to  eq("Store and use the API token for further communication")
+        expect(response_body["alert"]["heading"]).to  eq("OTP was verified succesfully")
+        expect(response_body["alert"]["message"]).to  eq("You may need to accept the terms and conditions to get the API token if you have not yet finised the registration")
 
         dev.reload
         expect(response_body["data"]["api_token"]).to eq(dev.api_token)
       end
     end
     context "Negative Case" do
-      it "should respond with proper errors if invalid params are passed" do
-        reg = FactoryGirl.create(:registration)
+      it "should respond with proper errors if no parameters are passed" do
+        
+        reg = FactoryGirl.create(:pending_registration)
         dev = FactoryGirl.create(:pending_device, registration: reg)
-        post "/api/v1/accept_tac", params: {}
+        
+        # Generating a new OTP
+        dev.generate_otp
+        dev.reload
+
+        post "/api/v1/verify_otp", params: {}
 
         expect(response.status).to eq(200)
 
@@ -463,13 +450,161 @@ RSpec.describe Usman::Api::V1::RegistrationsController, :type => :request do
         expect(response_body["success"]).to be(false)
         expect(response_body["alert"]).to be_blank
 
-        expect(response_body["errors"]["heading"]).to  eq("Unexpected Failure")
-        expect(response_body["errors"]["message"]).to  eq("We're sorry, but something went wrong (500)")
+        expect(response_body["errors"]["heading"]).to  eq("The mobile number is not registered")
+        expect(response_body["errors"]["message"]).to  eq("Verifying OTP Failed. Check if the mobile number entered is valid")
+        expect(response_body["errors"]["details"]["mobile_number"]).to  eq("is invalid")
+      end
+
+      it "should respond with proper errors if mobile number is not registered" do
+        reg = FactoryGirl.create(:pending_registration)
+        dev = FactoryGirl.create(:pending_device, registration: reg)
+
+        # Generating a new OTP
+        dev.generate_otp
+        dev.reload
+
+        post "/api/v1/verify_otp", params: {
+                                          otp: dev.otp,
+                                          dialing_prefix: "+91", 
+                                          mobile_number: "1234512345"
+                                        }
+
+        expect(response.status).to eq(200)
+
+        response_body = JSON.parse(response.body)
+
+        expect(response_body["success"]).to be(false)
+        expect(response_body["alert"]).to be_blank
+
+        expect(response_body["errors"]["heading"]).to  eq("The mobile number is not registered")
+        expect(response_body["errors"]["message"]).to  eq("Verifying OTP Failed. Check if the mobile number entered is valid")
+        expect(response_body["errors"]["details"]["mobile_number"]).to  eq("is invalid")
+      end
+
+      it "should respond with proper errors if uuid is not registered" do
+        reg = FactoryGirl.create(:verified_registration)
+        dev = FactoryGirl.create(:pending_device, registration: reg)
+
+        # Generating a new OTP
+        dev.generate_otp
+        dev.reload
+
+        post "/api/v1/verify_otp", params: {
+                                          otp: "11111",
+                                          dialing_prefix: reg.dialing_prefix, 
+                                          mobile_number: reg.mobile_number,
+                                          uuid: "1072031b20312b3"
+                                        }
+
+        expect(response.status).to eq(200)
+
+        response_body = JSON.parse(response.body)
+        
+        expect(response_body["success"]).to be(false)
+        expect(response_body["alert"]).to be_blank
+
+        expect(response_body["errors"]["heading"]).to  eq("The device is not registered")
+        expect(response_body["errors"]["message"]).to  eq("Verifying OTP Failed. Check if the UUID entered is valid")
+        expect(response_body["errors"]["details"]["uuid"]).to  eq("is invalid")
+      end
+
+      it "should respond with proper errors if the device is blocked" do
+        reg = FactoryGirl.create(:registration)
+        dev = FactoryGirl.create(:blocked_device, registration: reg)
+        post "/api/v1/verify_otp", params: {
+                                          otp: dev.otp,
+                                          dialing_prefix: reg.dialing_prefix, 
+                                          mobile_number: reg.mobile_number,
+                                          uuid: dev.uuid
+                                        }
+
+        expect(response.status).to eq(200)
+
+        response_body = JSON.parse(response.body)
+        
+        expect(response_body["success"]).to be(false)
+        expect(response_body["alert"]).to be_blank
+
+        expect(response_body["errors"]["heading"]).to  eq("This device is blocked")
+        expect(response_body["errors"]["message"]).to  eq("You must have done some mal-practices")
+      end
+    end
+  end
+
+  describe "accept_tac" do
+    context "Positive Case" do
+      it "should accept the terms and conditions if the device is verified and all inputs are valid" do
+        
+        reg = FactoryGirl.create(:verified_registration)
+        dev = FactoryGirl.create(:verified_device, registration: reg)
+        
+        post "/api/v1/accept_tac", params: {
+                                          terms_and_conditions: true,
+                                          uuid: dev.uuid,
+                                          dialing_prefix: reg.dialing_prefix, 
+                                          mobile_number: reg.mobile_number
+                                        }
+
+        expect(response.status).to eq(200)
+
+        response_body = JSON.parse(response.body)
+        
+        expect(response_body["success"]).to be(true)
+        expect(response_body["errors"]).to be_blank
+
+        expect(response_body["alert"]["heading"]).to  eq("You have successfully accepted the Terms & Conditions. Proceed with Registration process if any")
+        expect(response_body["alert"]["message"]).to  eq("Store and use the API token for further communication")
+
+        dev.reload
+        expect(response_body["data"]["api_token"]).to eq(dev.api_token)
+      end
+    end
+    context "Negative Case" do
+      it "should not accept the terms and conditions if the device is not verified" do
+        reg = FactoryGirl.create(:pending_registration)
+        dev = FactoryGirl.create(:pending_device, registration: reg)
+        
+        post "/api/v1/accept_tac", params: {
+                                          terms_and_conditions: true,
+                                          uuid: dev.uuid,
+                                          dialing_prefix: reg.dialing_prefix, 
+                                          mobile_number: reg.mobile_number
+                                        }
+
+        expect(response.status).to eq(200)
+
+        response_body = JSON.parse(response.body)
+        
+        expect(response_body["success"]).to be(false)
+        expect(response_body["alert"]).to be_blank
+        expect(response_body["data"]).to be_blank
+
+        expect(response_body["errors"]["heading"]).to  eq("This device is not verified")
+        expect(response_body["errors"]["message"]).to  eq("You need to verify this device before you can accept the terms and conditions")
+      end
+
+      it "should respond with proper errors if no params are passed" do
+        reg = FactoryGirl.create(:verified_registration)
+        dev = FactoryGirl.create(:verified_device, registration: reg)
+        
+        post "/api/v1/accept_tac", params: {}
+
+        expect(response.status).to eq(200)
+
+        response_body = JSON.parse(response.body)
+        
+        expect(response_body["success"]).to be(false)
+        expect(response_body["alert"]).to be_blank
+        expect(response_body["data"]).to be_blank
+
+        expect(response_body["errors"]["heading"]).to  eq("The mobile number is not registered")
+        expect(response_body["errors"]["message"]).to  eq("Verifying OTP Failed. Check if the mobile number entered is valid")
+        expect(response_body["errors"]["details"]["mobile_number"]).to eq("is invalid")
       end
 
       it "should respond with proper errors if T&C is not accepted" do
-        reg = FactoryGirl.create(:registration)
-        dev = FactoryGirl.create(:pending_device, registration: reg)
+        reg = FactoryGirl.create(:verified_registration)
+        dev = FactoryGirl.create(:verified_device, registration: reg)
         post "/api/v1/accept_tac", params: {
                                           terms_and_conditions: false,
                                           uuid: dev.uuid,
@@ -483,10 +618,11 @@ RSpec.describe Usman::Api::V1::RegistrationsController, :type => :request do
 
         expect(response_body["success"]).to be(false)
         expect(response_body["alert"]).to be_blank
+        expect(response_body["data"]).to be_blank
 
         expect(response_body["errors"]["heading"]).to  eq("You have not accepted the Terms & Conditions. Registration is complete only if you accept the T&C")
         expect(response_body["errors"]["message"]).to  eq("Accept the T&C to finish the Registration. Pass true")
-        expect(response_body["errors"]["details"]["terms_and_conditions"]).to  eq("T&C should be true")
+        expect(response_body["errors"]["details"]["terms_and_conditions"]).to  eq("must be true")
       end
     end
   end

@@ -1,23 +1,19 @@
 <%
 
-api_title = "Negative Case - 1 - should set proper errors if no input is given"
+api_title = "Negative Case - 1 - should respond with proper errors if no parameters are passed"
 
 api_input = <<-eos
-{
-  "uuid": "asd907asdba78sbda",
-  "mobile_number": "292991230",
-  "dialing_prefix": "+91"
-}
+{}
 eos
 
 api_output = <<-eos
 {
   "success": false,
   "errors": {
-      "heading": "OTP verification was failed",
-      "message": "Make sure that you enter the OTP correctly.",
+      "heading": "The mobile number is not registered",
+      "message": "Resending OTP Failed. Check if the mobile number entered is valid",
       "details": {
-          "otp": "doesn't match with our database"
+          "mobile_number": "is invalid"
       }
   }
 }

@@ -1,7 +1,7 @@
 class Registration < ApplicationRecord
   
   # Constants
-  EXCLUDED_JSON_ATTRIBUTES = [:status, :created_at, :updated_at]
+  EXCLUDED_JSON_ATTRIBUTES = [:created_at, :updated_at]
 
   PENDING = "pending"
   VERIFIED = "verified"

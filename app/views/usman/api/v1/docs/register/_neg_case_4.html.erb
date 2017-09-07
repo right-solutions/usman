@@ -1,13 +1,15 @@
 <%
 
-api_title = "Negative Case - 3 - should respond with proper errors if uuid is not registered"
+api_title = "Negative Case - 4 - should set proper errors for device is blocked"
 
 api_input = <<-eos
 {
-  "otp": "11111",
-  "dialing_prefix": "+91",
-  "mobile_number": "<REGISTERED MOBILE NUMBER>",
-  "uuid": "<NEW UUID>"
+  "uuid": "<BLOCKED DEVICE UUID>",
+  "device_token": "<BLOCKED DEVICE DEVICE TOKEN>",
+  "device_name": "Apple iPhone",
+  "device_type": "iPhone 7 Plus",
+  "operating_system": "iOS",
+  "software_version": "iOS 11.2.2"
 }
 eos
 
@@ -15,11 +17,9 @@ api_output = <<-eos
 {
   "success": false,
   "errors": {
-      "heading": "The device is not registered",
-      "message": "Resending OTP Failed. Check if the UUID entered is valid",
-      "details": {
-        "uuid": "is invalid"
-      }
+      "heading": "This device is blocked",
+      "message": "You must have done some mal-practices",
+      "details": {}
   }
 }
 eos

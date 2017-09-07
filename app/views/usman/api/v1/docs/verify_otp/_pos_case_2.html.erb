@@ -1,12 +1,12 @@
 <%
 
-api_title = "Positive Case - 1 - should verify an otp verification request from a pending device"
+api_title = "Positive Case - 2 - should verify the otp if the device is verified, tac is accpted and return the api token"
 
 api_input = <<-eos
 {
   "otp": "11111",
-  "uuid": "<PENDING UUID>",
-  "mobile_number": "<PENDING MOBILE NUMBER>",
+  "uuid": "<REGISTERED UUID>",
+  "mobile_number": "<REGISTERED MOBILE NUMBER>",
   "dialing_prefix": "+91"
 }
 eos
@@ -18,7 +18,9 @@ api_output = <<-eos
       "heading": "OTP was verified succesfully",
       "message": "You may need to accept the terms and conditions to get the API token if you have not yet finised the registration"
   },
-  "data": {}
+  "data": {
+      "api_token": "cfc0eb18c8f3b5922e702f1e10437fa1"
+  }
 }
 eos
 
@@ -26,7 +28,7 @@ eos
 
 <%= render partial: "kuppayam/api/docs/example", locals: {
                                         negative_case: false,
-                                        example_id: "pos_case_1",
+                                        example_id: "pos_case_2",
                                         api_title: api_title,
                                         api_input: api_input,
                                         api_output: api_output 

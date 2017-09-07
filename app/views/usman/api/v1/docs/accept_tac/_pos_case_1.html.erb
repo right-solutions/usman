@@ -1,12 +1,12 @@
 <%
 
-api_title = "Positive Case - 1 - should verify an otp verification request from a pending device"
+api_title = "Positive Case - 1 - should accept the terms and conditions if the device is verified and all inputs are valid"
 
 api_input = <<-eos
 {
-  "otp": "11111",
-  "uuid": "<PENDING UUID>",
-  "mobile_number": "<PENDING MOBILE NUMBER>",
+  "terms_and_conditions": 1,
+  "uuid": "<VERIFIED UUID>",
+  "mobile_number": "<VERIFIED MOBILE NUMBER>",
   "dialing_prefix": "+91"
 }
 eos
@@ -15,10 +15,12 @@ api_output = <<-eos
 {
   "success": true,
   "alert": {
-      "heading": "OTP was verified succesfully",
-      "message": "You may need to accept the terms and conditions to get the API token if you have not yet finised the registration"
+      "heading": "You have successfully accepted the Terms & Conditions. Proceed with Registration process if any",
+      "message": "Store and use the API token for further communication"
   },
-  "data": {}
+  "data": {
+    "api_token": "ajshdjkashdkjasdas"
+  }
 }
 eos
 

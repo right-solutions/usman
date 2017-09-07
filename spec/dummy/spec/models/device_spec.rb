@@ -165,7 +165,26 @@ RSpec.describe Device, type: :model do
 
     context "Other Methods" do
       it "as_json" do
-        skip "To Be Implemented"
+        # If verified, it should return api token
+        reg = FactoryGirl.create(:verified_registration)
+        dev = FactoryGirl.create(:verified_device, registration: reg)
+
+        expect(dev.as_json["api_token"]).to be_blank
+        expect(dev.as_json["status"]).to eq("verified")
+
+        # If pending or blocked, it should not return api token
+        reg = FactoryGirl.create(:pending_registration)
+        dev = FactoryGirl.create(:pending_device, registration: reg)
+
+        expect(dev.as_json["api_token"]).to be_blank
+        expect(dev.as_json["status"]).to eq("pending")
+
+        # If pending or blocked, it should not return api token
+        reg = FactoryGirl.create(:verified_registration)
+        dev = FactoryGirl.create(:blocked_device, registration: reg)
+
+        expect(dev.as_json["api_token"]).to be_blank
+        expect(dev.as_json["status"]).to eq("blocked")
       end
       it "display_name" do
         r = FactoryGirl.create(:device, device_name: "Samsung Galaxy", uuid: "1234567890")

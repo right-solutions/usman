@@ -45,7 +45,7 @@ Usman::Engine.routes.draw do
       # Registrations
       post :register, :controller => "registrations"
       post :resend_otp, :controller => "registrations"
-      post :verify, :controller => "registrations"
+      post :verify_otp, :controller => "registrations"
       post :accept_tac, :controller => "registrations"
 
       # Profile

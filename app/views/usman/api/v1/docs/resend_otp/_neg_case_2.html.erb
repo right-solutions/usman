@@ -1,12 +1,11 @@
 <%
 
-api_title = "Negative Case - 3 - should respond with proper errors if uuid is not registered"
+api_title = "Negative Case - 2 - should respond with proper errors if mobile number is not registered"
 
 api_input = <<-eos
 {
-  "otp": "11111",
   "dialing_prefix": "+91",
-  "mobile_number": "<REGISTERED MOBILE NUMBER>",
+  "mobile_number": "<NEW MOBILE NUMBER>",
   "uuid": "<NEW UUID>"
 }
 eos
@@ -15,10 +14,10 @@ api_output = <<-eos
 {
   "success": false,
   "errors": {
-      "heading": "The device is not registered",
-      "message": "Resending OTP Failed. Check if the UUID entered is valid",
+      "heading": "The mobile number is not registered",
+      "message": "Resending OTP Failed. Check if the mobile number entered is valid",
       "details": {
-        "uuid": "is invalid"
+          "mobile_number": "is invalid"
       }
   }
 }
@@ -28,7 +27,7 @@ eos
 
 <%= render partial: "kuppayam/api/docs/example", locals: {
                                         negative_case: true,
-                                        example_id: "neg_case_3",
+                                        example_id: "neg_case_2",
                                         api_title: api_title,
                                         api_input: api_input,
                                         api_output: api_output 

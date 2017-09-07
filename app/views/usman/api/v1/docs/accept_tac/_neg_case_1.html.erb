@@ -1,20 +1,22 @@
 <%
 
-api_title = "Negative Case - 1 - should respond with proper errors if no parameters are passed"
+api_title = "Negative Case - 1 - should not accept the terms and conditions if the device is not verified"
 
 api_input = <<-eos
-{}
+{
+  "terms_and_conditions": 1,
+  "uuid": "<PENDING UUID>",
+  "mobile_number": "<PENDING MOBILE NUMBER>",
+  "dialing_prefix": "+91"
+}
 eos
 
 api_output = <<-eos
 {
   "success": false,
   "errors": {
-      "heading": "The mobile number is not registered",
-      "message": "Resending OTP Failed. Check if the mobile number entered is valid",
-      "details": {
-          "mobile_number": "is invalid"
-      }
+    "heading": "This device is not verified",
+    "message": "You need to verify this device before you can accept the terms and conditions"
   }
 }
 eos

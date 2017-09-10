@@ -14,30 +14,34 @@ Usman::Engine.routes.draw do
   get   '/my_account',        to: "my_account#index",  as:   :my_account
   get   '/dashboard/usman',   to: "dashboard#index",  as:   :dashboard
   
-  resources :registrations, only: [:index, :show] do
-    resources :devices, :controller => "registration_devices"
-  end
+  scope :admin do
 
-  resources :users do
-    member do
-      put :masquerade, as: :masquerade
-      put :update_status, as:  :update_status
-      put :make_super_admin, as:  :make_super_admin
-      put :remove_super_admin, as:  :remove_super_admin
+    resources :registrations, only: [:index, :show] do
+      resources :devices, :controller => "registration_devices"
     end
-  end
 
-  resources :roles do
-    resources :users, :controller => "user_roles"
-  end
-
-  resources :features do
-    member do
-      put :update_status, as:  :update_status
+    resources :users do
+      member do
+        put :masquerade, as: :masquerade
+        put :update_status, as:  :update_status
+        put :make_super_admin, as:  :make_super_admin
+        put :remove_super_admin, as:  :remove_super_admin
+      end
     end
-  end
 
-  resources :permissions
+    resources :roles do
+      resources :users, :controller => "user_roles"
+    end
+  
+    resources :features do
+      member do
+        put :update_status, as:  :update_status
+      end
+    end
+
+    resources :permissions
+
+  end
   
   namespace :api do
     namespace :v1 do

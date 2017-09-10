@@ -4,8 +4,7 @@ module Usman
       class ProfileController < Usman::Api::V1::BaseController
 
         def create_profile
-          #proc_code = Proc.new do
-            #binding.pry
+          proc_code = Proc.new do
             if @current_registration
               if @current_user
                 @success = false
@@ -56,7 +55,6 @@ module Usman
                 message: I18n.translate("api.profile.registration_details_missing.message")
               }
             end
-          proc_code = Proc.new do
           end
           render_json_response(proc_code)
         end

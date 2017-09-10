@@ -46,15 +46,15 @@ class Feature < Usman::ApplicationRecord
 
   def self.save_row_data(hsh)
 
-    return if hsh[:name].blank?
+    # Initializing error hash for displaying all errors altogether
+    error_object = Kuppayam::Importer::ErrorHash.new
+
+    return error_object if hsh[:name].blank?
 
     feature = Feature.find_by_name(hsh[:name]) || Feature.new
     feature.name = hsh[:name]
     feature.status = Feature::UNPUBLISHED
     
-    # Initializing error hash for displaying all errors altogether
-    error_object = Kuppayam::Importer::ErrorHash.new
-
     if feature.valid?
       begin
         feature.save!

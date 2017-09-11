@@ -399,7 +399,7 @@ RSpec.describe Usman::Api::V1::RegistrationsController, :type => :request do
         expect(response_body["alert"]["message"]).to  eq("You may need to accept the terms and conditions to get the API token if you have not yet finised the registration")
 
         dev.reload
-        expect(response_body["data"]).to be_nil
+        expect(response_body["data"]["api_token"]).to be_blank
       end
       it "should verify the otp if the device is verified, tac is accpted and return the api token" do
         reg = FactoryGirl.create(:verified_registration)

@@ -101,7 +101,11 @@ module Usman
                       heading: I18n.translate("api.verify_otp.verification_success.heading"),
                       message: I18n.translate("api.verify_otp.verification_success.message")
                     }
-                    @data = { api_token: @device.api_token } if @device.verified? && @device.tac_accepted?
+                    if @device.verified? && @device.tac_accepted?
+                      @data = { api_token: @device.api_token } 
+                    else
+                      @data = { api_token: "" } 
+                    end
                   else
                     @success = false
                     @errors = {

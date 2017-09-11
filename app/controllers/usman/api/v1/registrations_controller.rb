@@ -102,9 +102,28 @@ module Usman
                       message: I18n.translate("api.verify_otp.verification_success.message")
                     }
                     if @device.verified? && @device.tac_accepted?
-                      @data = { api_token: @device.api_token } 
+                      @data = { api_token: @device.api_token }
                     else
                       @data = { api_token: "" } 
+                    end
+                    @data[:registration] = @registration
+                    user = @registration.user
+                    if user
+                      @data[:profile] = {
+                        id: user.id,
+                        name: user.name,
+                        gender: user.gender,
+                        email: user.email,
+                        date_of_birth: user.date_of_birth
+                      }
+                    else
+                      @data[:profile] = {
+                        id: "",
+                        name: "",
+                        gender: "",
+                        email: "",
+                        date_of_birth: ""
+                      }
                     end
                   else
                     @success = false

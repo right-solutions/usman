@@ -374,7 +374,7 @@ RSpec.describe Usman::Api::V1::RegistrationsController, :type => :request do
   describe "verify" do
     context "Positive Case" do
       it "should verify an otp verification request from a pending device" do
-        reg = FactoryGirl.create(:pending_registration)
+        reg = FactoryGirl.create(:pending_registration, user: nil)
         dev = FactoryGirl.create(:pending_device, registration: reg)
 
         # Generating a new OTP
@@ -399,7 +399,23 @@ RSpec.describe Usman::Api::V1::RegistrationsController, :type => :request do
         expect(response_body["alert"]["message"]).to  eq("You may need to accept the terms and conditions to get the API token if you have not yet finised the registration")
 
         dev.reload
-        expect(response_body["data"]["api_token"]).to be_blank
+        data = response_body["data"]
+
+        expect(data["api_token"]).to be_blank
+
+        expect(data["registration"]["id"]).not_to be_blank
+        expect(data["registration"]["country_id"]).to eq(reg.country.id)
+        expect(data["registration"]["city_id"]).to eq(reg.city.id)
+        expect(data["registration"]["dialing_prefix"]).to eq(reg.dialing_prefix)
+        expect(data["registration"]["mobile_number"]).to eq(reg.mobile_number)
+        expect(data["registration"]["user_id"]).to be_blank
+        expect(data["registration"]["status"]).to match("verified")
+
+        expect(data["profile"]["id"]).to be_blank
+        expect(data["profile"]["name"]).to be_blank
+        expect(data["profile"]["gender"]).to be_blank
+        expect(data["profile"]["email"]).to be_blank
+        expect(data["profile"]["date_of_birth"]).to be_blank
       end
       it "should verify the otp if the device is verified, tac is accpted and return the api token" do
         reg = FactoryGirl.create(:verified_registration)
@@ -428,7 +444,23 @@ RSpec.describe Usman::Api::V1::RegistrationsController, :type => :request do
         expect(response_body["alert"]["message"]).to  eq("You may need to accept the terms and conditions to get the API token if you have not yet finised the registration")
 
         dev.reload
-        expect(response_body["data"]["api_token"]).to eq(dev.api_token)
+        data = response_body["data"]
+
+        expect(data["api_token"]).to eq(dev.api_token)
+        
+        expect(data["registration"]["id"]).not_to be_blank
+        expect(data["registration"]["country_id"]).to eq(reg.country.id)
+        expect(data["registration"]["city_id"]).to eq(reg.city.id)
+        expect(data["registration"]["dialing_prefix"]).to eq(reg.dialing_prefix)
+        expect(data["registration"]["mobile_number"]).to eq(reg.mobile_number)
+        expect(data["registration"]["user_id"]).not_to be_blank
+        expect(data["registration"]["status"]).to match(reg.status)
+
+        expect(data["profile"]["id"]).to eq(reg.user.id)
+        expect(data["profile"]["name"]).to eq(reg.user.name)
+        expect(data["profile"]["gender"]).to eq(reg.user.gender)
+        expect(data["profile"]["email"]).to eq(reg.user.email)
+        expect(data["profile"]["date_of_birth"]).to eq(reg.user.date_of_birth.to_s)
       end
     end
     context "Negative Case" do

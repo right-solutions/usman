@@ -21,50 +21,6 @@ module Usman
       render_accordingly
     end
 
-    def new
-      @device = Device.new
-      render_accordingly
-    end
-
-    def create
-      @device = @r_object = Device.find_by_id(permitted_params[:id])
-      if @device.add_registration(@registration)
-        set_notification(true, I18n.t('status.success'), "Registration '#{@registration.name}' has been assigned to the device '#{@device.name}'")
-      else
-        set_notification(false, I18n.t('status.success'), "Failed to assign the Registration '#{@registration.name}'")
-      end
-      action_name = params[:action].to_s == "create" ? "new" : "edit"
-      render_or_redirect(false, resource_url(@r_object), action_name)
-    end
-
-    def destroy
-      @device = @r_object = Device.find_by_id(params[:id])
-      if @device
-        if @device.remove_registration(@registration)
-          get_collections
-          set_flash_message(I18n.t('success.deleted'), :success)
-          set_notification(true, I18n.t('status.success'), "Registration '#{@registration.name}' has been removed for the device '#{@device.name}'")
-          @destroyed = true
-        else
-          message = I18n.t('errors.failed_to_delete', item: default_item_name.titleize)
-          set_flash_message(message, :failure)
-          set_notification(false, I18n.t('status.success'), "Failed to remove the Registration '#{@registration.name}'")
-          @destroyed = false
-        end
-      else
-        set_notification(false, I18n.t('status.error'), I18n.t('status.not_found', item: default_item_name.titleize))
-      end
-
-      respond_to do |format|
-        format.html {}
-        format.js  { 
-          js_view_path = @resource_options && @resource_options[:js_view_path] ? "#{@resource_options[:js_view_path]}/destroy" : :destroy 
-          render js_view_path
-        }
-      end
-
-    end
-
     private
 
     def get_registration

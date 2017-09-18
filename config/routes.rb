@@ -17,7 +17,7 @@ Usman::Engine.routes.draw do
   scope :admin do
 
     resources :registrations, only: [:index, :show] do
-      resources :devices, :controller => "registration_devices"
+      resources :devices, :controller => "registration_devices", only: [:index, :show]
     end
 
     resources :users do

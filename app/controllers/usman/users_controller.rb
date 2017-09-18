@@ -44,7 +44,7 @@ module Usman
 
     def get_collections
       # Fetching the users
-      @relation = User.includes(:profile_picture).where("")
+      @relation = User.includes(:profile_picture, :roles).where("")
 
       parse_filters
       apply_filters

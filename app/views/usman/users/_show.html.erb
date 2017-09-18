@@ -1,3 +1,4 @@
+<% @registration = @user.registration %>
 <div id="div_user_show">
 	<% status_hash = {approved: "success", pending: "default", suspended: "danger"} %>
 
@@ -79,21 +80,31 @@
 
 	<ul class="nav nav-pills">
 	  <li class="active">
-	    <a href="#user_details" data-toggle="tab" aria-expanded="true">
+	    <a href="#profile_info" data-toggle="tab" aria-expanded="true">
 	      <span class="visible-xs"><i class="fa-info"></i></span>
-	      <span class="hidden-xs">User Details</span>
+	      <span class="hidden-xs">Profile Info</span>
 	    </a>
 	  </li>
+
+	  <li class="">
+	    <a href="#registration_info" data-toggle="tab" aria-expanded="true">
+	      <span class="visible-xs"><i class="fa-info"></i></span>
+	      <span class="hidden-xs">Registration Info</span>
+	    </a>
+	  </li>
+
+	  <% if @current_user.super_admin? %>
 	  <li class="">
 	    <a href="#technical_details" data-toggle="tab" aria-expanded="false">
 	      <span class="visible-xs"><i class="fa-database"></i></span>
 	      <span class="hidden-xs">Technical Details</span>
 	    </a>
 	  </li>
+	  <% end %>
 	</ul>
 
 	<div class="tab-content">
-	  <div class="tab-pane active" id="user_details">
+	  <div class="tab-pane active" id="profile_info">
 	      
 	    <%= clear_tag(20) %>
 
@@ -102,26 +113,54 @@
 					<tbody>
 						
 						<tr>
-							<th>Username</th><td><%= @user.username %></td>
+							<th>Name</th><td><%= @user.name %></td>
+							<th>Username</th><td><%= @user.username %></td>							
+						</tr>
+
+						<tr>
 							<th>Email</th><td><%= @user.email %></td>
-						</tr>
-
-						<tr>
 							<th>Phone</th><td><%= @user.phone %></td>
-							<th>Designation</th><td><%= @user.designation %></td>
 						</tr>
 
 						<tr>
-							<th>Super Admim?</th><td><%= @user.super_admin %></td>
+							<th>Designation</th><td><%= @user.designation %></td>
 							<th>Status</th><td><%= @user.status.titleize %></td>
 						</tr>
 						
 					</tbody>
 				</table>
 			</div>
-		
 		</div>
 
+		<div class="tab-pane active" id="registration_info">
+	      
+	    <%= clear_tag(20) %>
+
+	    <div class="table-responsive mt-30"> 
+		    <table class="table table-striped table-condensed table-bordered"> 
+					<tbody>
+						
+						<tr>
+							<th>Country</th><td><%= @registration.try(:country).try(:display_name) %></td>
+							<th>City</th><td><%= @registration.try(:city).try(:display_name) %></td>
+						</tr>
+
+						<tr>
+							<th>Dialing Prefix</th><td><%= @registration.try(:dialing_prefix) %></td>
+							<th>Mobile Number</th><td><%= @registration.try(:mobile_number) %></td>
+						</tr>
+
+						<tr>
+							<th>Status</th><td><%= @registration.try(:status).try(:titleize) %></td>
+							<th></th><td></td>
+						</tr>
+						
+					</tbody>
+				</table>
+			</div>
+		</div>
+
+		<% if @current_user.super_admin? %>
 		<div class="tab-pane" id="technical_details">
 	    
 	    <%= clear_tag(20) %>
@@ -130,6 +169,11 @@
 				<table class="table table-striped table-condensed table-bordered mb-30"> 
 					<tbody>
 						
+						<tr>
+							<th>Super Admin?</th><td><%= @user.super_admin.to_s.upcase %></td>
+							<th>Status</th><td><%= @user.status.titleize %></td>
+						</tr>
+
 						<tr>
 							<th style="width:20%;">Sign In Count</th><td style="width:30%;"><%= @user.sign_in_count %></td>
 							<th style="width:20%;">Remember User</th><td style="width:30%;"><%= @user.remember_created_at.strftime("%m/%d/%Y - %H:%M:%S") if @user.remember_created_at %></td>
@@ -188,8 +232,8 @@
 					</tbody>
 				</table>
 			</div>
-
 	  </div>
+	  <% end %>
 
 	</div>
 

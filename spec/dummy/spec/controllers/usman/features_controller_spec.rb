@@ -33,8 +33,7 @@ describe Usman::FeaturesController, :type => :controller do
       it "other users should not be able to view the list of features" do
         session[:id] = approved_user.id
         get :index, params: { use_route: 'usman' }
-        expect(response.status).to eq(302)
-        expect(response.redirect_url.starts_with?("http://test.host/sign_in")).to be_truthy
+        expect(response.status).to eq(401)
       end
 
       it "should redirect while viewing the features list, if the user is not signed in" do
@@ -63,8 +62,7 @@ describe Usman::FeaturesController, :type => :controller do
       it "other users should not be able to view single feature details" do
         session[:id] = approved_user.id
         get :show, params: { use_route: 'usman', id: feature.id }
-        expect(response.status).to eq(302)
-        expect(response.redirect_url.starts_with?("http://test.host/sign_in")).to be_truthy
+        expect(response.status).to eq(401)
       end
 
       it "should redirect while accessing single feature, if the user is not signed in" do

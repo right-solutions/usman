@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170905041856) do
+ActiveRecord::Schema.define(version: 20170917193323) do
 
   create_table "cities", id: :integer, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string "name", limit: 128
@@ -25,6 +25,7 @@ ActiveRecord::Schema.define(version: 20170905041856) do
     t.boolean "show_in_api", default: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.boolean "operational", default: false
     t.index ["country_id"], name: "index_cities_on_country_id"
     t.index ["iso_code"], name: "index_cities_on_iso_code"
     t.index ["region_id"], name: "index_cities_on_region_id"
@@ -52,6 +53,7 @@ ActiveRecord::Schema.define(version: 20170905041856) do
     t.boolean "show_in_api", default: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.boolean "operational", default: false
     t.index ["fips"], name: "index_countries_on_fips"
     t.index ["iso_alpha_2"], name: "index_countries_on_iso_alpha_2"
     t.index ["iso_alpha_3"], name: "index_countries_on_iso_alpha_3"
@@ -146,6 +148,7 @@ ActiveRecord::Schema.define(version: 20170905041856) do
     t.boolean "show_in_api", default: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.boolean "operational", default: false
     t.index ["country_id"], name: "index_regions_on_country_id"
     t.index ["iso_code"], name: "index_regions_on_iso_code"
   end

@@ -3,9 +3,9 @@
 	  <thead> 
 			<tr> 
 				<th style="text-align: center;width:50px;">#</th> 
-				<th style="text-align: left;">Mobile</th>
+				<th style="text-align: left;">User</th>
+				<th style="text-align: left;width:200px;">Mobile</th>
 				<th style="text-align: left;width:200px;">Location</th>
-				<th style="text-align: left;width:200px;">User</th>
 				<th style="text-align: left;width:200px;">Status</th>
 			</tr> 
 		</thead>
@@ -26,9 +26,15 @@
 						<% end %>
 					</th>
 
+					<% if registration.user %>
+						<td class="registration-name"><%= link_to registration.user.display_name, registration_path(registration), remote: true %></td>
+					<% else %>
+						<td class="registration-name"><%= link_to registration.display_name, registration_path(registration), remote: true %></td>
+					<% end %>
+
 		      <td class="registration-name"><%= link_to registration.display_name, registration_path(registration), remote: true %></td>
+		      
 		      <td class="registration-name"><%= link_to registration.display_location, registration_path(registration), remote: true %></td>
-		      <td class="registration-name"><%= link_to registration.display_name, registration_path(registration), remote: true %></td>
 		      
 		      <td>
 						<% if registration.pending? %>
@@ -39,11 +45,9 @@
 					</td>
 		      
 					<!-- <td class="action-links" style="width:10%">
-
 		      	<%#= link_to raw("<i class=\"linecons-pencil\"></i> Edit Registration"), edit_link, :remote=>true, class: "edit" if @current_user.super_admin? and registration.can_be_edited? %>
 
 		        <%#= link_to raw("<i class=\"linecons-trash\"></i> Delete"), delete_link, method: :delete, registration: "menuitem", tabindex: "-1", data: { confirm: 'Are you sure?' }, :remote=>true, class: "delete" if @current_user.super_admin? and registration.can_be_deleted? %>
-
 		      </td> -->
 
 		    </tr>

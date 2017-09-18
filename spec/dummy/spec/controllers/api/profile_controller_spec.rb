@@ -3,7 +3,8 @@ require "rails_helper"
 RSpec.describe Usman::Api::V1::RegistrationsController, :type => :request do  
 
   let(:country) {FactoryGirl.create(:country)}
-  let(:city) {FactoryGirl.create(:city, country: country)}
+  let(:region) {FactoryGirl.create(:region, country: country)}
+  let(:city) {FactoryGirl.create(:city, region: region)}
 
   describe "create_profile" do
     context "Positive Case" do

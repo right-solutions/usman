@@ -17,7 +17,13 @@
 				
 		    <tr id="tr_feature_<%= feature.id %>">
 		      
-		      <td class="feature-image"></td>
+		      <th scope="row" style="text-align: center;">
+				    <% if i < 0 %>
+				      <i class="fa fa-check text-success"></i>
+				    <% else %>
+				      <%= i + 1 + (@per_page.to_i * (@current_page.to_i - 1)) %>
+				    <% end %>
+				  </th>
 		      
 		      <td class="feature-image" style="text-align: center;">
 		        <%= link_to(feature_path(feature), remote: true) do %>

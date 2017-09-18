@@ -37,8 +37,7 @@ describe Usman::UsersController, :type => :controller do
       it "other users should not be able to view the list of users" do
         session[:id] = approved_user.id
         get :index, params: { use_route: 'usman' }
-        expect(response.status).to eq(302)
-        expect(response.redirect_url.starts_with?("http://test.host/sign_in")).to be_truthy
+        expect(response.status).to eq(401)
       end
 
       it "should redirect while accessing the list of users, if the user is not signed in" do
@@ -68,8 +67,7 @@ describe Usman::UsersController, :type => :controller do
       it "other users should not be able to view single user details" do
         session[:id] = approved_user.id
         get :show, params: { use_route: 'usman', id: user.id }
-        expect(response.status).to eq(302)
-        expect(response.redirect_url.starts_with?("http://test.host/sign_in")).to be_truthy
+        expect(response.status).to eq(401)
       end
 
       it "should redirect while accessing single user, if the user is not signed in" do

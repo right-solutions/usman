@@ -3,20 +3,11 @@
 	  <thead> 
 			<tr> 
 				<th style="text-align: center;width:60px">#</th> 
-				<th>Status</th>
 				<th>UUID</th>
-				<th>Device Token</th>
+				<th>Status</th>
 				<th>Device Name</th>
 				<th>Device Type</th>
-				<th>Operating System</th>
-				<th>Software Version</th>
-				<th>Last Accessed at</th>
-				<th>Last Accessed API</th>
-				<% if @current_user.super_admin? %>
-					<th>OTP</th>
-				<% end %>
-				<th>OTP Sent at</th>
-				<th style="text-align: center;" colspan="2">Actions</th>
+				<!-- <th style="text-align: center;" colspan="2">Actions</th> -->
 			</tr>  
 		</thead>
 		
@@ -35,6 +26,7 @@
 						<% end %>
 					</th>
 
+					<td class="device-name" style="font-weight:bold;"><%= link_to device.uuid, registration_device_path(device), remote: true %></td>
 					<td>
 						<% if device.pending? %>
 							<span class="ml-5 mt-5 label label-default">Pending</span>
@@ -45,26 +37,14 @@
 						<% end %>
 					</td>
 
-					<td class="device-name"><%= device.uuid %></td>
-					<td class="device-name"><%= device.device_token %></td>
 					<td class="device-name"><%= device.device_name %></td>
 					<td class="device-name"><%= device.device_type %></td>
-					<td class="device-name"><%= device.operating_system %></td>
-					<td class="device-name"><%= device.software_version %></td>
-					<td class="device-name"><%= device.last_accessed_at %></td>
-					<td class="device-name"><%= device.last_accessed_api %></td>
 					
-					<% if @current_user.super_admin? %>
-						<td class="device-name"><%= device.otp %></td>
-					<% end %>
-					
-					<td class="device-name"><%= device.otp_sent_at %></td>
-
-					<td class="action-links" style="width:10%">
+					<!-- <td class="action-links" style="width:10%"> -->
 
 		      	<%#= link_to raw("<i class=\"linecons-trash\"></i> Remove Role"), delete_link, method: :delete, device: "menuitem", tabindex: "-1", data: { confirm: 'Are you sure?' }, :remote=>true, class: "delete" %>
 
-		      </td>
+		      <!-- </td> -->
 
 		    </tr>
 		  <% end %>

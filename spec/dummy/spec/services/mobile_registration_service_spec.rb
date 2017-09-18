@@ -4,7 +4,8 @@ describe Usman::MobileRegistrationService do
 
   # Registration & Device details without User (new registration case)
   let(:country) {FactoryGirl.create(:country)}
-  let(:city) {FactoryGirl.create(:city, country: country)}
+  let(:region) {FactoryGirl.create(:region, country: country)}
+  let(:city) {FactoryGirl.create(:city, region: region)}
   let(:reg1) {FactoryGirl.build(:verified_registration, user: nil, city: city, country: country)}
   let(:dev1) {FactoryGirl.build(:pending_device, user: nil, registration: reg1)}
   let(:params_1) {

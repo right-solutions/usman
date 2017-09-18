@@ -72,6 +72,10 @@ module Usman
       end
     end
 
+    def permission_denied
+      render :file => "layouts/kuppayam/401", layout: 'layouts/kuppayam/blank_with_nav', :status => :unauthorized
+    end
+
     # This method is widely used to create the @current_user object from the session
     # This method will return @current_user if it already exists which will save queries when called multiple times
     def current_user
@@ -109,7 +113,8 @@ module Usman
           format.html {
             #text = "#{I18n.t("authentication.permission_denied.heading")}: #{I18n.t("authentication.permission_denied.message")}"
             #set_flash_message(text, :error, false) if defined?(flash) && flash
-            redirect_after_unsuccessful_authentication
+            #redirect_after_unsuccessful_authentication
+            permission_denied
           }
           format.js {
             @params_hsh = {}

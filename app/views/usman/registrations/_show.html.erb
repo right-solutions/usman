@@ -1,4 +1,5 @@
 <% @devices = @registration.devices.page(@current_page).per(@per_page) %>
+<% @user = @registration.user %>
 
 <div id="div_registration_show">
 	
@@ -8,7 +9,13 @@
 
 	  	<div class="visible-sm visible-xs mt-50"></div>
 
-	  	<%= theme_panel_heading(@registration.display_name) %>
+	  	<% if @user %>
+	  		<%= theme_panel_heading(@user.display_name) %>
+	  		<%= theme_panel_sub_heading(@registration.display_name, "#") %>
+	  	<% else %>
+	  		<%= theme_panel_heading(@registration.display_name) %>
+	  	<% end %>
+	  	<br>
 
 	  	<% if @registration.pending? %>
 				<span class="ml-5 mt-5 label label-default">Pending</span>
@@ -42,32 +49,100 @@
 	<ul class="nav nav-pills">
 
 		<li class="active">
-	    <a href="#device_registrations" data-toggle="tab" aria-expanded="false">
+	    <a href="#registration_info" data-toggle="tab" aria-expanded="false">
+	      <span class="visible-xs"><i class="fa-database"></i></span>
+	      <span class="hidden-xs">Registration Info</span>
+	    </a>
+	  </li>
+
+	  <li class="">
+	    <a href="#profile_info" data-toggle="tab" aria-expanded="false">
+	      <span class="visible-xs"><i class="fa-database"></i></span>
+	      <span class="hidden-xs">Profile Info</span>
+	    </a>
+	  </li>
+
+		<li class="">
+	    <a href="#registration_devices" data-toggle="tab" aria-expanded="false">
 	      <span class="visible-xs"><i class="fa-database"></i></span>
 	      <span class="hidden-xs">Devices</span>
 	    </a>
 	  </li>
 
-	  <li class="">
-	    <a href="#technical_details" data-toggle="tab" aria-expanded="false">
-	      <span class="visible-xs"><i class="fa-database"></i></span>
-	      <span class="hidden-xs">Technical Details</span>
-	    </a>
-	  </li>
+	  
 	</ul>
 
 	<div class="tab-content">
 
-		<div class="tab-pane active" id="device_registrations" style="border: 1px solid #000;min-height:200px;padding:20px;margin-bottom:20px;max-height: 400px;overflow-y: auto;">
+		<div class="tab-pane active" id="registration_info" style="border: 1px solid #000;min-height:200px;padding:20px;margin-bottom:20px;max-height: 400px;overflow-y: auto;">
+	    
+	    <%= clear_tag(20) %>
+
+	    <div class="table-responsive"> 
+				<table class="table table-striped table-condensed table-bordered mb-30"> 
+					<tbody>
+						
+						<tr>
+							<th>ID</th><td><%= @registration.id %></td>
+							<th>Status</th><td><%= @registration.status %></td>
+						</tr>
+
+						<tr>
+							<th>Country</th><td><%= @registration.country.try(:display_name) %></td>
+							<th>City</th><td><%= @registration.city.try(:display_name) %></td>
+						</tr>
+
+						<tr>
+							<th>Dialing Prefix</th><td><%= @registration.dialing_prefix %></td>
+							<th>Mobile Number</th><td><%= @registration.mobile_number %></td>
+						</tr>
+						
+						<tr>
+							<th>Created At</th><td><%= @registration.created_at.strftime("%m/%d/%Y - %H:%M:%S") if @registration.created_at %></td>
+							<th>Updated At</th><td><%= @registration.updated_at.strftime("%m/%d/%Y - %H:%M:%S") if @registration.updated_at %></td>
+						</tr>
+
+					</tbody>
+				</table>
+			</div>
+	  </div>
+
+	  <div class="tab-pane" id="profile_info" style="border: 1px solid #000;min-height:200px;padding:20px;margin-bottom:20px;max-height: 400px;overflow-y: auto;">
+	    
+	    <%= clear_tag(20) %>
+
+	    <div class="table-responsive mt-30"> 
+		    <table class="table table-striped table-condensed table-bordered"> 
+					<tbody>
+						
+						<tr>
+							<th>Name</th><td><%= @user.try(:name) %></td>
+							<th>Username</th><td><%= @user.try(:username) %></td>							
+						</tr>
+
+						<tr>
+							<th>Email</th><td><%= @user.try(:email) %></td>
+							<th>Phone</th><td><%= @user.try(:phone) %></td>
+						</tr>
+
+						<tr>
+							<th>Designation</th><td><%= @user.try(:designation) %></td>
+							<th>Status</th><td><%= @user.try(:status).try(:titleize) %></td>
+						</tr>
+						
+					</tbody>
+				</table>
+			</div>
+
+	  </div>
+
+		<div class="tab-pane" id="registration_devices" style="border: 1px solid #000;min-height:200px;padding:20px;margin-bottom:20px;max-height: 400px;overflow-y: auto;">
 	    
 	    <%= clear_tag(20) %>
 
 	    <div id="div_device_action_buttons">
         <div class="row">
           <div class="col-md-6">
-
-            <%#= theme_button('Add a Device', 'plus', new_registration_device_path(@registration), classes: "pull-left", btn_type: "success") %>
-
             <%= theme_button('Refresh', 'refresh', registration_devices_path(@registration), classes: "pull-left", btn_type: "white") %>
           </div>
           <div class="col-md-6">
@@ -82,27 +157,7 @@
       </div>
 	  </div>
 
-	  <div class="tab-pane" id="technical_details">
-	    
-	    <%= clear_tag(20) %>
-
-	    <div class="table-responsive"> 
-				<table class="table table-striped table-condensed table-bordered mb-30"> 
-					<tbody>
-						
-						<tr>
-							<th>ID</th><td colspan="3"><%= @registration.id %></td>
-						</tr>
-						
-						<tr>
-							<th>Created At</th><td><%= @registration.created_at.strftime("%m/%d/%Y - %H:%M:%S") if @registration.created_at %></td>
-							<th>Updated At</th><td><%= @registration.updated_at.strftime("%m/%d/%Y - %H:%M:%S") if @registration.updated_at %></td>
-						</tr>
-
-					</tbody>
-				</table>
-			</div>
-	  </div>
+	  
 
 	</div>
 

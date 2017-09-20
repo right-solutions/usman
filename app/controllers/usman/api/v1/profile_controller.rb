@@ -38,7 +38,7 @@ module Usman
                     heading: I18n.translate("api.profile.profile_created.heading"),
                     message: I18n.translate("api.profile.profile_created.message")
                   }
-                  @data = { user: @user }
+                  @data = {"user": ActiveModelSerializers::SerializableResource.new(@user, serializer: ProfileSerializer)}
                 else
                   @success = false
                   @errors = {
@@ -91,7 +91,7 @@ module Usman
                     heading: I18n.translate("api.profile.profile_created.heading"),
                     message: I18n.translate("api.profile.profile_created.message")
                   }
-                  @data = { user: @user }
+                  @data = {"user": ActiveModelSerializers::SerializableResource.new(@user, serializer: ProfileSerializer)}
                 else
                   @success = false
                   @errors = {

@@ -20,6 +20,7 @@ Gem::Specification.new do |s|
   s.add_dependency 'jquery-rails', '~> 4.2', '>= 4.2.2'
   s.add_dependency 'kaminari', '~> 1.0', '>= 1.0.1'
   s.add_dependency 'bootstrap-kaminari-views', "~> 0.0.5"
+  s.add_dependency 'filesize', "~> 0.1.1"
   # s.add_dependency 'config', '~> 1.0'
 
   s.add_dependency 'kuppayam', "~> 0.1.12"
@@ -30,7 +31,7 @@ Gem::Specification.new do |s|
   s.add_development_dependency 'pry', "~> 0.10.1", ">= 0.10.0"
   s.add_development_dependency 'mysql2', "~> 0.4.4"
   s.add_development_dependency 'carrierwave', "~> 0.10.0", ">= 0.9.0"
-  s.add_development_dependency 'rmagick', "~> 2.13.3", ">= 2.13.2"
+  s.add_development_dependency 'mini_magick', "~> 4.8.0", ">= 4.8.0"
   s.add_development_dependency 'rspec-rails', "~> 3.5"
   s.add_development_dependency 'capybara', "~> 2.4.4", ">= 2.4.3"
   s.add_development_dependency 'factory_girl_rails', "~> 4.8.0", ">= 4.4.0"

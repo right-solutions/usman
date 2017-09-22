@@ -55,10 +55,11 @@ Usman::Engine.routes.draw do
       # Profile
       post :create_profile, :controller => "profile"
       post :update_profile, :controller => "profile"
+      get :profile, :controller => "profile"
 
       # Profile Picture
-      post 'profile/:id/base64_profile_picture', :controller => "profile_picture", action: :base64_profile_picture
-      post 'profile/:id/profile_picture', :controller => "profile_picture", action: :profile_picture
+      post 'profile/base64_profile_picture', :controller => "profile_picture", action: :base64_profile_picture
+      post 'profile/profile_picture', :controller => "profile_picture", action: :profile_picture
     end
   end
   
@@ -72,6 +73,7 @@ Usman::Engine.routes.draw do
         get 'accept_tac', :controller => "docs"
         get 'create_profile', :controller => "docs"
         get 'update_profile', :controller => "docs"
+        get 'profile', :controller => "docs"
 
         get 'base64_profile_picture', :controller => "docs"
         get 'profile_picture', :controller => "docs"

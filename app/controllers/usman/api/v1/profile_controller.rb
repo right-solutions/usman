@@ -38,7 +38,7 @@ module Usman
                     heading: I18n.translate("api.profile.profile_created.heading"),
                     message: I18n.translate("api.profile.profile_created.message")
                   }
-                  @data = {"user": ActiveModelSerializers::SerializableResource.new(@user, serializer: ProfileSerializer)}
+                  @data = ActiveModelSerializers::SerializableResource.new(@user, serializer: ProfileSerializer)
                 else
                   @success = false
                   @errors = {
@@ -91,7 +91,7 @@ module Usman
                     heading: I18n.translate("api.profile.profile_created.heading"),
                     message: I18n.translate("api.profile.profile_created.message")
                   }
-                  @data = {"user": ActiveModelSerializers::SerializableResource.new(@user, serializer: ProfileSerializer)}
+                  @data = ActiveModelSerializers::SerializableResource.new(@user, serializer: ProfileSerializer)
                 else
                   @success = false
                   @errors = {
@@ -100,6 +100,31 @@ module Usman
                     details: @user.errors
                   }
                 end
+              end
+            else
+              @success = false
+              @errors = {
+                heading: I18n.translate("api.profile.registration_details_missing.heading"),
+                message: I18n.translate("api.profile.registration_details_missing.message")
+              }
+            end
+          end
+          render_json_response(proc_code)
+        end
+
+        def profile
+          proc_code = Proc.new do
+            if @current_registration
+              unless @current_user
+                @success = false
+                @errors = {
+                  heading: I18n.translate("api.profile.user_does_not_exists.heading"),
+                  message: I18n.translate("api.profile.user_does_not_exists.message")
+                }
+              else
+                @current_user
+                @success = true
+                @data = ActiveModelSerializers::SerializableResource.new(@current_user, serializer: ProfileSerializer)
               end
             else
               @success = false

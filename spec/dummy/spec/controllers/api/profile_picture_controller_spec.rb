@@ -19,7 +19,7 @@ RSpec.describe Usman::Api::V1::ProfilePictureController, :type => :request do
           'HTTP_AUTHORIZATION' => ActionController::HttpAuthentication::Token.encode_credentials(dev.api_token)
         }
         
-        post "/api/v1/profile/#{user.id}/base64_profile_picture", headers: headers, params: image_params
+        post "/api/v1/profile/base64_profile_picture", headers: headers, params: image_params
 
         expect(response.status).to eq(200)
         response_body = JSON.parse(response.body)
@@ -45,7 +45,7 @@ RSpec.describe Usman::Api::V1::ProfilePictureController, :type => :request do
           image: "data:image/png;base64,#{valid_base64_image}"
         }
 
-        post "/api/v1/profile/#{user.id}/base64_profile_picture", params: image_params
+        post "/api/v1/profile/base64_profile_picture", params: image_params
 
         expect(response.status).to eq(200)
         response_body = JSON.parse(response.body)
@@ -60,7 +60,7 @@ RSpec.describe Usman::Api::V1::ProfilePictureController, :type => :request do
           'HTTP_AUTHORIZATION' => ActionController::HttpAuthentication::Token.encode_credentials(dev.api_token)
         }
         
-        post "/api/v1/profile/#{user.id}/base64_profile_picture", headers: headers
+        post "/api/v1/profile/base64_profile_picture", headers: headers
 
         expect(response.status).to eq(200)
         response_body = JSON.parse(response.body)
@@ -72,26 +72,6 @@ RSpec.describe Usman::Api::V1::ProfilePictureController, :type => :request do
         data = response_body['data']
       end
 
-      it "should set proper errors if invalid profile id is passed" do
-        headers = {
-          'HTTP_AUTHORIZATION' => ActionController::HttpAuthentication::Token.encode_credentials(dev.api_token)
-        }
-
-        valid_base64_image = Base64.encode64(File.read('spec/dummy/spec/factories/test.jpeg'))
-        image_params =  {
-          image: "data:image/png;base64,#{valid_base64_image}"
-        }
-        
-        post "/api/v1/profile/1234/base64_profile_picture", headers: headers, params: image_params
-
-        expect(response.status).to eq(200)
-        response_body = JSON.parse(response.body)
-        expect(response_body["success"]).to eq(false)
-        
-        expect(response_body["errors"]["heading"]).to eq("Invalid User/Profile ID")
-        expect(response_body["errors"]["message"]).to eq("Pass a vaild User/Profile ID to get the details. Get Profile Details along with their IDs from Profile API or from Registration APIs")
-      end
-
       it "should set proper errors if invalid image data is passed" do
         headers = {
           'HTTP_AUTHORIZATION' => ActionController::HttpAuthentication::Token.encode_credentials(dev.api_token)
@@ -99,7 +79,7 @@ RSpec.describe Usman::Api::V1::ProfilePictureController, :type => :request do
         
         image_params =  { image: "asdasd" }
         
-        post "/api/v1/profile/#{user.id}/base64_profile_picture", headers: headers, params: image_params
+        post "/api/v1/profile/base64_profile_picture", headers: headers, params: image_params
 
         expect(response.status).to eq(200)
         response_body = JSON.parse(response.body)
@@ -123,7 +103,7 @@ RSpec.describe Usman::Api::V1::ProfilePictureController, :type => :request do
           'HTTP_AUTHORIZATION' => ActionController::HttpAuthentication::Token.encode_credentials(dev.api_token)
         }
         
-        post "/api/v1/profile/#{user.id}/profile_picture", headers: headers, params: image_params
+        post "/api/v1/profile/profile_picture", headers: headers, params: image_params
 
         expect(response.status).to eq(200)
         response_body = JSON.parse(response.body)
@@ -141,14 +121,13 @@ RSpec.describe Usman::Api::V1::ProfilePictureController, :type => :request do
         expect(data["image_small_path"]).not_to be_blank
       end
     end
-
     context "Negative Case" do
       it "should set proper errors if no api token" do
         image_params = { 
           image: fixture_file_upload('spec/dummy/spec/factories/test.jpeg', 'image.jpeg')
         }
         
-        post "/api/v1/profile/#{user.id}/profile_picture", params: image_params
+        post "/api/v1/profile/profile_picture", params: image_params
 
         expect(response.status).to eq(200)
         response_body = JSON.parse(response.body)
@@ -158,31 +137,12 @@ RSpec.describe Usman::Api::V1::ProfilePictureController, :type => :request do
         expect(response_body["errors"]["message"]).to eq("Use the API Token you have received after accepting the terms and agreement")
       end
 
-      it "should set proper errors if invalid profile id is passed" do
-        headers = {
-          'HTTP_AUTHORIZATION' => ActionController::HttpAuthentication::Token.encode_credentials(dev.api_token)
-        }
-
-        image_params = { 
-          image: fixture_file_upload('spec/dummy/spec/factories/test.jpeg', 'image.jpeg')
-        }
-        
-        post "/api/v1/profile/1234/profile_picture", headers: headers, params: image_params
-
-        expect(response.status).to eq(200)
-        response_body = JSON.parse(response.body)
-        expect(response_body["success"]).to eq(false)
-        
-        expect(response_body["errors"]["heading"]).to eq("Invalid User/Profile ID")
-        expect(response_body["errors"]["message"]).to eq("Pass a vaild User/Profile ID to get the details. Get Profile Details along with their IDs from Profile API or from Registration APIs")
-      end
-
       it "should respond with proper errors for invalid arguments" do
         headers = {
           'HTTP_AUTHORIZATION' => ActionController::HttpAuthentication::Token.encode_credentials(dev.api_token)
         }
         
-        post "/api/v1/profile/#{user.id}/profile_picture", headers: headers
+        post "/api/v1/profile/profile_picture", headers: headers
 
         expect(response.status).to eq(200)
         response_body = JSON.parse(response.body)
@@ -203,7 +163,7 @@ RSpec.describe Usman::Api::V1::ProfilePictureController, :type => :request do
           image: fixture_file_upload('spec/dummy/spec/factories/test.csv', '')
         }
         
-        post "/api/v1/profile/#{user.id}/profile_picture", headers: headers, params: image_params
+        post "/api/v1/profile/profile_picture", headers: headers, params: image_params
 
         expect(response.status).to eq(200)
         response_body = JSON.parse(response.body)

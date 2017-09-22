@@ -161,6 +161,27 @@ module Usman
           render 'kuppayam/api/docs/show'
         end
 
+        def profile
+          set_title("Profile API")
+          @request_type = "GET"
+          @end_point = "/api/v1/profile/base64_profile_picture"
+          @description = "This API will return the details of the profile requested including image urls."
+
+          @input_headers = {
+            "Content-Type" => { value: "application/json", description: "The MIME media type for JSON text is application/json. This is to make sure that a valid json is returned. The default encoding is UTF-8. " },
+            "Authorization" => { value: "Token token=\"87b01adbba90824b57add8cc06ad8738\"", description: "Put the API Token here. You shall get the API token after registering your device" }
+          }
+
+          @input_params = {}
+
+          @example_path = "usman/api/v1/docs/"
+          @examples = ["pos_case_1", "neg_case_1", "neg_case_2"]
+
+          set_nav("docs/profile")
+
+          render 'kuppayam/api/docs/show'
+        end
+
         def base64_profile_picture
           set_title("Upload Single Image API")
           @request_type = "POST"
@@ -175,7 +196,7 @@ module Usman
           @input_params = {}
 
           @example_path = "usman/api/v1/docs/"
-          @examples = ["pos_case_1", "neg_case_1", "neg_case_2", "neg_case_3"]
+          @examples = ["pos_case_1", "neg_case_1", "neg_case_2"]
 
           set_nav("docs/base64_profile_picture")
 
@@ -196,7 +217,7 @@ module Usman
           @input_params = {}
 
           @example_path = "usman/api/v1/docs/"
-          @examples = ["pos_case_1", "neg_case_1", "neg_case_2", "neg_case_3", "neg_case_4"]
+          @examples = ["pos_case_1", "neg_case_1", "neg_case_2", "neg_case_3"]
 
           set_nav("docs/profile_picture")
 

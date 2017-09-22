@@ -1,6 +1,6 @@
 <%
 
-api_title = "Negative Case - 1 - should respond with proper errors for invalid arguments"
+api_title = "Negative Case - 2 - should set proper errors if the profile didn't exist"
 
 api_input = <<-eos
 {}
@@ -10,9 +10,8 @@ api_output = <<-eos
 {
   "success": false,
   "errors": {
-    "heading": "Saving user/profile image was failed",
-    "message": "Make sure that the arguments are passed according to the API documentation. Please check the API Documentation for more details.",
-    "details": "Image can't be blank"
+    "heading": "A profile doesn't exists for the mobile number you have provided",
+    "message": "You are trying to u a profile once again when you already have a profile. Use Profile API with your API Token, to get your profile details and use them instead of creating a new one."
   }
 }
 eos

@@ -1,9 +1,9 @@
 <%
 
-api_title = "Negative Case - 1 - should respond with proper errors for invalid arguments"
+api_title = "Negative Case - 2 - should set proper errors if invalid image data is passed"
 
 api_input = <<-eos
-{}
+  { "image": "<upload a file format which is not supported. e.g: csv>"}
 eos
 
 api_output = <<-eos
@@ -11,8 +11,7 @@ api_output = <<-eos
   "success": false,
   "errors": {
     "heading": "Saving user/profile image was failed",
-    "message": "Make sure that the arguments are passed according to the API documentation. Please check the API Documentation for more details.",
-    "details": "Image can't be blank"
+    "message": "Make sure that the arguments are passed according to the API documentation. Please check the API Documentation for more details."
   }
 }
 eos

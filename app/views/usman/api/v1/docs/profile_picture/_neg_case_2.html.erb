@@ -1,6 +1,6 @@
 <%
 
-api_title = "Negative Case - 2 - should set proper errors if invalid profile id is passed"
+api_title = "Negative Case - 1 - should respond with proper errors for invalid arguments"
 
 api_input = <<-eos
 {}
@@ -10,8 +10,9 @@ api_output = <<-eos
 {
   "success": false,
   "errors": {
-    "heading": "Invalid User/Profile ID",
-    "message": "Pass a vaild User/Profile ID to get the details. Get Profile Details along with their IDs from Profile API or from Registration APIs"
+    "heading": "Saving user/profile image was failed",
+    "message": "Make sure that the arguments are passed according to the API documentation. Please check the API Documentation for more details.",
+    "details": "Image can't be blank"
   }
 }
 eos

@@ -97,6 +97,15 @@ en:
       image_save_failed:
         heading: "Saving user/profile image was failed"
         message: "Make sure that the arguments are passed according to the API documentation. Please check the API Documentation for more details."
+      image_delete_failed:
+        heading: "Deleting user/profile image was failed"
+        message: "Make sure that the arguments are passed according to the API documentation. Please check the API Documentation for more details."
       image_saved:
         heading: "User/Profile Image was saved successfully"
         message: "You may now use the URL to download the image in future"
+      image_deleted:
+        heading: "User/Profile Image was deleted successfully"
+        message: "You may use Profile Picture Upload API to add one again"
+      profile_picture_does_not_exists:
+        heading: "Profile Picture doesn't exists"
+        message: "You are trying to destroy a profile picture when it doesn't exist"

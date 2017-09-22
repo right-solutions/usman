@@ -1,0 +1,39 @@
+<%
+
+api_title = "Positive Case - 1 - should return the profile details along with picture"
+
+api_input = <<-eos
+{}
+eos
+
+api_output = <<-eos
+{
+  "success": true,
+  "data": {
+    "id": 9,
+    "name": "Nayan Tara",
+    "gender": "female",
+    "date_of_birth": "1984-10-27",
+    "username": "d0dca578",
+    "email": "nayan.tara@yopmail.com",
+    "phone": null,
+    "profile_picture": {
+      "id": 8,
+      "profile_id": 9,
+      "created_at": "21-09-2017 13:02:45",
+      "image_large_path": "/uploads/profile_pictures/8/large_profile_picture.jpg",
+      "image_small_path": "/uploads/profile_pictures/8/small_profile_picture.jpg"
+    }
+  }
+}
+eos
+
+%>
+
+<%= render partial: "kuppayam/api/docs/example", locals: {
+                                        negative_case: false,
+                                        example_id: "pos_case_1",
+                                        api_title: api_title,
+                                        api_input: api_input,
+                                        api_output: api_output 
+                                      } %>

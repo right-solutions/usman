@@ -1,0 +1,7 @@
+title,venue,description,date,starts_at,ends_at,featured,status
+word power make easy book ,Ali Masthan Hall,Some Description,1/1/17,9:00,10:00,TRUE,published
+Manaing people book,Zabeel Park,Some Description,1/1/17,9:00,10:00,FALSE,published
+solve your problems birbal book ,DP World  Museum,Some Description,1/1/17,9:00,10:00,FALSE,unpublished
+public speeking book ,Apsara  Kalyanamandapam,Some Description,1/1/17,9:00,10:00,TRUE,published
+qdds book,Crown Plaza,Some Description,1/1/17,9:00,10:00,FALSE,removed
+bANKRUPT BOOK,Audi Showroom Premises,Some Description,1/1/17,9:00,10:00,FALSE,archived

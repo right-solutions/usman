@@ -1,4 +1,5 @@
 class FeatureImageUploader < ImageUploader
+	
 	def store_dir
     "uploads/feature_images/#{model.id}"
   end

@@ -1,0 +1,36 @@
+<%
+
+api_title = "Positive Case - 1 - should upload a profile picture"
+
+api_input = <<-eos
+{}
+eos
+
+api_output = <<-eos
+{
+  "success": true,
+  "alert": {
+    "heading": "User/Profile Image was saved successfully",
+    "message": "You may now use the URL to download the image in future"
+  },
+  "data": {
+    "id": 8,
+    "created_at": "21-09-2017 13:02:45",
+    "profile_picture_id" :6,
+    "image_large_path": "/uploads/profile_pictures/8/large_profile_picture.jpg",
+    "image_medium_path": "/uploads/profile_pictures/8/medium_profile_picture.jpg",
+    "image_small_path": "/uploads/profile_pictures/8/small_profile_picture.jpg",
+    "image_tiny_path": "/uploads/profile_pictures/8/tiny_profile_picture.jpg"
+  }
+}
+eos
+
+%>
+
+<%= render partial: "kuppayam/api/docs/example", locals: {
+                                        negative_case: false,
+                                        example_id: "pos_case_1",
+                                        api_title: api_title,
+                                        api_input: api_input,
+                                        api_output: api_output 
+                                      } %>

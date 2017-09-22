@@ -23,19 +23,19 @@ Gem::Specification.new do |s|
   s.add_dependency 'filesize', "~> 0.1.1"
   # s.add_dependency 'config', '~> 1.0'
 
-  s.add_dependency 'kuppayam', "~> 0.1.12"
-  s.add_dependency 'pattana', "~> 0.1.7"
+  s.add_dependency 'kuppayam', "~> 0.1", ">= 0.1.12"
+  s.add_dependency 'pattana', "~> 0.1", ">= 0.1.7"
   s.add_dependency 'bcrypt', "~> 3.0"
   s.add_dependency "colorize", "~> 0.8"
 
-  s.add_development_dependency 'pry', "~> 0.10.1", ">= 0.10.0"
+  s.add_development_dependency 'pry', "~> 0.10", ">= 0.10.0"
   s.add_development_dependency 'mysql2', "~> 0.4.4"
-  s.add_development_dependency 'carrierwave', "~> 0.10.0", ">= 0.9.0"
-  s.add_development_dependency 'mini_magick', "~> 4.8.0", ">= 4.8.0"
+  s.add_development_dependency 'carrierwave', "~> 1.1", ">= 1.1.0"
+  s.add_development_dependency 'mini_magick', "~> 4.8", ">= 4.8.0"
   s.add_development_dependency 'rspec-rails', "~> 3.5"
-  s.add_development_dependency 'capybara', "~> 2.4.4", ">= 2.4.3"
-  s.add_development_dependency 'factory_girl_rails', "~> 4.8.0", ">= 4.4.0"
-  s.add_development_dependency 'database_cleaner', "~> 1.4.0", ">= 1.3.0"
+  s.add_development_dependency 'capybara', "~> 2.4", ">= 2.4.3"
+  s.add_development_dependency 'factory_girl_rails', "~> 4.8", ">= 4.4.0"
+  s.add_development_dependency 'database_cleaner', "~> 1.4", ">= 1.3.0"
   s.add_development_dependency 'shoulda-matchers', "~> 3.1"
   
 end

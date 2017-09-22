@@ -90,3 +90,13 @@ en:
       invalid_inputs:
         heading: "Saving Profile Failed"
         message: "Check if all mandatory details are passed. Refer the error details for technical information"
+    profile_picture:
+      not_found:
+        heading: "Invalid User/Profile ID"
+        message: "Pass a vaild User/Profile ID to get the details. Get Profile Details along with their IDs from Profile API or from Registration APIs"
+      image_save_failed:
+        heading: "Saving user/profile image was failed"
+        message: "Make sure that the arguments are passed according to the API documentation. Please check the API Documentation for more details."
+      image_saved:
+        heading: "User/Profile Image was saved successfully"
+        message: "You may now use the URL to download the image in future"

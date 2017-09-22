@@ -461,7 +461,7 @@ RSpec.describe Usman::Api::V1::RegistrationsController, :type => :request do
         expect(data["profile"]["name"]).to eq(reg.user.name)
         expect(data["profile"]["gender"]).to eq(reg.user.gender)
         expect(data["profile"]["email"]).to eq(reg.user.email)
-        expect(data["profile"]["date_of_birth"]).to eq(reg.user.date_of_birth.to_s)
+        expect(data["profile"]["date_of_birth"]).to eq(reg.user.date_of_birth.strftime('%d-%m-%Y'))
       end
     end
     context "Negative Case" do

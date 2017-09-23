@@ -3,7 +3,10 @@
 api_title = "Positive Case - 1 - should return the profile details along with picture"
 
 api_input = <<-eos
-{}
+Example:
+
+Authorization: Token token="87b01adbba90824b57add8cc06ad8738"
+GET #{request.base_url}/api/v1/profile/profile_picture
 eos
 
 api_output = <<-eos

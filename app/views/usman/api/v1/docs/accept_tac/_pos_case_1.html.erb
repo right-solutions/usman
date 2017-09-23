@@ -3,6 +3,12 @@
 api_title = "Positive Case - 1 - should accept the terms and conditions if the device is verified and all inputs are valid"
 
 api_input = <<-eos
+Example:
+
+POST #{request.base_url}/api/v1/accept_tac
+
+In the request body, pass the following as raw json:
+
 {
   "terms_and_conditions": 1,
   "uuid": "<VERIFIED UUID>",

@@ -165,7 +165,7 @@ RSpec.describe Usman::Api::V1::RegistrationsController, :type => :request do
           'HTTP_AUTHORIZATION' => ActionController::HttpAuthentication::Token.encode_credentials(dev.api_token)
         }
 
-        post "/api/v1/update_profile", params: profile_data, headers: headers
+        put "/api/v1/update_profile", params: profile_data, headers: headers
         
         expect(response.status).to eq(200)
 
@@ -208,7 +208,7 @@ RSpec.describe Usman::Api::V1::RegistrationsController, :type => :request do
                           city_id: city.id
                         }
 
-        post "/api/v1/update_profile", params: profile_data
+        put "/api/v1/update_profile", params: profile_data
         
         expect(response.status).to eq(200)
 
@@ -244,7 +244,7 @@ RSpec.describe Usman::Api::V1::RegistrationsController, :type => :request do
           'HTTP_AUTHORIZATION' => ActionController::HttpAuthentication::Token.encode_credentials(dev.api_token)
         }
 
-        post "/api/v1/update_profile", params: profile_data, headers: headers
+        put "/api/v1/update_profile", params: profile_data, headers: headers
         
         expect(response.status).to eq(200)
 
@@ -271,7 +271,7 @@ RSpec.describe Usman::Api::V1::RegistrationsController, :type => :request do
           'HTTP_AUTHORIZATION' => ActionController::HttpAuthentication::Token.encode_credentials(dev.api_token)
         }
 
-        post "/api/v1/update_profile", params: profile_data, headers: headers
+        put "/api/v1/update_profile", params: profile_data, headers: headers
         
         expect(response.status).to eq(200)
 
@@ -301,7 +301,7 @@ RSpec.describe Usman::Api::V1::RegistrationsController, :type => :request do
           'HTTP_AUTHORIZATION' => ActionController::HttpAuthentication::Token.encode_credentials(dev.api_token)
         }
 
-        get "/api/v1/profile", headers: headers
+        get "/api/v1/profile_info", headers: headers
         
         expect(response.status).to eq(200)
 
@@ -341,7 +341,7 @@ RSpec.describe Usman::Api::V1::RegistrationsController, :type => :request do
                           city_id: city.id
                         }
 
-        get "/api/v1/profile", params: profile_data
+        get "/api/v1/profile_info", params: profile_data
         
         expect(response.status).to eq(200)
 
@@ -377,7 +377,7 @@ RSpec.describe Usman::Api::V1::RegistrationsController, :type => :request do
           'HTTP_AUTHORIZATION' => ActionController::HttpAuthentication::Token.encode_credentials(dev.api_token)
         }
 
-        get "/api/v1/profile", params: profile_data, headers: headers
+        get "/api/v1/profile_info", params: profile_data, headers: headers
         
         expect(response.status).to eq(200)
 

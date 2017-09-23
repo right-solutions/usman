@@ -7,7 +7,11 @@ module Usman
           set_title("Register API")
           @request_type = "POST"
           @end_point = "/api/v1/register"
-          @description = "This API will register the user and the device and will send an OTP for verification. API will return the api_token if the device is already registered."
+          @description = <<-eos
+          This API will register the user and the device and will send an OTP for verification. <br>
+          This API can also be used for user login.  <br>
+          If the user is already registered, verifying the OTP will get the user logged in (return API token)
+          eos
 
           @input_headers = {
             "Content-Type" => { value: "application/json", description: "The MIME media type for JSON text is application/json. This is to make sure that a valid json is returned. The default encoding is UTF-8. " }
@@ -38,7 +42,9 @@ module Usman
           set_title("Resend OTP API")
           @request_type = "POST"
           @end_point = "/api/v1/resend_otp"
-          @description = "This API will resend the OTP for verification"
+          @description = <<-eos
+          This API will resend the OTP for verification
+          eos
 
           @warning = "A maximum of 3 attempt is allowed for resending the OTP. 6th request will block the device."
           
@@ -64,7 +70,11 @@ module Usman
           set_title("Verify OTP API")
           @request_type = "POST"
           @end_point = "/api/v1/verify_otp"
-          @description = "This API verify the OTP and returns the API token for further communication"
+          @description = <<-eos
+          This API verify the OTP.  <br>
+          It will return the API token for further communication if the user & device has already been registered. <br>
+          If not, API token is returned in the positive response of Accpet T&C API
+          eos
           
           @input_headers = {
             "Content-Type" => { value: "application/json", description: "The MIME media type for JSON text is application/json. This is to make sure that a valid json is returned. The default encoding is UTF-8. " }
@@ -89,7 +99,10 @@ module Usman
           set_title("Accept T&C API")
           @request_type = "POST"
           @end_point = "/api/v1/accept_tac"
-          @description = "This API record the acceptance of the terms and condition."
+          @description = <<-eos
+          This API record the acceptance of the terms and condition and will finish the registration of user & device. <br>
+          It will return API token which can be used for further communication.
+          eos
           
           @info = "The user will have to accept terms and conditions everytime he registers a new device"
           
@@ -115,7 +128,9 @@ module Usman
           set_title("Create Profile API")
           @request_type = "POST"
           @end_point = "/api/v1/create_profile"
-          @description = "This API will create a profile for a newly registered user"
+          @description = <<-eos
+          This API will create a profile for a newly registered user
+          eos
           
           @input_headers = {
             "Content-Type" => { value: "application/json", description: "The MIME media type for JSON text is application/json. This is to make sure that a valid json is returned. The default encoding is UTF-8. " },
@@ -140,7 +155,10 @@ module Usman
           set_title("Update Profile API")
           @request_type = "POST"
           @end_point = "/api/v1/update_profile"
-          @description = "This API will update the profile details"
+          @description = <<-eos
+          This API will update the profile details. <br>
+          Note the the user id is not passed but the API token in header.
+          eos
           
           @input_headers = {
             "Content-Type" => { value: "application/json", description: "The MIME media type for JSON text is application/json. This is to make sure that a valid json is returned. The default encoding is UTF-8. " },
@@ -161,11 +179,13 @@ module Usman
           render 'kuppayam/api/docs/show'
         end
 
-        def profile
-          set_title("Profile API")
+        def get_profile_info
+          set_title("Get Profile Info API")
           @request_type = "GET"
-          @end_point = "/api/v1/profile/base64_profile_picture"
-          @description = "This API will return the details of the profile requested including image urls."
+          @end_point = "/api/v1/profile_info"
+          @description = <<-eos
+          This API will return the details of the profile requested including profile picture urls
+          eos
 
           @input_headers = {
             "Content-Type" => { value: "application/json", description: "The MIME media type for JSON text is application/json. This is to make sure that a valid json is returned. The default encoding is UTF-8. " },
@@ -177,16 +197,21 @@ module Usman
           @example_path = "usman/api/v1/docs/"
           @examples = ["pos_case_1", "neg_case_1", "neg_case_2"]
 
-          set_nav("docs/profile")
+          set_nav("docs/get_profile_info")
 
           render 'kuppayam/api/docs/show'
         end
 
-        def base64_profile_picture
+        def upload_profile_picture_base64
           set_title("Upload Profile Picture API (base64)")
           @request_type = "POST"
-          @end_point = "/api/v1/profile/base64_profile_picture"
-          @description = "This API will return the details of the profile requested including image urls."
+          @end_point = "/api/v1/profile/profile_picture_base64"
+          @description = <<-eos
+          This APi will upload an image to a profile and will set it as the profile picture. <br>
+          It accept an image embeded in a json with base64 encoding.
+          eos
+
+          @warning = "The image has to be base64 encoded."
 
           @input_headers = {
             "Content-Type" => { value: "application/json", description: "The MIME media type for JSON text is application/json. This is to make sure that a valid json is returned. The default encoding is UTF-8. " },
@@ -198,16 +223,19 @@ module Usman
           @example_path = "usman/api/v1/docs/"
           @examples = ["pos_case_1", "neg_case_1", "neg_case_2"]
 
-          set_nav("docs/base64_profile_picture")
+          set_nav("docs/upload_profile_picture_base64")
 
           render 'kuppayam/api/docs/show'
         end
 
-        def profile_picture
+        def upload_profile_picture
           set_title("Upload Profile Picture API")
           @request_type = "POST"
-          @end_point = "/api/v1/profile/profile_picture"
-          @description = "This API will return the details of the profile requested including image urls."
+          @end_point = "/api/v1/profile/upload_profile_picture"
+          @description = <<-eos
+          This APi will upload an image to a profile and will set it as the profile picture. <br>
+          It accept an image in binary format
+          eos
 
           @input_headers = {
             "Content-Type" => { value: "application/json", description: "The MIME media type for JSON text is application/json. This is to make sure that a valid json is returned. The default encoding is UTF-8. " },
@@ -224,11 +252,13 @@ module Usman
           render 'kuppayam/api/docs/show'
         end
 
-        def destroy_profile_picture
+        def delete_profile_picture
           set_title("Delete Profile Picture API")
           @request_type = "DELETE"
-          @end_point = "/api/v1/profile"
-          @description = "This API will return the details of the profile requested including image urls."
+          @end_point = "/api/v1/profile/profile_picture"
+          @description = <<-eos
+          This API will delete the profile picture
+          eos
 
           @input_headers = {
             "Content-Type" => { value: "application/json", description: "The MIME media type for JSON text is application/json. This is to make sure that a valid json is returned. The default encoding is UTF-8. " },
@@ -240,7 +270,7 @@ module Usman
           @example_path = "usman/api/v1/docs/"
           @examples = ["pos_case_1", "neg_case_1", "neg_case_2", "neg_case_3"]
 
-          set_nav("docs/destroy_profile_picture")
+          set_nav("docs/delete_profile_picture")
 
           render 'kuppayam/api/docs/show'
         end

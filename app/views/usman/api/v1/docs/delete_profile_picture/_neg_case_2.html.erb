@@ -1,13 +1,12 @@
 <%
 
-api_title = "Negative Case - 2 - should respond with proper errors if no params are passed"
+api_title = "Negative Case - 2 - should set proper errors if the profile doesn't exists"
 
 api_input = <<-eos
 Example:
 
-POST #{request.base_url}/api/v1/accept_tac
-
-In the request body, pass the following as raw json:
+Authorization: Token token="87b01adbba90824b57add8cc06ad8738"
+DELETE #{request.base_url}/api/v1/profile/profile_picture
 {}
 eos
 
@@ -15,11 +14,8 @@ api_output = <<-eos
 {
   "success": false,
   "errors": {
-    "heading": "The mobile number is not registered",
-    "message": "Accepting T&C Failed. Check if the mobile number entered is valid",
-    "details": {
-        "mobile_number": "is invalid"
-    }
+    "heading": "Profile doesn't exists for the mobile number you have provided",
+    "message": "You are trying to create a profile once again when you already have a profile. Use Profile API with your API Token, to get your profile details and use them instead of creating a new one."
   }
 }
 eos

@@ -112,7 +112,7 @@ module Usman
           render_json_response(proc_code)
         end
 
-        def profile
+        def profile_info
           proc_code = Proc.new do
             if @current_registration
               unless @current_user

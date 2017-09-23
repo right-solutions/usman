@@ -3,6 +3,9 @@
 api_title = "Positive Case - 2 - should verify the otp if the device is verified, tac is accpted and return the api token"
 
 api_input = <<-eos
+Example:
+
+POST #{request.base_url}/api/v1/verify_otp
 {
   "otp": "11111",
   "uuid": "<REGISTERED UUID>",

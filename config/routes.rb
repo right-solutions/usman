@@ -54,11 +54,11 @@ Usman::Engine.routes.draw do
 
       # Profile
       post :create_profile, :controller => "profile"
-      post :update_profile, :controller => "profile"
-      get :profile, :controller => "profile"
+      put :update_profile, :controller => "profile"
+      get :profile_info, :controller => "profile"
 
       # Profile Picture
-      post 'profile/base64_profile_picture', :controller => "profile_picture", action: :base64_profile_picture
+      post 'profile/profile_picture_base64', :controller => "profile_picture", action: :profile_picture_base64
       post 'profile/profile_picture', :controller => "profile_picture", action: :profile_picture
       delete 'profile/profile_picture', :controller => "profile_picture", action: :destroy_profile_picture
     end
@@ -75,11 +75,11 @@ Usman::Engine.routes.draw do
         get 'create_profile', :controller => "docs"
         get 'update_profile', :controller => "docs"
         get 'update_profile', :controller => "docs"
-        get 'profile', :controller => "docs"
+        get 'get_profile_info', :controller => "docs"
 
-        get 'base64_profile_picture', :controller => "docs"
-        get 'profile_picture', :controller => "docs"
-        get 'destroy_profile_picture', :controller => "docs"
+        get 'upload_profile_picture_base64', :controller => "docs"
+        get 'upload_profile_picture', :controller => "docs"
+        get 'delete_profile_picture', :controller => "docs"
       end
     end
   end

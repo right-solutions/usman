@@ -3,6 +3,9 @@
 api_title = "Positive Case - 1 - should verify an otp verification request from a pending device"
 
 api_input = <<-eos
+Example:
+
+POST #{request.base_url}/api/v1/verify_otp
 {
   "otp": "11111",
   "uuid": "<PENDING UUID>",

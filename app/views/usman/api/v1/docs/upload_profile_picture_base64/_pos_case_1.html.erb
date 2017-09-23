@@ -3,7 +3,13 @@
 api_title = "Positive Case - 1 - should upload a profile picture in base64 format"
 
 api_input = <<-eos
-{}
+Example:
+
+Authorization: Token token="87b01adbba90824b57add8cc06ad8738"
+POST #{request.base_url}/api/v1/profile/profile_picture_base64
+{
+  "image": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAFCYAAACNbyblAAAAHElEQVQI12P4//8w38GIAXDIBKE0DHxgljNBAAO9TXL0Y4OHwAAAABJRU5ErkJggg=="
+}
 eos
 
 api_output = <<-eos

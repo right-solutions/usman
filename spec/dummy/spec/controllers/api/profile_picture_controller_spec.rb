@@ -6,7 +6,7 @@ RSpec.describe Usman::Api::V1::ProfilePictureController, :type => :request do
   let(:reg) { FactoryGirl.create(:verified_registration, user: user) }
   let(:dev) { FactoryGirl.create(:verified_device, registration: reg, api_token: SecureRandom.hex) }
   
-  describe "base64_profile_picture" do
+  describe "profile_picture_base64" do
     context "Positive Case" do
       it "should upload a profile image in base64 format" do
 
@@ -19,7 +19,7 @@ RSpec.describe Usman::Api::V1::ProfilePictureController, :type => :request do
           'HTTP_AUTHORIZATION' => ActionController::HttpAuthentication::Token.encode_credentials(dev.api_token)
         }
         
-        post "/api/v1/profile/base64_profile_picture", headers: headers, params: image_params
+        post "/api/v1/profile/profile_picture_base64", headers: headers, params: image_params
 
         expect(response.status).to eq(200)
         response_body = JSON.parse(response.body)
@@ -47,7 +47,7 @@ RSpec.describe Usman::Api::V1::ProfilePictureController, :type => :request do
           image: "data:image/png;base64,#{valid_base64_image}"
         }
 
-        post "/api/v1/profile/base64_profile_picture", params: image_params
+        post "/api/v1/profile/profile_picture_base64", params: image_params
 
         expect(response.status).to eq(200)
         response_body = JSON.parse(response.body)
@@ -62,7 +62,7 @@ RSpec.describe Usman::Api::V1::ProfilePictureController, :type => :request do
           'HTTP_AUTHORIZATION' => ActionController::HttpAuthentication::Token.encode_credentials(dev.api_token)
         }
         
-        post "/api/v1/profile/base64_profile_picture", headers: headers
+        post "/api/v1/profile/profile_picture_base64", headers: headers
 
         expect(response.status).to eq(200)
         response_body = JSON.parse(response.body)
@@ -81,7 +81,7 @@ RSpec.describe Usman::Api::V1::ProfilePictureController, :type => :request do
         
         image_params =  { image: "asdasd" }
         
-        post "/api/v1/profile/base64_profile_picture", headers: headers, params: image_params
+        post "/api/v1/profile/profile_picture_base64", headers: headers, params: image_params
 
         expect(response.status).to eq(200)
         response_body = JSON.parse(response.body)
@@ -261,7 +261,7 @@ RSpec.describe Usman::Api::V1::ProfilePictureController, :type => :request do
           'HTTP_AUTHORIZATION' => ActionController::HttpAuthentication::Token.encode_credentials(dev.api_token)
         }
 
-        post "/api/v1/update_profile", headers: headers
+        post "/api/v1/profile/profile_picture", headers: headers
         
         expect(response.status).to eq(200)
 

@@ -3,6 +3,9 @@
 api_title = "Negative Case - 2 - should respond with proper errors if mobile number is not registered"
 
 api_input = <<-eos
+Example:
+
+POST #{request.base_url}/api/v1/resend_otp
 {
   "dialing_prefix": "+91",
   "mobile_number": "<NEW MOBILE NUMBER>",

@@ -3,6 +3,10 @@
 api_title = "Negative Case - 1 - should set proper errors if api token is not present"
 
 api_input = <<-eos
+Example:
+
+Authorization: nil
+POST #{request.base_url}/api/v1/create_profile
 {
   "name": "Name",
   "gender": "male",

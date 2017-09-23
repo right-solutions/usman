@@ -1,17 +1,23 @@
 <%
 
-api_title = "Negative Case - 2 - should set proper errors if the profile doesn't exists"
+api_title = "Negative Case - 1 - should set proper errors if no api token"
 
 api_input = <<-eos
-{}
+Example:
+
+Authorization: nil
+POST #{request.base_url}/api/v1/profile/profile_picture
+{
+  "image": "<Uploaded File in Binary Format>"
+}
 eos
 
 api_output = <<-eos
 {
   "success": false,
   "errors": {
-    "heading": "Profile doesn't exists for the mobile number you have provided",
-    "message": "You are trying to create a profile once again when you already have a profile. Use Profile API with your API Token, to get your profile details and use them instead of creating a new one."
+    "heading": "Invalid API Token",
+    "message": "Use the API Token you have received after accepting the terms and agreement"
   }
 }
 eos
@@ -20,7 +26,7 @@ eos
 
 <%= render partial: "kuppayam/api/docs/example", locals: {
                                         negative_case: true,
-                                        example_id: "neg_case_2",
+                                        example_id: "neg_case_1",
                                         api_title: api_title,
                                         api_input: api_input,
                                         api_output: api_output 

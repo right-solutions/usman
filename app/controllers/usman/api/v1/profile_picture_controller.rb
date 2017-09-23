@@ -5,7 +5,7 @@ module Usman
 
 				include ImageUploaderHelper
 
-				def base64_profile_picture
+				def profile_picture_base64
 					proc_code = Proc.new do
 						if @current_registration
               unless @current_user

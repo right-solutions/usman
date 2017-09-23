@@ -3,6 +3,11 @@
 api_title = "Negative Case - 3 - should respond with proper errors if T&C is not accepted"
 
 api_input = <<-eos
+Example:
+
+POST #{request.base_url}/api/v1/accept_tac
+
+In the request body, pass the following as raw json:
 {
   "terms_and_conditions": 0,
   "uuid": "<VERIFIED UUID>",

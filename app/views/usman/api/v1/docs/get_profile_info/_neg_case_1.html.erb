@@ -1,9 +1,12 @@
 <%
 
-api_title = "Negative Case - 1 - should set proper errors if no api token"
+api_title = "Negative Case - 1 - should set proper errors if api token is not present"
 
 api_input = <<-eos
-{}
+Example:
+
+Authorization: nil
+GET #{request.base_url}/api/v1/profile/profile_picture
 eos
 
 api_output = <<-eos

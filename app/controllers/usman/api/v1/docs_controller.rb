@@ -247,7 +247,7 @@ module Usman
           @example_path = "usman/api/v1/docs/"
           @examples = ["pos_case_1", "neg_case_1", "neg_case_2", "neg_case_3"]
 
-          set_nav("docs/profile_picture")
+          set_nav("docs/upload_profile_picture")
 
           render 'kuppayam/api/docs/show'
         end
@@ -268,7 +268,7 @@ module Usman
           @input_params = {}
 
           @example_path = "usman/api/v1/docs/"
-          @examples = ["pos_case_1", "neg_case_1", "neg_case_2", "neg_case_3"]
+          @examples = ["pos_case_1", "neg_case_1", "neg_case_2"]
 
           set_nav("docs/delete_profile_picture")
 

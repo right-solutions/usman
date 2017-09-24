@@ -14,6 +14,12 @@ module Usman
       config.i18n.load_path += Dir["#{config.root}/config/locales/**/*.yml"]
     end
 
+    config.to_prepare do
+      Dir.glob(Rails.root + "app/decorators/**/*_decorator*.rb").each do |c|
+        require_dependency(c)
+      end
+    end
+
     config.generators do |g|
       g.test_framework      :rspec,        :fixture => false
       g.fixture_replacement :factory_girl, :dir => 'spec/dummy/spec/factories'

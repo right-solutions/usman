@@ -11,9 +11,5 @@ class ProfilePictureUploader < ImageUploader
   version :small do
     process :resize_to_fill => [100, 100]
   end
-
-  def default_url
-    'default.png'
-  end
   
 end

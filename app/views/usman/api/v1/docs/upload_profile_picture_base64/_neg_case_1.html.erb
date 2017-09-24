@@ -1,0 +1,33 @@
+<%
+
+api_title = "Negative Case - 1 - should set proper errors if no api token"
+
+api_input = <<-eos
+Example:
+
+Authorization: nil
+POST #{request.base_url}/api/v1/profile/profile_picture_base64
+{
+  "image": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAFCYAAACNbyblAAAAHElEQVQI12P4//8w38GIAXDIBKE0DHxgljNBAAO9TXL0Y4OHwAAAABJRU5ErkJggg=="
+}
+eos
+
+api_output = <<-eos
+{
+  "success": false,
+  "errors": {
+    "heading": "Invalid API Token",
+    "message": "Use the API Token you have received after accepting the terms and agreement"
+  }
+}
+eos
+
+%>
+
+<%= render partial: "kuppayam/api/docs/example", locals: {
+                                        negative_case: true,
+                                        example_id: "neg_case_1",
+                                        api_title: api_title,
+                                        api_input: api_input,
+                                        api_output: api_output 
+                                      } %>

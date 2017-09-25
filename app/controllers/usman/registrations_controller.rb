@@ -3,6 +3,20 @@ module Usman
 
     before_action :require_site_admin
     
+    def update_status
+      @registration = @r_object = Registration.find(params[:id])
+      case params[:status]
+      when "pending"
+        @registration.pending!
+      when "verified"
+        @registration.verify!
+      when "suspended"
+        @registration.suspend!
+      end
+      set_notification(true, I18n.t('status.success'), I18n.t('state.changed', item: default_item_name.titleize, new_state: @r_object.status))
+      render_row
+    end
+
     private
 
     def get_collections

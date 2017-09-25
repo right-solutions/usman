@@ -52,7 +52,10 @@
 
 					<ul>
 						<li class="<%= nav_class("admin/users") %>">
-					    <%= link_to raw("<i class=\"linecons-user\"></i> <span class='title'>Manage Users</span>"), usman.users_url %>
+					    <%= link_to raw("<i class=\"fa-user\"></i> <span class='title'>Manage Users</span>"), usman.users_url %>
+					  </li>
+					  <li class="<%= nav_class("admin/registrations") %>">
+					    <%= link_to raw("<i class=\"fa-mobile\"></i> <span class='title'>Manage Registrations</span>"), usman.registrations_url %>
 					  </li>
 					</ul>
 				</li>
@@ -86,6 +89,10 @@
 				<ul>
 					<li class="">
 						<%= link_to raw("<i class=\"linecons-diamond\"></i> <span class='title'>Manage Features</span>"), usman.features_url %>
+					</li>
+
+					<li class="">
+						<%= link_to raw("<i class=\"linecons-graduation-cap\"></i> <span class='title'>Manage Roles</span>"), usman.roles_url %>
 					</li>
 
 					<li class="<%= nav_class("admin/users") %>">

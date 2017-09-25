@@ -81,7 +81,7 @@ RSpec.describe Usman::Api::V1::RegistrationsController, :type => :request do
       end
 
       it "should set proper errors if the profile already exists" do
-        user = FactoryGirl.create(:user)
+        user = FactoryGirl.create(:approved_user)
         reg = FactoryGirl.create(:verified_registration, country: country, city: city, user: user)
         dev = FactoryGirl.create(:verified_device, registration: reg, api_token: SecureRandom.hex)
         
@@ -146,7 +146,7 @@ RSpec.describe Usman::Api::V1::RegistrationsController, :type => :request do
   describe "update_profile" do
     context "Positive Case" do
       it "should update the profile" do
-        user = FactoryGirl.create(:user)
+        user = FactoryGirl.create(:approved_user)
         profile_picture = FactoryGirl.create(:profile_picture, imageable: user)
 
         reg = FactoryGirl.create(:verified_registration, country: country, city: city, user: user)
@@ -261,7 +261,7 @@ RSpec.describe Usman::Api::V1::RegistrationsController, :type => :request do
       end
 
       it "should set proper errors if the inputs are not correct" do
-        user = FactoryGirl.build(:user)
+        user = FactoryGirl.build(:approved_user)
         reg = FactoryGirl.create(:verified_registration, country: country, city: city, user: user)
         dev = FactoryGirl.create(:verified_device, registration: reg, api_token: SecureRandom.hex)
         
@@ -292,7 +292,7 @@ RSpec.describe Usman::Api::V1::RegistrationsController, :type => :request do
   describe "profile" do
     context "Positive Case" do
       it "should return the profile details along with picture" do
-        user = FactoryGirl.create(:user)
+        user = FactoryGirl.create(:approved_user)
         profile_picture = FactoryGirl.create(:profile_picture, imageable: user)
         reg = FactoryGirl.create(:verified_registration, country: country, city: city, user: user)
         dev = FactoryGirl.create(:verified_device, registration: reg, api_token: SecureRandom.hex)

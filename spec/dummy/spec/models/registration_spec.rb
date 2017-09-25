@@ -21,6 +21,10 @@ RSpec.describe Registration, type: :model do
       verified_registration = FactoryGirl.build(:verified_registration)
       expect(verified_registration.status).to match("verified")
       expect(verified_registration.valid?).to be_truthy
+
+      suspended_registration = FactoryGirl.build(:suspended_registration)
+      expect(suspended_registration.status).to match("suspended")
+      expect(suspended_registration.valid?).to be_truthy
     end
   end
 
@@ -84,10 +88,18 @@ RSpec.describe Registration, type: :model do
   context "Instance Methods" do
     context "Status Methods" do
       it "pending!" do
-        u = FactoryGirl.create(:verified_registration)
-        u.pending!
-        expect(u.status).to match "pending"
-        expect(u.pending?).to be_truthy
+        r = FactoryGirl.create(:verified_registration)
+        r.pending!
+        expect(r.status).to match "pending"
+        expect(r.pending?).to be_truthy
+        expect(r.user.pending?).to be_truthy
+
+        # If user is nil
+        r = FactoryGirl.create(:verified_registration, user: nil)
+        r.pending!
+        expect(r.status).to match "pending"
+        expect(r.pending?).to be_truthy
+        expect(r.user).to be_nil
       end
 
       it "verify!" do
@@ -95,6 +107,27 @@ RSpec.describe Registration, type: :model do
         u.verify!
         expect(u.status).to match "verified"
         expect(u.verified?).to be_truthy
+
+        # If user is nil
+        r = FactoryGirl.create(:pending_registration, user: nil)
+        r.verify!
+        expect(r.status).to match "verified"
+        expect(r.verified?).to be_truthy
+        expect(r.user).to be_nil
+      end
+
+      it "suspend!" do
+        u = FactoryGirl.create(:verified_registration)
+        u.suspend!
+        expect(u.status).to match "suspended"
+        expect(u.suspended?).to be_truthy
+
+        # If user is nil
+        r = FactoryGirl.create(:pending_registration, user: nil)
+        r.suspend!
+        expect(r.status).to match "suspended"
+        expect(r.suspended?).to be_truthy
+        expect(r.user).to be_nil
       end
     end
     context "Other Methods" do

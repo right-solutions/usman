@@ -1,8 +1,5 @@
-<% edit_link = edit_registration_path(id: registration.id) %>
-<% delete_link = registration_path(id: registration.id) %>
-
 <tr id="tr_registration_<%= registration.id %>">
-
+          
   <th scope="row" style="text-align: center;">
     <% if i < 0 %>
       <i class="fa fa-check text-success"></i>
@@ -11,14 +8,43 @@
     <% end %>
   </th>
 
-  <td class="registration-name"><%= link_to registration.name, registration_path(registration), remote: true %></td>
+  <% if registration.user %>
+    <td class="registration-name"><%= link_to registration.user.display_name, registration_path(registration), remote: true %></td>
+  <% else %>
+    <td class="registration-name"><%= link_to registration.display_name, registration_path(registration), remote: true %></td>
+  <% end %>
 
-  <td class="action-links" style="width:10%">
+  <td class="registration-name"><%= link_to registration.display_name, registration_path(registration), remote: true %></td>
+  
+  <td class="registration-name"><%= link_to registration.display_location, registration_path(registration), remote: true %></td>
+  
+  <td>
+    <% if registration.pending? %>
+      <span class="ml-5 mt-5 label label-default">Pending</span>
+    <% elsif registration.verified? %>
+      <span class="ml-5 mt-5 label label-success">Verified</span>
+    <% elsif registration.suspended? %>
+      <span class="ml-5 mt-5 label label-danger">Suspended</span>
+    <% end %>
+  </td>
 
-    <%= link_to raw("<i class=\"linecons-pencil\"></i> Edit Registration"), edit_link, :remote=>true, class: "edit" if @current_user.super_admin? and registration.can_be_edited? %>
+  <td class="action-links" style="width:15%">
 
-    <%= link_to raw("<i class=\"linecons-trash\"></i> Delete"), delete_link, method: :delete, registration: "menuitem", tabindex: "-1", data: { confirm: 'Are you sure?' }, :remote=>true, class: "delete" if @current_user.super_admin? and registration.can_be_deleted? %>
+    <!-- Mark as Pending -->
+    <%= link_to raw("<i class=\"fa fa-circle mr-5\"></i> Mark as Pending"), update_status_registration_path(:id =>registration.id, :status =>'pending'), :method =>'PUT', :remote=>true, role: "menuitem", tabindex: "-1" unless registration.pending? %>
+    
+    <!-- Verify -->
+    <%= link_to raw("<i class=\"fa fa-circle-o mr-5\"></i> Verify"), update_status_registration_path(:id =>registration.id, :status =>'verified'), :method =>'PUT', :remote=>true, role: "menuitem", tabindex: "-1" unless registration.verified? %>
+
+    <!-- Suspend -->
+    <%= link_to raw("<i class=\"fa fa-edit mr-5\"></i> Suspend"), update_status_registration_path(:id =>registration.id, :status =>'suspended'), :method =>'PUT', :remote=>true, role: "menuitem", tabindex: "-1" unless registration.suspended? %>
 
   </td>
+  
+  <!-- <td class="action-links" style="width:10%">
+    <%#= link_to raw("<i class=\"linecons-pencil\"></i> Edit Registration"), edit_link, :remote=>true, class: "edit" if @current_user.super_admin? and registration.can_be_edited? %>
+
+    <%#= link_to raw("<i class=\"linecons-trash\"></i> Delete"), delete_link, method: :delete, registration: "menuitem", tabindex: "-1", data: { confirm: 'Are you sure?' }, :remote=>true, class: "delete" if @current_user.super_admin? and registration.can_be_deleted? %>
+  </td> -->
 
 </tr>

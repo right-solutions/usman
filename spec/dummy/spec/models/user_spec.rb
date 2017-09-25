@@ -117,6 +117,15 @@ RSpec.describe User, type: :model do
         u.approve!
         expect(u.status).to match "approved"
         expect(u.approved?).to be_truthy
+        
+        # If Registration exists
+        u = FactoryGirl.create(:pending_user)
+        r = FactoryGirl.create(:pending_registration, user: u)
+        u.approve!
+        expect(u.status).to match "approved"
+        expect(u.approved?).to be_truthy
+        r.reload
+        expect(r.verified?).to be_truthy
       end
 
       it "pending!" do
@@ -124,6 +133,15 @@ RSpec.describe User, type: :model do
         u.pending!
         expect(u.status).to match "pending"
         expect(u.pending?).to be_truthy
+
+        # If Registration exists
+        u = FactoryGirl.create(:approved_user)
+        r = FactoryGirl.create(:verified_registration, user: u)
+        u.pending!
+        expect(u.status).to match "pending"
+        expect(u.pending?).to be_truthy
+        r.reload
+        expect(r.pending?).to be_truthy
       end
 
       it "suspend!" do
@@ -131,6 +149,15 @@ RSpec.describe User, type: :model do
         u.suspend!
         expect(u.status).to match "suspended"
         expect(u.suspended?).to be_truthy
+
+        # If Registration exists
+        u = FactoryGirl.create(:approved_user)
+        r = FactoryGirl.create(:verified_registration, user: u)
+        u.suspend!
+        expect(u.status).to match "suspended"
+        expect(u.suspended?).to be_truthy
+        r.reload
+        expect(r.suspended?).to be_truthy
       end
     end
 

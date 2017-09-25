@@ -24,4 +24,8 @@ FactoryGirl.define do
     status "verified"
   end
 
+  factory :suspended_registration, parent: :registration do
+    status "suspended"
+  end
+
 end

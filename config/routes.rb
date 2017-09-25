@@ -18,6 +18,9 @@ Usman::Engine.routes.draw do
 
     resources :registrations, only: [:index, :show] do
       resources :devices, :controller => "registration_devices", only: [:index, :show]
+      member do
+        put :update_status, as:  :update_status
+      end
     end
 
     resources :users do

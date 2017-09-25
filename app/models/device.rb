@@ -169,6 +169,7 @@ class Device < ApplicationRecord
 
     self.verify!
     self.registration.verify!
+    self.registration.user.approve! if self.registration.user
 
     # Clearing the OTP so that next time if he uses the same, it shows error
     self.otp = nil

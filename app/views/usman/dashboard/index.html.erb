@@ -10,6 +10,16 @@
 			text: "Users",
 			icon_class: "fa-user",
 			url: usman.users_url
+		},
+		registrations: {
+			counts: {
+				total: Registration.count,
+				pending: Registration.pending.count,
+				verified: Registration.verified.count
+			},
+			text: "Registrations",
+			icon_class: "fa-mobile",
+			url: usman.registrations_url
 		}
 	}
 %>
@@ -116,3 +126,12 @@
 		
 	</div>
 <% end %>
+
+
+<div class="dx-warning">
+	<div>
+		<h2>Usman - API Documentation</h2>
+		<p>All APIs are documented with all cases and examples.</p>
+		<a class="btn btn-success" href="/docs/api/v1/register" target="_blank">Go to the API Documentation</a>
+	</div>
+</div>

@@ -39,6 +39,29 @@ module Usman
       else
         @current_user = @current_device.try(:registration).try(:user)
       end
+      if @current_user
+        if @current_user.pending?
+          proc_code = Proc.new do
+            @success = false
+            @errors = {
+              heading: I18n.translate("api.general.user_is_pending.heading"),
+              message: I18n.translate("api.general.user_is_pending.message")
+            }
+          end
+          render_json_response(proc_code)
+          return
+        elsif @current_user.suspended?
+          proc_code = Proc.new do
+            @success = false
+            @errors = {
+              heading: I18n.translate("api.general.user_is_suspended.heading"),
+              message: I18n.translate("api.general.user_is_suspended.message")
+            }
+          end
+          render_json_response(proc_code)
+          return
+        end
+      end
     end
 
     def require_super_admin_auth_token
@@ -64,5 +87,16 @@ module Usman
         return
       end
     end
+
+    def store_last_accessed_api
+      if @current_device
+        # Know what was the last API accessed and when
+        # This is to catch the users who are inactive
+        @current_device.last_accessed_api = request.original_url
+        @current_device.last_accessed_at = Time.now
+        @current_device.save
+      end
+    end
+
   end
 end

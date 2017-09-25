@@ -173,6 +173,7 @@ class User < Usman::ApplicationRecord
   #   => "pending"
   def pending!
     self.update_attribute(:status, PENDING)
+    self.registration.update_attribute(:status, PENDING) if self.registration
   end
 
   # change the status to :approved
@@ -182,6 +183,7 @@ class User < Usman::ApplicationRecord
   #   => "approved"
   def approve!
     self.update_attribute(:status, APPROVED)
+    self.registration.update_attribute(:status, Registration::VERIFIED) if self.registration
   end
 
   # change the status to :suspended
@@ -191,6 +193,7 @@ class User < Usman::ApplicationRecord
   #   => "suspended"
   def suspend!
     self.update_attribute(:status, SUSPENDED)
+    self.registration.update_attribute(:status, SUSPENDED) if self.registration
   end
 
   # Gender Methods

@@ -2,11 +2,12 @@
 	<table class="table table-hover members-table middle-align">
 	  <thead> 
 			<tr> 
-				<th style="text-align: center;width:50px;">#</th> 
+				<th style="text-align: center;width:5%;">#</th> 
 				<th style="text-align: left;">User</th>
-				<th style="text-align: left;width:200px;">Mobile</th>
-				<th style="text-align: left;width:200px;">Location</th>
-				<th style="text-align: left;width:200px;">Status</th>
+				<th style="text-align: left;width:15%;">Mobile</th>
+				<th style="text-align: left;width:15%;">Location</th>
+				<th>Status</th>
+				<th style="text-align: center;width:15%;">Actions</th>
 			</tr> 
 		</thead>
 		
@@ -41,8 +42,23 @@
 							<span class="ml-5 mt-5 label label-default">Pending</span>
 						<% elsif registration.verified? %>
 							<span class="ml-5 mt-5 label label-success">Verified</span>
+						<% elsif registration.suspended? %>
+    				  <span class="ml-5 mt-5 label label-danger">Suspended</span>
 						<% end %>
 					</td>
+
+					<td class="action-links" style="width:15%">
+
+						<!-- Mark as Pending -->
+				    <%= link_to raw("<i class=\"fa fa-circle mr-5\"></i> Mark as Pending"), update_status_registration_path(:id =>registration.id, :status =>'pending'), :method =>'PUT', :remote=>true, role: "menuitem", tabindex: "-1" unless registration.pending? %>
+
+		      	<!-- Verify -->
+				    <%= link_to raw("<i class=\"fa fa-circle-o mr-5\"></i> Verify"), update_status_registration_path(:id =>registration.id, :status =>'verified'), :method =>'PUT', :remote=>true, role: "menuitem", tabindex: "-1" unless registration.verified? %>
+
+				    <!-- Suspend -->
+				    <%= link_to raw("<i class=\"fa fa-edit mr-5\"></i> Suspend"), update_status_registration_path(:id =>registration.id, :status =>'suspended'), :method =>'PUT', :remote=>true, role: "menuitem", tabindex: "-1" unless registration.suspended? %>
+
+		      </td>
 		      
 					<!-- <td class="action-links" style="width:10%">
 		      	<%#= link_to raw("<i class=\"linecons-pencil\"></i> Edit Registration"), edit_link, :remote=>true, class: "edit" if @current_user.super_admin? and registration.can_be_edited? %>

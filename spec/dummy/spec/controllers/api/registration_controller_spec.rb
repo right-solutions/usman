@@ -660,4 +660,37 @@ RSpec.describe Usman::Api::V1::RegistrationsController, :type => :request do
     end
   end
 
+  describe "store_last_accessed_api" do
+    context "Positive Case" do
+      it "should store the last accessed api and the time" do
+        
+        reg = FactoryGirl.create(:verified_registration)
+        dev = FactoryGirl.create(:verified_device, registration: reg)
+        
+        post "/api/v1/accept_tac", params: {
+                                          terms_and_conditions: true,
+                                          uuid: dev.uuid,
+                                          dialing_prefix: reg.dialing_prefix, 
+                                          mobile_number: reg.mobile_number
+                                        }
+
+        expect(response.status).to eq(200)
+
+        response_body = JSON.parse(response.body)
+        
+        expect(response_body["success"]).to be(true)
+        expect(response_body["errors"]).to be_blank
+
+        expect(response_body["alert"]["heading"]).to  eq("You have successfully accepted the Terms & Conditions. Proceed with Registration process if any")
+        expect(response_body["alert"]["message"]).to  eq("Store and use the API token for further communication")
+
+        dev.reload
+        expect(response_body["data"]["api_token"]).to eq(dev.api_token)
+        
+        expect(dev.last_accessed_api).to eq("/api/v1/register")
+        expect(dev.last_accessed_at).not_to be_blank
+      end
+    end    
+  end
+
 end

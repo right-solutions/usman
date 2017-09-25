@@ -5,15 +5,18 @@ class Registration < ApplicationRecord
 
   PENDING = "pending"
   VERIFIED = "verified"
+  SUSPENDED = "suspended"
   
   STATUS = { 
     PENDING => "Pending", 
-    VERIFIED => "Verified"
+    VERIFIED => "Verified",
+    SUSPENDED => "Suspended"
   }
 
   STATUS_REVERSE = { 
     "Pending" => PENDING,
-    "Verified" => VERIFIED
+    "Verified" => VERIFIED,
+    "Suspended" => SUSPENDED
   }
   
 	# Associations
@@ -37,12 +40,15 @@ class Registration < ApplicationRecord
   #   >>> registration.search(query)
   #   => ActiveRecord::Relation object
   scope :search, lambda {|query| joins("LEFT JOIN users on users.id = registrations.user_id").
-                                where("LOWER(registrations.mobile_number) LIKE LOWER('%#{query}%') OR 
-                                       LOWER(users.name) LIKE LOWER('%#{query}%')")}
+                                where("LOWER(registrations.mobile_number) LIKE LOWER('%#{query}%') OR
+                                       LOWER(users.name) LIKE LOWER('%#{query}%') OR 
+                                       LOWER(users.email) LIKE LOWER('%#{query}%') OR 
+                                       LOWER(users.username) LIKE LOWER('%#{query}%')")}
   scope :status, lambda { |status| where("LOWER(status)='#{status}'") }
 
   scope :pending, -> { where(status: PENDING) }
   scope :verified, -> { where(status: VERIFIED) }
+  scope :suspended, -> { where(status: SUSPENDED) }
 
   # ------------------
   # Instance Methods
@@ -77,6 +83,14 @@ class Registration < ApplicationRecord
     (status == VERIFIED)
   end
 
+  # * Return true if the user is suspended, else false.
+  # == Examples
+  #   >>> registration.suspended?
+  #   => true
+  def suspended?
+    (status == SUSPENDED)
+  end
+
   # change the status to :verified
   # Return the status
   # == Examples
@@ -84,6 +98,7 @@ class Registration < ApplicationRecord
   #   => "pending"
   def pending!
     self.update_attribute(:status, PENDING)
+    self.user.update_attribute(:status, PENDING) if self.user
   end
 
   # change the status to :verified
@@ -93,6 +108,17 @@ class Registration < ApplicationRecord
   #   => "verified"
   def verify!
     self.update_attribute(:status, VERIFIED)
+    self.user.update_attribute(:status, VERIFIED) if self.user
+  end
+
+  # change the status to :suspended
+  # Return the status
+  # == Examples
+  #   >>> registration.suspend!
+  #   => "suspended"
+  def suspend!
+    self.update_attribute(:status, SUSPENDED)
+    self.user.update_attribute(:status, SUSPENDED) if self.user
   end
 
   # Permission Methods

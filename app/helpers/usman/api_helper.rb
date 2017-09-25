@@ -44,8 +44,8 @@ module Usman
           proc_code = Proc.new do
             @success = false
             @errors = {
-              heading: I18n.translate("api.general.user_is_pending.heading"),
-              message: I18n.translate("api.general.user_is_pending.message")
+              heading: I18n.translate("api.authentication.user_is_pending.heading"),
+              message: I18n.translate("api.authentication.user_is_pending.message")
             }
           end
           render_json_response(proc_code)
@@ -54,8 +54,8 @@ module Usman
           proc_code = Proc.new do
             @success = false
             @errors = {
-              heading: I18n.translate("api.general.user_is_suspended.heading"),
-              message: I18n.translate("api.general.user_is_suspended.message")
+              heading: I18n.translate("api.authentication.user_is_suspended.heading"),
+              message: I18n.translate("api.authentication.user_is_suspended.message")
             }
           end
           render_json_response(proc_code)

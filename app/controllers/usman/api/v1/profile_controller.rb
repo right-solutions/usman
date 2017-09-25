@@ -19,12 +19,13 @@ module Usman
                 @user.gender = permitted_params[:gender]
                 @user.date_of_birth = permitted_params[:date_of_birth]
                 @user.email = permitted_params[:email]
-
+                
                 @country = Country.find_by_id(permitted_params[:country_id])
                 @city = City.find_by_id(permitted_params[:city_id])
 
                 if @user.valid?
                   @user.save
+                  @user.approve!
                   @current_registration.user = @user
                   
                   @current_registration.country = @country if @country

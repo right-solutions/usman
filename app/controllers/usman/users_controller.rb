@@ -3,6 +3,20 @@ module Usman
 
     before_action :require_site_admin
     
+    def update_status
+      @user = @r_object = User.find(params[:id])
+      case params[:status]
+      when "pending"
+        @user.pending!
+      when "approved"
+        @user.approve!
+      when "suspended"
+        @user.suspend!
+      end
+      set_notification(true, I18n.t('status.success'), I18n.t('state.changed', item: default_item_name.titleize, new_state: @r_object.status))
+      render_row
+    end
+
     def make_super_admin
       @user = @r_object = User.find(params[:id])
       if @user

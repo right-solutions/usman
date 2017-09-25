@@ -42,6 +42,8 @@ RSpec.describe Usman::Api::V1::RegistrationsController, :type => :request do
 
         user = reg.reload.user
 
+        expect(user.approved?).to be_truthy
+
         expect(data["id"]).to eq(user.id)
         expect(data["name"]).to eq(user.name)
         expect(data["username"]).to eq(user.username)

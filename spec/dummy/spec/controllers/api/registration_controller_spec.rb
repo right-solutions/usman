@@ -410,7 +410,7 @@ RSpec.describe Usman::Api::V1::RegistrationsController, :type => :request do
         expect(data["registration"]["dialing_prefix"]).to eq(reg.dialing_prefix)
         expect(data["registration"]["mobile_number"]).to eq(reg.mobile_number)
         expect(data["registration"]["user_id"]).to be_blank
-        expect(data["registration"]["status"]).to match("verified")
+        expect(data["registration"]["status"]).to match("pending")
 
         expect(data["profile"]["id"]).to be_blank
         expect(data["profile"]["name"]).to be_blank
@@ -589,6 +589,11 @@ RSpec.describe Usman::Api::V1::RegistrationsController, :type => :request do
         expect(response_body["alert"]["message"]).to  eq("Store and use the API token for further communication")
 
         dev.reload
+        reg.reload
+
+        expect(dev.verified?).to be_truthy
+        expect(reg.verified?).to be_truthy
+
         expect(response_body["data"]["api_token"]).to eq(dev.api_token)
       end
     end

@@ -168,9 +168,7 @@ class Device < ApplicationRecord
     self.save
 
     self.verify!
-    self.registration.verify!
-    self.registration.user.approve! if self.registration.user
-
+    
     # Clearing the OTP so that next time if he uses the same, it shows error
     self.otp = nil
     self.save
@@ -216,6 +214,12 @@ class Device < ApplicationRecord
     # Create API Token if OTP is verified
     self.tac_accepted_at = Time.now
     self.save
+
+    # Verify the Registration as it is now complete
+    self.registration.verify!
+
+    # Approve the user if it not already approved
+    self.registration.user.approve! if self.registration.user
 
     return true, {}
   end

@@ -3,6 +3,8 @@ module Usman
     module V1
       class ProfileController < Usman::Api::V1::BaseController
 
+        include ImageUploaderHelper
+
         def create_profile
           proc_code = Proc.new do
             if @current_registration
@@ -32,6 +34,31 @@ module Usman
                   @current_registration.city = @city if @city
 
                   @current_registration.save
+
+                  # Saving the profile image if passed
+                  begin
+                    if params[:image] && !params[:image].blank?
+                      user_image = @user.profile_picture || Image::ProfilePicture.new(imageable: @user)
+                      user_image.image = params[:image]
+                      user_image.valid?
+                      if user_image.errors.any?
+                        @errors = {
+                          heading: I18n.translate("api.profile_picture.image_save_failed.heading"),
+                          message: I18n.translate("api.profile_picture.image_save_failed.message"),
+                          details: user_image.errors.full_messages
+                        }
+                      else
+                        user_image.save
+                        @user.reload
+                      end
+                    end
+                  rescue
+                    @errors = {
+                      heading: I18n.translate("api.profile_picture.image_save_failed.heading"),
+                      message: I18n.translate("api.profile_picture.image_save_failed.message"),
+                      details: user_image.errors.full_messages
+                    }
+                  end
 
                   @current_user = @user
                   @success = true
@@ -86,6 +113,31 @@ module Usman
                   @current_registration.city = @city if @city
 
                   @current_registration.save
+
+                  # Saving the profile image if passed
+                  begin
+                    if params[:image] && !params[:image].blank?
+                      user_image = @user.profile_picture || Image::ProfilePicture.new(imageable: @user)
+                      user_image.image = params[:image]
+                      user_image.valid?
+                      if user_image.errors.any?
+                        @errors = {
+                          heading: I18n.translate("api.profile_picture.image_save_failed.heading"),
+                          message: I18n.translate("api.profile_picture.image_save_failed.message"),
+                          details: user_image.errors.full_messages
+                        }
+                      else
+                        user_image.save
+                        @user.reload
+                      end
+                    end
+                  rescue
+                    @errors = {
+                      heading: I18n.translate("api.profile_picture.image_save_failed.heading"),
+                      message: I18n.translate("api.profile_picture.image_save_failed.message"),
+                      details: user_image.errors.full_messages
+                    }
+                  end
 
                   @success = true
                   @alert = {

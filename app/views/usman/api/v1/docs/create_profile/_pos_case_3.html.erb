@@ -1,6 +1,6 @@
 <%
 
-api_title = "Positive Case - 1 - should create the profile"
+api_title = "Positive Case - 3 - should create the profile even if profile picture is invalid"
 
 api_input = <<-eos
 Example:
@@ -13,10 +13,12 @@ POST #{request.base_url}/api/v1/create_profile
   "date_of_birth": "10/10/1980",
   "email": "name@domain.com",
   "country_id": "1",
-  "city_id": "2"
+  "city_id": "2",
+  "image": "<Uploaded File - Not Support. e.g: CSV>"
 }
 
 It create a new user/profile entry in the system and will return its data including the user_id (also called profile_id)
+Since the uploaded image is not of supported type, it is ignored and the profile data is updated.
 eos
 
 api_output = <<-eos
@@ -26,6 +28,10 @@ api_output = <<-eos
     "heading": "The Profile has been created successfully",
     "message": "You may access the profile API with API token to get the profile details in future"
   },
+  "errors": {
+    "heading": "Saving user/profile image was failed",
+    "message": "Make sure that the arguments are passed according to the API documentation. Please check the API Documentation for more details."
+  },
   "data": {
     "id": 9,
     "name": "Nayan Tara",
@@ -33,8 +39,8 @@ api_output = <<-eos
     "date_of_birth": "1984-10-27",
     "username": "d0dca578",
     "email": "nayan.tara@yopmail.com",
-    "phone": ,
-    "profile_picture":""
+    "phone": null,
+    "profile_picture": ""
   }
 }
 eos
@@ -43,7 +49,7 @@ eos
 
 <%= render partial: "kuppayam/api/docs/example", locals: {
                                         negative_case: false,
-                                        example_id: "pos_case_1",
+                                        example_id: "pos_case_3",
                                         api_title: api_title,
                                         api_input: api_input,
                                         api_output: api_output 

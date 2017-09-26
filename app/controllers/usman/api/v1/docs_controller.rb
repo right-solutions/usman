@@ -144,7 +144,7 @@ module Usman
           }
 
           @example_path = "usman/api/v1/docs/"# 
-          @examples = ["pos_case_1", "neg_case_1", "neg_case_2", "neg_case_3"]
+          @examples = ["pos_case_1", "pos_case_2", "pos_case_3", "neg_case_1", "neg_case_2", "neg_case_3"]
 
           set_nav("docs/create_profile")
 
@@ -172,7 +172,7 @@ module Usman
           }
 
           @example_path = "usman/api/v1/docs/"# 
-          @examples = ["pos_case_1", "neg_case_1", "neg_case_2", "neg_case_3"]
+          @examples = ["pos_case_1", "pos_case_2", "pos_case_3", "neg_case_1", "neg_case_2", "neg_case_3"]
 
           set_nav("docs/update_profile")
 

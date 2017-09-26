@@ -24,7 +24,7 @@ Gem::Specification.new do |s|
   # s.add_dependency 'config', '~> 1.0'
 
   s.add_dependency 'kuppayam', "~> 0.1", ">= 0.1.14"
-  s.add_dependency 'pattana', "~> 0.1", ">= 0.1.10"
+  s.add_dependency 'pattana', "~> 0.1", ">= 0.1.11"
   s.add_dependency 'bcrypt', "~> 3.0"
   s.add_dependency "colorize", "~> 0.8"
 

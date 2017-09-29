@@ -52,6 +52,10 @@ class User < Usman::ApplicationRecord
   # Callbacks
   before_validation :generate_auth_token
 
+  # Delegates
+  delegate :mobile_number, :to => :registration, :prefix => true, :allow_nil => true
+  delegate :dialing_prefix, :to => :registration, :prefix => true, :allow_nil => true
+
   # Associations
   has_one :profile_picture, :as => :imageable, :dependent => :destroy, :class_name => "Image::ProfilePicture"
   has_many :permissions

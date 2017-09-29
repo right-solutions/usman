@@ -71,6 +71,21 @@ RSpec.describe User, type: :model do
     it { should have_many(:devices) }
   end
 
+  context "Delegates" do
+    it "should delegate dialing_prefix & mobile_number to registration if registration exists" do
+      user = FactoryGirl.create(:approved_user)
+      reg = FactoryGirl.create(:registration, user: user)
+
+      expect(user.registration_dialing_prefix).to eq(reg.dialing_prefix)
+      expect(user.registration_mobile_number).to eq(reg.mobile_number)
+    end 
+    it "should handle the delegation to dialing_prefix & mobile_number if doesn't exists" do
+      user = FactoryGirl.create(:approved_user)
+      expect(user.registration_dialing_prefix).to be_nil
+      expect(user.registration_mobile_number).to be_nil
+    end 
+  end
+
   context "Class Methods" do
     it "search" do
       arr = [ram, lakshman, sita]

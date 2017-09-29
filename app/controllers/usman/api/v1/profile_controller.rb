@@ -107,6 +107,7 @@ module Usman
                 @city = City.find_by_id(permitted_params[:city_id])
 
                 if @user.valid?
+                  @user.dummy = false
                   @user.save
                   
                   @current_registration.country = @country if @country

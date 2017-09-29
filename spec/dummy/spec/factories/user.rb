@@ -22,6 +22,8 @@ FactoryGirl.define do
 
     gender User::MALE
 
+    dummy false
+
   end
 
   factory :pending_user, parent: :user do

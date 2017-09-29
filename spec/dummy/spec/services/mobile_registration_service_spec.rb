@@ -61,7 +61,7 @@ describe Usman::MobileRegistrationService do
   describe 'initialize' do
 
     context 'Positive Cases' do
-      it "should register and add a new device" do
+      it "should register and add a new device and create a dummy user" do
 
         mrs = Usman::MobileRegistrationService.new(params_1)
         
@@ -88,7 +88,8 @@ describe Usman::MobileRegistrationService do
         expect(r.mobile_number).to eq(reg1.mobile_number)
         expect(r.country).to eq(reg1.country)
         expect(r.city).to eq(reg1.city)
-        expect(r.user).to be_nil
+
+        expect(r.user).not_to be_nil
 
         expect(d.persisted?).to be_truthy
         expect(d.uuid).to eq(dev1.uuid)
@@ -190,6 +191,49 @@ describe Usman::MobileRegistrationService do
         expect(d.otp).not_to be_nil
         expect(d.otp_sent_at).not_to be_nil
         expect(d.user.persisted?).to be_truthy
+      end
+
+      it "should should not create a dummy user if it already has one" do
+        
+        mrs = Usman::MobileRegistrationService.new(params_3)
+        
+        expect(mrs.dialing_prefix).to eq(reg1.dialing_prefix)
+        expect(mrs.mobile_number).to eq(reg1.mobile_number)
+        expect(mrs.country).to eq(reg1.country)
+        expect(mrs.city).to eq(reg1.city)
+        expect(mrs.uuid).to eq(dev3.uuid)
+        expect(mrs.device_token).to eq(dev3.device_token)
+        expect(mrs.device_name).to eq(dev3.device_name)
+        expect(mrs.device_type).to eq(dev3.device_type)
+        expect(mrs.operating_system).to eq(dev3.operating_system)
+        expect(mrs.software_version).to eq(dev3.software_version)
+        expect(mrs.remote_ip).to eq("1.2.3.4")
+        
+        expect(mrs.error_message).to be_nil
+        expect(mrs.error_details).to be_empty
+
+        r = mrs.registration
+        d = mrs.device
+
+        expect(r.persisted?).to be_truthy
+        expect(r.dialing_prefix).to eq(reg1.dialing_prefix)
+        expect(r.mobile_number).to eq(reg1.mobile_number)
+        expect(r.country).to eq(reg1.country)
+        expect(r.city).to eq(reg1.city)
+
+        expect(r.user).not_to be_nil
+
+        expect(d.persisted?).to be_truthy
+        expect(d.uuid).to eq(dev3.uuid)
+        expect(d.device_token).to eq(dev3.device_token)
+        expect(d.device_name).to eq(dev3.device_name)
+        expect(d.device_type).to eq(dev3.device_type)
+        expect(d.operating_system).to eq(dev3.operating_system)
+        expect(d.software_version).to eq(dev3.software_version)
+        expect(d.registration.persisted?).to be_truthy
+        expect(d.otp).not_to be_nil
+        expect(d.otp_sent_at).not_to be_nil
+        expect(d.user).not_to be_nil
       end
     end
 

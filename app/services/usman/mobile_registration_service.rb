@@ -42,6 +42,9 @@ module Usman
       @registration.valid?
       @device.valid?
 
+      # Create a dummy user
+      create_a_dummy_user if @registration.user.blank?
+
       if @registration.errors.any? or @device.errors.any?
         errors = @registration.errors.to_hash.merge(@device.errors.to_hash)
         set_error("api.register.invalid_inputs", errors)
@@ -106,6 +109,13 @@ module Usman
       else
         set_error("api.register.otp_not_sent")
       end
+    end
+
+    def create_a_dummy_user
+      return unless @registration.persisted?
+      @registration.user = User.new
+      @registration.user.generate_dummy_data(@registration.id)
+      @registration.user.save
     end
 
     def set_error(key, hsh={})

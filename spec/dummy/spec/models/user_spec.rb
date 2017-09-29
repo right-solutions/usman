@@ -289,6 +289,23 @@ RSpec.describe User, type: :model do
         expect(u.default_image_url).to match("/assets/kuppayam/defaults/user-small.png")
         expect(u.default_image_url("large")).to match("/assets/kuppayam/defaults/user-large.png")
       end
+
+      it "generate_username_and_password" do
+        u = User.new
+        u.generate_username_and_password
+        expect(u.username).not_to be_blank
+        expect(u.password_digest).not_to be_blank
+      end
+
+      it "generate_dummy_data" do
+        u = User.new
+        u.generate_dummy_data
+        expect(u.username).not_to be_blank
+        expect(u.password_digest).not_to be_blank
+        expect(u.name).not_to be_blank
+        expect(u.email).not_to be_blank
+        expect(u.dummy).to be_truthy
+      end
     end
   end
 

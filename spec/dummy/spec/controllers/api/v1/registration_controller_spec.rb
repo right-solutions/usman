@@ -42,7 +42,7 @@ RSpec.describe Usman::Api::V1::RegistrationsController, :type => :request do
         expect(data["registration"]["city_id"]).to eq(city.id)
         expect(data["registration"]["dialing_prefix"]).to eq("+971")
         expect(data["registration"]["mobile_number"]).to eq("554455339")
-        expect(data["registration"]["user_id"]).to be_blank
+        expect(data["registration"]["user_id"]).not_to be_blank
         expect(data["registration"]["status"]).to match("pending")
 
         expect(data["device"]["user_id"]).to be_blank
@@ -136,7 +136,7 @@ RSpec.describe Usman::Api::V1::RegistrationsController, :type => :request do
         expect(response_body["alert"]["message"]).to eq("Check your mobile for new message from us")
 
         data = response_body['data']
-        
+
         expect(data["registration"]["id"]).to be(reg.id)
         expect(data["registration"]["country_id"]).to eq(reg.country.id)
         expect(data["registration"]["city_id"]).to eq(reg.city.id)

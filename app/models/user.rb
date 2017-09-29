@@ -377,6 +377,13 @@ class User < Usman::ApplicationRecord
     self.password_confirmation = passwd
   end
 
+  def generate_dummy_data(registration_id=nil)
+    generate_username_and_password
+    self.email = "#{self.username}@donedealapps.com"
+    self.name = "User #{registration_id}"
+    self.dummy = true
+  end
+
   private
 
   def should_validate_password?

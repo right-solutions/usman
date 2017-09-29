@@ -247,7 +247,7 @@ RSpec.describe Usman::Api::V1::RegistrationsController, :type => :request do
   describe "update_profile" do
     context "Positive Case" do
       it "should update the profile" do
-        user = FactoryGirl.create(:approved_user)
+        user = FactoryGirl.create(:approved_user, dummy: true)
         profile_picture = FactoryGirl.create(:profile_picture, imageable: user)
 
         reg = FactoryGirl.create(:verified_registration, country: country, city: city, user: user)
@@ -280,6 +280,8 @@ RSpec.describe Usman::Api::V1::RegistrationsController, :type => :request do
         data = response_body['data']
 
         user = reg.reload.user
+
+        expect(user.dummy).to be_falsy
 
         expect(data["id"]).to eq(user.id)
         expect(data["name"]).to eq(user.name)

@@ -16,6 +16,5 @@ module Usman
       @filter_param_mapping[:user] = :us
       @filter_param_mapping[:feature] = :ft
     end
-
   end
 end

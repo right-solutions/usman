@@ -28,13 +28,21 @@
   <td class="hidden-xs hidden-sm"><%= link_to user.email, user_path(user), remote: true, class: "email" %></td>
 
   <% if @current_user.super_admin? %>
-  <td class="hidden-xs hidden-sm">
-  	<% if user.super_admin %>
-      <span class="mr-10 mt-5 label label-warning">Super Admin</span>
-    <% else %>
-    	<span class="mr-10 mt-5 label label-default">Normal</span>
-    <% end %>
-  </td>
+    <td class="hidden-xs hidden-sm">
+      <% if user.super_admin? %>
+        <span class="mr-10 mt-5 label label-warning">Super Admin</span>
+      <% else %>
+        <% user.roles.collect(&:name).each do |r| %>
+          <span class="ml-5 label label-primary"><%= r %></span>
+        <% end %>
+      <% end %>
+    </td>
+  <% else %>
+    <td class="user-name">
+      <% user.roles.collect(&:name).each do |r| %>
+        <span class="ml-5 label label-primary"><%= r %></span>
+      <% end %>
+    </td>
   <% end %>
 
   <td>

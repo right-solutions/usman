@@ -5,17 +5,19 @@
 	
 	<div class="row">
 
-		<% if @user %>
 		<div class="col-md-3 col-sm-6 col-xs-6" style="border-right:1px solid #f1f1f1;">
-	  	<%= edit_image(@user, 
+	  	<% if @current_user.super_admin? %>
+	  		<%= edit_image(@user, 
             "profile_picture.image.large.url",
             upload_image_link(@user, :profile_picture, nil ),
             remove_image_link(@user, :profile_picture, nil ),
             image_options: {assoc_name: :profile_picture }) %>
+      <% else %>
+      	<%= display_image(@user, "profile_picture.image.large.url", class: "img-circle img-inline userpic-32", alt: @user.display_name) %>
+      <% end %>
 	  </div>
-	  <% end %>
 	  
-	  <div class="col-md-9 col-sm-6 col-xs-6" style="border-right:1px solid #f1f1f1;">
+	  <div class="col-md-6 col-sm-6 col-xs-6" style="border-right:1px solid #f1f1f1;">
 
 	  	<div class="visible-sm visible-xs mt-50"></div>
 
@@ -40,6 +42,15 @@
 	    </div>
 
 	  <div class="col-md-3 col-sm-12 col-xs-12">
+
+	  	<!-- Mark as Pending -->
+	    <%= link_to raw("<i class=\"fa fa-circle mr-5\"></i> Mark as Pending"), update_status_registration_path(:id =>@registration.id, :status =>'pending'), :method =>'PUT', :remote=>true, class: "btn btn-block btn-white btn-only-hover" unless @registration.pending? %>
+	    
+	    <!-- Verify -->
+	    <%= link_to raw("<i class=\"fa fa-check mr-5\"></i> Verify"), update_status_registration_path(:id =>@registration.id, :status =>'verified'), :method =>'PUT', :remote=>true, class: "btn btn-block btn-success" unless @registration.verified? %>
+
+	    <!-- Suspend -->
+	    <%= link_to raw("<i class=\"fa fa-edit mr-5\"></i> Suspend"), update_status_registration_path(:id =>@registration.id, :status =>'suspended'), :method =>'PUT', :remote=>true, class: "btn btn-block btn-danger btn-only-hover" unless @registration.suspended? %>
 
 	  	<%# edit_link = edit_registration_path(id: @registration.id) %>
 			<%# delete_link = registration_path(id: @registration.id) %>
@@ -94,7 +105,20 @@
 						
 						<tr>
 							<th>ID</th><td><%= @registration.id %></td>
-							<th>Status</th><td><%= @registration.status %></td>
+							<th>User / Profile ID</th><td><%= @registration.user_id %></td>
+						</tr>
+
+						<tr>
+							<th>Status</th><td>
+								<% if @registration.pending? %>
+									<span class="label label-default">Pending</span>
+								<% elsif @registration.verified? %>
+									<span class="label label-success">Verified</span>
+								<% elsif @registration.suspended? %>
+		    				  <span class="label label-danger">Suspended</span>
+								<% end %>
+							</td>
+							<th></th><td></td>
 						</tr>
 
 						<tr>
@@ -136,9 +160,29 @@
 						</tr>
 
 						<tr>
-							<th>Designation</th><td><%= @user.try(:designation) %></td>
-							<th>Status</th><td><%= @user.try(:status).try(:titleize) %></td>
+							<th>Gender</th><td><%= @user.gender %></td>
+							<th>Date of Birth</th><td><%= @user.date_of_birth.strftime("%m/%d/%Y") if @user.date_of_birth %></td>
 						</tr>
+
+						<tr>
+							<th>Designation</th><td><%= @user.try(:designation) %></td>
+							<th>Status</th><td>
+								<% if @user.pending? %>
+									<span class="label label-default">Pending</span>
+								<% elsif @user.approved? %>
+									<span class="label label-success">Approved</span>
+								<% elsif @user.suspended? %>
+									<span class="label label-danger">Suspended</span>
+								<% end %>
+							</td>
+						</tr>
+
+						<% if @current_user.super_admin? %>
+						<tr>
+							<th>Dummy?</th><td><%= @user.dummy.to_s.titleize %></td>
+							<th>Super Admin</th><td><%= @user.super_admin?.to_s.titleize %></td>
+						</tr>
+						<% end %>
 						
 					</tbody>
 				</table>

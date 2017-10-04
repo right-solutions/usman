@@ -66,7 +66,7 @@ module Usman
         heading: "Manage Features",
         icon: "lincons-diamond",
         description: "Listing all Features",
-        links: [{name: "Home", link: dashboard_path, icon: 'fa-home'}, 
+        links: [{name: "Home", link: breadcrumb_home_path, icon: 'fa-home'}, 
                   {name: "Manage Features", link: features_path, icon: 'fa-calendar', active: true}]
       }
     end

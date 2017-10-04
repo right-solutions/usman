@@ -125,7 +125,7 @@ module Usman
       {
         heading: "Manage User Roles",
         description: "Listing all User Roles",
-        links: [{name: "Home", link: dashboard_path, icon: 'fa-home'}]
+        links: [{name: "Home", link: breadcrumb_home_path, icon: 'fa-home'}]
       }
     end
 

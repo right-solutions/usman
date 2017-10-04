@@ -65,7 +65,7 @@ module Usman
         heading: "Manage Registrations",
         icon: "linecons-mobile",
         description: "Listing all Registrations",
-        links: [{name: "Home", link: dashboard_path, icon: 'fa-home'}, 
+        links: [{name: "Home", link: breadcrumb_home_path, icon: 'fa-home'}, 
                   {name: "Manage Registrations", link: registrations_path, icon: 'linecons-mobile', active: true}]
       }
     end

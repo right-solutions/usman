@@ -21,5 +21,9 @@ module Usman
       @filter_param_mapping[:feature] = :ft
     end
 
+    def breadcrumb_home_path
+      usman.dashboard_path
+    end
+
   end
 end

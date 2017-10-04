@@ -92,15 +92,15 @@ RSpec.describe Usman::Api::V1::RegistrationsController, :type => :request do
         expect(data["email"]).to eq(user.email)
         expect(data["phone"]).to eq(user.phone.to_s)
 
+        profile_picture = user.profile_picture
+
         # Checking if the profile picture has uploaded correctly
-        expect(user.profile_picture).not_to be_blank
-        
-        expect(data["profile_picture"]).not_to be_blank
-        expect(data["profile_picture"]["id"]).to eq(user.profile_picture.id)
+        expect(data["profile_picture"]["id"]).to eq(profile_picture.id)
+        expect(data["profile_picture"]["created_at"]).to eq(profile_picture.created_at.strftime('%d-%m-%Y %H:%M:%S'))
         expect(data["profile_picture"]["profile_id"]).to eq(user.id)
-        expect(data["profile_picture"]["created_at"]).to eq(user.profile_picture.created_at.strftime('%d-%m-%Y %H:%M:%S'))
         expect(data["profile_picture"]["image_large_path"]).not_to be_blank
         expect(data["profile_picture"]["image_small_path"]).not_to be_blank
+        
       end
       it "should create the profile even if profile picture is invalid" do
         reg = FactoryGirl.create(:verified_registration, country: country, city: city, user: nil)
@@ -149,7 +149,11 @@ RSpec.describe Usman::Api::V1::RegistrationsController, :type => :request do
 
         # Checking if the profile picture has uploaded correctly
         expect(user.profile_picture).to be_blank
-        expect(data["profile_picture"]).to be_blank
+        expect(data["profile_picture"]["id"]).to eq("")
+        expect(data["profile_picture"]["created_at"]).to eq("")
+        expect(data["profile_picture"]["profile_id"]).to eq(user.id)
+        expect(data["profile_picture"]["image_large_path"]).to be_blank
+        expect(data["profile_picture"]["image_small_path"]).to be_blank
       end
     end
     context 'Negative Cases' do
@@ -387,7 +391,11 @@ RSpec.describe Usman::Api::V1::RegistrationsController, :type => :request do
         expect(data["email"]).to eq(user.email)
         expect(data["phone"]).to eq(user.phone.to_s)
 
-        expect(data["profile_picture"]).to be_blank
+        expect(data["profile_picture"]["id"]).to eq("")
+        expect(data["profile_picture"]["created_at"]).to eq("")
+        expect(data["profile_picture"]["profile_id"]).to eq(user.id)
+        expect(data["profile_picture"]["image_large_path"]).to eq("")
+        expect(data["profile_picture"]["image_small_path"]).to eq("")
       end
     end
     context 'Negative Cases' do

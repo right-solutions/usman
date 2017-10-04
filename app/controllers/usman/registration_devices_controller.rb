@@ -81,7 +81,7 @@ module Usman
       {
         heading: "Manage Device Registrations",
         description: "Listing all Device Registrations",
-        links: [{name: "Home", link: dashboard_path, icon: 'fa-home'}]
+        links: [{name: "Home", link: breadcrumb_home_path, icon: 'fa-home'}]
       }
     end
 

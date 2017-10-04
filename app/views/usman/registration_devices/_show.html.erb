@@ -22,20 +22,20 @@
       <tr><th>Operating System</th><td><%= @device.operating_system %></td></tr>
       <tr><th>Software Version</th><td><%= @device.software_version %></td></tr>
 
-      <tr><th>Last Accesssed API</th><td><%= @device.last_accessed_api %></td></tr>
-      <tr><th>Last Accessed At</th><td><%= @device.last_accessed_at.strftime("%m/%d/%Y - %H:%M:%S") if @device.last_accessed_at %></td></tr>
+      <tr><th>Device Name</th><td><%= @device.device_name %></td></tr>
+      <tr><th>Device Type</th><td><%= @device.device_type %></td></tr>
+      <tr><th>Device Token</th><td><%= @device.device_token %></td></tr>
 
       <% if @current_user.super_admin? %>
         <tr><th>OTP</th><td><%= @device.otp %></td></tr>
-      <% else %>
-        <tr><th>Device Token</th><td><%= @device.device_token %></td></tr>
-      <% end %>
-      <tr><th>OTP Sent At</th><td><%= @device.otp_sent_at.strftime("%m/%d/%Y - %H:%M:%S") if @device.otp_sent_at %></td></tr>
-
-      <% if @current_user.super_admin? %>
+        <tr><th>OTP Sent At</th><td><%= @device.otp_sent_at.strftime("%m/%d/%Y - %H:%M:%S") if @device.otp_sent_at %></td></tr>
         <tr><th>API Token</th><td><%= @device.api_token %></td></tr>
       <% end %>
+
       <tr><th>Token Created At</th><td><%= @device.token_created_at.strftime("%m/%d/%Y - %H:%M:%S") if @device.token_created_at %></td></tr>
+
+      <tr><th>Last Accesssed API</th><td><%= @device.last_accessed_api %></td></tr>
+      <tr><th>Last Accessed At</th><td><%= @device.last_accessed_at.strftime("%m/%d/%Y - %H:%M:%S") if @device.last_accessed_at %></td></tr>
 
 			<tr><th>Created At</th><td><%= @device.created_at.strftime("%m/%d/%Y - %H:%M:%S") if @device.created_at %></td></tr>
 			<tr><th>Updated At</th><td><%= @device.updated_at.strftime("%m/%d/%Y - %H:%M:%S") if @device.updated_at %></td></tr>

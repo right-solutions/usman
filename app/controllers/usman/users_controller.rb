@@ -130,7 +130,7 @@ module Usman
         heading: "Manage Users",
         icon: "fa-user",
         description: "Listing all Users",
-        links: [{name: "Home", link: dashboard_path, icon: 'fa-home'}, 
+        links: [{name: "Home", link: breadcrumb_home_path, icon: 'fa-home'}, 
                   {name: "Manage Users", link: users_path, icon: 'fa-user', active: true}]
       }
     end

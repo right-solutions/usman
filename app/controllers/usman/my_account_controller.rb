@@ -11,7 +11,7 @@ module Usman
       {
         heading: "My Account",
         description: "Manage Account, Profile & Settings",
-        links: [{name: "Dashboard", link: dashboard_path, icon: 'fa-dashboard'},
+        links: [{name: "Dashboard", link: breadcrumb_home_path, icon: 'fa-dashboard'},
                 {name: "My Account", link: "#", icon: 'fa-user'}]
       }
     end

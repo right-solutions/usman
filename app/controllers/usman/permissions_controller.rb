@@ -68,7 +68,7 @@ module Usman
         heading: "Manage Permissions",
         icon: "fa-lock",
         description: "Listing all Permissions",
-        links: [{name: "Home", link: dashboard_path, icon: 'fa-home'}, 
+        links: [{name: "Home", link: breadcrumb_home_path, icon: 'fa-home'}, 
                   {name: "Manage Permissions", link: permissions_path, icon: 'fa-calendar', active: true}]
       }
     end

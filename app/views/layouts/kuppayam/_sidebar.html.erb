@@ -40,7 +40,7 @@
 			<!-- Admin Dashboard -->
 			<% if @current_user.super_admin? || @current_user.has_role?("Site Admin") %>
 				<li class="<%= nav_active?('admin/dashboard') ? 'active' : ''  %>">
-					<%= link_to raw("<i class=\"linecons-desktop\"></i> <span class='title'>Dashboard</span>"), usman.dashboard_url %>
+					<%= link_to raw("<i class=\"linecons-desktop\"></i> <span class='title'>Dashboard</span>"), usman.dashboard_path %>
 				</li>
 
 				<li class="<%= nav_active?('admin/users') ? 'active' : ''  %>">

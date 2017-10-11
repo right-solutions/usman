@@ -238,9 +238,10 @@ module Usman
           eos
 
           @input_headers = {
-            "Content-Type" => { value: "application/json", description: "The MIME media type for JSON text is application/json. This is to make sure that a valid json is returned. The default encoding is UTF-8. " },
             "Authorization" => { value: "Token token=\"87b01adbba90824b57add8cc06ad8738\"", description: "Put the API Token here. You shall get the API token after registering your device" }
           }
+
+          @warning = "Do not set Content Type Json as this is a multipart file upload request"
 
           @input_params = {}
 

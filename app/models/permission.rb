@@ -72,4 +72,15 @@ class Permission < Usman::ApplicationRecord
     return error_object
   end
 
+  # Permission Methods
+  # ------------------
+
+  def can_be_deleted?
+    true
+  end
+
+  def can_be_edited?
+    true
+  end
+
 end

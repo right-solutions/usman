@@ -1,7 +1,7 @@
 module Usman
   class FeaturesController < ResourceController
 
-    before_action :require_site_admin
+    before_action :require_site_admin, :require_super_admin
     
     private
 
@@ -57,7 +57,9 @@ module Usman
       {
         page_title: "Features",
         js_view_path: "/kuppayam/workflows/parrot",
-        view_path: "/usman/features"
+        view_path: "/usman/features",
+        show_modal_after_create: false,
+        show_modal_after_update: false
       }
     end
 

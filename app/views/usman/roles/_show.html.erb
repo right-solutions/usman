@@ -59,16 +59,16 @@
 	    <div id="div_user_action_buttons">
         <div class="row">
           <div class="col-md-6">
+            <%= theme_button('Add a User', 'plus', new_role_user_path(@role), classes: "pull-left mr-10", btn_type: "success") if @current_user.has_create_permission?(Role) %>
 
-            <%= theme_button('Add a User', 'plus', new_role_user_path(@role), classes: "pull-left", btn_type: "success") %>
-
-            <%= theme_button('Refresh', 'refresh', role_users_path(@role), classes: "pull-left ml-10", btn_type: "white") %>
+            <%= theme_button('Refresh', 'refresh', role_users_path(@role), classes: "pull-left mr-10", btn_type: "white") %>
           </div>
           <div class="col-md-6">
             <%= search_form_kuppayam(User, role_users_path(@role), text: "") %>
           </div>
         </div>
       </div>
+      
       <%= clear_tag(10) %>
 
       <div id="div_user_index">

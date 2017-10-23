@@ -49,12 +49,12 @@ open browser and go to /sign_in url
 
 Specify the railties order if required in main application.rb
 
-``
+```bash
 config.autoload_paths << "app/services"
 config.railties_order = [:main_app, Usman::Engine, Kuppayam::Engine, :all]
 ```
 
-# Seeding Data 
+# Seeding / Importing Data 
 
 run rake task for loading dummy data for users and features to start with.
 
@@ -73,7 +73,7 @@ $ bundle exec rake usman:import:dummy:permissions verbose=false
 $ bundle exec rake usman:import:dummy:roles verbose=false
 ```
 
-# Import Data
+## Cusotmized Importing
 
 You could override the seed files with your data.
 just create db/import_data in your project folder and create the following files filled with your data in the required format (checkout the dummy csvs in usman db/import_data/dummy/features.csv) for the columns required

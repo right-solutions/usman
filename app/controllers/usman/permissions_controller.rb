@@ -26,6 +26,8 @@ module Usman
       @relation = Permission.where("")
 
       parse_filters
+
+      # @user = User.normal_users.first if @user.blank? && @feature.blank?
       apply_filters
       
       @permissions = @r_objects = @relation.includes(:user, :feature).page(@current_page).per(@per_page)
@@ -35,7 +37,9 @@ module Usman
 
     def apply_filters
       @relation = @relation.search(@query) if @query
-      @order_by = "user_id DESC, created_at DESC" unless @order_by
+      @relation = @relation.where("user_id = ?", @user.id) if @user
+      @relation = @relation.where("feature_id = ?", @feature.id) if @feature
+      @order_by = "created_at DESC" unless @order_by
       @relation = @relation.order(@order_by)
     end
 
@@ -52,14 +56,41 @@ module Usman
     end
 
     def configure_filter_ui_settings
-      @filter_ui_settings = {}
+      @filter_ui_settings = {
+        user: {
+          object_filter: true,
+          select_label: 'Select User',
+          current_value: @user,
+          values: User.normal_users.order(:name).all,
+          current_filters: @filters,
+          url_method_name: 'permissions_url',
+          filters_to_remove: [:user],
+          filters_to_add: { feature: @feature.try(:id) },
+          show_null_filter_on_top: false,
+          show_all_filter_on_top: true
+        },
+        feature: {
+          object_filter: true,
+          select_label: 'Select Feature',
+          current_value: @feature,
+          values: Feature.order(:name).all,
+          current_filters: @filters,
+          url_method_name: 'permissions_url',
+          filters_to_remove: [:feature],
+          filters_to_add: { user: @user.try(:id) },
+          show_null_filter_on_top: false,
+          show_all_filter_on_top: true
+        }
+      }
     end
 
     def resource_controller_configuration
       {
         page_title: "Permissions",
         js_view_path: "/kuppayam/workflows/parrot",
-        view_path: "/usman/permissions"
+        view_path: "/usman/permissions",
+        show_modal_after_create: false,
+        show_modal_after_update: false
       }
     end
 

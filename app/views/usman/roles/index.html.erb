@@ -11,11 +11,11 @@
           <div class="row">
             <div class="col-md-6">
               
-              <%= theme_button('Add a Role', 'plus', new_role_path(), classes: "pull-left", btn_type: "success") if @current_user.super_admin? %>
+              <%= theme_button('Add a Role', 'plus', new_role_path(), classes: "pull-left mr-10", btn_type: "success") if @current_user.has_create_permission?(Role) %>
 
-              <%= theme_button('Refresh', 'refresh', roles_path(), classes: "pull-left ml-10", btn_type: "white") %>
+              <%= theme_button('Refresh', 'refresh', roles_path(), classes: "pull-left mr-10", btn_type: "white") %>
 
-              <%= theme_button('Manage Users', 'nothing linecons-graduation-cap', users_path(), classes: "pull-left ml-10", btn_type: "white", remote: false) %>
+              <%= theme_button('Manage Users', 'nothing linecons-graduation-cap', users_path(), classes: "pull-left mr-10", btn_type: "white", remote: false) if @current_user.has_read_permission?(User) %>
 
               <!-- Single button -->
               <div class="ml-10 btn-group hidden">

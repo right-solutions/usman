@@ -23,7 +23,7 @@
 		      
 		      <td class="permission-name"><%= permission.user.try(:name) %></td>
 
-					<td class="permission-name"><%= permission.feature.try(:name) %></td>
+					<td class="permission-name"><%= permission.feature.try(:display_name) %></td>
 
 					<td class="permission-name" style="text-align: center"><%= permission.can_create ? raw("<i class='fa fa-check'></i>") : "-" %></td>
 

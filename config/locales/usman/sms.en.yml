@@ -1,0 +1,17 @@
+en:
+  sms:
+    credentials:
+      secret_file_not_found:
+        heading: "AWS Secret File missing"
+        message: "Create the AWS Secret file in YAML format and put the credentials"
+      invalid_format:
+        heading: "AWS Secret File is not in the required format"
+        message: "Region, AccessKeyId & SecretAccessKey shoudl have values"
+      unexpected_error:
+        heading: "Unexpected Error Occured while creating AWS SNS Client"
+        message: "Make sure the region & aws secrets are correct"
+      invalid_credentials:
+        heading: "AWS Secret File has some issues"
+        message: "We were unable to parse the YAML file"
+      
+      

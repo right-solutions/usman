@@ -43,8 +43,9 @@
 
 	    <div class="visible-sm visible-xs mb-50"></div>
 
-	    </div>
+	  </div>
 
+	  <% if @current_permission.can_update? || @current_permission.can_delete? %>
 	  <div class="col-md-3 col-sm-12 col-xs-12">
 
 	  	<% edit_link = edit_user_path(id: @user.id) %>
@@ -52,7 +53,7 @@
 
 			<%= link_to raw("<i class=\"linecons-pencil\"></i> Edit User"), edit_link, :remote=>true, class: "btn btn-block btn-success" if @user.can_be_edited? %>
 
-	    <%= link_to raw("<i class=\"linecons-trash\"></i> Delete"), delete_link, method: :delete, role: "menuitem", tabindex: "-1", data: { confirm: 'Are you sure?' }, :remote=>true, class: "btn btn-block btn-danger btn-only-hover" if @user.can_be_deleted? && (@current_user != @user)  %>
+	    <%= link_to raw("<i class=\"linecons-trash\"></i> Delete"), delete_link, method: :delete, role: "menuitem", tabindex: "-1", data: { confirm: 'Are you sure?' }, :remote=>true, class: "btn btn-block btn-danger btn-only-hover" if @user.can_be_deleted? && (@current_user != @user) && @current_permission.can_delete? %>
 
 	    <% if @current_user.super_admin? %>
 	      
@@ -78,6 +79,7 @@
 	    <div class="visible-sm visible-xs mb-50"></div>
 
 	  </div>
+	  <% end %>
 
 	</div>
 

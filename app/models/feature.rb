@@ -160,7 +160,7 @@ class Feature < Usman::ApplicationRecord
   #   >>> feature.display_name
   #   => "Products"
   def display_name
-    "#{name}"
+    "#{name.to_s.demodulize.pluralize.titleize}"
   end
 	
 end

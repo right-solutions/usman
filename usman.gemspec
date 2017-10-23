@@ -27,6 +27,7 @@ Gem::Specification.new do |s|
   s.add_dependency 'pattana', "~> 0.1", ">= 0.1.12"
   s.add_dependency 'bcrypt', "~> 3.0"
   s.add_dependency "colorize", "~> 0.8"
+  s.add_dependency "aws-sdk-sns", "~> 1.1.0"
 
   s.add_development_dependency 'pry', "~> 0.10", ">= 0.10.0"
   s.add_development_dependency 'mysql2', "~> 0.4.4"

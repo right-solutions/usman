@@ -17,6 +17,7 @@
     <% end %>
   </td>
 
+  <td class="feature-name"><%= link_to feature.display_name, feature_path(feature), remote: true %></td>
   <td class="feature-name"><%= link_to feature.name, feature_path(feature), remote: true %></td>
 
   <td>

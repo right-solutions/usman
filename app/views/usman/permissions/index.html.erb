@@ -11,9 +11,17 @@
           <div class="row">
             <div class="col-md-6">
 
-              <%= theme_button('Add a Permission', 'plus', new_permission_path(), classes: "pull-left", btn_type: "success") %>
+              <%= theme_button('Add a Permission', 'plus', new_permission_path(), classes: "pull-left mr-10", btn_type: "success") if @current_user.has_create_permission?(Permission) %>
 
-              <%= theme_button('Refresh', 'refresh', permissions_path(), classes: "pull-left ml-10", btn_type: "white") %>
+              <%= theme_button('Refresh', 'refresh', permissions_path(), classes: "pull-left mr-10", btn_type: "white") %>
+
+              <% @filter_ui_settings.each do |filter_name, options| %>
+                <% if options[:object_filter] == true %>
+                  <%= report_object_filter(filter_name, options) %>
+                <% else %>
+                  <%= report_filter(filter_name, options) %>
+                <% end %>
+              <% end %>
 
               <!-- Single button -->
               <div class="ml-10 btn-group hidden">

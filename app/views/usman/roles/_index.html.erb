@@ -28,9 +28,12 @@
 
 					<td class="action-links" style="width:10%">
 
-		      	<%= link_to raw("<i class=\"linecons-pencil\"></i> Edit Role"), edit_link, :remote=>true, class: "edit" if @current_user.super_admin? and role.can_be_edited? %>
-
-		        <%= link_to raw("<i class=\"linecons-trash\"></i> Delete"), delete_link, method: :delete, role: "menuitem", tabindex: "-1", data: { confirm: 'Are you sure?' }, :remote=>true, class: "delete" if @current_user.super_admin? and role.can_be_deleted? %>
+						<% if @current_user.has_update_permission?(Role) %>
+				      <%= link_to raw("<i class=\"linecons-pencil\"></i> Edit Role"), edit_link, :remote=>true, class: "edit" if @current_user.super_admin? and role.can_be_edited? %>
+				    <% end %>
+				    <% if @current_user.has_delete_permission?(Role) %>
+				      <%= link_to raw("<i class=\"linecons-trash\"></i> Delete"), delete_link, method: :delete, role: "menuitem", tabindex: "-1", data: { confirm: 'Are you sure?' }, :remote=>true, class: "delete" if @current_user.super_admin? and role.can_be_deleted? %>
+				    <% end %>
 
 		      </td>
 

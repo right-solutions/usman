@@ -5,6 +5,7 @@
 				<th style="text-align: center;width:60px">#</th> 
 				<th style="text-align: center;width:100px"><i class="fa fa-photo"></i></th> 
 				<th>Name</th>
+				<th>Class Name</th>
 				<th style="width:100px;">Status</th>
 				<th style="text-align: center;" colspan="2">Actions</th>
 			</tr> 
@@ -31,6 +32,7 @@
 		        <% end %>
 		      </td>
 
+					<td class="feature-name"><%= link_to feature.display_name, feature_path(feature), remote: true %></td>
 					<td class="feature-name"><%= link_to feature.name, feature_path(feature), remote: true %></td>
 
 					<td>

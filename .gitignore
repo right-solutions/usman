@@ -40,3 +40,4 @@ Gemfile.lock
 spec/dummy/public/uploads
 spec/dummy/uploads
 uploads
+spec/dummy/config/aws-secret.yml

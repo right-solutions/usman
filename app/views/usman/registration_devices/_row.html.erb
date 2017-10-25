@@ -1,8 +1,5 @@
-<% edit_link = edit_role_user_path(@role, user) %>
-<% delete_link = role_user_path(@role, user) %>
-
-<tr id="tr_user_<%= user.id %>">
-
+<tr id="tr_device_<%= device.id %>">
+          
   <th scope="row" style="text-align: center;">
     <% if i < 0 %>
       <i class="fa fa-check text-success"></i>
@@ -11,24 +8,27 @@
     <% end %>
   </th>
 
-  <td class="user-image">
-    <%= link_to(user_path(user), remote: true) do %>
-      <%= display_image(user, "profile_picture.image.small.url", width: "120", height: "auto", class: "img-rectangle", alt: user.display_name) %>
+  <td class="device-name" style="font-weight:bold;"><%= link_to device.uuid, registration_device_path(registration_id: device.registration_id, id: device.id), remote: true %></td>
+  <td>
+    <% if device.pending? %>
+      <span class="ml-5 mt-5 label label-default">Pending</span>
+    <% elsif device.verified? %>
+      <span class="ml-5 mt-5 label label-success">Verified</span>
+    <% elsif device.blocked? %>
+      <span class="ml-5 mt-5 label label-danger">Blocked</span>
     <% end %>
   </td>
 
-  <td class="user-name"><%= user.display_name %></td>
+  <td class="device-name"><%= device.device_name %></td>
+  <td class="device-name"><%= device.device_type %></td>
+  
+  <% if display_delete_links? %>
+  <% delete_link = registration_device_path(@registration, device) %>
+  <td class="action-links" style="width:10%"> -->
 
-  <td class="user-name">
-    <% user.roles.collect(&:name).each do |r| %>
-      <span class="ml-5 label label-primary"><%= r %></span>
-    <% end %>
-  </td>
-
-  <td class="action-links" style="width:10%">
-
-    <%= link_to raw("<i class=\"linecons-trash\"></i> Remove Role"), delete_link, method: :delete, user: "menuitem", tabindex: "-1", data: { confirm: 'Are you sure?' }, :remote=>true, class: "delete" %>
+    <%= link_to raw("<i class=\"linecons-trash\"></i> Remove Role"), delete_link, method: :delete, device: "menuitem", tabindex: "-1", data: { confirm: 'Are you sure?' }, :remote=>true, class: "delete" %>
 
   </td>
+  <% end %>
 
 </tr>

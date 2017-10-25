@@ -364,7 +364,7 @@ class User < Usman::ApplicationRecord
       permission = Permission.where("feature_id =?", feature.id).first
       return permission && permission.can_read?
     else
-      raise "Class #{class_name} doesn't exist"
+      return false
     end
   end
 
@@ -375,7 +375,7 @@ class User < Usman::ApplicationRecord
       permission = Permission.where("feature_id =?", feature.id).first
       return permission && permission.can_create?
     else
-      raise "Class #{class_name} doesn't exist"
+      return false
     end
   end
 
@@ -386,7 +386,7 @@ class User < Usman::ApplicationRecord
       permission = Permission.where("feature_id =?", feature.id).first
       return permission && permission.can_update?
     else
-      raise "Class #{class_name} doesn't exist"
+      return false
     end
   end
 
@@ -397,7 +397,7 @@ class User < Usman::ApplicationRecord
       permission = Permission.where("feature_id =?", feature.id).first
       return permission && permission.can_delete?
     else
-      raise "Class #{class_name} doesn't exist"
+      return false
     end
   end
 

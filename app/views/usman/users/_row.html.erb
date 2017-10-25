@@ -55,20 +55,16 @@
   	<% end %>
   </td>
 
-  <% if @current_permission.can_update? || @current_permission.can_delete? %>
-
+  <% if display_manage_links? %>
     <td class="action-links" style="width:15%">
 
-      <%= link_to raw("<i class=\"linecons-pencil\"></i> Edit User"), edit_link, :remote=>true, class: "edit" if user.can_be_edited? && @current_permission.can_update? %>
+      <%= link_to raw("<i class=\"linecons-pencil\"></i> Edit User"), edit_link, :remote=>true, class: "edit" if user.can_be_edited? && display_edit_links? %>
 
-      <%= link_to raw("<i class=\"linecons-trash\"></i> Delete"), delete_link, method: :delete, role: "menuitem", tabindex: "-1", data: { confirm: 'Are you sure?' }, :remote=>true, class: "delete" if user.can_be_deleted? && (@current_user != user) && @current_permission.can_delete? %>
-      
+      <%= link_to raw("<i class=\"linecons-trash\"></i> Delete"), delete_link, method: :delete, role: "menuitem", tabindex: "-1", data: { confirm: 'Are you sure?' }, :remote=>true, class: "delete" if user.can_be_deleted? && (@current_user != user) && display_delete_links? %>
     </td>
+  <% end %>
 
-    <% end %>
-
-    <% if @current_permission.can_update? %>
-
+  <% if display_edit_links? %>
     <td class="action-links" style="width:15%">
 
       <!-- Approve -->
@@ -79,10 +75,8 @@
         
       <!-- Suspend -->
       <%= link_to raw("<i class=\"fa fa-edit mr-5\"></i> Suspend"), update_status_user_path(:id =>user.id, :status =>'suspended'), :method =>'PUT', :remote=>true, role: "menuitem", tabindex: "-1" if user.can_be_suspended? && (@current_user != user) %>
-
     </td>
-
-    <% end %>
+  <% end %>
   
 </tr>
 

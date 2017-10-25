@@ -9,7 +9,7 @@ namespace 'usman' do
       desc "Import all data in sequence"
       task 'all' => :environment do
 
-        import_list = ["roles"]
+        import_list = ["roles", "features"]
         
         import_list.each do |item|
           print "Importing #{item.titleize} \t".yellow
@@ -25,14 +25,18 @@ namespace 'usman' do
         puts " "
       end
 
-      ["Role"].each do |cls_name|
+      ["Role", "Feature"].each do |cls_name|
         name = cls_name.underscore.pluralize
         desc "Import #{cls_name.pluralize}"
         task name => :environment do
           verbose = true
           verbose = false if ["false", "f","0","no","n"].include?(ENV["verbose"].to_s.downcase.strip)
+
+          destroy_all = false
+          destroy_all = true if ["true", "t","1","yes","y"].include?(ENV["destroy_all"].to_s.downcase.strip)
+
           path = Usman::Engine.root.join('db', 'master_data', "#{cls_name.constantize.table_name}.csv")
-          cls_name.constantize.destroy_all
+          cls_name.constantize.destroy_all if destroy_all
           cls_name.constantize.import_data_file(path, true, verbose)
           # puts "Importing Completed".green if verbose
         end

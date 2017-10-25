@@ -20,6 +20,12 @@ module Usman
       end
     end
 
+    initializer "usman.action_view" do |app|
+      ActiveSupport.on_load :action_view do
+        include Usman::ActionView::PermissionsHelper
+      end
+    end
+
     config.generators do |g|
       g.test_framework      :rspec,        :fixture => false
       g.fixture_replacement :factory_girl, :dir => 'spec/dummy/spec/factories'

@@ -3,19 +3,20 @@
 <div class="media <%= status_hash[@feature.status.to_sym] %>">
 
   <div class="pull-left pt-10 pr-10 pb-10" style="width:30%;">
-  	<%= edit_image(@feature, 
-	                  "feature_image.image.large.url",
-	                  upload_image_link(@feature, :feature_image, nil ),
-	                  remove_image_link(@feature, :feature_image, nil ),
-	                  image_options: {assoc_name: :feature_image }) %>
+  	<% if display_edit_links? %>
+  		<%= edit_image(@feature, 
+          "feature_image.image.large.url",
+          upload_image_link(@feature, :feature_image, nil ),
+          remove_image_link(@feature, :feature_image, nil ),
+          image_options: {assoc_name: :feature_image }) %>
+    <% else %>
+    	<%= display_image(@user, "feature_image.image.large.url", class: "img-inline", alt: @feature.display_name) %>
+    <% end %>
   </div>
 
   <div class="pull-left ml-10" style="width:65%;">
-
   	<h1><%= @feature.name %></h1>
-    
     <span class="ml-5 mt-5 label label-<%= status_hash[@feature.status.to_sym] %>"><%= @feature.status.titleize %></span>
-
     <%= clear_tag %>
   </div>
 
@@ -36,6 +37,7 @@
 	</table>
 </div>
 
+<% if display_manage_links? %>
 <div>
 	<% 
 		edit_link = edit_feature_url(id: @feature.id)
@@ -44,9 +46,10 @@
 	
 	<%= link_to raw("<i class=\"fa fa-close mr-5\"></i> <span>Cancel</span>"), "#", onclick: "closeGenericModal();", class: "btn btn-white pull-left" %>
 
-	<%= link_to raw("<i class=\"fa fa-trash mr-5\"></i> <span>Delete</span>"), delete_link, method: :delete, :remote=>true, class: "btn btn-gray pull-right" %>
+	<%= link_to raw("<i class=\"fa fa-trash mr-5\"></i> <span>Delete</span>"), delete_link, method: :delete, :remote=>true, class: "btn btn-gray pull-right" if display_delete_links? %>
 
-	<%= link_to raw("<i class=\"fa fa-edit mr-5\"></i> Edit"), edit_link, method: :get, :remote=>true, class: "btn btn-gray pull-right mr-10" %>
+	<%= link_to raw("<i class=\"fa fa-edit mr-5\"></i> Edit"), edit_link, method: :get, :remote=>true, class: "btn btn-gray pull-right mr-10" if display_edit_links? %>
 </div>
+<% end %>
 
 <%= clear_tag %>

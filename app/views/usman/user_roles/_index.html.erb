@@ -6,7 +6,9 @@
 				<th style="text-align: center;width:100px"><i class="fa fa-photo"></i></th> 
 				<th>Name</th>
 				<th>Roles</th>
+				<% if display_delete_links? %>
 				<th style="text-align: center;" colspan="2">Actions</th>
+				<% end %>
 			</tr>  
 		</thead>
 		
@@ -39,11 +41,15 @@
 		      	<% end %>
 		      </td>
 
+		      <% if display_delete_links? %>
+
 		      <td class="action-links" style="width:10%">
 
 		      	<%= link_to raw("<i class=\"linecons-trash\"></i> Remove Role"), delete_link, method: :delete, user: "menuitem", tabindex: "-1", data: { confirm: 'Are you sure?' }, :remote=>true, class: "delete" %>
 
 		      </td>
+
+		      <% end %>
 
 		    </tr>
 		  <% end %>

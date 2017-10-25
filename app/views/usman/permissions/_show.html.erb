@@ -26,15 +26,15 @@
 
 <div>
 	<% 
-		edit_link = edit_permission_url(id: @permission.id)
-		delete_link = permission_url(id: @permission.id) 
+		#edit_link = edit_permission_url(id: @permission.id)
+		#delete_link = permission_url(id: @permission.id) 
 	%>
 	
-	<%= link_to raw("<i class=\"fa fa-close mr-5\"></i> <span>Cancel</span>"), "#", onclick: "closeGenericModal();", class: "btn btn-white pull-left" %>
+	<%#= link_to raw("<i class=\"fa fa-close mr-5\"></i> <span>Cancel</span>"), "#", onclick: "closeGenericModal();", class: "btn btn-white pull-left" %>
 
-	<%= link_to raw("<i class=\"fa fa-trash mr-5\"></i> <span>Delete</span>"), delete_link, method: :delete, :remote=>true, class: "btn btn-gray pull-right" %>
+	<%#= link_to raw("<i class=\"fa fa-trash mr-5\"></i> <span>Delete</span>"), delete_link, method: :delete, :remote=>true, class: "btn btn-gray pull-right" %>
 
-	<%= link_to raw("<i class=\"fa fa-edit mr-5\"></i> Edit"), edit_link, method: :get, :remote=>true, class: "btn btn-gray pull-right mr-10" %>
+	<%#= link_to raw("<i class=\"fa fa-edit mr-5\"></i> Edit"), edit_link, method: :get, :remote=>true, class: "btn btn-gray pull-right mr-10" %>
 </div>
 
 <%= clear_tag %>

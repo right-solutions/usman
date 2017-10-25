@@ -6,7 +6,7 @@
 
 	  <div class="col-md-3 col-sm-12 col-xs-12" style="border-right:1px solid #f1f1f1;">
 
-	  	<% if @current_user.super_admin? %>
+	  	<% if display_edit_links? %>
 	  		<%= edit_image(@user, 
             "profile_picture.image.large.url",
             upload_image_link(@user, :profile_picture, nil ),
@@ -45,7 +45,7 @@
 
 	  </div>
 
-	  <% if @current_permission.can_update? || @current_permission.can_delete? %>
+	  <% if display_manage_links? %>
 	  <div class="col-md-3 col-sm-12 col-xs-12">
 
 	  	<% edit_link = edit_user_path(id: @user.id) %>

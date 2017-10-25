@@ -13,15 +13,14 @@
 
   <td class="role-name"><%= link_to role.name, role_path(role), remote: true %></td>
 
+  <% if display_manage_links? %>
+
   <td class="action-links" style="width:10%">
-
-    <% if @current_user.has_update_permission?(Role) %>
-      <%= link_to raw("<i class=\"linecons-pencil\"></i> Edit Role"), edit_link, :remote=>true, class: "edit" if @current_user.super_admin? and role.can_be_edited? %>
-    <% end %>
-    <% if @current_user.has_delete_permission?(Role) %>
-      <%= link_to raw("<i class=\"linecons-trash\"></i> Delete"), delete_link, method: :delete, role: "menuitem", tabindex: "-1", data: { confirm: 'Are you sure?' }, :remote=>true, class: "delete" if @current_user.super_admin? and role.can_be_deleted? %>
-    <% end %>
-
+    <%= link_to raw("<i class=\"linecons-pencil\"></i> Edit Role"), edit_link, :remote=>true, class: "edit" if role.can_be_edited? and display_edit_links? %>
+    
+    <%= link_to raw("<i class=\"linecons-trash\"></i> Delete"), delete_link, method: :delete, role: "menuitem", tabindex: "-1", data: { confirm: 'Are you sure?' }, :remote=>true, class: "delete" if role.can_be_deleted? and display_delete_links? %>
   </td>
+
+  <% end %>
 
 </tr>

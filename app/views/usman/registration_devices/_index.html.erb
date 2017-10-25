@@ -7,16 +7,16 @@
 				<th>Status</th>
 				<th>Device Name</th>
 				<th>Device Type</th>
-				<!-- <th style="text-align: center;" colspan="2">Actions</th> -->
+				<% if display_delete_links? %>
+				<th style="text-align: center;" colspan="2">Actions</th> 
+				<% end %>
 			</tr>  
 		</thead>
 		
 	  <tbody>
 	  	<% @devices.each_with_index do |device, i| %>
 	  			
-	  		<%# delete_link = registration_device_path(@registration, device) %>
-				
-		    <tr id="tr_device_<%= device.id %>">
+	  		<tr id="tr_device_<%= device.id %>">
 		      
 		      <th scope="row" style="text-align: center;">
 						<% if i < 0 %>
@@ -40,13 +40,17 @@
 					<td class="device-name"><%= device.device_name %></td>
 					<td class="device-name"><%= device.device_type %></td>
 					
-					<!-- <td class="action-links" style="width:10%"> -->
+					<% if display_delete_links? %>
+					<% delete_link = registration_device_path(@registration, device) %>
+					<td class="action-links" style="width:10%"> -->
 
-		      	<%#= link_to raw("<i class=\"linecons-trash\"></i> Remove Role"), delete_link, method: :delete, device: "menuitem", tabindex: "-1", data: { confirm: 'Are you sure?' }, :remote=>true, class: "delete" %>
+		      	<%= link_to raw("<i class=\"linecons-trash\"></i> Remove Role"), delete_link, method: :delete, device: "menuitem", tabindex: "-1", data: { confirm: 'Are you sure?' }, :remote=>true, class: "delete" %>
 
-		      <!-- </td> -->
+		      </td>
+		      <% end %>
 
 		    </tr>
+		    
 		  <% end %>
 	  </tbody>
 	</table>

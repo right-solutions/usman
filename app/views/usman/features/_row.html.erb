@@ -1,8 +1,5 @@
-<% edit_link = edit_feature_path(id: feature.id) %>
-<% delete_link = feature_path(id: feature.id) %>
-
 <tr id="tr_feature_<%= feature.id %>">
-  
+          
   <th scope="row" style="text-align: center;">
     <% if i < 0 %>
       <i class="fa fa-check text-success"></i>
@@ -30,6 +27,11 @@
     <% end %>
   </td>
 
+  <% edit_link = edit_feature_path(id: feature.id) %>
+  <% delete_link = feature_path(id: feature.id) %>
+
+  <% if display_edit_links? %>
+
   <td class="action-links" style="width:10%">
 
     <% case feature.status %>
@@ -50,15 +52,18 @@
       <!-- Approve -->
       <%= link_to raw("<i class=\"fa fa-circle-o mr-5\"></i> Publish"), update_status_feature_path(:id =>feature.id, :status =>'published'), :method =>'PUT', :remote=>true, role: "menuitem", tabindex: "-1",:class=>"feature_status" %>
     <% end %>
-    
   </td>
+
+  <% end %>
+
+  <% if display_manage_links? %>
 
   <td class="action-links" style="width:10%">
+    <%= link_to raw("<i class=\"linecons-pencil\"></i> Edit Feature"), edit_link, :remote=>true, class: "edit" if display_edit_links? %>
 
-    <%= link_to raw("<i class=\"linecons-pencil\"></i> Edit Feature"), edit_link, :remote=>true, class: "edit" %>
-
-    <%= link_to raw("<i class=\"linecons-trash\"></i> Delete"), delete_link, method: :delete, role: "menuitem", tabindex: "-1", data: { confirm: 'Are you sure?' }, :remote=>true, class: "delete" %>
-
+    <%= link_to raw("<i class=\"linecons-trash\"></i> Delete"), delete_link, method: :delete, role: "menuitem", tabindex: "-1", data: { confirm: 'Are you sure?' }, :remote=>true, class: "delete" if display_delete_links? %>
   </td>
+
+  <% end %>
 
 </tr>

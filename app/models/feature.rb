@@ -53,7 +53,7 @@ class Feature < Usman::ApplicationRecord
 
     feature = Feature.find_by_name(hsh[:name]) || Feature.new
     feature.name = hsh[:name]
-    feature.status = Feature::UNPUBLISHED
+    feature.status = hsh[:status]
     
     if feature.valid?
       begin

@@ -7,14 +7,21 @@
     <div class="tab-content">
       <div class="tab-pane active">
 
-      <div id="div_permission_action_buttons">
+        <div id="div_permission_action_buttons">
           <div class="row">
             <div class="col-md-6">
 
               <%= theme_button('Add a Permission', 'plus', new_permission_path(), classes: "pull-left mr-10", btn_type: "success") if @current_user.has_create_permission?(Permission) %>
 
               <%= theme_button('Refresh', 'refresh', permissions_path(), classes: "pull-left mr-10", btn_type: "white") %>
+            </div>
+            <div class="col-md-6">
+              <%= search_form_kuppayam(Permission, permissions_path, text: @filters[:query]) %>
+            </div>
+          </div>
 
+          <div class="row">
+            <div class="col-md-12">
               <% @filter_ui_settings.each do |filter_name, options| %>
                 <% if options[:object_filter] == true %>
                   <%= report_object_filter(filter_name, options) %>
@@ -22,23 +29,6 @@
                   <%= report_filter(filter_name, options) %>
                 <% end %>
               <% end %>
-
-              <!-- Single button -->
-              <div class="ml-10 btn-group hidden">
-                <button type="button" class="btn btn-white dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                  More Actions <span class="caret"></span>
-                </button>
-                <ul class="dropdown-menu">
-                  <li><a href="#">Import Users</a></li>
-                  <li><a href="#">Import History</a></li>
-                  <li role="separator" class="divider"></li>
-                  <li><a href="#">Export Users</a></li>
-                </ul>
-              </div>
-
-            </div>
-            <div class="col-md-6">
-              <%= search_form_kuppayam(Permission, permissions_path, text: @filters[:query]) %>
             </div>
           </div>
         </div>

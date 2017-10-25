@@ -50,27 +50,26 @@ Usman::Engine.routes.draw do
     namespace :v1 do
       
       # Registrations
-      post :register, :controller => "registrations"
-      post :resend_otp, :controller => "registrations"
-      post :verify_otp, :controller => "registrations"
-      post :accept_tac, :controller => "registrations"
+      post :register, :controller => "registrations", as: :register
+      post :resend_otp, :controller => "registrations", as: :resend_otp
+      post :verify_otp, :controller => "registrations", as: :verify_otp
+      post :accept_tac, :controller => "registrations", as: :accept_tac
 
       # Profile
-      post :create_profile, :controller => "profile"
-      put :update_profile, :controller => "profile"
-      get :profile_info, :controller => "profile"
+      post :create_profile, :controller => "profile", as: :create_profile
+      put :update_profile, :controller => "profile", as: :update_profile
+      get :profile_info, :controller => "profile", as: :profile_info
 
       # Profile Picture
-      post 'profile/profile_picture_base64', :controller => "profile_picture", action: :profile_picture_base64
-      post 'profile/profile_picture', :controller => "profile_picture", action: :profile_picture
-      delete 'profile/profile_picture', :controller => "profile_picture", action: :destroy_profile_picture
+      post 'profile/profile_picture_base64', :controller => "profile_picture", action: :profile_picture_base64, as: :profile_picture_base64
+      post 'profile/profile_picture', :controller => "profile_picture", action: :profile_picture, as: :profile_picture
+      delete 'profile/profile_picture', :controller => "profile_picture", action: :destroy_profile_picture, as: :destroy_profile_picture
     end
   end
   
-  scope :docs do
+  scope :docs, as: 'docs' do
     namespace :api do
       namespace :v1 do
-        get 'index', :controller => "docs"
         get 'register', :controller => "docs"
         get 'resend_otp', :controller => "docs"
         get 'verify_otp', :controller => "docs"

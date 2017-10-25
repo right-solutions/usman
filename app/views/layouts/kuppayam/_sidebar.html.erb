@@ -1,115 +1,167 @@
+<%
+	user_items = {
+		users: {
+			text: "Manage Users",
+			icon_class: "fa-user",
+			url: usman.users_url,
+			has_permission: @current_user.has_read_permission?(User)
+		},
+		registrations: {
+			text: "Manage Registrations",
+			icon_class: "fa-mobile",
+			url: usman.registrations_url,
+			has_permission: @current_user.has_read_permission?(Registration)
+		},
+		roles: {
+			text: "Manage Roles",
+			icon_class: "linecons-graduation-cap",
+			url: usman.roles_url,
+			has_permission: @current_user.has_read_permission?(Role)
+		},
+		permissions: {
+			text: "Manage Permissions",
+			icon_class: "fa-lock",
+			url: usman.permissions_url,
+			has_permission: @current_user.has_read_permission?(Permission)
+		}
+	}
+%>
+<%
+	configuration_items = {
+		features: {
+			text: "Manage Features",
+			icon_class: "linecons-diamond",
+			url: usman.features_url,
+			has_permission: @current_user.has_read_permission?(Feature)
+		}
+	}
+%>
+<%
+	pattana_items = {
+		countries: {
+			text: "Manage Countries",
+			icon_class: "fa-flag-checkered",
+			url: pattana.countries_url,
+			has_permission: @current_user.has_read_permission?(Country)
+		},
+		regions: {
+			text: "Manage Regions",
+			icon_class: "fa-globe",
+			url: pattana.regions_url,
+			has_permission: @current_user.has_read_permission?(Region)
+		},
+		cities: {
+			text: "Manage Cities",
+			icon_class: "fa-map-marker",
+			url: pattana.cities_url,
+			has_permission: @current_user.has_read_permission?(City)
+		},
+		
+	}
+%>
+
 <div class="sidebar-menu toggle-others fixed collapsed">
 	
 	<div class="sidebar-menu-inner">
 		
 		<header class="logo-env">
-			
 			<!-- logo -->
 			<div class="logo">
-				<a href="/" class="logo-expanded">
-					<img src="/assets/logo.png" width="180" alt="" />
-				</a>
-				
-				<a href="/" class="logo-collapsed">
-					<img src="/assets/logo-small.png" width="40" alt="" />
-				</a>
+				<a href="/" class="logo-expanded"><img src="/assets/logo.png" width="180" alt="" /></a>
+				<a href="/" class="logo-collapsed"><img src="/assets/logo-small.png" width="40" alt="" /></a>
 			</div>
 			
 			<!-- This will toggle the mobile menu and will be visible only on mobile devices -->
 			<div class="mobile-menu-toggle visible-xs">
+				<!-- <a href="#" data-toggle="notifications-menu">
+					<i class="fa-bell-o"></i><span class="badge badge-success">7</span>
+				</a> -->
 				<a href="#" data-toggle="user-info-menu">
-					<i class="fa-bell-o"></i>
-					<span class="badge badge-success">7</span>
+					<%= display_image(@current_user, "profile_picture.image.small.url", width: "32", height: "auto", class: "img-circle img-inline userpic-32", alt: @current_user.display_name) %>
 				</a>
-				
-				<a href="#" data-toggle="mobile-menu">
-					<i class="fa-bars"></i>
-				</a>
+				<a href="#" data-toggle="mobile-menu"><i class="fa-bars"></i></a>
 			</div>
-			
 		</header>
 		
-		
-		
-		<ul id="main-menu" class="main-menu">
-			
-			<!-- add class "multiple-expanded" to allow multiple submenus to open -->
-			
-			<!-- class "auto-inherit-active-class" will automatically add "active" class for parent elements who are marked already with class "active" -->
-			
+		<!-- add class "multiple-expanded" to allow multiple submenus to open -->
+		<!-- class "auto-inherit-active-class" will automatically add "active" class for parent elements who are marked already with class "active" -->
+		<ul id="main-menu" class="main-menu multiple-expanded auto-inherit-active-class">
 			<!-- Admin Dashboard -->
 			<% if @current_user.super_admin? || @current_user.has_role?("Site Admin") %>
 				<li class="<%= nav_active?('admin/dashboard') ? 'active' : ''  %>">
 					<%= link_to raw("<i class=\"linecons-desktop\"></i> <span class='title'>Dashboard</span>"), usman.dashboard_path %>
 				</li>
-
-				<li class="<%= nav_active?('admin/users') ? 'active' : ''  %>">
-					
-					<a href="#">
-						<i class="linecons-cog"></i>
-						<span class="title">Admin</span>
-					</a>
-
-					<ul>
-						<li class="<%= nav_class("admin/users") %>">
-					    <%= link_to raw("<i class=\"fa-user\"></i> <span class='title'>Manage Users</span>"), usman.users_url %>
-					  </li>
-					  <li class="<%= nav_class("admin/registrations") %>">
-					    <%= link_to raw("<i class=\"fa-mobile\"></i> <span class='title'>Manage Registrations</span>"), usman.registrations_url %>
-					  </li>
-					</ul>
-				</li>
 			<% else %>
 				<li class="<%= nav_active?('profile/dashboard') ? 'active' : ''  %>">
-				<%= link_to raw("<i class=\"linecons-desktop\"></i> <span class='title'>Dashboard</span>"), usman.my_account_url %>
-				</li>
-
-				<li class="<%= nav_active?('profile/profile') ? 'active' : ''  %>">
-					
-					<a href="#">
-						<i class="linecons-user"></i>
-						<span class="title">My Account</span>
-					</a>
-
-					<ul>
-						<li class="<%= nav_class("profile/settings") %>">
-					    <%= link_to raw("<i class=\"linecons-cog\"></i> <span class='title'>Settings</span>"), "#" %>
-					  </li>
-					</ul>
+					<%= link_to raw("<i class=\"linecons-desktop\"></i> <span class='title'>Dashboard</span>"), usman.my_account_url %>
 				</li>
 			<% end %>
-
-			<% if @current_user.super_admin? %>
+			
 			<li class="">
-				<a href="/xenon/xenon-files/html/dashboard-1.html">
-					<i class="linecons-database"></i>
-					<span class="title">Master Data</span>
+				<a href="#">
+					<i class="fa-group"></i>
+					<span class="title">Manage Users</span>
 				</a>
-
 				<ul>
-
+					<% user_items.each do |key, values| %>
+					<% next unless values[:has_permission] %>
 					<li class="">
-						<%= link_to raw("<i class=\"linecons-graduation-cap\"></i> <span class='title'>Manage Roles</span>"), usman.roles_url %>
+						<%= link_to raw("<i class=\"#{values[:icon_class]}\"></i> <span class='title'>#{values[:text]}</span>"), values[:url] %>
 					</li>
-
-					<li class="">
-						<%= link_to raw("<i class=\"linecons-diamond\"></i> <span class='title'>Manage Features</span>"), usman.features_url %>
-					</li>
-
-					<li class="<%= nav_class("admin/users") %>">
-						<%= link_to raw("<i class=\"linecons-lock\"></i> <span class='title'>Manage Permissions</span>"), usman.permissions_url %>
-					</li>
+					<% end %>
 				</ul>
-
 			</li>
-			<% end %>
 
-			<!-- Documentation -->
+			<li class="">
+				<a href="#">
+					<i class="fa-cog"></i>
+					<span class="title">Configure</span>
+				</a>
+				<ul>
+					<% configuration_items.each do |key, values| %>
+					<% next unless values[:has_permission] %>
+					<li class="">
+						<%= link_to raw("<i class=\"#{values[:icon_class]}\"></i> <span class='title'>#{values[:text]}</span>"), values[:url] %>
+					</li>
+					<% end %>
+				</ul>
+			</li>
+
+			<li class="">
+				<a href="#">
+					<i class="fa-globe"></i>
+					<span class="title">Manage Location</span>
+				</a>
+				<ul>
+					<% pattana_items.each do |key, values| %>
+					<% next unless values[:has_permission] %>
+					<li class="">
+						<%= link_to raw("<i class=\"#{values[:icon_class]}\"></i> <span class='title'>#{values[:text]}</span>"), values[:url] %>
+					</li>
+					<% end %>
+				</ul>
+			</li>
+
+			<li class="<%= nav_active?('profile/profile') ? 'active' : ''  %>">
+				<a href="#"><i class="linecons-user"></i><span class="title">My Account</span></a>
+				<ul>
+					<li class="<%= nav_class("profile/settings") %>">
+				    <%= link_to raw("<i class=\"linecons-cog\"></i> <span class='title'>User Settings</span>"), "#" %>
+				  </li>
+				</ul>
+			</li>
+
+			<!-- API Documentation -->
 			<li class="<%= nav_active?('docs/index') ? 'active' : ''  %>">
-				<a href="/docs/api/v1/register">
-		      <i class="fa-file-code-o"></i>
-		      <span class="title">Documentation</span>
-		    </a>
+				<a href="#"><i class="fa-file-code-o"></i><span class="title">API Documentation</span></a>
+				<ul>
+					<li class="">
+				    <a href="/docs/api/v1/register">
+				      <i class="fa-group"></i>
+				      <span class="title">Authentication APIs</span>
+				    </a>
+				  </li>
+				</ul>
 			</li>
 
 		</ul>

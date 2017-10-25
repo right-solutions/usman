@@ -9,7 +9,7 @@
         <% options = {assoc_collection: User.normal_users.select("id, name").order("name ASC").all, required: true, editable: true, assoc_display_method: :name} %>
         <%= theme_form_assoc_group(@permission, :user_id, **options) %>
 
-        <% options = {assoc_collection: Feature.select("id, name").order("name ASC").all, required: true, editable: true, assoc_display_method: :display_name} %>
+        <% options = {assoc_collection: Feature.published.select("id, name").order("name ASC").all, required: true, editable: true, assoc_display_method: :display_name} %>
         <%= theme_form_assoc_group(@permission, :feature_id, **options) %>
 
         <div class="form-group ">

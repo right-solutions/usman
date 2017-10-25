@@ -1,7 +1,12 @@
 <%= render partial: "index" %>
+
 <%= render partial: "super_admin_index" if @current_user.super_admin? %>
 
-<div class="dx-warning">
+<%= render partial: "pattana/dashboard/index" %>
+
+<div style="border-top:1px solid #FFF;margin-top:50px;margin-bottom:70px;"></div>
+
+<div class="dx-warning mt-60">
 	<div>
 		<h2>Usman - API Documentation</h2>
 		<p>All APIs are documented with all cases and examples.</p>

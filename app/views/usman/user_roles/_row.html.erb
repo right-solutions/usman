@@ -25,10 +25,14 @@
     <% end %>
   </td>
 
+  <% if display_delete_links? %>
+
   <td class="action-links" style="width:10%">
 
     <%= link_to raw("<i class=\"linecons-trash\"></i> Remove Role"), delete_link, method: :delete, user: "menuitem", tabindex: "-1", data: { confirm: 'Are you sure?' }, :remote=>true, class: "delete" %>
 
   </td>
+
+  <% end %>
 
 </tr>

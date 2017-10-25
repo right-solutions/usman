@@ -7,6 +7,8 @@ module Usman
     
     before_action :current_user
     before_action :require_user
+
+    helper_method :breadcrumb_home_path
     
     private
 

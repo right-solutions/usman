@@ -1,7 +1,12 @@
 module Usman
   module Api
     module V1
-      class DocsController < DocsBaseController
+      class DocsController < Usman::AdminController
+
+        layout 'kuppayam/docs'
+
+        before_action :set_nav_items, :set_tab_items
+        helper_method :breadcrumb_home_path
 
         def register
           set_title("Register API")
@@ -33,7 +38,7 @@ module Usman
           @example_path = "usman/api/v1/docs/"
           @examples = ["pos_case_1", "pos_case_2", "pos_case_3", "neg_case_1", "neg_case_2", "neg_case_3"]
 
-          set_nav("docs/register")
+          set_nav("docs/usman/register")
 
           render 'kuppayam/api/docs/show'
         end
@@ -61,7 +66,7 @@ module Usman
           @example_path = "usman/api/v1/docs/"
           @examples = ["pos_case_1", "neg_case_1", "neg_case_2", "neg_case_3", "neg_case_4"]
 
-          set_nav("docs/resend_otp")
+          set_nav("docs/usman/resend_otp")
 
           render 'kuppayam/api/docs/show'
         end
@@ -90,7 +95,7 @@ module Usman
           @example_path = "usman/api/v1/docs/"
           @examples = ["pos_case_1", "pos_case_2", "neg_case_1", "neg_case_2", "neg_case_3", "neg_case_4"]
 
-          set_nav("docs/verify_otp")
+          set_nav("docs/usman/verify_otp")
 
           render 'kuppayam/api/docs/show'
         end
@@ -119,7 +124,7 @@ module Usman
           @example_path = "usman/api/v1/docs/"# 
           @examples = ["pos_case_1", "neg_case_1", "neg_case_2", "neg_case_3"]
 
-          set_nav("docs/accept_tac")
+          set_nav("docs/usman/accept_tac")
 
           render 'kuppayam/api/docs/show'
         end
@@ -146,7 +151,7 @@ module Usman
           @example_path = "usman/api/v1/docs/"# 
           @examples = ["pos_case_1", "pos_case_2", "pos_case_3", "neg_case_1", "neg_case_2", "neg_case_3"]
 
-          set_nav("docs/create_profile")
+          set_nav("docs/usman/create_profile")
 
           render 'kuppayam/api/docs/show'
         end
@@ -174,7 +179,7 @@ module Usman
           @example_path = "usman/api/v1/docs/"# 
           @examples = ["pos_case_1", "pos_case_2", "pos_case_3", "neg_case_1", "neg_case_2", "neg_case_3"]
 
-          set_nav("docs/update_profile")
+          set_nav("docs/usman/update_profile")
 
           render 'kuppayam/api/docs/show'
         end
@@ -197,7 +202,7 @@ module Usman
           @example_path = "usman/api/v1/docs/"
           @examples = ["pos_case_1", "neg_case_1", "neg_case_2"]
 
-          set_nav("docs/get_profile_info")
+          set_nav("docs/usman/get_profile_info")
 
           render 'kuppayam/api/docs/show'
         end
@@ -223,7 +228,7 @@ module Usman
           @example_path = "usman/api/v1/docs/"
           @examples = ["pos_case_1", "neg_case_1", "neg_case_2"]
 
-          set_nav("docs/upload_profile_picture_base64")
+          set_nav("docs/usman/upload_profile_picture_base64")
 
           render 'kuppayam/api/docs/show'
         end
@@ -248,7 +253,7 @@ module Usman
           @example_path = "usman/api/v1/docs/"
           @examples = ["pos_case_1", "neg_case_1", "neg_case_2", "neg_case_3"]
 
-          set_nav("docs/upload_profile_picture")
+          set_nav("docs/usman/upload_profile_picture")
 
           render 'kuppayam/api/docs/show'
         end
@@ -271,9 +276,44 @@ module Usman
           @example_path = "usman/api/v1/docs/"
           @examples = ["pos_case_1", "neg_case_1", "neg_case_2"]
 
-          set_nav("docs/delete_profile_picture")
+          set_nav("docs/usman/delete_profile_picture")
 
           render 'kuppayam/api/docs/show'
+        end
+
+        private
+
+        def set_nav_items
+          @nav_items = {
+            register: { nav_class: "docs/usman/register", icon_class: "fa-group", url: usman.docs_api_v1_register_path, text: "Registraions API"},
+            resend_otp: { nav_class: "docs/usman/resend_otp", icon_class: "fa-send", url: usman.docs_api_v1_resend_otp_path, text: "Resend OTP API"},
+            verify_otp: { nav_class: "docs/usman/verify_otp", icon_class: "fa-thumbs-up", url: usman.docs_api_v1_verify_otp_path, text: "Verify OTP API"},
+            accept_tac: { nav_class: "docs/usman/accept_tac", icon_class: "fa-check-square-o", url: usman.docs_api_v1_accept_tac_path, text: "Accept T&C API"},
+            create_profile: { nav_class: "docs/usman/create_profile", icon_class: "fa-user", url: usman.docs_api_v1_create_profile_path, text: "Create Profile API"},
+            update_profile: { nav_class: "docs/usman/update_profile", icon_class: "fa-user", url: usman.docs_api_v1_update_profile_path, text: "Update Profile API"},
+            get_profile_info: { nav_class: "docs/usman/get_profile_info", icon_class: "fa-user", url: usman.docs_api_v1_get_profile_info_path, text: "Get Profile Info API"},
+            upload_profile_picture_base64: { nav_class: "docs/usman/upload_profile_picture_base64", icon_class: "fa-photo", url: usman.docs_api_v1_upload_profile_picture_base64_path, text: "Upload Profile Picture (Base64)"},
+            upload_profile_picture: { nav_class: "docs/usman/upload_profile_picture", icon_class: "fa-photo", url: usman.docs_api_v1_upload_profile_picture_path, text: "Upload Profile Picture"},
+            delete_profile_picture: { nav_class: "docs/usman/delete_profile_picture", icon_class: "fa-photo", url: usman.docs_api_v1_delete_profile_picture_path, text: "Remove Profile Picture"}
+          }
+        end
+
+        def set_tab_items
+          @tab_items = {
+            usman: { nav_class: "docs/usman", icon_class: "fa-group", url: usman.docs_api_v1_register_path, text: "User APIs"}
+          }
+        end
+
+        def breadcrumb_home_path
+          usman.dashboard_path
+        end
+
+        def breadcrumbs_configuration
+          {
+            heading: "Usman - API Documentation",
+            description: "A brief documentation of all APIs implemented in the gem Usman with input and output details and examples",
+            links: []
+          }
         end
 
       end

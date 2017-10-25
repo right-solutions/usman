@@ -13,6 +13,6 @@ gemspec
 # To use a debugger
 # gem 'byebug', group: [:development, :test]
 
-# gem 'kuppayam', path: "/Users/rightsolutions/Projects/Products/kuppayam"
-# gem 'pattana', path: "/Users/rightsolutions/Projects/Products/pattana"
+gem 'kuppayam', path: "/Users/rightsolutions/Projects/Products/kuppayam"
+gem 'pattana', path: "/Users/rightsolutions/Projects/Products/pattana"
 # gem 'uglifier'

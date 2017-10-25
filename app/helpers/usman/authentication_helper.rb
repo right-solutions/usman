@@ -186,7 +186,8 @@ module Usman
     end
 
     def current_permission
-      @current_feature = Feature.published.find_by_name(@resource_options[:class])
+      feature_class = @resource_options[:feature_class] || @resource_options[:class]
+      @current_feature = Feature.published.find_by_name(feature_class)
       feature_id = @current_feature ? @current_feature.id : -1
       @current_permission = @current_user.permissions.where("feature_id = ?", feature_id).first
     end

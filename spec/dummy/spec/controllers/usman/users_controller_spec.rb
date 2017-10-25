@@ -2,6 +2,7 @@ require 'rails_helper'
 
 describe Usman::UsersController, :type => :controller do
 
+  let(:user_feature) {FactoryGirl.create(:published_feature, name: "User")}
   let(:user) {FactoryGirl.create(:user)}
   let(:suspended_user) {FactoryGirl.create(:suspended_user)}
   
@@ -9,9 +10,11 @@ describe Usman::UsersController, :type => :controller do
   
   let(:super_admin_user) {FactoryGirl.create(:super_admin_user)}
   let(:site_admin_user) { 
+    user_feature
     site_role
     user = FactoryGirl.create(:approved_user)
     user.add_role("Site Admin")
+    user.add_permission("User", can_create: true, can_read: true, can_update: true, can_delete: true)
     user 
   }
   let(:approved_user) {FactoryGirl.create(:approved_user)}

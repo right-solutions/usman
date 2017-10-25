@@ -1,7 +1,7 @@
 module Usman
   class FeaturesController < ResourceController
 
-    before_action :require_site_admin, :require_super_admin
+    before_action :require_super_admin
     
     private
 

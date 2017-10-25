@@ -63,7 +63,7 @@ module Usman
 
       if @error_heading.blank?
         phone_number = "#{@dialing_prefix}#{@mobile_number}"
-        @sns_client.publish(phone_number: phone_number, message: @message)
+        #@sns_client.publish(phone_number: phone_number, message: @message)
       end
     end
 

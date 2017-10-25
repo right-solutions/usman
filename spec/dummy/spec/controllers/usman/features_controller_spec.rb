@@ -17,12 +17,6 @@ describe Usman::FeaturesController, :type => :controller do
   describe "index" do
     3.times { FactoryGirl.create(:published_feature) }
     context "Positive Case" do
-      it "site admin should be able to view the list of features" do
-        session[:id] = site_admin_user.id
-        get :index, params: { use_route: 'usman' }
-        expect(response.status).to eq(200)
-      end
-
       it "super admin should be able to view the list of features" do
         session[:id] = super_admin_user.id
         get :index, params: { use_route: 'usman' }
@@ -30,6 +24,12 @@ describe Usman::FeaturesController, :type => :controller do
       end
     end
     describe "Negative Case" do
+      it "site admin should not be able to view the list of features" do
+        session[:id] = site_admin_user.id
+        get :index, params: { use_route: 'usman' }
+        expect(response.status).to eq(401)
+      end
+
       it "other users should not be able to view the list of features" do
         session[:id] = approved_user.id
         get :index, params: { use_route: 'usman' }
@@ -47,11 +47,6 @@ describe Usman::FeaturesController, :type => :controller do
 
   describe "show" do
     context "Positive Case" do
-      it "site admin should be able to view single feature details" do
-        session[:id] = site_admin_user.id
-        get :show, params: { use_route: 'usman', id: feature.id }
-        expect(response.status).to eq(200)
-      end
       it "super admin should be able to view single feature details" do
         session[:id] = super_admin_user.id
         get :show, params: { use_route: 'usman', id: feature.id }
@@ -59,6 +54,12 @@ describe Usman::FeaturesController, :type => :controller do
       end
     end
     describe "Negative Case" do
+      it "site admin should not be able to view single feature details" do
+        session[:id] = site_admin_user.id
+        get :show, params: { use_route: 'usman', id: feature.id }
+        expect(response.status).to eq(401)
+      end
+
       it "other users should not be able to view single feature details" do
         session[:id] = approved_user.id
         get :show, params: { use_route: 'usman', id: feature.id }
@@ -76,11 +77,6 @@ describe Usman::FeaturesController, :type => :controller do
 
   describe "new" do
     context "Positive Case" do
-      it "should display the new form for site admin" do
-        session[:id] = site_admin_user.id
-        get :new, params: { use_route: 'usman' }, xhr: true
-        expect(response.status).to eq(200)
-      end
       it "should display the new form for super admin" do
         session[:id] = super_admin_user.id
         get :new, params: { use_route: 'usman' }, xhr: true
@@ -88,6 +84,12 @@ describe Usman::FeaturesController, :type => :controller do
       end
     end
     describe "Negative Case" do
+      it "should not display the new form for site admin" do
+        session[:id] = site_admin_user.id
+        get :new, params: { use_route: 'usman' }, xhr: true
+        expect(response.status).to eq(200)
+      end
+
       it "should redirect while accessing new form for all other users" do
         session[:id] = approved_user.id
         get :new, params: { use_route: 'usman' }, xhr: true
@@ -106,11 +108,6 @@ describe Usman::FeaturesController, :type => :controller do
 
   describe "edit" do
     context "Positive Case" do
-      it "should display the edit form for site admin" do
-        session[:id] = site_admin_user.id
-        get :edit, params: { use_route: 'usman' }, xhr: true
-        expect(response.status).to eq(200)
-      end
       it "should display the edit form for super admin" do
         session[:id] = super_admin_user.id
         get :edit, params: { use_route: 'usman' }, xhr: true
@@ -118,6 +115,11 @@ describe Usman::FeaturesController, :type => :controller do
       end
     end
     describe "Negative Case" do
+      it "should not display the edit form for site admin" do
+        session[:id] = site_admin_user.id
+        get :edit, params: { use_route: 'usman' }, xhr: true
+        expect(response.status).to eq(200)
+      end
       it "should redirect while accessing edit form for all other users" do
         session[:id] = approved_user.id
         get :edit, params: { use_route: 'usman' }, xhr: true
@@ -136,14 +138,6 @@ describe Usman::FeaturesController, :type => :controller do
 
   describe "create" do
     context "Positive Case" do
-      it "site admin should be able to create a feature" do
-        session[:id] = site_admin_user.id
-        feature_params = FactoryGirl.build(:feature, name: "Some Name").attributes
-        expect do
-          post :create, params: { use_route: 'usman', feature: feature_params }, xhr: true
-        end.to change(Feature, :count).by(1)
-        expect(Feature.last.name).to match("Some Name")
-      end
       it "super admin should be able to create a feature" do
         session[:id] = super_admin_user.id
         feature_params = FactoryGirl.build(:feature, name: "Some Name").attributes
@@ -154,6 +148,16 @@ describe Usman::FeaturesController, :type => :controller do
       end
     end
     describe "Negative Case" do
+      it "site admin should not be able to create a feature" do
+        session[:id] = site_admin_user.id
+        feature_params = FactoryGirl.build(:feature, name: "Some Name").attributes
+        expect do
+          post :create, params: { use_route: 'usman', feature: feature_params }, xhr: true
+        end.to change(Feature, :count).by(0)
+        expect(response.status).to eq(200)
+        expect(response.body).to eq("")
+      end
+
       it "other users should not be able to create a feature" do
         session[:id] = approved_user.id
         feature_params = FactoryGirl.build(:feature, name: "Some Name").attributes
@@ -178,16 +182,6 @@ describe Usman::FeaturesController, :type => :controller do
 
   describe "update" do
     context "Positive Case" do
-      it "site admin should be able to update a feature" do
-        session[:id] = site_admin_user.id
-        feature = FactoryGirl.create(:feature, name: "Some Name")
-        feature_params = feature.attributes.clone
-        feature_params["name"] = "Changed Name"
-        expect do
-          put :update, params: { use_route: 'usman', id: feature.id, feature: feature_params }, xhr: true
-        end.to change(Feature, :count).by(0)
-        expect(feature.reload.name).to match("Changed Name")
-      end
       it "super admin should be able to update a feature" do
         session[:id] = super_admin_user.id
         feature = FactoryGirl.create(:feature, name: "Some Name")
@@ -200,6 +194,18 @@ describe Usman::FeaturesController, :type => :controller do
       end
     end
     describe "Negative Case" do
+
+      it "site admin should not be able to update a feature" do
+        session[:id] = site_admin_user.id
+        feature = FactoryGirl.create(:feature, name: "Some Name")
+        feature_params = feature.attributes.clone
+        feature_params["name"] = "Changed Name"
+        expect do
+          put :update, params: { use_route: 'usman', id: feature.id, feature: feature_params }, xhr: true
+        end.to change(Feature, :count).by(0)
+        expect(feature.reload.name).to match("Some Name")
+      end
+
       it "other users should not be able to update a feature" do
         session[:id] = approved_user.id
         feature = FactoryGirl.create(:feature, name: "Some Name")
@@ -226,13 +232,6 @@ describe Usman::FeaturesController, :type => :controller do
 
   describe "destroy" do
     context "Positive Case" do
-      it "site admin should be able to remove a feature" do
-        session[:id] = site_admin_user.id
-        feature
-        expect do
-          delete :destroy, params: { use_route: 'usman', id: feature.id }, xhr: true
-        end.to change(Feature, :count).by(-1)
-      end
       it "super admin should be able to remove a feature" do
         session[:id] = super_admin_user.id
         feature
@@ -242,6 +241,13 @@ describe Usman::FeaturesController, :type => :controller do
       end
     end
     describe "Negative Case" do
+      it "site admin should not be able to remove a feature" do
+        session[:id] = site_admin_user.id
+        feature
+        expect do
+          delete :destroy, params: { use_route: 'usman', id: feature.id }, xhr: true
+        end.to change(Feature, :count).by(0)
+      end
       it "other users should not be able to remove a feature" do
         session[:id] = approved_user.id
         feature

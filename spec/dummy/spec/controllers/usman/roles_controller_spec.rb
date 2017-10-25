@@ -2,14 +2,17 @@ require 'rails_helper'
 
 describe Usman::RolesController, :type => :controller do
 
+  let(:role_feature) {FactoryGirl.create(:published_feature, name: "Role")}
   let(:role) {FactoryGirl.create(:role, name: "Some Name")}
   let(:site_role) {FactoryGirl.create(:role, name: "Site Admin")}
   
   let(:super_admin_user) {FactoryGirl.create(:super_admin_user)}
   let(:site_admin_user) { 
+    role_feature
     site_role
     user = FactoryGirl.create(:approved_user)
     user.add_role("Site Admin")
+    user.add_permission("Role", can_create: true, can_read: true, can_update: true, can_delete: true)
     user 
   }
   let(:approved_user) {FactoryGirl.create(:approved_user)}
@@ -17,7 +20,7 @@ describe Usman::RolesController, :type => :controller do
   describe "index" do
     3.times { FactoryGirl.create(:role) }
     context "Positive Case" do
-      it "site admin should be able to view the list of roles" do
+      it "site admin with permission should be able to view the list of roles" do
         session[:id] = site_admin_user.id
         get :index, params: { use_route: 'usman' }
         expect(response.status).to eq(200)
@@ -47,7 +50,7 @@ describe Usman::RolesController, :type => :controller do
 
   describe "show" do
     context "Positive Case" do
-      it "site admin should be able to view single role details" do
+      it "site admin with permission should be able to view single role details" do
         session[:id] = site_admin_user.id
         get :show, params: { use_route: 'usman', id: role.id }
         expect(response.status).to eq(200)
@@ -136,7 +139,7 @@ describe Usman::RolesController, :type => :controller do
 
   describe "create" do
     context "Positive Case" do
-      it "site admin should be able to create a role" do
+      it "site admin with permission should be able to create a role" do
         session[:id] = site_admin_user.id
         role_params = FactoryGirl.build(:role, name: "Some Name").attributes
         expect do
@@ -179,7 +182,7 @@ describe Usman::RolesController, :type => :controller do
 
   describe "update" do
     context "Positive Case" do
-      it "site admin should be able to update a role" do
+      it "site admin with permission should be able to update a role" do
         session[:id] = site_admin_user.id
         role = FactoryGirl.create(:role, name: "Some Name")
         role_params = role.attributes.clone
@@ -227,7 +230,7 @@ describe Usman::RolesController, :type => :controller do
 
   describe "destroy" do
     context "Positive Case" do
-      it "site admin should be able to remove a role" do
+      it "site admin with permission should be able to remove a role" do
         session[:id] = site_admin_user.id
         role
         expect do

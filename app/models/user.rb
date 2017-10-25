@@ -357,6 +357,24 @@ class User < Usman::ApplicationRecord
   # Permission Methods
   # ------------------
 
+  def add_permission(feature_name, **options)
+    options.reverse_merge!(
+      can_create: false,
+      can_read: true,
+      can_update: false,
+      can_delete: false
+    )
+    feature = Feature.find_by_name(feature_name)
+    permission = self.permissions.where("feature_id = ?", feature.id).first || self.permissions.build
+    permission.feature = feature
+    permission.can_create = options[:can_create]
+    permission.can_read = options[:can_read]
+    permission.can_update = options[:can_update]
+    permission.can_delete = options[:can_delete]
+    permission.save
+    permission
+  end
+
   def has_read_permission?(class_name)
     return true if self.super_admin
     feature = Feature.published.find_by_name(class_name.to_s)

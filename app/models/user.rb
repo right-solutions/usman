@@ -101,6 +101,10 @@ class User < Usman::ApplicationRecord
   scope :super_admins, -> { where(super_admin: TRUE) }
   scope :normal_users, -> { where(super_admin: FALSE) }
 
+  # Need to write a scope so that we have one for showing only site admins
+  # Also need to restrict the removal of site admin to super admin
+  # scope :site_admins, -> { joins().where(super_admin: FALSE) }
+
   # Import Methods
 
   def self.save_row_data(hsh)
@@ -379,7 +383,7 @@ class User < Usman::ApplicationRecord
     return true if self.super_admin
     feature = Feature.published.find_by_name(class_name.to_s)
     if feature
-      permission = Permission.where("feature_id =?", feature.id).first
+      permission = self.permissions.where("feature_id =?", feature.id).first
       return permission && permission.can_read?
     else
       return false
@@ -390,7 +394,7 @@ class User < Usman::ApplicationRecord
     return true if self.super_admin
     feature = Feature.published.find_by_name(class_name.to_s)
     if feature
-      permission = Permission.where("feature_id =?", feature.id).first
+      permission = self.permissions.where("feature_id =?", feature.id).first
       return permission && permission.can_create?
     else
       return false
@@ -401,7 +405,7 @@ class User < Usman::ApplicationRecord
     return true if self.super_admin
     feature = Feature.published.find_by_name(class_name.to_s)
     if feature
-      permission = Permission.where("feature_id =?", feature.id).first
+      permission = self.permissions.where("feature_id =?", feature.id).first
       return permission && permission.can_update?
     else
       return false
@@ -412,7 +416,7 @@ class User < Usman::ApplicationRecord
     return true if self.super_admin
     feature = Feature.published.find_by_name(class_name.to_s)
     if feature
-      permission = Permission.where("feature_id =?", feature.id).first
+      permission = self.permissions.where("feature_id =?", feature.id).first
       return permission && permission.can_delete?
     else
       return false

@@ -397,7 +397,7 @@ RSpec.describe Usman::Api::V1::RegistrationsController, :type => :request do
         expect(response_body["errors"]).to be_blank
 
         expect(response_body["alert"]["heading"]).to  eq("OTP was verified succesfully")
-        expect(response_body["alert"]["message"]).to  eq("You may need to accept the terms and conditions to get the API token if you have not yet finised the registration")
+        expect(response_body["alert"]["message"]).to  eq("You may need to accept the terms and conditions to get the API token if you have not yet finished the registration")
 
         dev.reload
         data = response_body["data"]
@@ -442,7 +442,7 @@ RSpec.describe Usman::Api::V1::RegistrationsController, :type => :request do
         expect(response_body["errors"]).to be_blank
 
         expect(response_body["alert"]["heading"]).to  eq("OTP was verified succesfully")
-        expect(response_body["alert"]["message"]).to  eq("You may need to accept the terms and conditions to get the API token if you have not yet finised the registration")
+        expect(response_body["alert"]["message"]).to  eq("You may need to accept the terms and conditions to get the API token if you have not yet finished the registration")
 
         dev.reload
         data = response_body["data"]

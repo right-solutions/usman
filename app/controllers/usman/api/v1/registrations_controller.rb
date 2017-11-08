@@ -106,25 +106,8 @@ module Usman
                     else
                       @data = { api_token: "" } 
                     end
-                    @data[:registration] = @registration
-                    user = @registration.user
-                    if user
-                      @data[:profile] = {
-                        id: user.id,
-                        name: user.name,
-                        gender: user.gender,
-                        email: user.email,
-                        date_of_birth: user.date_of_birth
-                      }
-                    else
-                      @data[:profile] = {
-                        id: "",
-                        name: "",
-                        gender: "",
-                        email: "",
-                        date_of_birth: ""
-                      }
-                    end
+                    @data[:registration] = ActiveModelSerializers::SerializableResource.new(@registration, serializer: RegistrationSerializer)
+                    @data[:profile] = ActiveModelSerializers::SerializableResource.new(@registration.user, serializer: ProfileSerializer)
                   else
                     @success = false
                     @errors = {
@@ -186,7 +169,11 @@ module Usman
                       heading: I18n.translate("api.accept_tac.tac_accepted.heading"),
                       message: I18n.translate("api.accept_tac.tac_accepted.message")
                     }
-                    @data = { api_token: @device.api_token } if @device.verified? && @device.tac_accepted?
+                    @data = { api_token: @device.api_token } 
+                    if @device.verified? && @device.tac_accepted?
+                      @data[:registration] = ActiveModelSerializers::SerializableResource.new(@registration, serializer: RegistrationSerializer)
+                      @data[:profile] = ActiveModelSerializers::SerializableResource.new(@registration.user, serializer: ProfileSerializer)
+                    end
                   else
                     @success = false
                     @errors = {

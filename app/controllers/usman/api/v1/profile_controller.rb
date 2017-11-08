@@ -100,6 +100,7 @@ module Usman
                 @user = @current_user
                 @user.name = permitted_params[:name]
                 @user.gender = permitted_params[:gender]
+                @user.dummy = false
                 @user.date_of_birth = permitted_params[:date_of_birth]
                 @user.email = permitted_params[:email]
 

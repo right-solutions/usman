@@ -1,7 +1,7 @@
 class RegistrationSerializer < ActiveModel::Serializer
 	include NullAttributeReplacer
 
-	attributes :id, :dialing_prefix, :mobile_number, :status
+	attributes :id, :dialing_prefix, :mobile_number, :status, :user_id, :country_id, :city_id
 
  	has_one :user, class_name: "User", serializer: ProfileSerializer do
  		if object.user

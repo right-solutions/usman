@@ -169,8 +169,8 @@ module Usman
                       heading: I18n.translate("api.accept_tac.tac_accepted.heading"),
                       message: I18n.translate("api.accept_tac.tac_accepted.message")
                     }
-                    @data = { api_token: @device.api_token } 
                     if @device.verified? && @device.tac_accepted?
+                      @data = { api_token: @device.api_token } 
                       @data[:registration] = ActiveModelSerializers::SerializableResource.new(@registration, serializer: RegistrationSerializer)
                       @data[:profile] = ActiveModelSerializers::SerializableResource.new(@registration.user, serializer: ProfileSerializer)
                     end

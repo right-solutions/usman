@@ -375,7 +375,10 @@ RSpec.describe Usman::Api::V1::RegistrationsController, :type => :request do
   describe "verify" do
     context "Positive Case" do
       it "should verify an otp verification request from a pending device" do
-        reg = FactoryGirl.create(:pending_registration, user: nil)
+        reg = FactoryGirl.create(:pending_registration, city: nil)
+        reg.user = User.new(dummy: true)
+        reg.user.generate_dummy_data(reg.id)
+        reg.user.save
         dev = FactoryGirl.create(:pending_device, registration: reg)
 
         # Generating a new OTP
@@ -406,20 +409,27 @@ RSpec.describe Usman::Api::V1::RegistrationsController, :type => :request do
 
         expect(data["registration"]["id"]).not_to be_blank
         expect(data["registration"]["country_id"]).to eq(reg.country.id)
-        expect(data["registration"]["city_id"]).to eq(reg.city.id)
+        expect(data["registration"]["city_id"]).to be_blank
         expect(data["registration"]["dialing_prefix"]).to eq(reg.dialing_prefix)
         expect(data["registration"]["mobile_number"]).to eq(reg.mobile_number)
-        expect(data["registration"]["user_id"]).to be_blank
+        expect(data["registration"]["user_id"]).to eq(reg.user.id)
         expect(data["registration"]["status"]).to match("pending")
 
-        expect(data["profile"]["id"]).to be_blank
-        expect(data["profile"]["name"]).to be_blank
+        expect(data["profile"]["id"]).to eq(reg.user.id)
+        expect(data["profile"]["name"]).to eq(reg.user.name)
         expect(data["profile"]["gender"]).to be_blank
-        expect(data["profile"]["email"]).to be_blank
+        expect(data["profile"]["email"]).to eq(reg.user.email)
         expect(data["profile"]["date_of_birth"]).to be_blank
+
+        expect(data["profile"]["profile_picture"]["id"]).to be_blank
+        expect(data["profile"]["profile_picture"]["created_at"]).to be_blank
+        expect(data["profile"]["profile_picture"]["profile_id"]).to eq(reg.user.id)
+        expect(data["profile"]["profile_picture"]["image_large_path"]).to be_blank
+        expect(data["profile"]["profile_picture"]["image_small_path"]).to be_blank
       end
       it "should verify the otp if the device is verified, tac is accpted and return the api token" do
-        reg = FactoryGirl.create(:verified_registration)
+        user = FactoryGirl.create(:approved_user, name: "Some User", gender: "male")
+        reg = FactoryGirl.create(:verified_registration, user: user)
         dev = FactoryGirl.create(:verified_device, registration: reg)
 
         # Generating a new OTP
@@ -454,14 +464,20 @@ RSpec.describe Usman::Api::V1::RegistrationsController, :type => :request do
         expect(data["registration"]["city_id"]).to eq(reg.city.id)
         expect(data["registration"]["dialing_prefix"]).to eq(reg.dialing_prefix)
         expect(data["registration"]["mobile_number"]).to eq(reg.mobile_number)
-        expect(data["registration"]["user_id"]).not_to be_blank
-        expect(data["registration"]["status"]).to match(reg.status)
+        expect(data["registration"]["user_id"]).to eq(reg.user.id)
+        expect(data["registration"]["status"]).to match("verified")
 
         expect(data["profile"]["id"]).to eq(reg.user.id)
         expect(data["profile"]["name"]).to eq(reg.user.name)
         expect(data["profile"]["gender"]).to eq(reg.user.gender)
         expect(data["profile"]["email"]).to eq(reg.user.email)
         expect(data["profile"]["date_of_birth"]).to eq(reg.user.date_of_birth.strftime('%d-%m-%Y'))
+
+        expect(data["profile"]["profile_picture"]["id"]).to be_blank
+        expect(data["profile"]["profile_picture"]["created_at"]).to be_blank
+        expect(data["profile"]["profile_picture"]["profile_id"]).to eq(reg.user.id)
+        expect(data["profile"]["profile_picture"]["image_large_path"]).to be_blank
+        expect(data["profile"]["profile_picture"]["image_small_path"]).to be_blank
       end
     end
     context "Negative Case" do

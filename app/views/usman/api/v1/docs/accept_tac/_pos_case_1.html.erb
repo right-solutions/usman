@@ -25,7 +25,58 @@ api_output = <<-eos
       "message": "Store and use the API token for further communication"
   },
   "data": {
-    "api_token": "ajshdjkashdkjasdas"
+    "api_token": "ajshdjkashdkjasdas",
+            "registration": {
+            "id": 165,
+            "dialing_prefix": "+97",
+            "mobile_number": "1501370320",
+            "status": "verified",
+            "user_id": 19,
+            "country_id": 235,
+            "city_id": 21,
+            "user": {
+                "id": 19,
+                "name": "Mickey Mouse ",
+                "gender": "male",
+                "date_of_birth": "10-10-1983",
+                "username": "342721f3",
+                "email": "mickey@dondealapps.com",
+                "phone": "",
+                "dummy": false
+            },
+            "country": {
+                "id": 235,
+                "name": "United Arab Emirates",
+                "iso_name": "UNITED ARAB EMIRATES",
+                "iso_alpha_2": "AE",
+                "dialing_prefix": "971",
+                "priority": 1000,
+                "operational": true
+            },
+            "city": {
+                "id": 21,
+                "name": "Abu Dhabi",
+                "priority": 1000,
+                "operational": true
+            }
+        },
+        "profile": {
+            "id": 19,
+            "name": "Mickey Mouse ",
+            "gender": "male",
+            "date_of_birth": "10-10-1983",
+            "username": "342721f3",
+            "email": "mickey@dondealapps.com",
+            "phone": "",
+            "dummy": false,
+            "profile_picture": {
+                "id": 60,
+                "created_at": "26-09-2017 01:05:15",
+                "profile_id": 19,
+                "image_large_path": "/uploads/profile_pictures/60/large_micky.jpg",
+                "image_small_path": "/uploads/profile_pictures/60/small_micky.jpg"
+            }
+        }
   }
 }
 eos

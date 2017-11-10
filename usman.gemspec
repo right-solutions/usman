@@ -23,8 +23,8 @@ Gem::Specification.new do |s|
   s.add_dependency 'filesize', "~> 0.1.1"
   # s.add_dependency 'config', '~> 1.0'
 
-  s.add_dependency 'kuppayam', "~> 0.1", ">= 0.1.20"
-  s.add_dependency 'pattana', "~> 0.1", ">= 0.1.16"
+  s.add_dependency 'kuppayam', "~> 0.1", ">= 0.1.21"
+  s.add_dependency 'pattana', "~> 0.1", ">= 0.1.17"
   s.add_dependency 'bcrypt', "~> 3.0"
   s.add_dependency "colorize", "~> 0.8"
   

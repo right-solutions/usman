@@ -10,14 +10,14 @@ module Usman
                 :registration, :device, :remote_ip
 
     def initialize(params)
+
       @dialing_prefix = params[:dialing_prefix]
       @mobile_number = params[:mobile_number]
       
-      @country = nil
-      @city = nil
       @country = Country.find_by_id(params[:country_id])
       @city = City.find_by_id(params[:city_id])
 
+      # FIXME
       # Edge case to catch city selected that of a different country
       @city = nil unless @city.country == @country if @city
       
@@ -52,13 +52,8 @@ module Usman
     end
 
     def check_if_device_is_already_registered
-      @registration = Registration.where("LOWER(mobile_number) = LOWER('#{@mobile_number}')").first
-      if @registration
-        @registration.country = @country
-        @registration.city = @city
-      end
+      @registration = Registration.where("LOWER(mobile_number) = LOWER('#{@mobile_number}') AND LOWER(dialing_prefix) = LOWER('#{@dialing_prefix}')").first
       @device = Device.where("LOWER(uuid) = LOWER('#{@uuid}')").first if @registration
-
       @device.generate_otp if @device
     end
 
@@ -72,8 +67,11 @@ module Usman
       ActiveRecord::Base.transaction do
         # Create a new registration if it doesn't exist
         @registration = Registration.new unless @registration
+        @user = @registration.user
+          
         @registration.country = @country
         @registration.city = @city
+        
         @registration.dialing_prefix = @dialing_prefix
         @registration.mobile_number = @mobile_number
         

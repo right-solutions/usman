@@ -76,7 +76,7 @@ describe Usman::MobileRegistrationService do
         expect(mrs.operating_system).to eq(dev1.operating_system)
         expect(mrs.software_version).to eq(dev1.software_version)
         expect(mrs.remote_ip).to eq("1.2.3.4")
-        
+
         expect(mrs.error_message).to be_nil
         expect(mrs.error_details).to be_empty
 

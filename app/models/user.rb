@@ -458,7 +458,7 @@ class User < Usman::ApplicationRecord
   def image_configuration
     {
       "Image::ProfilePicture" => {
-        max_upload_limit: 1048576,
+        max_upload_limit: 10485760,
         min_upload_limit: 1024,
         resolutions: [400, 400],
         form_upload_image_label: "Upload a new Image",

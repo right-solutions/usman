@@ -1,31 +1,16 @@
 class Feature < Usman::ApplicationRecord
   
-  # Constants
-  PUBLISHED = "published"
-  UNPUBLISHED = "unpublished"
-  DISABLED = "disabled"
-  
-  STATUS = { 
-    PUBLISHED => "Published", 
-    UNPUBLISHED => "Un-Published", 
-    DISABLED => "Disabled"
-  }
+  # Including the State Machine Methods
+  include Publishable
 
-  STATUS_REVERSE = { 
-    "Published" => PUBLISHED,
-    "Un-Published" => UNPUBLISHED,
-    "Disabled" => DISABLED
-  }
-  
-	# Associations
+  # Associations
   has_many :permissions
   has_many :users, through: :permissions
-  has_one :feature_image, :as => :imageable, :dependent => :destroy, :class_name => "Image::FeatureImage"
+  # has_one :feature_image, :as => :imageable, :dependent => :destroy, :class_name => "Image::FeatureImage"
 
 	# Validations
 	validates :name, presence: true, length: {minimum: 3, maximum: 250}
-	validates :status, :presence => true, :inclusion => {:in => STATUS.keys, :presence_of => :status, :message => "%{value} is not a valid status" }
-
+	
   # ------------------
   # Class Methods
   # ------------------
@@ -38,13 +23,7 @@ class Feature < Usman::ApplicationRecord
   scope :search, lambda {|query| where("LOWER(name) LIKE LOWER('%#{query}%')")
                         }
 
-  scope :status, lambda { |status| where("LOWER(status)='#{status}'") }
-
   scope :categorisable, -> { where(categorisable: true) }
-
-  scope :unpublished, -> { where(status: UNPUBLISHED) }
-  scope :published, -> { where(status: PUBLISHED) }
-  scope :disabled, -> { where(status: DISABLED) }
 
   def self.save_row_data(hsh)
 
@@ -77,60 +56,6 @@ class Feature < Usman::ApplicationRecord
   # Instance Methods
   # ------------------
 
-  # Status Methods
-  # --------------
-
-  # * Return true if the user is not published, else false.
-  # == Examples
-  #   >>> feature.published?
-  #   => true
-  def published?
-    (status == PUBLISHED)
-  end
-
-  # * Return true if the user is unpublished, else false.
-  # == Examples
-  #   >>> feature.unpublished?
-  #   => true
-  def unpublished?
-    (status == UNPUBLISHED)
-  end
-
-  # * Return true if the user is disabled, else false.
-  # == Examples
-  #   >>> feature.disabled?
-  #   => true
-  def disabled?
-    (status == DISABLED)
-  end
-
-  # change the status to :unpublished
-  # Return the status
-  # == Examples
-  #   >>> feature.unpublish!
-  #   => "unpublished"
-  def unpublish!
-    self.update_attribute(:status, UNPUBLISHED)
-  end
-
-  # change the status to :published
-  # Return the status
-  # == Examples
-  #   >>> feature.publish!
-  #   => "published"
-  def publish!
-    self.update_attribute(:status, PUBLISHED)
-  end
-
-  # change the status to :suspended
-  # Return the status
-  # == Examples
-  #   >>> feature.disable!
-  #   => "disabled"
-  def disable!
-    self.update_attribute(:status, DISABLED)
-  end
-
   # Permission Methods
   # ------------------
 
@@ -140,18 +65,6 @@ class Feature < Usman::ApplicationRecord
 
   def can_be_deleted?
     true
-  end
-
-  def can_be_published?
-    unpublished? or disabled?
-  end
-
-  def can_be_unpublished?
-    published? or disabled?
-  end
-
-  def can_be_disabled?
-    published? or unpublished?
   end
 
   # Other Methods

@@ -16,3 +16,6 @@ gemspec
 gem 'kuppayam', path: "/Users/rightsolutions/Projects/Products/kuppayam"
 gem 'pattana', path: "/Users/rightsolutions/Projects/Products/pattana"
 # gem 'uglifier'
+
+gem 'state_machines'
+gem 'state_machines-activerecord'

@@ -1,55 +1,48 @@
-<% status_hash = {published: "success", unpublished: "default", disabled: "danger"} %>
+<div id="div_blog_post_show">
 
-<div class="media <%= status_hash[@feature.status.to_sym] %>">
+  <div class="row">
+    
+    <!-- <div class="col-md-3 col-sm-12 col-xs-12" style="border-right:1px solid #f1f1f1;">
+    	<%# if display_edit_links? %>
+	  		<%#= edit_image(@feature, 
+	          "feature_image.image.large.url",
+	          upload_image_link(@feature, :feature_image, nil ),
+	          remove_image_link(@feature, :feature_image, nil ),
+	          image_options: {assoc_name: :feature_image }) %>
+	    <%# else %>
+	    	<%#= display_image(@user, "feature_image.image.large.url", class: "img-inline", alt: @feature.display_name) %>
+	    <%# end %>
+    </div> -->
+    <div class="col-md-9 col-sm-12 col-xs-12" style="border-right:1px solid #f1f1f1;">
+    		<%= theme_panel_heading(@feature.display_name) %>
+      	<%= theme_panel_sub_heading(@feature.name, "#") %>
+      	<%= clear_tag(10) %>
+      	<div class="table-responsive mb-50"> 
+					<table class="table table-striped table-condensed table-bordered"> 
+						<tbody>
 
-  <div class="pull-left pt-10 pr-10 pb-10" style="width:30%;">
-  	<% if display_edit_links? %>
-  		<%= edit_image(@feature, 
-          "feature_image.image.large.url",
-          upload_image_link(@feature, :feature_image, nil ),
-          remove_image_link(@feature, :feature_image, nil ),
-          image_options: {assoc_name: :feature_image }) %>
-    <% else %>
-    	<%= display_image(@user, "feature_image.image.large.url", class: "img-inline", alt: @feature.display_name) %>
+							<tr>
+								<th>Created At</th><td><%= @feature.created_at.strftime("%m/%d/%Y - %H:%M:%S") if @feature.created_at %></td>
+							</tr>
+							<tr>
+								<th>Updated At</th><td><%= @feature.updated_at.strftime("%m/%d/%Y - %H:%M:%S") if @feature.updated_at %></td>
+							</tr>
+							
+						</tbody>
+					</table>
+				</div>
+      	<%= clear_tag(10) %>
+    </div>
+
+    <% if display_manage_links? %>
+    <div class="col-md-3 col-sm-12 col-xs-12">
+      <%= display_manage_buttons(@feature) %>
+      <%= display_publishable_buttons(@feature) %>
+    </div>
     <% end %>
   </div>
 
-  <div class="pull-left ml-10" style="width:65%;">
-  	<h1><%= @feature.name %></h1>
-    <span class="ml-5 mt-5 label label-<%= status_hash[@feature.status.to_sym] %>"><%= @feature.status.titleize %></span>
-    <%= clear_tag %>
-  </div>
-
+  <%= clear_tag(30) %>
+  <%= link_to "Close", "#", onclick: "closeGenericModal();", class: "btn btn-primary pull-right" %>
+  <%= clear_tag(10) %>
 </div>
-
-<h4 class="mb-20">Technical Details</h4>
-
-<div class="table-responsive mb-50"> 
-	<table class="table table-striped table-condensed table-bordered"> 
-		<tbody>
-
-			<tr>
-				<th>Created At</th><td><%= @feature.created_at.strftime("%m/%d/%Y - %H:%M:%S") if @feature.created_at %></td>
-				<th>Updated At</th><td><%= @feature.updated_at.strftime("%m/%d/%Y - %H:%M:%S") if @feature.updated_at %></td>
-			</tr>
-			
-		</tbody>
-	</table>
-</div>
-
-<% if display_manage_links? %>
-<div>
-	<% 
-		edit_link = edit_feature_url(id: @feature.id)
-		delete_link = feature_url(id: @feature.id) 
-	%>
-	
-	<%= link_to raw("<i class=\"fa fa-close mr-5\"></i> <span>Cancel</span>"), "#", onclick: "closeGenericModal();", class: "btn btn-white pull-left" %>
-
-	<%= link_to raw("<i class=\"fa fa-trash mr-5\"></i> <span>Delete</span>"), delete_link, method: :delete, :remote=>true, class: "btn btn-gray pull-right" if display_delete_links? %>
-
-	<%= link_to raw("<i class=\"fa fa-edit mr-5\"></i> Edit"), edit_link, method: :get, :remote=>true, class: "btn btn-gray pull-right mr-10" if display_edit_links? %>
-</div>
-<% end %>
-
-<%= clear_tag %>

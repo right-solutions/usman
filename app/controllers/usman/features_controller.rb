@@ -5,13 +5,18 @@ module Usman
     
     private
 
+    def get_resource
+      @r_object = @resource_options[:class].find_by_id(params[:id])
+      @r_object.categorisable = false if params[:action] == "update"
+    end
+
     def get_collections
       @relation = Feature.where("")
 
       parse_filters
       apply_filters
       
-      @features = @r_objects = @relation.includes(:feature_image).page(@current_page).per(@per_page)
+      @features = @r_objects = @relation.page(@current_page).per(@per_page)
 
       return true
     end

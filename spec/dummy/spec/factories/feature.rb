@@ -13,8 +13,8 @@ FactoryGirl.define do
     status "unpublished"
   end
 
-  factory :disabled_feature, parent: :feature do
-    status "disabled"
+  factory :removed_feature, parent: :feature do
+    status "removed"
   end
   
 end

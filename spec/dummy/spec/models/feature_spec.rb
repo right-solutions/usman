@@ -6,7 +6,7 @@ RSpec.describe Feature, type: :model do
 
   let(:published_feature) {FactoryGirl.build(:published_feature)}
   let(:unpublished_feature) {FactoryGirl.build(:unpublished_feature)}
-  let(:disabled_feature) {FactoryGirl.build(:disabled_feature)}
+  let(:removed_feature) {FactoryGirl.build(:removed_feature)}
 
   let(:photo_gallery) {FactoryGirl.create(:published_feature, name: "Photo Gallery")}
   let(:video_gallery) {FactoryGirl.create(:published_feature, name: "Video Gallery")}
@@ -24,9 +24,9 @@ RSpec.describe Feature, type: :model do
       expect(unpublished_feature.status).to match("unpublished")
       expect(unpublished_feature.valid?).to be_truthy
 
-      disabled_feature = FactoryGirl.build(:disabled_feature)
-      expect(disabled_feature.status).to match("disabled")
-      expect(disabled_feature.valid?).to be_truthy
+      removed_feature = FactoryGirl.build(:removed_feature)
+      expect(removed_feature.status).to match("removed")
+      expect(removed_feature.valid?).to be_truthy
     end
   end
 
@@ -36,13 +36,13 @@ RSpec.describe Feature, type: :model do
     it { should_not allow_value('AB').for(:name )}
     it { should_not allow_value("x"*257).for(:name )}
 
-    it { should validate_inclusion_of(:status).in_array(Feature::STATUS.keys)  }
+    it { should validate_inclusion_of(:status).in_array(Feature::STATUS_REVERSE.keys)  }
   end
 
   context "Associations" do
     it { should have_many(:users) }
     it { should have_many(:permissions) }
-    it { should have_one(:feature_image) }
+    # it { should have_one(:feature_image) }
   end
 
   context "Class Methods" do
@@ -65,10 +65,10 @@ RSpec.describe Feature, type: :model do
       expect(Feature.unpublished.all).to match_array [unpublished_feature]
     end
 
-    it "scope disabled" do
+    it "scope removed" do
       arr = [photo_gallery, video_gallery, brands]
-      disabled_feature = FactoryGirl.create(:disabled_feature)
-      expect(Feature.disabled.all).to match_array [disabled_feature]
+      removed_feature = FactoryGirl.create(:removed_feature)
+      expect(Feature.removed.all).to match_array [removed_feature]
     end
 
     context "Import Methods" do
@@ -89,17 +89,17 @@ RSpec.describe Feature, type: :model do
       end
 
       it "unpublish!" do
-        u = FactoryGirl.create(:unpublished_feature)
+        u = FactoryGirl.create(:published_feature)
         u.unpublish!
         expect(u.status).to match "unpublish"
         expect(u.unpublished?).to be_truthy
       end
 
-      it "disable!" do
-        u = FactoryGirl.create(:disabled_feature)
-        u.disable!
-        expect(u.status).to match "disabled"
-        expect(u.disabled?).to be_truthy
+      it "remove!" do
+        u = FactoryGirl.create(:unpublished_feature)
+        u.remove!
+        expect(u.status).to match "removed"
+        expect(u.removed?).to be_truthy
       end
     end
 
@@ -107,31 +107,13 @@ RSpec.describe Feature, type: :model do
       it "can_be_edited?" do
         expect(published_feature.can_be_edited?).to be_truthy
         expect(unpublished_feature.can_be_edited?).to be_truthy
-        expect(disabled_feature.can_be_edited?).to be_falsy
+        expect(removed_feature.can_be_edited?).to be_falsy
       end
 
       it "can_be_deleted?" do
         expect(published_feature.can_be_deleted?).to be_truthy
         expect(unpublished_feature.can_be_deleted?).to be_truthy
-        expect(disabled_feature.can_be_deleted?).to be_truthy
-      end
-
-      it "can_be_published?" do
-        expect(published_feature.can_be_published?).to be_falsy
-        expect(unpublished_feature.can_be_published?).to be_truthy
-        expect(disabled_feature.can_be_published?).to be_truthy
-      end
-
-      it "can_be_unpublished?" do
-        expect(published_feature.can_be_unpublished?).to be_truthy
-        expect(unpublished_feature.can_be_unpublished?).to be_falsy
-        expect(disabled_feature.can_be_unpublished?).to be_truthy
-      end
-
-      it "can_be_disabled?" do
-        expect(published_feature.can_be_disabled?).to be_truthy
-        expect(unpublished_feature.can_be_disabled?).to be_truthy
-        expect(disabled_feature.can_be_disabled?).to be_falsy
+        expect(removed_feature.can_be_deleted?).to be_truthy
       end
     end
 

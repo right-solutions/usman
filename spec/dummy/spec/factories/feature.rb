@@ -2,6 +2,7 @@ FactoryGirl.define do
 
   factory :feature do
     name "Feature Name"
+    categorisable false
   end
 
   factory :published_feature, parent: :feature do

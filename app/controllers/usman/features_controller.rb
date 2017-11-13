@@ -74,7 +74,7 @@ module Usman
     end
 
     def permitted_params
-      params.require(:feature).permit(:name)
+      params.require(:feature).permit(:name, :categorisable)
     end
 
     def set_navs

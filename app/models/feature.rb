@@ -40,6 +40,8 @@ class Feature < Usman::ApplicationRecord
 
   scope :status, lambda { |status| where("LOWER(status)='#{status}'") }
 
+  scope :categorisable, -> { where(categorisable: true) }
+
   scope :unpublished, -> { where(status: UNPUBLISHED) }
   scope :published, -> { where(status: PUBLISHED) }
   scope :disabled, -> { where(status: DISABLED) }
@@ -161,6 +163,10 @@ class Feature < Usman::ApplicationRecord
   #   => "Products"
   def display_name
     "#{name.to_s.demodulize.pluralize.titleize}"
+  end
+
+  def display_categorisable
+    self.categorisable ? "Yes" : "No"
   end
 
   # Image Configuration

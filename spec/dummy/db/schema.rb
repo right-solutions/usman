@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170929090642) do
+ActiveRecord::Schema.define(version: 20171112082850) do
 
   create_table "cities", id: :integer, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string "name", limit: 128
@@ -99,6 +99,7 @@ ActiveRecord::Schema.define(version: 20170929090642) do
     t.string "status", limit: 16, default: "unpublished", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.boolean "categorisable", default: false
   end
 
   create_table "images", id: :integer, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|

@@ -53,7 +53,7 @@
 
 			<%= link_to raw("<i class=\"linecons-pencil\"></i> Edit User"), edit_link, :remote=>true, class: "btn btn-block btn-success" if @user.can_be_edited? %>
 
-	    <%= link_to raw("<i class=\"linecons-trash\"></i> Delete"), delete_link, method: :delete, role: "menuitem", tabindex: "-1", data: { confirm: 'Are you sure?' }, :remote=>true, class: "btn btn-block btn-danger btn-only-hover" if @user.can_be_deleted? && (@current_user != @user) && @current_permission.can_delete? %>
+	    <%= link_to raw("<i class=\"linecons-trash\"></i> Delete"), delete_link, method: :delete, role: "menuitem", tabindex: "-1", data: { confirm: 'Are you sure?' }, :remote=>true, class: "btn btn-block btn-danger btn-only-hover" if @user.can_be_deleted? && (@current_user != @user) && @current_permission && @current_permission.can_delete? %>
 
 	    <% if @current_user.super_admin? %>
 	      

@@ -30,8 +30,8 @@ module Usman
                   @user.approve!
                   @current_registration.user = @user
                   
-                  @current_registration.country = @country if @country
-                  @current_registration.city = @city if @city
+                  @user.country = @country if @country
+                  @user.city = @city if @city
 
                   @current_registration.save
 
@@ -111,8 +111,8 @@ module Usman
                   @user.dummy = false
                   @user.save
                   
-                  @current_registration.country = @country if @country
-                  @current_registration.city = @city if @city
+                  @user.country = @country if @country
+                  @user.city = @city if @city
 
                   @current_registration.save
 

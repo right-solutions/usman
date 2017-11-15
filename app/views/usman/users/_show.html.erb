@@ -120,12 +120,17 @@
 						
 						<tr>
 							<th>Name</th><td><%= @user.name %></td>
-							<th>Username</th><td><%= @user.username %></td>							
+							<th>Username</th><td><%= @user.username %></td>
 						</tr>
 
 						<tr>
 							<th>Email</th><td><%= @user.email %></td>
 							<th>Phone</th><td><%= @user.phone %></td>
+						</tr>
+
+						<tr>
+							<th>City</th><td><%= @user.city.try(:display_name) %></td>
+							<th>Country</th><td><%= @user.country.try(:display_name) %></td>
 						</tr>
 
 						<tr>

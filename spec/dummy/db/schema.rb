@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171113153050) do
+ActiveRecord::Schema.define(version: 20171115034535) do
 
   create_table "cities", id: :integer, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string "name", limit: 128
@@ -216,6 +216,8 @@ ActiveRecord::Schema.define(version: 20171113153050) do
     t.string "gender"
     t.date "date_of_birth"
     t.boolean "dummy", default: false
+    t.integer "country_id"
+    t.integer "city_id"
     t.index ["auth_token"], name: "index_users_on_auth_token", unique: true
     t.index ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true
     t.index ["email"], name: "index_users_on_email", unique: true

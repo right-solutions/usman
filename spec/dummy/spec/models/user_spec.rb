@@ -69,6 +69,8 @@ RSpec.describe User, type: :model do
     it { should have_many(:features) }
     it { should have_one(:registration) }
     it { should have_many(:devices) }
+    it { should belong_to(:country) }
+    it { should belong_to(:city) }
   end
 
   context "Delegates" do

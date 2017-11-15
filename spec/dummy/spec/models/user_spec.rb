@@ -301,12 +301,15 @@ RSpec.describe User, type: :model do
 
       it "generate_dummy_data" do
         u = User.new
-        u.generate_dummy_data
+        r = FactoryGirl.create(:pending_registration)
+        u.generate_dummy_data(r)
         expect(u.username).not_to be_blank
         expect(u.password_digest).not_to be_blank
         expect(u.name).not_to be_blank
         expect(u.email).not_to be_blank
         expect(u.dummy).to be_truthy
+        expect(u.country_id).to eq(r.country_id)
+        expect(u.city_id).to eq(r.city_id)
       end
     end
   end

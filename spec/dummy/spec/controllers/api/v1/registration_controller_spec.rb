@@ -377,7 +377,7 @@ RSpec.describe Usman::Api::V1::RegistrationsController, :type => :request do
       it "should verify an otp verification request from a pending device" do
         reg = FactoryGirl.create(:pending_registration, city: nil)
         reg.user = User.new(dummy: true)
-        reg.user.generate_dummy_data(reg.id)
+        reg.user.generate_dummy_data(reg)
         reg.user.save
         dev = FactoryGirl.create(:pending_device, registration: reg)
 
@@ -420,6 +420,8 @@ RSpec.describe Usman::Api::V1::RegistrationsController, :type => :request do
         expect(data["profile"]["gender"]).to be_blank
         expect(data["profile"]["email"]).to eq(reg.user.email)
         expect(data["profile"]["date_of_birth"]).to be_blank
+        expect(data["profile"]["country_id"]).to eq(reg.country.id)
+        expect(data["profile"]["city_id"]).to be_blank
 
         expect(data["profile"]["profile_picture"]["id"]).to be_blank
         expect(data["profile"]["profile_picture"]["created_at"]).to be_blank

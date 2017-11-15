@@ -6,7 +6,7 @@ RSpec.describe RegistrationSerializer, type: :serializer do
     it "should include registration and profile attributes - if it is a dummy user" do
       reg = FactoryGirl.create(:verified_registration, city: nil)
       reg.user = User.new(dummy: true)
-      reg.user.generate_dummy_data(reg.id)
+      reg.user.generate_dummy_data(reg)
       reg.user.save
 
       json_data = ActiveModelSerializers::SerializableResource.new(reg, serializer: RegistrationSerializer).to_json
@@ -28,6 +28,8 @@ RSpec.describe RegistrationSerializer, type: :serializer do
       expect(data["user"]["email"]).to eq(reg.user.email)
       expect(data["user"]["phone"]).to be_blank
       expect(data["user"]["dummy"]).to be_truthy
+      expect(data["user"]["country_id"]).to eq(reg.user.country_id)
+      expect(data["user"]["city_id"]).to be_blank
 
       expect(data["country"]["id"]).to eq(reg.country.id)
       expect(data["country"]["name"]).to eq(reg.country.name)

@@ -112,7 +112,7 @@ module Usman
     def create_a_dummy_user
       return unless @registration.persisted?
       @registration.user = User.new
-      @registration.user.generate_dummy_data(@registration.id)
+      @registration.user.generate_dummy_data(@registration)
       @registration.user.save
     end
 

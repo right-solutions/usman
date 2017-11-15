@@ -448,10 +448,12 @@ class User < Usman::ApplicationRecord
     self.password_confirmation = passwd
   end
 
-  def generate_dummy_data(registration_id=nil)
+  def generate_dummy_data(registration)
     generate_username_and_password
     self.email = "#{self.username}@donedealapps.com"
-    self.name = "User #{registration_id}"
+    self.name = "User #{registration.try(:id)}"
+    self.country_id = registration.country_id
+    self.city_id = registration.city_id
     self.dummy = true
   end
 

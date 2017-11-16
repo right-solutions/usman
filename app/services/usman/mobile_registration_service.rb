@@ -45,6 +45,9 @@ module Usman
       # Create a dummy user
       create_a_dummy_user if @registration.user.blank?
 
+      @registration.device.user = @registration.user
+      @registration.device.save
+
       if @registration.errors.any? or @device.errors.any?
         errors = @registration.errors.to_hash.merge(@device.errors.to_hash)
         set_error("api.register.invalid_inputs", errors)

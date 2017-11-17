@@ -45,8 +45,10 @@ module Usman
       # Create a dummy user
       create_a_dummy_user if @registration.user.blank?
 
-      @registration.device.user = @registration.user
-      @registration.device.save
+      @registration.devices.each do |d|
+        d.user = @registration.user
+        d.save
+      end
 
       if @registration.errors.any? or @device.errors.any?
         errors = @registration.errors.to_hash.merge(@device.errors.to_hash)

@@ -17,7 +17,6 @@ module Usman
       @country = Country.find_by_id(params[:country_id])
       @city = City.find_by_id(params[:city_id])
 
-      # FIXME
       # Edge case to catch city selected that of a different country
       @city = nil unless @city.country == @country if @city
       
@@ -43,16 +42,16 @@ module Usman
       @device.valid?
 
       # Create a dummy user
-      create_a_dummy_user if @registration.user.blank?
-
-      @registration.devices.each do |d|
-        d.user = @registration.user
-        d.save
+      if @registration.user_id.blank?
+        create_a_dummy_user 
       end
 
       if @registration.errors.any? or @device.errors.any?
         errors = @registration.errors.to_hash.merge(@device.errors.to_hash)
         set_error("api.register.invalid_inputs", errors)
+      else
+        @registration.save
+        @device.save
       end
     end
 
@@ -63,7 +62,7 @@ module Usman
     end
 
     def register_new_device
-      
+
       if @device && @device.blocked?
         set_error("api.register.device_blocked")
         return
@@ -97,6 +96,7 @@ module Usman
 
         if @registration.errors.blank? && @device.errors.blank?
           @registration.save
+          # Saving User to device table
           @device.save
           generate_new_otp
         else
@@ -115,10 +115,11 @@ module Usman
     end
 
     def create_a_dummy_user
-      return unless @registration.persisted?
-      @registration.user = User.new
-      @registration.user.generate_dummy_data(@registration)
-      @registration.user.save
+      @user = User.new
+      @user.generate_dummy_data(@registration)
+      @user.save
+      @registration.user = @user
+      @device.user = @user if @device
     end
 
     def set_error(key, hsh={})

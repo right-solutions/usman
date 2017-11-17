@@ -45,7 +45,7 @@ RSpec.describe Usman::Api::V1::RegistrationsController, :type => :request do
         expect(data["registration"]["user_id"]).not_to be_blank
         expect(data["registration"]["status"]).to match("pending")
 
-        expect(data["device"]["user_id"]).to be_blank
+        expect(data["device"]["user_id"]).not_to be_blank
         expect(data["device"]["registration_id"]).not_to be_blank
         expect(data["device"]["uuid"]).to match(uuid)
         expect(data["device"]["device_token"]).to match(device_token)

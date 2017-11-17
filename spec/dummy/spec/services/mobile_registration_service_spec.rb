@@ -81,7 +81,7 @@ describe Usman::MobileRegistrationService do
         expect(mrs.error_details).to be_empty
 
         r = mrs.registration
-        d = mrs.device
+        d = mrs.device.reload
 
         expect(r.persisted?).to be_truthy
         expect(r.dialing_prefix).to eq(reg1.dialing_prefix)
@@ -99,9 +99,9 @@ describe Usman::MobileRegistrationService do
         expect(d.operating_system).to eq(dev1.operating_system)
         expect(d.software_version).to eq(dev1.software_version)
         expect(d.registration.persisted?).to be_truthy
+        expect(d.user).to eq(r.user)
         expect(d.otp).not_to be_nil
         expect(d.otp_sent_at).not_to be_nil
-        expect(d.user).to be_nil
       end
 
       it "should register and reuse an existing device information" do
@@ -143,9 +143,9 @@ describe Usman::MobileRegistrationService do
         expect(d.operating_system).to eq(dev2.operating_system)
         expect(d.software_version).to eq(dev2.software_version)
         expect(d.registration.persisted?).to be_truthy
+        expect(d.user).to eq(r.user)
         expect(d.otp).not_to be_nil
         expect(d.otp_sent_at).not_to be_nil
-        expect(d.user.persisted?).to be_truthy
       end
 
       it "should reuse existing registration & device information" do
@@ -188,9 +188,9 @@ describe Usman::MobileRegistrationService do
         expect(d.operating_system).to eq(dev3.operating_system)
         expect(d.software_version).to eq(dev3.software_version)
         expect(d.registration.persisted?).to be_truthy
+        expect(d.user).to eq(r.user)
         expect(d.otp).not_to be_nil
         expect(d.otp_sent_at).not_to be_nil
-        expect(d.user.persisted?).to be_truthy
       end
 
       it "should should not create a dummy user if it already has one" do
@@ -231,9 +231,9 @@ describe Usman::MobileRegistrationService do
         expect(d.operating_system).to eq(dev3.operating_system)
         expect(d.software_version).to eq(dev3.software_version)
         expect(d.registration.persisted?).to be_truthy
+        expect(d.user).to eq(r.user)
         expect(d.otp).not_to be_nil
         expect(d.otp_sent_at).not_to be_nil
-        expect(d.user).not_to be_nil
       end
     end
 
@@ -257,7 +257,7 @@ describe Usman::MobileRegistrationService do
         expect(mrs.error_heading).to match("Registring new mobile number FAILED")
         expect(mrs.error_message).to match("Check if all mandatory details are passed. Refer the error details for technical information")
         expect(mrs.error_details).not_to be_empty
-
+        
         expect(mrs.registration.persisted?).to be_falsy
         expect(mrs.device.persisted?).to be_falsy
       end
@@ -284,7 +284,6 @@ describe Usman::MobileRegistrationService do
         expect(mrs.error_heading).to match("Registring new mobile number FAILED")
         expect(mrs.error_message).to match("Check if all mandatory details are passed. Refer the error details for technical information")
         expect(mrs.error_details).not_to be_empty
-
         expect(mrs.registration.persisted?).to be_falsy
         expect(mrs.device.persisted?).to be_falsy
 
@@ -297,7 +296,6 @@ describe Usman::MobileRegistrationService do
         expect(mrs.dialing_prefix).to eq("+91")
         expect(mrs.mobile_number).to eq("1020300103")
         expect(mrs.country).to eq(nil)
-
       end
 
       it "should set proper errors when registration information is missing" do

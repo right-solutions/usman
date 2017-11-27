@@ -60,6 +60,11 @@ Usman::Engine.routes.draw do
       put :update_profile, :controller => "profile", as: :update_profile
       get :profile_info, :controller => "profile", as: :profile_info
 
+      # Contacts
+      post 'contacts/sync', :controller => "contacts", action: :sync, as: :sync_contacts
+      get 'contacts', :controller => "contacts", action: :index, as: :contacts
+      get 'contacts/:id', :controller => "contacts", action: :show, as: :contact
+
       # Profile Picture
       post 'profile/profile_picture_base64', :controller => "profile_picture", action: :profile_picture_base64, as: :profile_picture_base64
       post 'profile/profile_picture', :controller => "profile_picture", action: :profile_picture, as: :profile_picture

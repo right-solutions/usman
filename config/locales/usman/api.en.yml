@@ -109,3 +109,7 @@ en:
       profile_picture_does_not_exists:
         heading: "Profile Picture doesn't exists"
         message: "You are trying to destroy a profile picture when it doesn't exist"
+    contacts:
+      synced_successfully:
+        heading: "The Contacts has been synced successfully"
+        message: "You may now store the done deal user id of these contacts returned in this response"

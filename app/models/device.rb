@@ -22,6 +22,7 @@ class Device < ApplicationRecord
 	# Associations
   belongs_to :user, optional: true
   belongs_to :registration
+  has_many :contacts, class_name: "Usman::Contact"
 
   # Validations
   validates :uuid, presence: true, length: {maximum: 1024}

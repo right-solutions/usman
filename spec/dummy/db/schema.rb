@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171115034535) do
+ActiveRecord::Schema.define(version: 20171127013615) do
 
   create_table "cities", id: :integer, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string "name", limit: 128
@@ -29,6 +29,25 @@ ActiveRecord::Schema.define(version: 20171115034535) do
     t.index ["country_id"], name: "index_cities_on_country_id"
     t.index ["iso_code"], name: "index_cities_on_iso_code"
     t.index ["region_id"], name: "index_cities_on_region_id"
+  end
+
+  create_table "contacts", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.string "name", limit: 512
+    t.string "account_type", limit: 256
+    t.string "email", limit: 256
+    t.string "address", limit: 512
+    t.bigint "owner_id"
+    t.bigint "done_deal_user_id"
+    t.bigint "registration_id"
+    t.bigint "device_id"
+    t.string "contact_number_1", limit: 24, null: false
+    t.string "contact_number_2", limit: 24
+    t.string "contact_number_3", limit: 24
+    t.string "contact_number_4", limit: 24
+    t.index ["device_id"], name: "index_contacts_on_device_id"
+    t.index ["done_deal_user_id"], name: "index_contacts_on_done_deal_user_id"
+    t.index ["owner_id"], name: "index_contacts_on_owner_id"
+    t.index ["registration_id"], name: "index_contacts_on_registration_id"
   end
 
   create_table "countries", id: :integer, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|

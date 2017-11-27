@@ -24,6 +24,7 @@ class Registration < ApplicationRecord
   belongs_to :country
   belongs_to :city, optional: true
   has_many :devices
+  has_many :contacts, class_name: "Usman::Contact"
 
 	# Validations
   validates :dialing_prefix, presence: true, length: {minimum: 2, maximum: 4}

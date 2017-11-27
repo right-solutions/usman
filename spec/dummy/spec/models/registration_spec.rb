@@ -49,6 +49,7 @@ RSpec.describe Registration, type: :model do
     it { should belong_to(:country) }
     it { should belong_to(:city) }
     it { should have_many(:devices) }
+    it { should have_many(:contacts) }
   end
 
   context "Class Methods" do

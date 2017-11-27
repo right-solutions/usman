@@ -74,6 +74,7 @@ RSpec.describe Device, type: :model do
   context "Associations" do
     it { should belong_to(:user) }
     it { should belong_to(:registration) }
+    it { should have_many(:contacts) }
   end
 
   context "Class Methods" do

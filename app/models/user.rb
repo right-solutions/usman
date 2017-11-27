@@ -62,6 +62,7 @@ class User < Usman::ApplicationRecord
   has_many :features, through: :permissions
   has_many :devices
   has_one :registration
+  has_many :contacts, class_name: "Usman::Contact", foreign_key: :owner_id
   has_and_belongs_to_many :roles
   belongs_to :country, optional: true
   belongs_to :city, optional: true

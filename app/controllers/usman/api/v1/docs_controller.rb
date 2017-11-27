@@ -236,7 +236,7 @@ module Usman
         def upload_profile_picture
           set_title("Upload Profile Picture API")
           @request_type = "POST"
-          @end_point = "/api/v1/profile/upload_profile_picture"
+          @end_point = "/api/v1/profile/profile_picture"
           @description = <<-eos
           This APi will upload an image to a profile and will set it as the profile picture. <br>
           It accept an image in binary format

@@ -1,0 +1,53 @@
+<%
+
+api_title = "Positive Case - 1 - Sync phone contact with donedeal backend"
+
+api_input = <<-eos
+Example:
+
+Authorization: Token token="103652edd6bbdc72b770d3c8cb88b18d"
+POST #{request.base_url}/api/v1/contacts/sync
+{
+  "contacts": [           
+                  {
+                    "name": "sanoop",
+                    "account_type": "com.mollywood",
+                    "email": "san@gmail.com",
+                    "address": "xyz, str, efg",
+                    "contact_number_1": "87393993884",
+                    "contact_number_2":"9846557465"
+                  },
+                  {
+                    "name": "arjun",
+                    "account_type": "com.mollywood1",
+                    "email": "arj@gmail.com",
+                    "address": "xyz, str, efg",
+                    "contact_number_1": "77777777",
+                    "contact_number_2":"999999999"
+                  }
+              ]
+}
+
+Contact sync API sync the mobile contact with donedeal backend
+eos
+
+api_output = <<-eos
+{
+    "success": true,
+    "alert": {
+        "heading": "The Contacts has been synced successfully",
+        "message": "You may now store the done deal user id of these contacts returned in this response"
+    },
+    "data": []
+}
+eos
+
+%>
+
+<%= render partial: "kuppayam/api/docs/example", locals: {
+                                        negative_case: false,
+                                        example_id: "pos_case_1",
+                                        api_title: api_title,
+                                        api_input: api_input,
+                                        api_output: api_output 
+                                      } %>

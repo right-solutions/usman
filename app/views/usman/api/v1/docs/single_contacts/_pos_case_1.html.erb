@@ -1,0 +1,47 @@
+<%
+
+api_title = "Positive Case - 1 - Sync phone contact with donedeal backend"
+
+api_input = <<-eos
+Example:
+
+Authorization: nil
+GET #{request.base_url}/api/v1/contacts/1
+
+
+Single contact API fetch single contact from back end
+eos
+
+api_output = <<-eos
+{
+    "success": true,
+    "data": {
+        "id": 1,
+        "name": "Mohanlal",
+        "account_type": "com.mollywood",
+        "email": "mohanlal@gmail.com",
+        "address": "",
+        "contact_number_1": "87393993884",
+        "contact_number_2": "9846557465",
+        "contact_number_3": "",
+        "contact_number_4": "",
+        "profile_picture": {
+            "id": "",
+            "created_at": "",
+            "profile_id": "",
+            "image_large_path": "",
+            "image_small_path": ""
+        }
+    }
+}
+eos
+
+%>
+
+<%= render partial: "kuppayam/api/docs/example", locals: {
+                                        negative_case: false,
+                                        example_id: "pos_case_1",
+                                        api_title: api_title,
+                                        api_input: api_input,
+                                        api_output: api_output 
+                                      } %>

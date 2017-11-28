@@ -1,0 +1,34 @@
+<%
+
+api_title = "Negative Case - 1 - should set proper errors if api token is not present"
+
+api_input = <<-eos
+Example:
+
+Authorization: nil
+GET #{request.base_url}/api/v1/contacts
+{
+}
+
+Contact API fetch the synced data from the data base
+eos
+
+api_output = <<-eos
+{
+  "success": false,
+  "errors": {
+    "heading": "Invalid API Token",
+    "message": "Use the API Token you have received after accepting the terms and agreement"
+  }
+}
+eos
+
+%>
+
+<%= render partial: "kuppayam/api/docs/example", locals: {
+                                        negative_case: true,
+                                        example_id: "neg_case_1",
+                                        api_title: api_title,
+                                        api_input: api_input,
+                                        api_output: api_output 
+                                      } %>

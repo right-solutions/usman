@@ -84,6 +84,10 @@ Usman::Engine.routes.draw do
         get 'update_profile', :controller => "docs"
         get 'get_profile_info', :controller => "docs"
 
+        get 'contacts_sync', :controller => "docs"
+        get 'all_contacts', :controller => "docs"
+        get 'single_contacts', :controller => "docs"
+
         get 'upload_profile_picture_base64', :controller => "docs"
         get 'upload_profile_picture', :controller => "docs"
         get 'delete_profile_picture', :controller => "docs"

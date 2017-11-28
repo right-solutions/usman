@@ -207,6 +207,100 @@ module Usman
           render 'kuppayam/api/docs/show'
         end
 
+
+        def contacts_sync
+          set_title("Sync Contacts")
+          @request_type = "POST"
+          @end_point = "/api/v1/contacts/sync"
+          @description = <<-eos
+          This API sync all the contacts with donedeal backend 
+          eos
+
+          @input_headers = {
+            "Content-Type" => { value: "application/json", description: "The MIME media type for JSON text is application/json. This is to make sure that a valid json is returned. The default encoding is UTF-8. " },
+            "Authorization" => { value: "Token token=\"103652edd6bbdc72b770d3c8cb88b18d\"", description: "Put the API Token here. You shall get the API token after registering your device" }
+          }
+
+          @input_params = {
+                            contacts: { 
+                              mandatory: true, 
+                              description: "Json array of contact informations", 
+                              example: '[                          
+                                          {
+                                            "name": "Mohanlala",
+                                            "account_type": "com.mollywood",
+                                            "email": "mohanlal@gmail.com",
+                                            "address": "xyz, str, efg",
+                                            "contact_number_1": "87393993884",
+                                            "contact_number_2":"9846557465"
+                                          },
+                                          {
+                                            "name": "Mammukka",
+                                            "account_type": "com.mollywood1",
+                                            "email": "mammukka@gmail.com",
+                                            "address": "xyz, str, efg",
+                                            "contact_number_1": "7046338475",
+                                            "contact_number_2":"8086500502"
+                                          }
+                                        ]', 
+                              default: "" 
+                            },
+                        }  
+
+          @example_path = "usman/api/v1/docs/"
+          @examples = ["pos_case_1", "neg_case_1"]
+
+          set_nav("docs/usman/contacts_sync")
+
+          render 'kuppayam/api/docs/show'
+        end
+
+        def all_contacts
+          set_title("Get All Contacts")
+          @request_type = "GET"
+          @end_point = "/api/v1/contacts"
+          @description = <<-eos
+          This API fetch all the contacts of coresponding logged user
+          eos
+
+          @input_headers = {
+            "Content-Type" => { value: "application/json", description: "The MIME media type for JSON text is application/json. This is to make sure that a valid json is returned. The default encoding is UTF-8. " },
+            "Authorization" => { value: "Token token=\"103652edd6bbdc72b770d3c8cb88b18d\"", description: "Put the API Token here. You shall get the API token after registering your device" }
+          }
+
+          @input_params = {}  
+
+          @example_path = "usman/api/v1/docs/"
+          @examples = ["pos_case_1", "neg_case_1"]
+
+          set_nav("docs/usman/all_contacts")
+
+          render 'kuppayam/api/docs/show'
+        end    
+
+        def single_contacts
+          set_title("Single Contacts")
+          @request_type = "GET"
+          @end_point = "/api/v1/contacts/:id"
+          @description = <<-eos
+          This API fetch single contacts from the Data base coresponding logged user
+          eos
+
+          @input_headers = {
+            "Content-Type" => { value: "application/json", description: "The MIME media type for JSON text is application/json. This is to make sure that a valid json is returned. The default encoding is UTF-8. " },
+            "Authorization" => { value: "Token token=\"103652edd6bbdc72b770d3c8cb88b18d\"", description: "Put the API Token here. You shall get the API token after registering your device" }
+          }
+
+          @input_params = {}  
+
+          @example_path = "usman/api/v1/docs/"
+          @examples = ["pos_case_1", "neg_case_1"]
+
+          set_nav("docs/usman/single_contacts")
+
+          render 'kuppayam/api/docs/show'
+        end
+
         def upload_profile_picture_base64
           set_title("Upload Profile Picture API (base64)")
           @request_type = "POST"
@@ -292,6 +386,9 @@ module Usman
             create_profile: { nav_class: "docs/usman/create_profile", icon_class: "fa-user", url: usman.docs_api_v1_create_profile_path, text: "Create Profile API"},
             update_profile: { nav_class: "docs/usman/update_profile", icon_class: "fa-user", url: usman.docs_api_v1_update_profile_path, text: "Update Profile API"},
             get_profile_info: { nav_class: "docs/usman/get_profile_info", icon_class: "fa-user", url: usman.docs_api_v1_get_profile_info_path, text: "Get Profile Info API"},
+            contacts_sync: { nav_class: "docs/usman/contacts_sync", icon_class: "fa-user", url: usman.docs_api_v1_contacts_sync_path, text: "Contact Syncing"},
+            all_contacts: { nav_class: "docs/usman/all_contacts", icon_class: "fa-user", url: usman.docs_api_v1_all_contacts_path, text: "Get All Contacts"},
+            single_contacts: { nav_class: "docs/usman/single_contacts", icon_class: "fa-user", url: usman.docs_api_v1_single_contacts_path, text: "Single Contact"},
             upload_profile_picture_base64: { nav_class: "docs/usman/upload_profile_picture_base64", icon_class: "fa-photo", url: usman.docs_api_v1_upload_profile_picture_base64_path, text: "Upload Profile Picture (Base64)"},
             upload_profile_picture: { nav_class: "docs/usman/upload_profile_picture", icon_class: "fa-photo", url: usman.docs_api_v1_upload_profile_picture_path, text: "Upload Profile Picture"},
             delete_profile_picture: { nav_class: "docs/usman/delete_profile_picture", icon_class: "fa-photo", url: usman.docs_api_v1_delete_profile_picture_path, text: "Remove Profile Picture"}

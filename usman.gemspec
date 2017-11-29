@@ -14,8 +14,8 @@ Gem::Specification.new do |s|
   s.description = "Usman gives you a user module with Admin Interface to Manage Features, Users and their permissions."
   s.license     = "MIT"
 
-  s.files = Dir["{app,config,db,lib}/**/*", "MIT-LICENSE", "Rakefile", "README.md"]
-
+  s.files = Dir["{app,config,db,lib}/**/*", "spec/dummy/spec/factories/**/*", "MIT-LICENSE", "Rakefile", "README.md", "IMPORT.md"]
+  
   s.add_dependency 'rails', '~> 5.0', '>= 5.0.2'
   s.add_dependency 'jquery-rails', '~> 4.2', '>= 4.2.2'
   s.add_dependency 'kaminari', '~> 1.0', '>= 1.0.1'

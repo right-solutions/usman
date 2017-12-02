@@ -1,1 +1,2 @@
 user,feature,can_create,can_read,can_update,can_delete
+kpvarma,User,TRUE,TRUE,TRUE,TRUE

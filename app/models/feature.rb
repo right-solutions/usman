@@ -30,15 +30,17 @@ class Feature < Usman::ApplicationRecord
     # Initializing error hash for displaying all errors altogether
     error_object = Kuppayam::Importer::ErrorHash.new
 
-    return error_object if hsh[:name].blank?
+    return error_object if hsh[:name].to_s.strip.blank?
 
-    feature = Feature.find_by_name(hsh[:name]) || Feature.new
-    feature.name = hsh[:name]
-    feature.status = hsh[:status]
+    feature = Feature.find_by_name(hsh[:name].to_s.strip) || Feature.new
+    feature.name = hsh[:name].to_s.strip
+    feature.status = hsh[:status].to_s.strip
+    feature.categorisable = hsh[:categorisable].to_s.strip
     
     if feature.valid?
       begin
         feature.save!
+        # puts "#{feature.name} saved".green
       rescue Exception => e
         summary = "uncaught #{e} exception while handling connection: #{e.message}"
         details = "Stack trace: #{e.backtrace.map {|l| "  #{l}\n"}.join}"

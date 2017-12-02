@@ -34,16 +34,21 @@ class Permission < Usman::ApplicationRecord
     # Initializing error hash for displaying all errors altogether
     error_object = Kuppayam::Importer::ErrorHash.new
 
-    user = User.find_by_username(hsh[:user])
+    user = User.find_by_username(hsh[:user].to_s.strip)
     unless user
-      summary = "User '#{hsh[:user]}' doesn't exist"
+      summary = "User '#{hsh[:user].to_s.strip}' doesn't exist"
       error_object.errors << { summary: summary }
       return error_object
     end
 
-    feature = Feature.find_by_name(hsh[:feature])
+    feature = Feature.find_by_name(hsh[:feature].to_s.strip)
+    
     unless feature
-      summary = "Feature '#{hsh[:feature]}' doesn't exist"
+      binding.pry
+    end
+    
+    unless feature
+      summary = "Feature '#{hsh[:feature].to_s.strip}' doesn't exist"
       error_object.errors << { summary: summary }
       return error_object
     end
@@ -51,10 +56,10 @@ class Permission < Usman::ApplicationRecord
     permission = Permission.where("user_id = ? AND feature_id = ?", user.id, feature.id).first || Permission.new
     permission.user = user
     permission.feature = feature
-    permission.can_create = hsh[:can_create]
-    permission.can_read = hsh[:can_read]
-    permission.can_update = hsh[:can_update]
-    permission.can_delete = hsh[:can_delete]
+    permission.can_create = hsh[:can_create].to_s.strip
+    permission.can_read = hsh[:can_read].to_s.strip
+    permission.can_update = hsh[:can_update].to_s.strip
+    permission.can_delete = hsh[:can_delete].to_s.strip
     
     if permission.valid?
       begin

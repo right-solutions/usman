@@ -15,7 +15,7 @@ Gem::Specification.new do |s|
   s.license     = "MIT"
 
   s.files = Dir["{app,config,db,lib}/**/*", "spec/dummy/spec/factories/**/*", "MIT-LICENSE", "Rakefile", "README.md", "IMPORT.md"]
-  
+
   s.add_dependency 'rails', '~> 5.0', '>= 5.0.2'
   s.add_dependency 'jquery-rails', '~> 4.2', '>= 4.2.2'
   s.add_dependency 'kaminari', '~> 1.0', '>= 1.0.1'
@@ -23,7 +23,7 @@ Gem::Specification.new do |s|
   s.add_dependency 'filesize', "~> 0.1.1"
   # s.add_dependency 'config', '~> 1.0'
 
-  s.add_dependency 'kuppayam', "~> 0.1", ">= 0.1.26"
+  s.add_dependency 'kuppayam', "~> 0.1", ">= 0.1.27"
   s.add_dependency 'pattana', "~> 0.1", ">= 0.1.20"
   s.add_dependency 'bcrypt', "~> 3.0"
   s.add_dependency "colorize", "~> 0.8"

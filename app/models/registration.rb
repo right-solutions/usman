@@ -6,17 +6,20 @@ class Registration < ApplicationRecord
   PENDING = "pending"
   VERIFIED = "verified"
   SUSPENDED = "suspended"
+  DELETED = "deleted"
   
   STATUS = { 
     PENDING => "Pending", 
     VERIFIED => "Verified",
-    SUSPENDED => "Suspended"
+    SUSPENDED => "Suspended",
+    DELETED => "Deleted"
   }
 
   STATUS_REVERSE = { 
     "Pending" => PENDING,
     "Verified" => VERIFIED,
-    "Suspended" => SUSPENDED
+    "Suspended" => SUSPENDED,
+    "Deleted" => DELETED
   }
   
 	# Associations
@@ -50,6 +53,7 @@ class Registration < ApplicationRecord
   scope :pending, -> { where(status: PENDING) }
   scope :verified, -> { where(status: VERIFIED) }
   scope :suspended, -> { where(status: SUSPENDED) }
+  scope :deleted, -> { where(status: DELETED) }
 
   # ------------------
   # Instance Methods
@@ -92,6 +96,14 @@ class Registration < ApplicationRecord
     (status == SUSPENDED)
   end
 
+  # * Return true if the user is deleted, else false.
+  # == Examples
+  #   >>> registration.deleted?
+  #   => true
+  def deleted?
+    (status == DELETED)
+  end
+
   # change the status to :verified
   # Return the status
   # == Examples
@@ -120,6 +132,16 @@ class Registration < ApplicationRecord
   def suspend!
     self.update_attribute(:status, SUSPENDED)
     self.user.update_attribute(:status, SUSPENDED) if self.user
+  end
+
+  # change the status to :deleted
+  # Return the status
+  # == Examples
+  #   >>> registration.delete!
+  #   => "deleted"
+  def delete!
+    self.update_attribute(:status, DELETED)
+    self.user.update_attribute(:status, DELETED) if self.user
   end
 
   # Permission Methods

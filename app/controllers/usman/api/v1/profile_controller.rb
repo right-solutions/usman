@@ -22,17 +22,13 @@ module Usman
                 @user.date_of_birth = permitted_params[:date_of_birth]
                 @user.email = permitted_params[:email]
                 
-                @country = Country.find_by_id(permitted_params[:country_id])
-                @city = City.find_by_id(permitted_params[:city_id])
+                @user.country = Country.find_by_id(permitted_params[:country_id])
+                @user.city = City.find_by_id(permitted_params[:city_id])
 
                 if @user.valid?
                   @user.save
                   @user.approve!
                   @current_registration.user = @user
-                  
-                  @user.country = @country if @country
-                  @user.city = @city if @city
-
                   @current_registration.save
 
                   # Saving the profile image if passed
@@ -107,13 +103,12 @@ module Usman
                 @country = Country.find_by_id(permitted_params[:country_id])
                 @city = City.find_by_id(permitted_params[:city_id])
 
+                @user.country = @country if @country
+                @user.city = @city if @city
+
                 if @user.valid?
                   @user.dummy = false
                   @user.save
-                  
-                  @user.country = @country if @country
-                  @user.city = @city if @city
-
                   @current_registration.save
 
                   # Saving the profile image if passed

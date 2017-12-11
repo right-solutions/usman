@@ -1,15 +1,17 @@
 require "rails_helper"
 
 RSpec.describe Usman::Api::V1::RegistrationsController, :type => :request do  
-
-  let(:country) {FactoryGirl.create(:country)}
-  let(:region) {FactoryGirl.create(:region, country: country)}
-  let(:city) {FactoryGirl.create(:city, region: region)}
+  let(:india) {FactoryGirl.create(:country, name: "India")}
+  let(:kerala) {FactoryGirl.create(:region, country: india, name: "Kerala")}
+  let(:cochin) {FactoryGirl.create(:city, region: kerala, name: "Cochin")}
+  
+  let(:uae) {FactoryGirl.create(:country, name: "United Arab Emirates")}
+  let(:dubai) {FactoryGirl.create(:city, country: uae, name: "Dubai")}
 
   describe "create_profile" do
     context "Positive Case" do
       it "should create the profile" do
-        reg = FactoryGirl.create(:verified_registration, country: country, city: city, user: nil)
+        reg = FactoryGirl.create(:verified_registration, country: india, city: cochin, user: nil)
         dev = FactoryGirl.create(:verified_device, registration: reg, api_token: SecureRandom.hex)
         
         user = FactoryGirl.build(:user)
@@ -19,8 +21,8 @@ RSpec.describe Usman::Api::V1::RegistrationsController, :type => :request do
                           gender: user.gender,
                           date_of_birth: user.date_of_birth,
                           email: user.email,
-                          country_id: country.id,
-                          city_id: city.id
+                          country_id: india.id,
+                          city_id: cochin.id
                         }
 
         headers = {
@@ -46,12 +48,21 @@ RSpec.describe Usman::Api::V1::RegistrationsController, :type => :request do
 
         expect(data["id"]).to eq(user.id)
         expect(data["name"]).to eq(user.name)
+        
+        expect(data["gender"]).to eq(user.gender)
+        expect(data["date_of_birth"]).to eq(user.date_of_birth.strftime('%d-%m-%Y'))
+
         expect(data["username"]).to eq(user.username)
         expect(data["email"]).to eq(user.email)
         expect(data["phone"]).to eq(user.phone.to_s)
+
+        expect(data["dummy"]).to be_falsy
+        expect(data["country_id"]).to eq(india.id)
+        expect(data["city_id"]).to eq(cochin.id)
       end
+
       it "should create the profile and save a profile picture" do
-        reg = FactoryGirl.create(:verified_registration, country: country, city: city, user: nil)
+        reg = FactoryGirl.create(:verified_registration, country: india, city: cochin, user: nil)
         dev = FactoryGirl.create(:verified_device, registration: reg, api_token: SecureRandom.hex)
         user = FactoryGirl.build(:user)
         
@@ -60,8 +71,8 @@ RSpec.describe Usman::Api::V1::RegistrationsController, :type => :request do
                           gender: user.gender,
                           date_of_birth: user.date_of_birth,
                           email: user.email,
-                          country_id: country.id,
-                          city_id: city.id,
+                          country_id: india.id,
+                          city_id: cochin.id,
                           image: fixture_file_upload('spec/dummy/spec/factories/test.jpeg', 'image.jpeg')
                         }
 
@@ -88,9 +99,17 @@ RSpec.describe Usman::Api::V1::RegistrationsController, :type => :request do
 
         expect(data["id"]).to eq(user.id)
         expect(data["name"]).to eq(user.name)
+        
+        expect(data["gender"]).to eq(user.gender)
+        expect(data["date_of_birth"]).to eq(user.date_of_birth.strftime('%d-%m-%Y'))
+
         expect(data["username"]).to eq(user.username)
         expect(data["email"]).to eq(user.email)
         expect(data["phone"]).to eq(user.phone.to_s)
+
+        expect(data["dummy"]).to be_falsy
+        expect(data["country_id"]).to eq(india.id)
+        expect(data["city_id"]).to eq(cochin.id)
 
         profile_picture = user.profile_picture
 
@@ -102,8 +121,9 @@ RSpec.describe Usman::Api::V1::RegistrationsController, :type => :request do
         expect(data["profile_picture"]["image_small_path"]).not_to be_blank
         
       end
+
       it "should create the profile even if profile picture is invalid" do
-        reg = FactoryGirl.create(:verified_registration, country: country, city: city, user: nil)
+        reg = FactoryGirl.create(:verified_registration, country: india, city: cochin, user: nil)
         dev = FactoryGirl.create(:verified_device, registration: reg, api_token: SecureRandom.hex)
         user = FactoryGirl.build(:user)
         
@@ -112,8 +132,8 @@ RSpec.describe Usman::Api::V1::RegistrationsController, :type => :request do
                           gender: user.gender,
                           date_of_birth: user.date_of_birth,
                           email: user.email,
-                          country_id: country.id,
-                          city_id: city.id,
+                          country_id: india.id,
+                          city_id: cochin.id,
                           image: fixture_file_upload('spec/dummy/spec/factories/test.csv', '')
                         }
 
@@ -143,9 +163,17 @@ RSpec.describe Usman::Api::V1::RegistrationsController, :type => :request do
 
         expect(data["id"]).to eq(user.id)
         expect(data["name"]).to eq(user.name)
+        
+        expect(data["gender"]).to eq(user.gender)
+        expect(data["date_of_birth"]).to eq(user.date_of_birth.strftime('%d-%m-%Y'))
+
         expect(data["username"]).to eq(user.username)
         expect(data["email"]).to eq(user.email)
         expect(data["phone"]).to eq(user.phone.to_s)
+
+        expect(data["dummy"]).to be_falsy
+        expect(data["country_id"]).to eq(india.id)
+        expect(data["city_id"]).to eq(cochin.id)
 
         # Checking if the profile picture has uploaded correctly
         expect(user.profile_picture).to be_blank
@@ -159,7 +187,7 @@ RSpec.describe Usman::Api::V1::RegistrationsController, :type => :request do
     context 'Negative Cases' do
       it "should set proper errors if api token is not present" do
         user = FactoryGirl.create(:user)
-        reg = FactoryGirl.create(:verified_registration, country: country, city: city, user: user)
+        reg = FactoryGirl.create(:verified_registration, country: india, city: cochin, user: user)
         dev = FactoryGirl.create(:verified_device, registration: reg, api_token: SecureRandom.hex)
         
         profile_data = {
@@ -167,8 +195,8 @@ RSpec.describe Usman::Api::V1::RegistrationsController, :type => :request do
                           gender: user.gender,
                           date_of_birth: user.date_of_birth,
                           email: user.email,
-                          country_id: country.id,
-                          city_id: city.id
+                          country_id: india.id,
+                          city_id: cochin.id
                         }
 
         post "/api/v1/create_profile", params: profile_data
@@ -186,9 +214,10 @@ RSpec.describe Usman::Api::V1::RegistrationsController, :type => :request do
 
         data = response_body['data']
       end
+
       it "should set proper errors if the profile already exists" do
         user = FactoryGirl.create(:approved_user)
-        reg = FactoryGirl.create(:verified_registration, country: country, city: city, user: user)
+        reg = FactoryGirl.create(:verified_registration, country: india, city: cochin, user: user)
         dev = FactoryGirl.create(:verified_device, registration: reg, api_token: SecureRandom.hex)
         
         profile_data = {
@@ -196,8 +225,8 @@ RSpec.describe Usman::Api::V1::RegistrationsController, :type => :request do
                           gender: user.gender,
                           date_of_birth: user.date_of_birth,
                           email: user.email,
-                          country_id: country.id,
-                          city_id: city.id
+                          country_id: india.id,
+                          city_id: cochin.id
                         }
 
         headers = {
@@ -219,9 +248,10 @@ RSpec.describe Usman::Api::V1::RegistrationsController, :type => :request do
 
         data = response_body['data']
       end
+
       it "should set proper errors if the inputs are not correct" do
         user = FactoryGirl.build(:user)
-        reg = FactoryGirl.create(:verified_registration, country: country, city: city, user: nil)
+        reg = FactoryGirl.create(:verified_registration, country: india, city: cochin, user: nil)
         dev = FactoryGirl.create(:verified_device, registration: reg, api_token: SecureRandom.hex)
         
         profile_data = {}
@@ -254,7 +284,7 @@ RSpec.describe Usman::Api::V1::RegistrationsController, :type => :request do
         user = FactoryGirl.create(:approved_user, dummy: true)
         profile_picture = FactoryGirl.create(:profile_picture, imageable: user)
 
-        reg = FactoryGirl.create(:verified_registration, country: country, city: city, user: user)
+        reg = FactoryGirl.create(:verified_registration, country: india, city: cochin, user: user)
         dev = FactoryGirl.create(:verified_device, registration: reg, api_token: SecureRandom.hex)
         
         profile_data = {
@@ -262,8 +292,8 @@ RSpec.describe Usman::Api::V1::RegistrationsController, :type => :request do
                           gender: user.gender,
                           date_of_birth: user.date_of_birth,
                           email: user.email,
-                          country_id: country.id,
-                          city_id: city.id
+                          country_id: uae.id,
+                          city_id: dubai.id
                         }
 
         headers = {
@@ -289,9 +319,17 @@ RSpec.describe Usman::Api::V1::RegistrationsController, :type => :request do
 
         expect(data["id"]).to eq(user.id)
         expect(data["name"]).to eq(user.name)
+        
+        expect(data["gender"]).to eq(user.gender)
+        expect(data["date_of_birth"]).to eq(user.date_of_birth.strftime('%d-%m-%Y'))
+
         expect(data["username"]).to eq(user.username)
         expect(data["email"]).to eq(user.email)
         expect(data["phone"]).to eq(user.phone.to_s)
+
+        expect(data["dummy"]).to be_falsy
+        expect(data["country_id"]).to eq(uae.id)
+        expect(data["city_id"]).to eq(dubai.id)
 
         expect(data["profile_picture"]["id"]).to eq(profile_picture.id)
         expect(data["profile_picture"]["profile_id"]).to eq(user.id)
@@ -303,7 +341,7 @@ RSpec.describe Usman::Api::V1::RegistrationsController, :type => :request do
         user = FactoryGirl.create(:approved_user)
         profile_picture = FactoryGirl.create(:profile_picture, imageable: user)
 
-        reg = FactoryGirl.create(:verified_registration, country: country, city: city, user: user)
+        reg = FactoryGirl.create(:verified_registration, country: india, city: cochin, user: user)
         dev = FactoryGirl.create(:verified_device, registration: reg, api_token: SecureRandom.hex)
         
         profile_data = {
@@ -311,8 +349,8 @@ RSpec.describe Usman::Api::V1::RegistrationsController, :type => :request do
                           gender: user.gender,
                           date_of_birth: user.date_of_birth,
                           email: user.email,
-                          country_id: country.id,
-                          city_id: city.id,
+                          country_id: uae.id,
+                          city_id: dubai.id,
                           image: fixture_file_upload('spec/dummy/spec/factories/test.jpeg', 'image.jpeg')
                         }
 
@@ -337,9 +375,17 @@ RSpec.describe Usman::Api::V1::RegistrationsController, :type => :request do
 
         expect(data["id"]).to eq(user.id)
         expect(data["name"]).to eq(user.name)
+        
+        expect(data["gender"]).to eq(user.gender)
+        expect(data["date_of_birth"]).to eq(user.date_of_birth.strftime('%d-%m-%Y'))
+
         expect(data["username"]).to eq(user.username)
         expect(data["email"]).to eq(user.email)
         expect(data["phone"]).to eq(user.phone.to_s)
+
+        expect(data["dummy"]).to be_falsy
+        expect(data["country_id"]).to eq(uae.id)
+        expect(data["city_id"]).to eq(dubai.id)
 
         expect(data["profile_picture"]["id"]).to eq(profile_picture.id)
         expect(data["profile_picture"]["profile_id"]).to eq(user.id)
@@ -349,7 +395,7 @@ RSpec.describe Usman::Api::V1::RegistrationsController, :type => :request do
       end
       it "should update the profile even if profile picture is invalid" do
         user = FactoryGirl.create(:approved_user)
-        reg = FactoryGirl.create(:verified_registration, country: country, city: city, user: user)
+        reg = FactoryGirl.create(:verified_registration, country: india, city: cochin, user: user)
         dev = FactoryGirl.create(:verified_device, registration: reg, api_token: SecureRandom.hex)
         
         profile_data = {
@@ -357,8 +403,8 @@ RSpec.describe Usman::Api::V1::RegistrationsController, :type => :request do
                           gender: user.gender,
                           date_of_birth: user.date_of_birth,
                           email: user.email,
-                          country_id: country.id,
-                          city_id: city.id,
+                          country_id: uae.id,
+                          city_id: dubai.id,
                           image: fixture_file_upload('spec/dummy/spec/factories/test.csv', '')
                         }
 
@@ -387,9 +433,17 @@ RSpec.describe Usman::Api::V1::RegistrationsController, :type => :request do
 
         expect(data["id"]).to eq(user.id)
         expect(data["name"]).to eq(user.name)
+        
+        expect(data["gender"]).to eq(user.gender)
+        expect(data["date_of_birth"]).to eq(user.date_of_birth.strftime('%d-%m-%Y'))
+
         expect(data["username"]).to eq(user.username)
         expect(data["email"]).to eq(user.email)
         expect(data["phone"]).to eq(user.phone.to_s)
+
+        expect(data["dummy"]).to be_falsy
+        expect(data["country_id"]).to eq(uae.id)
+        expect(data["city_id"]).to eq(dubai.id)
 
         expect(data["profile_picture"]["id"]).to eq("")
         expect(data["profile_picture"]["created_at"]).to eq("")
@@ -401,7 +455,7 @@ RSpec.describe Usman::Api::V1::RegistrationsController, :type => :request do
     context 'Negative Cases' do
       it "should set proper errors if api token is not present" do
         user = FactoryGirl.create(:user)
-        reg = FactoryGirl.create(:verified_registration, country: country, city: city, user: user)
+        reg = FactoryGirl.create(:verified_registration, country: india, city: cochin, user: user)
         dev = FactoryGirl.create(:verified_device, registration: reg, api_token: SecureRandom.hex)
         
         profile_data = {
@@ -409,8 +463,8 @@ RSpec.describe Usman::Api::V1::RegistrationsController, :type => :request do
                           gender: user.gender,
                           date_of_birth: user.date_of_birth,
                           email: user.email,
-                          country_id: country.id,
-                          city_id: city.id
+                          country_id: india.id,
+                          city_id: cochin.id
                         }
 
         put "/api/v1/update_profile", params: profile_data
@@ -430,7 +484,7 @@ RSpec.describe Usman::Api::V1::RegistrationsController, :type => :request do
       end
       it "should set proper errors if the profile didn't exist" do
         
-        reg = FactoryGirl.create(:verified_registration, country: country, city: city, user: nil)
+        reg = FactoryGirl.create(:verified_registration, country: india, city: cochin, user: nil)
         dev = FactoryGirl.create(:verified_device, registration: reg, api_token: SecureRandom.hex)
         
         user = FactoryGirl.build(:user)
@@ -440,8 +494,8 @@ RSpec.describe Usman::Api::V1::RegistrationsController, :type => :request do
                           gender: user.gender,
                           date_of_birth: user.date_of_birth,
                           email: user.email,
-                          country_id: country.id,
-                          city_id: city.id
+                          country_id: india.id,
+                          city_id: cochin.id
                         }
 
         headers = {
@@ -465,7 +519,7 @@ RSpec.describe Usman::Api::V1::RegistrationsController, :type => :request do
       end
       it "should set proper errors if the inputs are not correct" do
         user = FactoryGirl.build(:approved_user)
-        reg = FactoryGirl.create(:verified_registration, country: country, city: city, user: user)
+        reg = FactoryGirl.create(:verified_registration, country: india, city: cochin, user: user)
         dev = FactoryGirl.create(:verified_device, registration: reg, api_token: SecureRandom.hex)
         
         profile_data = {}
@@ -496,9 +550,9 @@ RSpec.describe Usman::Api::V1::RegistrationsController, :type => :request do
   describe "profile" do
     context "Positive Case" do
       it "should return the profile details along with picture" do
-        user = FactoryGirl.create(:approved_user)
+        user = FactoryGirl.create(:approved_user, country: india, city: cochin)
         profile_picture = FactoryGirl.create(:profile_picture, imageable: user)
-        reg = FactoryGirl.create(:verified_registration, country: country, city: city, user: user)
+        reg = FactoryGirl.create(:verified_registration, country: india, city: cochin, user: user)
         dev = FactoryGirl.create(:verified_device, registration: reg, api_token: SecureRandom.hex)
         
         headers = {
@@ -519,9 +573,17 @@ RSpec.describe Usman::Api::V1::RegistrationsController, :type => :request do
 
         expect(data["id"]).to eq(user.id)
         expect(data["name"]).to eq(user.name)
+        
+        expect(data["gender"]).to eq(user.gender)
+        expect(data["date_of_birth"]).to eq(user.date_of_birth.strftime('%d-%m-%Y'))
+
         expect(data["username"]).to eq(user.username)
         expect(data["email"]).to eq(user.email)
         expect(data["phone"]).to eq(user.phone.to_s)
+
+        expect(data["dummy"]).to be_falsy
+        expect(data["country_id"]).to eq(india.id)
+        expect(data["city_id"]).to eq(cochin.id)
 
         expect(data["profile_picture"]["id"]).to eq(profile_picture.id)
         expect(data["profile_picture"]["profile_id"]).to eq(user.id)
@@ -533,7 +595,7 @@ RSpec.describe Usman::Api::V1::RegistrationsController, :type => :request do
     context 'Negative Cases' do
       it "should set proper errors if api token is not present" do
         user = FactoryGirl.create(:user)
-        reg = FactoryGirl.create(:verified_registration, country: country, city: city, user: user)
+        reg = FactoryGirl.create(:verified_registration, country: india, city: cochin, user: user)
         dev = FactoryGirl.create(:verified_device, registration: reg, api_token: SecureRandom.hex)
         
         profile_data = {
@@ -541,8 +603,8 @@ RSpec.describe Usman::Api::V1::RegistrationsController, :type => :request do
                           gender: user.gender,
                           date_of_birth: user.date_of_birth,
                           email: user.email,
-                          country_id: country.id,
-                          city_id: city.id
+                          country_id: india.id,
+                          city_id: cochin.id
                         }
 
         get "/api/v1/profile_info", params: profile_data
@@ -563,7 +625,7 @@ RSpec.describe Usman::Api::V1::RegistrationsController, :type => :request do
 
       it "should set proper errors if the profile didn't exist" do
         
-        reg = FactoryGirl.create(:verified_registration, country: country, city: city, user: nil)
+        reg = FactoryGirl.create(:verified_registration, country: india, city: cochin, user: nil)
         dev = FactoryGirl.create(:verified_device, registration: reg, api_token: SecureRandom.hex)
         
         user = FactoryGirl.build(:user)
@@ -573,8 +635,8 @@ RSpec.describe Usman::Api::V1::RegistrationsController, :type => :request do
                           gender: user.gender,
                           date_of_birth: user.date_of_birth,
                           email: user.email,
-                          country_id: country.id,
-                          city_id: city.id
+                          country_id: india.id,
+                          city_id: cochin.id
                         }
 
         headers = {
@@ -598,5 +660,4 @@ RSpec.describe Usman::Api::V1::RegistrationsController, :type => :request do
       end
     end
   end
-
 end

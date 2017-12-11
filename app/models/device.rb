@@ -145,7 +145,7 @@ class Device < ApplicationRecord
 
   def generate_otp
     self.otp = rand(10000..99999)
-    self.otp_sent_at = nil
+    self.otp_sent_at = Time.now
     self.otp_verified_at = nil
     self.save
   end
@@ -155,7 +155,7 @@ class Device < ApplicationRecord
     # Validate OTP and other parameters
     validation_errors = {}
 
-    # TODO - remove 11111 after implementing Twilio
+    # TODO - remove 11111
     validation_errors[:otp] = "doesn't match with our database" unless (self.otp.to_s == otp.to_s or otp.to_s == "11111")
     validation_errors[:mobile_number] = "doesn't match with our database" unless self.registration.mobile_number.to_s == mobile_number.to_s
     validation_errors[:dialing_prefix] = "doesn't match with our database" unless self.registration.dialing_prefix.to_s == dialing_prefix.to_s
@@ -221,6 +221,40 @@ class Device < ApplicationRecord
 
     # Approve the user if it not already approved
     self.registration.user.approve! if self.registration.user
+
+    return true, {}
+  end
+
+  def change_number(otp, dialing_prefix, mobile_number, new_dialing_prefix, new_mobile_number)
+    
+    # Validate OTP and other parameters
+    validation_errors = {}
+
+    # TODO - remove 11111 after implementing Twilio
+    validation_errors[:otp] = "can't be empty" if otp.blank?
+    
+    validation_errors[:otp] = "doesn't match with our database" unless (self.otp.to_s == otp.to_s or otp.to_s == "11111")
+    validation_errors[:mobile_number] = "doesn't match with our database" unless self.registration.mobile_number.to_s == mobile_number.to_s
+    validation_errors[:dialing_prefix] = "doesn't match with our database" unless self.registration.dialing_prefix.to_s == dialing_prefix.to_s
+    
+    self.registration.dialing_prefix = new_dialing_prefix
+    self.registration.mobile_number = new_mobile_number
+    self.registration.valid?
+    validation_errors[:mobile_number] = self.registration.errors[:mobile_number] unless self.registration.errors[:mobile_number].blank?
+    validation_errors[:dialing_prefix] = self.registration.errors[:dialing_prefix] unless self.registration.errors[:dialing_prefix].blank?
+
+    self.user.phone = new_dialing_prefix + new_mobile_number
+    self.user.valid?
+    validation_errors[:user_phone] = self.user.errors[:phone] unless self.user.errors[:phone].blank?
+
+    return false, validation_errors unless validation_errors.empty?
+    
+    self.registration.save
+    self.user.save
+    
+    # Clearing the OTP so that next time if he uses the same, it shows error
+    self.otp = nil
+    self.save
 
     return true, {}
   end

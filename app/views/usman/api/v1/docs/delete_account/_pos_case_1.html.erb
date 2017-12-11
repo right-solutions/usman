@@ -1,0 +1,29 @@
+<%
+
+api_title = "Positive Case - 1 - delete the account"
+
+api_input = <<-eos
+Example:
+
+DELETE #{request.base_url}/api/v1/delete_account
+eos
+
+api_output = <<-eos
+{
+  "success": true,
+  "alert": {
+      "heading": "Your account has been deleted successfully",
+      "message": "You will be logged out from all sessions"
+  }
+}
+eos
+
+%>
+
+<%= render partial: "kuppayam/api/docs/example", locals: {
+                                        negative_case: false,
+                                        example_id: "pos_case_1",
+                                        api_title: api_title,
+                                        api_input: api_input,
+                                        api_output: api_output 
+                                      } %>

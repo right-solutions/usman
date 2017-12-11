@@ -38,6 +38,10 @@ FactoryGirl.define do
     status "suspended"
   end
 
+  factory :deleted_user, parent: :user do
+    status "deleted"
+  end
+
   factory :super_admin_user, parent: :user do
     status "approved"
     super_admin true

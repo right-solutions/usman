@@ -74,6 +74,44 @@ describe Usman::Api::V1::DocsController, :type => :controller do
       get :delete_profile_picture, params: { use_route: 'usman' }
       expect(response.status).to eq(200)
     end
+
+    # Contacts API Docs
+    it "contacts_sync" do
+      session[:id] = site_admin_user.id
+      get :contacts_sync, params: { use_route: 'usman' }
+      expect(response.status).to eq(200)
+    end
+
+    it "all_contacts" do
+      session[:id] = site_admin_user.id
+      get :all_contacts, params: { use_route: 'usman' }
+      expect(response.status).to eq(200)
+    end
+
+    it "single_contact" do
+      session[:id] = site_admin_user.id
+      get :single_contact, params: { use_route: 'usman' }
+      expect(response.status).to eq(200)
+    end
+
+    # Change Number & Delete Account API Docs
+    it "send_otp_to_change_number" do
+      session[:id] = site_admin_user.id
+      get :send_otp_to_change_number, params: { use_route: 'usman' }
+      expect(response.status).to eq(200)
+    end
+
+    it "change_number" do
+      session[:id] = site_admin_user.id
+      get :change_number, params: { use_route: 'usman' }
+      expect(response.status).to eq(200)
+    end
+
+    it "delete_account" do
+      session[:id] = site_admin_user.id
+      get :delete_account, params: { use_route: 'usman' }
+      expect(response.status).to eq(200)
+    end
     
   end
 

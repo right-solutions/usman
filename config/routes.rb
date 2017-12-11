@@ -55,6 +55,10 @@ Usman::Engine.routes.draw do
       post :verify_otp, :controller => "registrations", as: :verify_otp
       post :accept_tac, :controller => "registrations", as: :accept_tac
 
+      post :send_otp_to_change_number, :controller => "registrations", as: :send_otp_to_change_number
+      post :change_number, :controller => "registrations", as: :change_number
+      delete :delete_account, :controller => "registrations", as: :delete_account
+
       # Profile
       post :create_profile, :controller => "profile", as: :create_profile
       put :update_profile, :controller => "profile", as: :update_profile
@@ -79,6 +83,11 @@ Usman::Engine.routes.draw do
         get 'resend_otp', :controller => "docs"
         get 'verify_otp', :controller => "docs"
         get 'accept_tac', :controller => "docs"
+
+        get 'send_otp_to_change_number', :controller => "docs"
+        get 'change_number', :controller => "docs"
+        get 'delete_account', :controller => "docs"
+
         get 'create_profile', :controller => "docs"
         get 'update_profile', :controller => "docs"
         get 'update_profile', :controller => "docs"
@@ -86,7 +95,7 @@ Usman::Engine.routes.draw do
 
         get 'contacts_sync', :controller => "docs"
         get 'all_contacts', :controller => "docs"
-        get 'single_contacts', :controller => "docs"
+        get 'single_contact', :controller => "docs"
 
         get 'upload_profile_picture_base64', :controller => "docs"
         get 'upload_profile_picture', :controller => "docs"

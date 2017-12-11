@@ -1,13 +1,22 @@
 en:
   api:
     general:
+      unexpected_error:
+        heading: "Unexpected Error"
+        message: "Please try after sometime. If the problem persist, please contact our technical support."
       permission_denied:
         heading: "Invalid API Token"
         message: "Use the API Token you have received after accepting the terms and agreement"
-    register:
       device_blocked:
         heading: "This device is blocked"
         message: "You must have done some mal-practices"
+      mobile_number_not_registered:
+        heading: "The mobile number is not registered"
+        message: "Check if the mobile number entered is valid"
+      device_not_registered:
+        heading: "The device is not registered"
+        message: "Check if the UUID entered is valid"
+    register:
       otp_sent:
         heading: "An OTP has been sent to you"
         message: "Check your mobile for new message from us"
@@ -18,9 +27,6 @@ en:
         heading: "Registring new mobile number FAILED"
         message: "Check if all mandatory details are passed. Refer the error details for technical information"
     resend_otp:
-      device_blocked:
-        heading: "This device is blocked"
-        message: "You must have done some mal-practices"
       new_otp_sent:
         heading: "An new OTP has been sent to you"
         message: "Check your mobile for new message from us"
@@ -30,28 +36,13 @@ en:
       otp_not_matching:
         heading: "OTP verification was failed"
         message: "Make sure that you enter the OTP correctly"
-      mobile_number_not_registered:
-        heading: "The mobile number is not registered"
-        message: "Resending OTP Failed. Check if the mobile number entered is valid"
-      device_not_registered:
-        heading: "The device is not registered"
-        message: "Resending OTP Failed. Check if the UUID entered is valid"
     verify_otp:
-      device_blocked:
-        heading: "This device is blocked"
-        message: "You must have done some mal-practices"
       device_verified:
         heading: "OTP sent failed"
         message: "This device may be already verified"
       otp_not_matching:
         heading: "OTP verification was failed"
         message: "Make sure that you enter the OTP correctly"
-      mobile_number_not_registered:
-        heading: "The mobile number is not registered"
-        message: "Verifying OTP Failed. Check if the mobile number entered is valid"
-      device_not_registered:
-        heading: "The device is not registered"
-        message: "Verifying OTP Failed. Check if the UUID entered is valid"
       verification_failed:
         heading: "OTP verification was failed"
         message: "Check if you have properly given the OTP along with dialing prefix, mobile number & UUID"
@@ -65,19 +56,34 @@ en:
       tac_not_accepted:
         heading: "You have not accepted the Terms & Conditions. Registration is complete only if you accept the T&C"
         message: "Accept the T&C to finish the Registration. Pass true"
-      device_blocked:
-        heading: "This device is blocked"
-        message: "You must have done some mal-practices"
       device_pending:
         heading: "This device is not verified"
         message: "You need to verify this device before you can accept the terms and conditions"
-      mobile_number_not_registered:
-        heading: "The mobile number is not registered"
-        message: "Accepting T&C Failed. Check if the mobile number entered is valid"
-      device_not_registered:
-        heading: "The device is not registered"
-        message: "Accepting T&C Failed. Check if the UUID entered is valid"
+    send_otp_to_change_number:
+      otp_send:
+        heading: "An OTP has been sent to you"
+        message: "Check your mobile for new message from us"
+      otp_send_failed:
+        heading: "OTP sent failed"
+        message: "Check if all the inputs are valid"
+    change_number:
+      number_changed:
+        heading: "Your mobile number has been changed successfully"
+        message: "Use the new number to login next time"
+      number_change_failed:
+        heading: "Mobile number change failed"
+        message: "Check if all the inputs are valid"
+    delete_account:
+      account_deleted:
+        heading: "Your account has been deleted successfully"
+        message: "You will be logged out from all sessions"
+      account_deletion_failed:
+        heading: "Mobile number change failed"
+        message: "Check if all the inputs are valid"
     profile:
+      registration_details_missing:
+        heading: "A profile already exists for the mobile number you have provided"
+        message: "You are trying to create a profile once again when you already have a profile. Use Profile API with your API Token, to get your profile details and use them instead of creating a new one."
       user_already_exists:
         heading: "A profile already exists for the mobile number you have provided"
         message: "You are trying to create a profile once again when you already have a profile. Use Profile API with your API Token, to get your profile details and use them instead of creating a new one."
@@ -90,3 +96,26 @@ en:
       invalid_inputs:
         heading: "Saving Profile Failed"
         message: "Check if all mandatory details are passed. Refer the error details for technical information"
+    profile_picture:
+      not_found:
+        heading: "Invalid User/Profile ID"
+        message: "Pass a vaild User/Profile ID to get the details. Get Profile Details along with their IDs from Profile API or from Registration APIs"
+      image_save_failed:
+        heading: "Saving user/profile image was failed"
+        message: "Make sure that the arguments are passed according to the API documentation. Please check the API Documentation for more details."
+      image_delete_failed:
+        heading: "Deleting user/profile image was failed"
+        message: "Make sure that the arguments are passed according to the API documentation. Please check the API Documentation for more details."
+      image_saved:
+        heading: "User/Profile Image was saved successfully"
+        message: "You may now use the URL to download the image in future"
+      image_deleted:
+        heading: "User/Profile Image was deleted successfully"
+        message: "You may use Profile Picture Upload API to add one again"
+      profile_picture_does_not_exists:
+        heading: "Profile Picture doesn't exists"
+        message: "You are trying to destroy a profile picture when it doesn't exist"
+    contacts:
+      synced_successfully:
+        heading: "The Contacts has been synced successfully"
+        message: "You may now store the done deal user id of these contacts returned in this response"

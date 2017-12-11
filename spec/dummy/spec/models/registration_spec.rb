@@ -130,6 +130,20 @@ RSpec.describe Registration, type: :model do
         expect(r.suspended?).to be_truthy
         expect(r.user).to be_nil
       end
+
+      it "delete!" do
+        u = FactoryGirl.create(:verified_registration)
+        u.delete!
+        expect(u.status).to match "deleted"
+        expect(u.deleted?).to be_truthy
+
+        # If user is nil
+        r = FactoryGirl.create(:pending_registration, user: nil)
+        r.delete!
+        expect(r.status).to match "deleted"
+        expect(r.deleted?).to be_truthy
+        expect(r.user).to be_nil
+      end
     end
     context "Other Methods" do
       it "as_json" do

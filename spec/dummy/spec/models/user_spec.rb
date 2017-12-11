@@ -119,6 +119,11 @@ RSpec.describe User, type: :model do
       expect(User.suspended.all).to match_array [suspended_user]
     end
 
+    it "scope deleted" do
+      deleted_user = FactoryGirl.create(:deleted_user)
+      expect(User.deleted.all).to match_array [deleted_user]
+    end
+
     context "Import Methods" do
       it "save_row_data" do
         skip "To Be Implemented"
@@ -176,6 +181,22 @@ RSpec.describe User, type: :model do
         expect(u.suspended?).to be_truthy
         r.reload
         expect(r.suspended?).to be_truthy
+      end
+
+      it "delete!" do
+        u = FactoryGirl.create(:approved_user)
+        u.delete!
+        expect(u.status).to match "deleted"
+        expect(u.deleted?).to be_truthy
+
+        # If Registration exists
+        u = FactoryGirl.create(:approved_user)
+        r = FactoryGirl.create(:verified_registration, user: u)
+        u.delete!
+        expect(u.status).to match "deleted"
+        expect(u.deleted?).to be_truthy
+        r.reload
+        expect(r.deleted?).to be_truthy
       end
     end
 

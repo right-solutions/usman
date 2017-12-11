@@ -310,7 +310,7 @@ RSpec.describe Usman::Api::V1::RegistrationsController, :type => :request do
         expect(response_body["alert"]).to be_blank
 
         expect(response_body["errors"]["heading"]).to  eq("The mobile number is not registered")
-        expect(response_body["errors"]["message"]).to  eq("Resending OTP Failed. Check if the mobile number entered is valid")
+        expect(response_body["errors"]["message"]).to  eq("Check if the mobile number entered is valid")
         expect(response_body["errors"]["details"]["mobile_number"]).to  eq("is invalid")
       end
 
@@ -325,7 +325,7 @@ RSpec.describe Usman::Api::V1::RegistrationsController, :type => :request do
         expect(response_body["alert"]).to be_blank
 
         expect(response_body["errors"]["heading"]).to  eq("The mobile number is not registered")
-        expect(response_body["errors"]["message"]).to  eq("Resending OTP Failed. Check if the mobile number entered is valid")
+        expect(response_body["errors"]["message"]).to  eq("Check if the mobile number entered is valid")
         expect(response_body["errors"]["details"]["mobile_number"]).to  eq("is invalid")
       end
 
@@ -346,7 +346,7 @@ RSpec.describe Usman::Api::V1::RegistrationsController, :type => :request do
         expect(response_body["alert"]).to be_blank
 
         expect(response_body["errors"]["heading"]).to  eq("The device is not registered")
-        expect(response_body["errors"]["message"]).to  eq("Resending OTP Failed. Check if the UUID entered is valid")
+        expect(response_body["errors"]["message"]).to  eq("Check if the UUID entered is valid")
         expect(response_body["errors"]["details"]["uuid"]).to  eq("is invalid")
       end
 
@@ -502,7 +502,7 @@ RSpec.describe Usman::Api::V1::RegistrationsController, :type => :request do
         expect(response_body["alert"]).to be_blank
 
         expect(response_body["errors"]["heading"]).to  eq("The mobile number is not registered")
-        expect(response_body["errors"]["message"]).to  eq("Verifying OTP Failed. Check if the mobile number entered is valid")
+        expect(response_body["errors"]["message"]).to  eq("Check if the mobile number entered is valid")
         expect(response_body["errors"]["details"]["mobile_number"]).to  eq("is invalid")
       end
 
@@ -528,7 +528,7 @@ RSpec.describe Usman::Api::V1::RegistrationsController, :type => :request do
         expect(response_body["alert"]).to be_blank
 
         expect(response_body["errors"]["heading"]).to  eq("The mobile number is not registered")
-        expect(response_body["errors"]["message"]).to  eq("Verifying OTP Failed. Check if the mobile number entered is valid")
+        expect(response_body["errors"]["message"]).to  eq("Check if the mobile number entered is valid")
         expect(response_body["errors"]["details"]["mobile_number"]).to  eq("is invalid")
       end
 
@@ -555,7 +555,7 @@ RSpec.describe Usman::Api::V1::RegistrationsController, :type => :request do
         expect(response_body["alert"]).to be_blank
 
         expect(response_body["errors"]["heading"]).to  eq("The device is not registered")
-        expect(response_body["errors"]["message"]).to  eq("Verifying OTP Failed. Check if the UUID entered is valid")
+        expect(response_body["errors"]["message"]).to  eq("Check if the UUID entered is valid")
         expect(response_body["errors"]["details"]["uuid"]).to  eq("is invalid")
       end
 
@@ -654,7 +654,7 @@ RSpec.describe Usman::Api::V1::RegistrationsController, :type => :request do
         expect(response_body["data"]).to be_blank
 
         expect(response_body["errors"]["heading"]).to  eq("The mobile number is not registered")
-        expect(response_body["errors"]["message"]).to  eq("Verifying OTP Failed. Check if the mobile number entered is valid")
+        expect(response_body["errors"]["message"]).to  eq("Check if the mobile number entered is valid")
         expect(response_body["errors"]["details"]["mobile_number"]).to eq("is invalid")
       end
 
@@ -714,6 +714,423 @@ RSpec.describe Usman::Api::V1::RegistrationsController, :type => :request do
         expect(dev.last_accessed_at).not_to be_blank
       end
     end    
+  end
+
+  describe "send_otp_to_change_number" do
+    context "Positive Case" do
+      it "should send the otp to change the number" do
+        user = FactoryGirl.create(:approved_user)
+        reg = FactoryGirl.create(:verified_registration, country: country, city: city, user: user)
+        dev = FactoryGirl.create(:verified_device, registration: reg, api_token: SecureRandom.hex)
+        
+        headers = {
+          'HTTP_AUTHORIZATION' => ActionController::HttpAuthentication::Token.encode_credentials(dev.api_token)
+        }
+
+        post "/api/v1/send_otp_to_change_number", params: {uuid: dev.uuid}, headers: headers
+
+        expect(response.status).to eq(200)
+
+        response_body = JSON.parse(response.body)
+        
+        expect(response_body["success"]).to be(true)
+        expect(response_body["errors"]).to be_blank
+
+        expect(response_body["alert"]["heading"]).to  eq("An OTP has been sent to you")
+        expect(response_body["alert"]["message"]).to  eq("Check your mobile for new message from us")
+      end
+    end
+    context "Negative Case" do
+      it "should set proper errors if api token is not present" do
+        post "/api/v1/send_otp_to_change_number"
+        
+        expect(response.status).to eq(200)
+
+        response_body = JSON.parse(response.body)
+
+        expect(response_body["success"]).to eq(false)
+        expect(response_body["alert"]).to be_blank
+        expect(response_body["data"]).to be_blank
+
+        expect(response_body["errors"]["heading"]).to eq("Invalid API Token")
+        expect(response_body["errors"]["message"]).to eq("Use the API Token you have received after accepting the terms and agreement")
+
+        data = response_body['data']
+      end
+
+      it "should set proper errors if the profile didn't exist" do
+        reg = FactoryGirl.create(:verified_registration, country: country, city: city, user: nil)
+        dev = FactoryGirl.create(:verified_device, registration: reg, api_token: SecureRandom.hex)
+        
+        headers = {
+          'HTTP_AUTHORIZATION' => ActionController::HttpAuthentication::Token.encode_credentials(dev.api_token)
+        }
+
+        post "/api/v1/send_otp_to_change_number", headers: headers
+        
+        expect(response.status).to eq(200)
+
+        response_body = JSON.parse(response.body)
+
+        expect(response_body["success"]).to eq(false)
+        expect(response_body["alert"]).to be_blank
+        expect(response_body["data"]).to be_blank
+
+        expect(response_body["errors"]["heading"]).to eq("Profile doesn't exists for the mobile number you have provided")
+        expect(response_body["errors"]["message"]).to eq("You are trying to create a profile once again when you already have a profile. Use Profile API with your API Token, to get your profile details and use them instead of creating a new one.")
+
+        data = response_body['data']
+      end
+
+      it "should respond with proper errors if no parameters are passed" do
+        user = FactoryGirl.create(:approved_user)
+        reg = FactoryGirl.create(:verified_registration, country: country, city: city, user: user)
+        dev = FactoryGirl.create(:verified_device, registration: reg, api_token: SecureRandom.hex)
+        
+        headers = {
+          'HTTP_AUTHORIZATION' => ActionController::HttpAuthentication::Token.encode_credentials(dev.api_token)
+        }
+
+        post "/api/v1/send_otp_to_change_number", headers: headers
+
+        expect(response.status).to eq(200)
+
+        response_body = JSON.parse(response.body)
+
+        expect(response_body["success"]).to be(false)
+        expect(response_body["alert"]).to be_blank
+
+        expect(response_body["errors"]["heading"]).to  eq("The device is not registered")
+        expect(response_body["errors"]["message"]).to  eq("Check if the UUID entered is valid")
+      end
+
+      it "should respond with proper errors if the device is blocked" do
+        user = FactoryGirl.create(:approved_user)
+        reg = FactoryGirl.create(:verified_registration, country: country, city: city, user: user)
+        dev = FactoryGirl.create(:blocked_device, registration: reg, api_token: SecureRandom.hex)
+        
+        headers = {
+          'HTTP_AUTHORIZATION' => ActionController::HttpAuthentication::Token.encode_credentials(dev.api_token)
+        }
+        
+        post "/api/v1/send_otp_to_change_number", params: {uuid: dev.uuid}, headers: headers
+
+        expect(response.status).to eq(200)
+
+        response_body = JSON.parse(response.body)
+
+        expect(response_body["success"]).to be(false)
+        expect(response_body["alert"]).to be_blank
+
+        expect(response_body["errors"]["heading"]).to  eq("This device is blocked")
+        expect(response_body["errors"]["message"]).to  eq("You must have done some mal-practices")
+      end
+    end
+  end
+
+  describe "change_number" do
+    context "Positive Case" do
+      it "should change the number" do
+        user = FactoryGirl.create(:approved_user)
+        reg = FactoryGirl.create(:verified_registration, country: country, city: city, user: user, dialing_prefix: "+91", mobile_number: "9880123456")
+        dev = FactoryGirl.create(:verified_device, registration: reg, api_token: SecureRandom.hex, user: user)
+        
+        dev.generate_otp
+
+        headers = {
+          'HTTP_AUTHORIZATION' => ActionController::HttpAuthentication::Token.encode_credentials(dev.api_token)
+        }
+
+        post "/api/v1/change_number", 
+            params: {
+              otp: dev.otp,
+              uuid: dev.uuid,
+              old_dialing_prefix: reg.dialing_prefix, 
+              old_mobile_number: reg.mobile_number,
+              new_dialing_prefix: "+971", 
+              new_mobile_number: "501234567"
+            }, 
+            headers: headers
+
+        expect(response.status).to eq(200)
+
+        response_body = JSON.parse(response.body)
+
+        reg.reload
+        user.reload
+
+        expect(response_body["success"]).to be(true)
+        expect(response_body["errors"]).to be_blank
+
+        expect(reg.dialing_prefix).to eq("+971")
+        expect(reg.mobile_number).to eq("501234567")
+        expect(user.phone).to eq("+971501234567")
+
+        expect(response_body["alert"]["heading"]).to  eq("Your mobile number has been changed successfully")
+        expect(response_body["alert"]["message"]).to  eq("Use the new number to login next time")
+      end
+    end
+    context "Negative Case" do
+      it "should set proper errors if api token is not present" do
+        post "/api/v1/change_number"
+        
+        expect(response.status).to eq(200)
+
+        response_body = JSON.parse(response.body)
+
+        expect(response_body["success"]).to eq(false)
+        expect(response_body["alert"]).to be_blank
+        expect(response_body["data"]).to be_blank
+
+        expect(response_body["errors"]["heading"]).to eq("Invalid API Token")
+        expect(response_body["errors"]["message"]).to eq("Use the API Token you have received after accepting the terms and agreement")
+
+        data = response_body['data']
+      end
+
+      it "should set proper errors if the profile didn't exist" do
+        reg = FactoryGirl.create(:verified_registration, country: country, city: city, user: nil, dialing_prefix: "+91", mobile_number: "9880123456")
+        dev = FactoryGirl.create(:verified_device, registration: reg, api_token: SecureRandom.hex, user: nil)
+        
+        headers = {
+          'HTTP_AUTHORIZATION' => ActionController::HttpAuthentication::Token.encode_credentials(dev.api_token)
+        }
+
+        post "/api/v1/change_number", headers: headers
+        
+        expect(response.status).to eq(200)
+
+        response_body = JSON.parse(response.body)
+
+        expect(response_body["success"]).to eq(false)
+        expect(response_body["alert"]).to be_blank
+        expect(response_body["data"]).to be_blank
+
+        expect(response_body["errors"]["heading"]).to eq("Profile doesn't exists for the mobile number you have provided")
+        expect(response_body["errors"]["message"]).to eq("You are trying to create a profile once again when you already have a profile. Use Profile API with your API Token, to get your profile details and use them instead of creating a new one.")
+
+        data = response_body['data']
+      end
+
+      it "should respond with proper errors if otp passed is invalid" do
+        user = FactoryGirl.create(:approved_user)
+        reg = FactoryGirl.create(:verified_registration, country: country, city: city, user: user, dialing_prefix: "+91", mobile_number: "9880123456")
+        dev = FactoryGirl.create(:verified_device, registration: reg, api_token: SecureRandom.hex, user: user)
+        
+        dev.generate_otp
+        
+        headers = {
+          'HTTP_AUTHORIZATION' => ActionController::HttpAuthentication::Token.encode_credentials(dev.api_token)
+        }
+
+        post "/api/v1/change_number", 
+          params: {
+            otp: "",
+            uuid: dev.uuid,
+            old_dialing_prefix: reg.dialing_prefix, 
+            old_mobile_number: reg.mobile_number,
+            new_dialing_prefix: "+971", 
+            new_mobile_number: "501234567"
+          }, 
+          headers: headers
+
+        expect(response.status).to eq(200)
+
+        response_body = JSON.parse(response.body)
+
+        expect(response_body["success"]).to be(false)
+        expect(response_body["alert"]).to be_blank
+        
+        expect(response_body["errors"]["heading"]).to  eq("Mobile number change failed")
+        expect(response_body["errors"]["message"]).to  eq("Check if all the inputs are valid")
+        expect(response_body["errors"]["details"]["otp"]).to  eq("doesn't match with our database")
+      end
+
+      it "should respond with proper errors if no proper parameters are passed" do
+        user = FactoryGirl.create(:approved_user)
+        reg = FactoryGirl.create(:verified_registration, country: country, city: city, user: user, dialing_prefix: "+91", mobile_number: "9880123456")
+        dev = FactoryGirl.create(:verified_device, registration: reg, api_token: SecureRandom.hex, user: user)
+        
+        dev.generate_otp
+
+        headers = {
+          'HTTP_AUTHORIZATION' => ActionController::HttpAuthentication::Token.encode_credentials(dev.api_token)
+        }
+
+        # Case 1 - if uuid is missing
+        post "/api/v1/change_number", 
+          params: {
+            uuid: "",
+            old_dialing_prefix: reg.dialing_prefix, 
+            old_mobile_number: reg.mobile_number,
+            new_dialing_prefix: "+971", 
+            new_mobile_number: "501234567"
+          }, 
+          headers: headers
+
+        expect(response.status).to eq(200)
+
+        response_body = JSON.parse(response.body)
+
+        expect(response_body["success"]).to be(false)
+        expect(response_body["alert"]).to be_blank
+        
+        expect(response_body["errors"]["heading"]).to  eq("The device is not registered")
+        expect(response_body["errors"]["message"]).to  eq("Check if the UUID entered is valid")
+        
+        # Case 2 - if old numbers are not matching
+        post "/api/v1/change_number", 
+          params: {
+            uuid: dev.uuid,
+            old_dialing_prefix: "", 
+            old_mobile_number: "",
+            new_dialing_prefix: "+971", 
+            new_mobile_number: "501234567"
+          }, 
+          headers: headers
+
+        expect(response.status).to eq(200)
+
+        response_body = JSON.parse(response.body)
+
+        expect(response_body["success"]).to be(false)
+        expect(response_body["alert"]).to be_blank
+        
+        expect(response_body["errors"]["heading"]).to  eq("Mobile number change failed")
+        expect(response_body["errors"]["message"]).to  eq("Check if all the inputs are valid")
+        expect(response_body["errors"]["details"]["otp"]).to  eq("doesn't match with our database")
+        expect(response_body["errors"]["details"]["mobile_number"]).to  eq("doesn't match with our database")
+        expect(response_body["errors"]["details"]["dialing_prefix"]).to  eq("doesn't match with our database")
+
+        # Case 3 - if new numbers are missing
+        post "/api/v1/change_number", 
+          params: {
+            uuid: dev.uuid,
+            old_dialing_prefix: reg.dialing_prefix, 
+            old_mobile_number: reg.mobile_number,
+            new_dialing_prefix: "", 
+            new_mobile_number: ""
+          }, 
+          headers: headers
+
+        expect(response.status).to eq(200)
+
+        response_body = JSON.parse(response.body)
+
+        expect(response_body["success"]).to be(false)
+        expect(response_body["alert"]).to be_blank
+        
+        expect(response_body["errors"]["heading"]).to  eq("Mobile number change failed")
+        expect(response_body["errors"]["message"]).to  eq("Check if all the inputs are valid")
+        expect(response_body["errors"]["details"]["otp"]).to  eq("doesn't match with our database")
+        expect(response_body["errors"]["details"]["mobile_number"]).not_to be_blank
+        expect(response_body["errors"]["details"]["dialing_prefix"]).not_to be_blank
+      end
+
+      it "should respond with proper errors if the device is blocked" do
+        user = FactoryGirl.create(:approved_user)
+        reg = FactoryGirl.create(:verified_registration, country: country, city: city, user: user)
+        dev = FactoryGirl.create(:blocked_device, registration: reg, api_token: SecureRandom.hex)
+        
+        headers = {
+          'HTTP_AUTHORIZATION' => ActionController::HttpAuthentication::Token.encode_credentials(dev.api_token)
+        }
+        
+        post "/api/v1/change_number", 
+          params: {
+            uuid: dev.uuid,
+            old_dialing_prefix: reg.dialing_prefix, 
+            old_mobile_number: reg.mobile_number,
+            new_dialing_prefix: "+971", 
+            new_mobile_number: "501234567"
+          }, 
+          headers: headers
+
+        expect(response.status).to eq(200)
+
+        response_body = JSON.parse(response.body)
+
+        expect(response_body["success"]).to be(false)
+        expect(response_body["alert"]).to be_blank
+
+        expect(response_body["errors"]["heading"]).to  eq("This device is blocked")
+        expect(response_body["errors"]["message"]).to  eq("You must have done some mal-practices")
+      end
+    end
+  end
+
+  describe "delete_account" do
+    context "Positive Case" do
+      it "should mark the account as deleted" do
+        user = FactoryGirl.create(:approved_user)
+        reg = FactoryGirl.create(:verified_registration, country: country, city: city, user: user, dialing_prefix: "+91", mobile_number: "9880123456")
+        dev = FactoryGirl.create(:verified_device, registration: reg, api_token: SecureRandom.hex, user: user)
+        
+        headers = {
+          'HTTP_AUTHORIZATION' => ActionController::HttpAuthentication::Token.encode_credentials(dev.api_token)
+        }
+
+        delete "/api/v1/delete_account", headers: headers
+
+        expect(response.status).to eq(200)
+
+        response_body = JSON.parse(response.body)
+
+        expect(response_body["success"]).to be(true)
+        expect(response_body["errors"]).to be_blank
+
+        reg.reload
+        user.reload
+
+        expect(reg.deleted?).to be_truthy
+        expect(user.deleted?).to be_truthy
+        
+        expect(response_body["alert"]["heading"]).to  eq("Your account has been deleted successfully")
+        expect(response_body["alert"]["message"]).to  eq("You will be logged out from all sessions")
+      end
+    end
+    context "Negative Case" do
+      it "should set proper errors if api token is not present" do
+        delete "/api/v1/delete_account"
+        
+        expect(response.status).to eq(200)
+
+        response_body = JSON.parse(response.body)
+
+        expect(response_body["success"]).to eq(false)
+        expect(response_body["alert"]).to be_blank
+        expect(response_body["data"]).to be_blank
+
+        expect(response_body["errors"]["heading"]).to eq("Invalid API Token")
+        expect(response_body["errors"]["message"]).to eq("Use the API Token you have received after accepting the terms and agreement")
+
+        data = response_body['data']
+      end
+
+      it "should set proper errors if the profile didn't exist" do
+        reg = FactoryGirl.create(:verified_registration, country: country, city: city, user: nil, dialing_prefix: "+91", mobile_number: "9880123456")
+        dev = FactoryGirl.create(:verified_device, registration: reg, api_token: SecureRandom.hex, user: nil)
+        
+        headers = {
+          'HTTP_AUTHORIZATION' => ActionController::HttpAuthentication::Token.encode_credentials(dev.api_token)
+        }
+
+        delete "/api/v1/delete_account", headers: headers
+        
+        expect(response.status).to eq(200)
+
+        response_body = JSON.parse(response.body)
+
+        expect(response_body["success"]).to eq(false)
+        expect(response_body["alert"]).to be_blank
+        expect(response_body["data"]).to be_blank
+
+        expect(response_body["errors"]["heading"]).to eq("Profile doesn't exists for the mobile number you have provided")
+        expect(response_body["errors"]["message"]).to eq("You are trying to create a profile once again when you already have a profile. Use Profile API with your API Token, to get your profile details and use them instead of creating a new one.")
+
+        data = response_body['data']
+      end
+    end
   end
 
 end

@@ -1,0 +1,33 @@
+<%
+
+api_title = "Negative Case - 4 - should respond with proper errors if the device is blocked"
+
+api_input = <<-eos
+Example:
+
+POST #{request.base_url}/api/v1/send_otp_to_change_number
+{
+  "uuid": "<BLOCKED DEVICE UUID>"
+}
+eos
+
+api_output = <<-eos
+{
+  "success": false,
+  "errors": {
+      "heading": "This device is blocked",
+      "message": "You must have done some mal-practices",
+      "details": {}
+  }
+}
+eos
+
+%>
+
+<%= render partial: "kuppayam/api/docs/example", locals: {
+                                        negative_case: true,
+                                        example_id: "neg_case_4",
+                                        api_title: api_title,
+                                        api_input: api_input,
+                                        api_output: api_output 
+                                      } %>

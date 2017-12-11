@@ -1,0 +1,42 @@
+<%
+
+api_title = "Negative Case - 4 - should respond with proper errors if invalid UUID is passed"
+
+api_input = <<-eos
+Invalid UUID means, the device you are using to send request is not registered.
+
+Example:
+
+POST #{request.base_url}/api/v1/change_number
+{
+  "otp": "81242",
+  "uuid": "<INVALID UUID>",
+  "old_dialing_prefix": "<OLD DIALING PREFIX>",
+  "old_mobile_number": "<OLD MOBILE NUMBER>",
+  "new_dialing_prefix": "<NEW DIALING PREFIX>",
+  "new_mobile_number": "<NEW MOBILE NUMBER>"
+}
+eos
+
+api_output = <<-eos
+{
+  "success": false,
+  "errors": {
+      "heading": "The device is not registered",
+      "message": "Check if the UUID entered is valid",
+      "details": {
+        "uuid": "is invalid"
+      }
+  }
+}
+eos
+
+%>
+
+<%= render partial: "kuppayam/api/docs/example", locals: {
+                                        negative_case: true,
+                                        example_id: "neg_case_4",
+                                        api_title: api_title,
+                                        api_input: api_input,
+                                        api_output: api_output 
+                                      } %>

@@ -167,6 +167,7 @@ RSpec.describe Usman::Api::V1::ContactsController, :type => :request do
         expect(data[0]["contact_number_2"]).to eq(contact_1.contact_number_2.to_s)
         expect(data[0]["contact_number_3"]).to eq(contact_1.contact_number_3.to_s)
         expect(data[0]["contact_number_4"]).to eq(contact_1.contact_number_4.to_s)
+        # expect(data[0]["user_id"]).to eq(user.id)
 
         expect(data[1]["id"]).not_to be_blank
         expect(data[1]["name"]).to eq(contact_2.name.to_s)

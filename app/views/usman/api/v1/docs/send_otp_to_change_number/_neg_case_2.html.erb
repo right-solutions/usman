@@ -1,0 +1,30 @@
+<%
+
+api_title = "Negative Case - 2 - should set proper errors if the profile didn't exist"
+
+api_input = <<-eos
+Example:
+
+Authorization: Token token="87b01adbba90824b57add8cc06ad8738"
+POST #{request.base_url}/api/v1/send_otp_to_change_number
+eos
+
+api_output = <<-eos
+{
+  "success": false,
+  "errors": {
+    "heading": "A profile doesn't exists for the mobile number you have provided",
+    "message": "You are trying to u a profile once again when you already have a profile. Use Profile API with your API Token, to get your profile details and use them instead of creating a new one."
+  }
+}
+eos
+
+%>
+
+<%= render partial: "kuppayam/api/docs/example", locals: {
+                                        negative_case: true,
+                                        example_id: "neg_case_2",
+                                        api_title: api_title,
+                                        api_input: api_input,
+                                        api_output: api_output 
+                                      } %>

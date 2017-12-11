@@ -207,7 +207,6 @@ module Usman
           render 'kuppayam/api/docs/show'
         end
 
-
         def contacts_sync
           set_title("Sync Contacts")
           @request_type = "POST"
@@ -278,8 +277,8 @@ module Usman
           render 'kuppayam/api/docs/show'
         end    
 
-        def single_contacts
-          set_title("Single Contacts")
+        def single_contact
+          set_title("Single Contact")
           @request_type = "GET"
           @end_point = "/api/v1/contacts/:id"
           @description = <<-eos
@@ -296,7 +295,7 @@ module Usman
           @example_path = "usman/api/v1/docs/"
           @examples = ["pos_case_1", "neg_case_1"]
 
-          set_nav("docs/usman/single_contacts")
+          set_nav("docs/usman/single_contact")
 
           render 'kuppayam/api/docs/show'
         end
@@ -375,6 +374,83 @@ module Usman
           render 'kuppayam/api/docs/show'
         end
 
+        def send_otp_to_change_number
+          set_title("Resend OTP API")
+          @request_type = "POST"
+          @end_point = "/api/v1/send_otp_to_change_number"
+          @description = <<-eos
+            This API will send the OTP as a confirmation to process the request to change the mobile number
+          eos
+
+          @input_headers = {
+            "Content-Type" => { value: "application/json", description: "The MIME media type for JSON text is application/json. This is to make sure that a valid json is returned. The default encoding is UTF-8. " }
+          }
+
+          @input_params = {
+            uuid: { mandatory: true, description: "Universal Unique Identifier. iOS or Android will give you this programatically.", example: "", default: "" }
+          }
+
+          @example_path = "usman/api/v1/docs/"
+          @examples = ["pos_case_1", "neg_case_1", "neg_case_2", "neg_case_3", "neg_case_4"]
+
+          set_nav("docs/usman/send_otp_to_change_number")
+
+          render 'kuppayam/api/docs/show'
+        end
+
+        def change_number
+          set_title("Change Number API")
+          @request_type = "POST"
+          @end_point = "/api/v1/change_number"
+          @description = <<-eos
+            This API along with the OTP will change the mobile number from old to new.
+          eos
+          
+          @input_headers = {
+            "Content-Type" => { value: "application/json", description: "The MIME media type for JSON text is application/json. This is to make sure that a valid json is returned. The default encoding is UTF-8. " }
+          }
+
+          @input_params = {
+            otp: { mandatory: true, description: "One Time Password you have received via SMS. (Five Digit)", example: "51234", default: "" },
+            uuid: { mandatory: true, description: "Universal Unique Identifier. iOS or Android will give you this programatically.", example: "", default: "" },
+            old_dialing_prefix: { mandatory: true, description: "International Dialing Prefix for countries", example: "+91", default: "" },
+            old_mobile_number: { mandatory: true, description: "Mobile Number without Dialing Prefix", example: "If your mobile number is +971 54 312 9876, pass '543129876' without spaces.", default: "" },
+            new_dialing_prefix: { mandatory: true, description: "International Dialing Prefix for countries", example: "+971", default: "" },
+            new_mobile_number: { mandatory: true, description: "Mobile Number without Dialing Prefix", example: "If your mobile number is +971 54 312 9876, pass '543129876' without spaces.", default: "" }
+          }
+
+          @example_path = "usman/api/v1/docs/"
+          @examples = ["pos_case_1", "neg_case_1", "neg_case_2", "neg_case_3", "neg_case_4", "neg_case_5", "neg_case_6", "neg_case_7"]
+
+          set_nav("docs/usman/change_number")
+
+          render 'kuppayam/api/docs/show'
+        end
+
+        def delete_account
+          set_title("DELETE ACCOUNT API")
+          @request_type = "DELETE"
+          @end_point = "/api/v1/delete_account"
+          @description = <<-eos
+          This API will delete the account from the system and the user will be logged out from all sessions.
+          eos
+
+          @warning = "This is an irreversible action and the user will not be able to login back to this account again"
+          
+          @input_headers = {
+            "Content-Type" => { value: "application/json", description: "The MIME media type for JSON text is application/json. This is to make sure that a valid json is returned. The default encoding is UTF-8. " }
+          }
+
+          @input_params = {}
+
+          @example_path = "usman/api/v1/docs/"
+          @examples = ["pos_case_1", "neg_case_1", "neg_case_2"]
+
+          set_nav("docs/usman/delete_account")
+
+          render 'kuppayam/api/docs/show'
+        end
+
         private
 
         def set_nav_items
@@ -388,10 +464,13 @@ module Usman
             get_profile_info: { nav_class: "docs/usman/get_profile_info", icon_class: "fa-user", url: usman.docs_api_v1_get_profile_info_path, text: "Get Profile Info API"},
             contacts_sync: { nav_class: "docs/usman/contacts_sync", icon_class: "fa-user", url: usman.docs_api_v1_contacts_sync_path, text: "Contact Syncing"},
             all_contacts: { nav_class: "docs/usman/all_contacts", icon_class: "fa-user", url: usman.docs_api_v1_all_contacts_path, text: "Get All Contacts"},
-            single_contacts: { nav_class: "docs/usman/single_contacts", icon_class: "fa-user", url: usman.docs_api_v1_single_contacts_path, text: "Single Contact"},
+            single_contact: { nav_class: "docs/usman/single_contact", icon_class: "fa-user", url: usman.docs_api_v1_single_contact_path, text: "Single Contact"},
             upload_profile_picture_base64: { nav_class: "docs/usman/upload_profile_picture_base64", icon_class: "fa-photo", url: usman.docs_api_v1_upload_profile_picture_base64_path, text: "Upload Profile Picture (Base64)"},
             upload_profile_picture: { nav_class: "docs/usman/upload_profile_picture", icon_class: "fa-photo", url: usman.docs_api_v1_upload_profile_picture_path, text: "Upload Profile Picture"},
-            delete_profile_picture: { nav_class: "docs/usman/delete_profile_picture", icon_class: "fa-photo", url: usman.docs_api_v1_delete_profile_picture_path, text: "Remove Profile Picture"}
+            delete_profile_picture: { nav_class: "docs/usman/delete_profile_picture", icon_class: "fa-photo", url: usman.docs_api_v1_delete_profile_picture_path, text: "Remove Profile Picture"},
+            send_otp_to_change_number: { nav_class: "docs/usman/send_otp_to_change_number", icon_class: "fa-phone", url: usman.docs_api_v1_send_otp_to_change_number_path, text: "Send OTP to Change Number"},
+            change_number: { nav_class: "docs/usman/change_number", icon_class: "fa-phone", url: usman.docs_api_v1_change_number_path, text: "Change Number"},
+            delete_account: { nav_class: "docs/usman/delete_account", icon_class: "fa-user", url: usman.docs_api_v1_delete_account_path, text: "Delete Account"},
           }
         end
 

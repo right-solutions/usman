@@ -7,17 +7,20 @@ class User < Usman::ApplicationRecord
   PENDING = "pending"
   APPROVED = "approved"
   SUSPENDED = "suspended"
+  DELETED = "deleted"
   
   STATUS = { 
     PENDING => "Pending", 
     APPROVED => "Approved", 
-    SUSPENDED => "Suspended"
+    SUSPENDED => "Suspended",
+    DELETED => "Deleted"
   }
 
   STATUS_REVERSE = { 
     "Pending" => PENDING, 
     "Approved" => APPROVED, 
-    "Suspended" => SUSPENDED
+    "Suspended" => SUSPENDED,
+    "Deleted" => DELETED
   }
 
   MALE = "male"
@@ -100,6 +103,7 @@ class User < Usman::ApplicationRecord
   scope :pending, -> { where(status: PENDING) }
   scope :approved, -> { where(status: APPROVED) }
   scope :suspended, -> { where(status: SUSPENDED) }
+  scope :deleted, -> { where(status: DELETED) }
   
   scope :super_admins, -> { where(super_admin: TRUE) }
   scope :normal_users, -> { where(super_admin: FALSE) }
@@ -177,6 +181,14 @@ class User < Usman::ApplicationRecord
     (status == SUSPENDED)
   end
 
+  # * Return true if the user is deleted, else false.
+  # == Examples
+  #   >>> user.deleted?
+  #   => true
+  def deleted?
+    (status == DELETED)
+  end
+
   # change the status to :pending
   # Return the status
   # == Examples
@@ -205,6 +217,16 @@ class User < Usman::ApplicationRecord
   def suspend!
     self.update_attribute(:status, SUSPENDED)
     self.registration.update_attribute(:status, SUSPENDED) if self.registration
+  end
+
+  # change the status to :deleted
+  # Return the status
+  # == Examples
+  #   >>> user.delete!
+  #   => "deleted"
+  def delete!
+    self.update_attribute(:status, DELETED)
+    self.registration.update_attribute(:status, DELETED) if self.registration
   end
 
   # Gender Methods

@@ -1,0 +1,40 @@
+<%
+
+api_title = "Negative Case - 6 - should respond with proper errors if new dialign prefix and mobile number are missing"
+
+api_input = <<-eos
+Example:
+
+POST #{request.base_url}/api/v1/change_number
+{
+  "otp": "81242",
+  "uuid": "asd907asdba78sbda",
+  "old_dialing_prefix": "<OLD DIALING PREFIX>",
+  "old_mobile_number": "<OLD MOBILE NUMBER>",
+  "new_dialing_prefix": "<INVALID NEW DIALING PREFIX>",
+  "new_mobile_number": "<INVALID NEW MOBILE NUMBER>"
+}
+eos
+
+api_output = <<-eos
+{
+  "success": false,
+  "errors": {
+      "heading": "Mobile number change failed",
+      "message": "Check if all the inputs are valid",
+      "details": {
+        "uuid": "is invalid"
+      }
+  }
+}
+eos
+
+%>
+
+<%= render partial: "kuppayam/api/docs/example", locals: {
+                                        negative_case: true,
+                                        example_id: "neg_case_6",
+                                        api_title: api_title,
+                                        api_input: api_input,
+                                        api_output: api_output 
+                                      } %>

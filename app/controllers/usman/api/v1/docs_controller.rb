@@ -375,7 +375,7 @@ module Usman
         end
 
         def send_otp_to_change_number
-          set_title("Resend OTP API")
+          set_title("Send OTP to Change Number - API")
           @request_type = "POST"
           @end_point = "/api/v1/send_otp_to_change_number"
           @description = <<-eos

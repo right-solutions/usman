@@ -64,7 +64,7 @@ module Usman
     def register_new_device
 
       if @device && @device.blocked?
-        set_error("api.register.device_blocked")
+        set_error("api.general.device_blocked")
         return
       end
 

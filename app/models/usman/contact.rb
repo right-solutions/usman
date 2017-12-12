@@ -13,8 +13,8 @@ class Usman::Contact < Usman::ApplicationRecord
   validates :name, presence: true, length: {maximum: 512}
   validates :account_type, length: {maximum: 256}
 
-  validates :email, length: {maximum: 256}
-  validate_email :email
+  validates :email, length: {maximum: 256}, allow_nil: true,
+            format: /\A(|(([A-Za-z0-9]+_+)|([A-Za-z0-9]+\-+)|([A-Za-z0-9]+\.+)|([A-Za-z0-9]+\++))*[A-Za-z0-9]+@((\w+\-+)|(\w+\.))*\w{1,63}\.[a-zA-Z]{2,6})\z/i
   validates :address, length: {maximum: 512}
 
   validates :contact_number_1, presence: true, length: {maximum: 24}

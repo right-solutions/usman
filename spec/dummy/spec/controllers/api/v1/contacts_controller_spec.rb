@@ -15,9 +15,9 @@ RSpec.describe Usman::Api::V1::ContactsController, :type => :request do
         
         contact_1 = FactoryGirl.build(:contact, name: "Lalettan", email: "mohanlal@mollywood.com", account_type: "com.mollywood", contact_number_1: "+919880123123", contact_number_2: "2234234234", contact_number_3: "3234234234", contact_number_4: "4234234234")
         contact_2 = FactoryGirl.build(:contact, name: "Mammukka", email: "mammotty@mollywood.com", account_type: "com.mollywood", contact_number_1: "1345345345", contact_number_2: "+919880456456", contact_number_3: "3345345345", contact_number_4: "4345345345")
-        contact_3 = FactoryGirl.build(:contact, name: "Ambili Chettan", email: "jagathy@mollywood.com", account_type: "com.mollywood", contact_number_1: "1345345345", contact_number_2: "2345345345", contact_number_3: "3345345345", contact_number_4: "4345345345")
+        contact_3 = FactoryGirl.build(:contact, name: "Ambili Chettan", email: nil, account_type: "com.mollywood", contact_number_1: "1345345345", contact_number_2: "2345345345", contact_number_3: "3345345345", contact_number_4: "4345345345")
         contact_4 = FactoryGirl.build(:contact, name: "Shobhana", email: "shobhana@mollywood.com", account_type: "com.mollywood", contact_number_1: "1345345345", contact_number_2: "2345345345", contact_number_3: "+919880789789", contact_number_4: "4345345345")
-        contact_5 = FactoryGirl.build(:contact, name: "Seetha", email: "seetha@mollywood.com", account_type: "com.mollywood", contact_number_1: "1345345345", contact_number_2: "2345345345", contact_number_3: "9880789789", contact_number_4: "+919880234234")
+        contact_5 = FactoryGirl.build(:contact, name: "Seetha", email: nil, account_type: "com.mollywood", contact_number_1: "1345345345", contact_number_2: "2345345345", contact_number_3: "9880789789", contact_number_4: "+919880234234")
         
         contacts_data = [
                           {

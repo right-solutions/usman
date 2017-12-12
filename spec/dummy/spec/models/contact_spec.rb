@@ -20,7 +20,7 @@ RSpec.describe Usman::Contact, type: :model do
     it { should allow_value("com.google").for(:account_type )}
     it { should_not allow_value("x"*257).for(:account_type )}
 
-    it { should validate_presence_of :email }
+    it { should allow_value(nil).for(:email) }
     it { should allow_value('something@domain.com').for(:email )}
     it { should_not allow_value('something domain.com').for(:email )}
     it { should_not allow_value('something.domain.com').for(:email )}

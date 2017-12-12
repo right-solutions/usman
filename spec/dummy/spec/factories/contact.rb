@@ -9,9 +9,6 @@ FactoryGirl.define do
     name "Some Name"
     account_type "com.google"
 
-    email "something@domain.com"
-    address "Some Address"
-
     contact_number_1 "9912345678"
   end
 

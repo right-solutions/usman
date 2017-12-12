@@ -18,8 +18,8 @@ RSpec.describe ContactSerializer, type: :serializer do
       expect(data["name"]).to eq(contact.name)
       expect(data["account_type"]).to eq(contact.account_type)
 
-      expect(data["email"]).to eq(contact.email)
-      expect(data["address"]).to eq(contact.address)
+      expect(data["email"]).to eq(contact.email.to_s)
+      expect(data["address"]).to eq(contact.address.to_s)
 
       expect(data["contact_number_1"]).to eq(contact.contact_number_1)
       expect(data["contact_number_2"]).to eq(contact.contact_number_2)
@@ -48,8 +48,8 @@ RSpec.describe ContactSerializer, type: :serializer do
       expect(data["name"]).to eq(contact.name)
       expect(data["account_type"]).to eq(contact.account_type)
 
-      expect(data["email"]).to eq(contact.email)
-      expect(data["address"]).to eq(contact.address)
+      expect(data["email"]).to eq(contact.email.to_s)
+      expect(data["address"]).to eq(contact.address.to_s)
 
       expect(data["contact_number_1"]).to eq(contact.contact_number_1)
       expect(data["contact_number_2"]).to eq(contact.contact_number_2)

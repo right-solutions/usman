@@ -17,10 +17,7 @@ class Usman::Contact < Usman::ApplicationRecord
             format: /\A(|(([A-Za-z0-9]+_+)|([A-Za-z0-9]+\-+)|([A-Za-z0-9]+\.+)|([A-Za-z0-9]+\++))*[A-Za-z0-9]+@((\w+\-+)|(\w+\.))*\w{1,63}\.[a-zA-Z]{2,6})\z/i
   validates :address, length: {maximum: 512}
 
-  validates :contact_number_1, presence: true, length: {maximum: 24}
-  validates :contact_number_2, length: {maximum: 24}
-  validates :contact_number_3, length: {maximum: 24}
-  validates :contact_number_4, length: {maximum: 24}
+  validates :contact_number, presence: true, length: {maximum: 24}
   
   # ------------------
   # Class Methods
@@ -32,10 +29,7 @@ class Usman::Contact < Usman::ApplicationRecord
   #   >>> Contact.search(query)
   #   => ActiveRecord::Relation object
   scope :search, lambda {|query| where("LOWER(contacts.name) LIKE LOWER('%#{query}%') OR 
-                                        LOWER(contacts.contact_number_1) LIKE LOWER('%#{query}%') OR 
-                                        LOWER(contacts.contact_number_2) LIKE LOWER('%#{query}%') OR 
-                                        LOWER(contacts.contact_number_3) LIKE LOWER('%#{query}%') OR 
-                                        LOWER(contacts.contact_number_4) LIKE LOWER('%#{query}%') OR 
+                                        LOWER(contacts.contact_number) LIKE LOWER('%#{query}%') OR 
                                         LOWER(contacts.email) LIKE LOWER('%#{query}%') OR 
                                         LOWER(contacts.account_type) LIKE LOWER('%#{query}%')")}
   
@@ -68,10 +62,13 @@ class Usman::Contact < Usman::ApplicationRecord
     "#{self.name}"
   end
 
+  def parse_phone_number(num)
+    num.gsub(' ','').gsub('(','').gsub(')','').gsub('-','').strip
+  end
+
   def get_done_deal_user
-    arr = [self.contact_number_1, self.contact_number_2, self.contact_number_3, self.contact_number_4].compact.uniq
-    return if arr.first.nil?
-    reg = Registration.where("CONCAT_WS('', dialing_prefix, mobile_number) IN (?)", arr).first
+    formatted_number = parse_phone_number(self.contact_number)
+    reg = Registration.where("CONCAT_WS('', dialing_prefix, mobile_number) = ?", formatted_number).first
     return reg && reg.user ? reg.user : nil
   end
 	

@@ -21,10 +21,7 @@ RSpec.describe ContactSerializer, type: :serializer do
       expect(data["email"]).to eq(contact.email.to_s)
       expect(data["address"]).to eq(contact.address.to_s)
 
-      expect(data["contact_number_1"]).to eq(contact.contact_number_1)
-      expect(data["contact_number_2"]).to eq(contact.contact_number_2)
-      expect(data["contact_number_3"]).to eq(contact.contact_number_3)
-      expect(data["contact_number_4"]).to eq(contact.contact_number_4)
+      expect(data["contact_number"]).to eq(contact.contact_number)
       
       expect(data["profile_picture"]["id"]).to be_blank
       expect(data["profile_picture"]["profile_id"]).to be_blank
@@ -51,11 +48,8 @@ RSpec.describe ContactSerializer, type: :serializer do
       expect(data["email"]).to eq(contact.email.to_s)
       expect(data["address"]).to eq(contact.address.to_s)
 
-      expect(data["contact_number_1"]).to eq(contact.contact_number_1)
-      expect(data["contact_number_2"]).to eq(contact.contact_number_2)
-      expect(data["contact_number_3"]).to eq(contact.contact_number_3)
-      expect(data["contact_number_4"]).to eq(contact.contact_number_4)
-
+      expect(data["contact_number"]).to eq(contact.contact_number)
+      
       expect(data["profile_picture"]["id"]).to eq(profile_picture.id)
       expect(data["profile_picture"]["profile_id"]).to eq(nayan.id)
       expect(data["profile_picture"]["created_at"]).to eq(profile_picture.created_at.strftime('%d-%m-%Y %H:%M:%S'))

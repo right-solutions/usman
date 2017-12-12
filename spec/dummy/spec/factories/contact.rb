@@ -9,7 +9,7 @@ FactoryGirl.define do
     name "Some Name"
     account_type "com.google"
 
-    contact_number_1 "9912345678"
+    contact_number "9912345678"
   end
 
 end

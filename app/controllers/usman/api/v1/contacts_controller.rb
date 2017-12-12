@@ -21,11 +21,8 @@ module Usman
                   contact.name = cnt["name"]
                   contact.account_type = cnt["account_type"]
                   contact.email = cnt["email"]
-                  contact.contact_number_1 = cnt["contact_number_1"]
-                  contact.contact_number_2 = cnt["contact_number_2"]
-                  contact.contact_number_3 = cnt["contact_number_3"]
-                  contact.contact_number_4 = cnt["contact_number_4"]
-
+                  contact.contact_number = cnt["contact_number"]
+                  
                   contact.owner = @current_user
                   contact.done_deal_user = contact.get_done_deal_user
                   contact.registration = @current_registration
@@ -106,7 +103,7 @@ module Usman
         private
 
         def permitted_params
-          params.permit(:name, :account_type, :email, :address, :contact_number_1, :contact_number_2, :contact_number_3, :contact_number_4)
+          params.permit(:name, :account_type, :email, :address, :contact_number)
         end
 
       end

@@ -31,22 +31,10 @@ RSpec.describe Usman::Contact, type: :model do
     it { should allow_value("Some Address").for(:address )}
     it { should_not allow_value("x"*513).for(:address )}
 
-    it { should validate_presence_of :contact_number_1 }
-    it { should allow_value("1"*24).for(:contact_number_1 )}
-    it { should allow_value("1234567890").for(:contact_number_1 )}
-    it { should_not allow_value("x"*25).for(:contact_number_1 )}
-
-    it { should allow_value(nil).for(:contact_number_2) }
-    it { should allow_value("1234567890").for(:contact_number_2 )}
-    it { should_not allow_value("x"*25).for(:contact_number_2 )}
-
-    it { should allow_value(nil).for(:contact_number_3) }
-    it { should allow_value("1234567890").for(:contact_number_3 )}
-    it { should_not allow_value("x"*25).for(:contact_number_3 )}
-
-    it { should allow_value(nil).for(:contact_number_4) }
-    it { should allow_value("1234567890").for(:contact_number_4 )}
-    it { should_not allow_value("x"*25).for(:contact_number_4 )}
+    it { should validate_presence_of :contact_number }
+    it { should allow_value("1"*24).for(:contact_number )}
+    it { should allow_value("1234567890").for(:contact_number )}
+    it { should_not allow_value("x"*25).for(:contact_number )}
   end
 
   context "Associations" do
@@ -59,8 +47,10 @@ RSpec.describe Usman::Contact, type: :model do
   context "Class Methods" do
     it "search" do
 
-      mkg = FactoryGirl.create(:contact, name: "Mohandas Karamchand Gandhi", email: "gandhi@india.com", contact_number_1: "1234123412", account_type: "com.google")
-      svp = FactoryGirl.create(:contact, name: "Sardar Vallabhai Patel", email: "sardar.patel@india.com", contact_number_1: "4567456745", account_type: "com.google")
+      mkg = FactoryGirl.create(:contact, name: "Mohandas Karamchand Gandhi", email: "gandhi@india.com", contact_number:
+       "1234123412", account_type: "com.google")
+      svp = FactoryGirl.create(:contact, name: "Sardar Vallabhai Patel", email: "sardar.patel@india.com", contact_number:
+       "4567456745", account_type: "com.google")
       
       expect(Usman::Contact.search("Mohandas")).to match_array([mkg])
       expect(Usman::Contact.search("gandhi@india.com")).to match_array([mkg])
@@ -98,13 +88,30 @@ RSpec.describe Usman::Contact, type: :model do
         reg = FactoryGirl.create(:verified_registration, user: seetha, dialing_prefix: "+91", mobile_number: "9880234234")
         dev = FactoryGirl.create(:verified_device, registration: reg, api_token: SecureRandom.hex)
         
-        contact = FactoryGirl.build(:contact, name: "Lalettan", email: "mohanlal@mollywood.com", account_type: "com.mollywood", contact_number_1: "+919880123123", contact_number_2: "2234234234", contact_number_3: "3234234234", contact_number_4: "4234234234")
+        contact = FactoryGirl.build(:contact, name: "Lalettan", email: "mohanlal@mollywood.com", account_type: "com.mollywood", contact_number:
+         "+919880123123")
         ddo = contact.get_done_deal_user
         expect(ddo).to eq(mohanlal)
 
-        contact = FactoryGirl.build(:contact, name: "Mammukka", email: "mammotty@mollywood.com", account_type: "com.mollywood", contact_number_1: "+9719880123123", contact_number_2: "+929880123123", contact_number_3: "3234234234", contact_number_4: "4234234234")
+        contact = FactoryGirl.build(:contact, name: "Mammukka", email: "mammotty@mollywood.com", account_type: "com.mollywood", contact_number:
+         "+9719880123123")
         ddo = contact.get_done_deal_user
-        expect(ddo).to eq(mammotty)
+        expect(ddo).to eq(shobhana)
+
+        contact = FactoryGirl.build(:contact, name: "Mammukka", email: "mammotty@mollywood.com", account_type: "com.mollywood", contact_number:
+         "+971 9880-123123")
+        ddo = contact.get_done_deal_user
+        expect(ddo).to eq(shobhana)
+
+        contact = FactoryGirl.build(:contact, name: "Mammukka", email: "mammotty@mollywood.com", account_type: "com.mollywood", contact_number:
+         "+971 9880 123-123")
+        ddo = contact.get_done_deal_user
+        expect(ddo).to eq(shobhana)
+
+        contact = FactoryGirl.build(:contact, name: "Mammukka", email: "mammotty@mollywood.com", account_type: "com.mollywood", contact_number:
+         "+971 (9880) 123-123")
+        ddo = contact.get_done_deal_user
+        expect(ddo).to eq(shobhana)
       end
     end
   end

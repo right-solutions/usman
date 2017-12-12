@@ -13,11 +13,11 @@ RSpec.describe Usman::Api::V1::ContactsController, :type => :request do
         reg = FactoryGirl.create(:verified_registration, country: country, city: city, user: user)
         dev = FactoryGirl.create(:verified_device, registration: reg, api_token: SecureRandom.hex)
         
-        contact_1 = FactoryGirl.build(:contact, name: "Lalettan", email: "mohanlal@mollywood.com", account_type: "com.mollywood", contact_number_1: "+919880123123", contact_number_2: "2234234234", contact_number_3: "3234234234", contact_number_4: "4234234234")
-        contact_2 = FactoryGirl.build(:contact, name: "Mammukka", email: "mammotty@mollywood.com", account_type: "com.mollywood", contact_number_1: "1345345345", contact_number_2: "+919880456456", contact_number_3: "3345345345", contact_number_4: "4345345345")
-        contact_3 = FactoryGirl.build(:contact, name: "Ambili Chettan", email: nil, account_type: "com.mollywood", contact_number_1: "1345345345", contact_number_2: "2345345345", contact_number_3: "3345345345", contact_number_4: "4345345345")
-        contact_4 = FactoryGirl.build(:contact, name: "Shobhana", email: "shobhana@mollywood.com", account_type: "com.mollywood", contact_number_1: "1345345345", contact_number_2: "2345345345", contact_number_3: "+919880789789", contact_number_4: "4345345345")
-        contact_5 = FactoryGirl.build(:contact, name: "Seetha", email: nil, account_type: "com.mollywood", contact_number_1: "1345345345", contact_number_2: "2345345345", contact_number_3: "9880789789", contact_number_4: "+919880234234")
+        contact_1 = FactoryGirl.build(:contact, name: "Lalettan", email: "mohanlal@mollywood.com", account_type: "com.mollywood", contact_number: "+919880123123", )
+        contact_2 = FactoryGirl.build(:contact, name: "Mammukka", email: "mammotty@mollywood.com", account_type: "com.mollywood", contact_number: "+919880456456", )
+        contact_3 = FactoryGirl.build(:contact, name: "Ambili Chettan", email: nil, account_type: "com.mollywood", contact_number: "1345345345", )
+        contact_4 = FactoryGirl.build(:contact, name: "Shobhana", email: "shobhana@mollywood.com", account_type: "com.mollywood", contact_number: "+919880789789", )
+        contact_5 = FactoryGirl.build(:contact, name: "Seetha", email: nil, account_type: "com.mollywood", contact_number: "1345345345", )
         
         contacts_data = [
                           {
@@ -25,20 +25,14 @@ RSpec.describe Usman::Api::V1::ContactsController, :type => :request do
                             account_type: contact_1.account_type,
                             email: contact_1.email,
                             address: contact_1.address,
-                            contact_number_1: contact_1.contact_number_1,
-                            contact_number_2: contact_1.contact_number_2,
-                            contact_number_3: contact_1.contact_number_3,
-                            contact_number_4: contact_1.contact_number_4
+                            contact_number: contact_1.contact_number
                           },
                           {
                             name: contact_2.name,
                             account_type: contact_2.account_type,
                             email: contact_2.email,
                             address: contact_2.address,
-                            contact_number_1: contact_2.contact_number_1,
-                            contact_number_2: contact_2.contact_number_2,
-                            contact_number_3: contact_2.contact_number_3,
-                            contact_number_4: contact_2.contact_number_4
+                            contact_number: contact_2.contact_number
                           }
                         ]
 
@@ -79,11 +73,11 @@ RSpec.describe Usman::Api::V1::ContactsController, :type => :request do
         reg = FactoryGirl.create(:verified_registration, country: country, city: city, user: seetha, dialing_prefix: "+94", mobile_number: "9880123123")
         dev = FactoryGirl.create(:verified_device, registration: reg, api_token: SecureRandom.hex)
         
-        contact_1 = FactoryGirl.build(:contact, name: "Lalettan", email: "mohanlal@mollywood.com", account_type: "com.mollywood", contact_number_1: "+919880123123")
-        contact_2 = FactoryGirl.build(:contact, name: "Mammukka", email: "mammotty@mollywood.com", account_type: "com.mollywood", contact_number_1: "1345345345", contact_number_2: "+929880123123")
-        contact_3 = FactoryGirl.build(:contact, name: "Ambili Chettan", email: "jagathy@mollywood.com", account_type: "com.mollywood", contact_number_1: "1345345345", contact_number_2: "2345345345", contact_number_3: "3345345345", contact_number_4: "4345345345")
-        contact_4 = FactoryGirl.build(:contact, name: "Shobhana", email: "shobhana@mollywood.com", account_type: "com.mollywood", contact_number_1: "1345345345", contact_number_2: "2345345345", contact_number_3: "+939880123123")
-        contact_5 = FactoryGirl.build(:contact, name: "Seetha", email: "seetha@mollywood.com", account_type: "com.mollywood", contact_number_1: "1345345345", contact_number_2: "2345345345", contact_number_3: "9880789789", contact_number_4: "+949880123123")
+        contact_1 = FactoryGirl.build(:contact, name: "Lalettan", email: "mohanlal@mollywood.com", account_type: "com.mollywood", contact_number: "+919880123123")
+        contact_2 = FactoryGirl.build(:contact, name: "Mammukka", email: "mammotty@mollywood.com", account_type: "com.mollywood", contact_number: "+929880123123")
+        contact_3 = FactoryGirl.build(:contact, name: "Ambili Chettan", email: "jagathy@mollywood.com", account_type: "com.mollywood", contact_number: "1345345345")
+        contact_4 = FactoryGirl.build(:contact, name: "Shobhana", email: "shobhana@mollywood.com", account_type: "com.mollywood", contact_number: "+939880123123")
+        contact_5 = FactoryGirl.build(:contact, name: "Seetha", email: "seetha@mollywood.com", account_type: "com.mollywood", contact_number: "+949880123123")
 
         user = FactoryGirl.create(:approved_user, country: country, city: city)
         reg = FactoryGirl.create(:verified_registration, country: country, city: city, user: user)
@@ -95,50 +89,35 @@ RSpec.describe Usman::Api::V1::ContactsController, :type => :request do
                             account_type: contact_1.account_type,
                             email: contact_1.email,
                             address: contact_1.address,
-                            contact_number_1: contact_1.contact_number_1,
-                            contact_number_2: contact_1.contact_number_2,
-                            contact_number_3: contact_1.contact_number_3,
-                            contact_number_4: contact_1.contact_number_4
+                            contact_number: contact_1.contact_number
                           },
                           {
                             name: contact_2.name,
                             account_type: contact_2.account_type,
                             email: contact_2.email,
                             address: contact_2.address,
-                            contact_number_1: contact_2.contact_number_1,
-                            contact_number_2: contact_2.contact_number_2,
-                            contact_number_3: contact_2.contact_number_3,
-                            contact_number_4: contact_2.contact_number_4
+                            contact_number: contact_2.contact_number
                           },
                           {
                             name: contact_3.name,
                             account_type: contact_3.account_type,
                             email: contact_3.email,
                             address: contact_3.address,
-                            contact_number_1: contact_3.contact_number_1,
-                            contact_number_2: contact_3.contact_number_2,
-                            contact_number_3: contact_3.contact_number_3,
-                            contact_number_4: contact_3.contact_number_4
+                            contact_number: contact_3.contact_number
                           },
                           {
                             name: contact_4.name,
                             account_type: contact_4.account_type,
                             email: contact_4.email,
                             address: contact_4.address,
-                            contact_number_1: contact_4.contact_number_1,
-                            contact_number_2: contact_4.contact_number_2,
-                            contact_number_3: contact_4.contact_number_3,
-                            contact_number_4: contact_4.contact_number_4
+                            contact_number: contact_4.contact_number
                           },
                           {
                             name: contact_5.name,
                             account_type: contact_5.account_type,
                             email: contact_5.email,
                             address: contact_5.address,
-                            contact_number_1: contact_5.contact_number_1,
-                            contact_number_2: contact_5.contact_number_2,
-                            contact_number_3: contact_5.contact_number_3,
-                            contact_number_4: contact_5.contact_number_4
+                            contact_number: contact_5.contact_number
                           }
                         ]
 
@@ -163,38 +142,26 @@ RSpec.describe Usman::Api::V1::ContactsController, :type => :request do
         expect(data[0]["name"]).to eq(contact_1.name.to_s)
         expect(data[0]["account_type"]).to eq(contact_1.account_type.to_s)
         expect(data[0]["email"]).to eq(contact_1.email.to_s)
-        expect(data[0]["contact_number_1"]).to eq(contact_1.contact_number_1.to_s)
-        expect(data[0]["contact_number_2"]).to eq(contact_1.contact_number_2.to_s)
-        expect(data[0]["contact_number_3"]).to eq(contact_1.contact_number_3.to_s)
-        expect(data[0]["contact_number_4"]).to eq(contact_1.contact_number_4.to_s)
+        expect(data[0]["contact_number"]).to eq(contact_1.contact_number.to_s)
         # expect(data[0]["user_id"]).to eq(user.id)
 
         expect(data[1]["id"]).not_to be_blank
         expect(data[1]["name"]).to eq(contact_2.name.to_s)
         expect(data[1]["account_type"]).to eq(contact_2.account_type.to_s)
         expect(data[1]["email"]).to eq(contact_2.email.to_s)
-        expect(data[1]["contact_number_1"]).to eq(contact_2.contact_number_1.to_s)
-        expect(data[1]["contact_number_2"]).to eq(contact_2.contact_number_2.to_s)
-        expect(data[1]["contact_number_3"]).to eq(contact_2.contact_number_3.to_s)
-        expect(data[1]["contact_number_4"]).to eq(contact_2.contact_number_4.to_s)
-
+        expect(data[1]["contact_number"]).to eq(contact_2.contact_number.to_s)
+        
         expect(data[2]["id"]).not_to be_blank
         expect(data[2]["name"]).to eq(contact_4.name.to_s)
         expect(data[2]["account_type"]).to eq(contact_4.account_type.to_s)
         expect(data[2]["email"]).to eq(contact_4.email.to_s)
-        expect(data[2]["contact_number_1"]).to eq(contact_4.contact_number_1.to_s)
-        expect(data[2]["contact_number_2"]).to eq(contact_4.contact_number_2.to_s)
-        expect(data[2]["contact_number_3"]).to eq(contact_4.contact_number_3.to_s)
-        expect(data[2]["contact_number_4"]).to eq(contact_4.contact_number_4.to_s)
-
+        expect(data[2]["contact_number"]).to eq(contact_4.contact_number.to_s)
+        
         expect(data[3]["id"]).not_to be_blank
         expect(data[3]["name"]).to eq(contact_5.name.to_s)
         expect(data[3]["account_type"]).to eq(contact_5.account_type.to_s)
         expect(data[3]["email"]).to eq(contact_5.email.to_s)
-        expect(data[3]["contact_number_1"]).to eq(contact_5.contact_number_1.to_s)
-        expect(data[3]["contact_number_2"]).to eq(contact_5.contact_number_2.to_s)
-        expect(data[3]["contact_number_3"]).to eq(contact_5.contact_number_3.to_s)
-        expect(data[3]["contact_number_4"]).to eq(contact_5.contact_number_4.to_s)
+        expect(data[3]["contact_number"]).to eq(contact_5.contact_number.to_s)
       end
     end
 
@@ -260,11 +227,8 @@ RSpec.describe Usman::Api::V1::ContactsController, :type => :request do
         expect(data[0]["account_type"]).to eq(mohanlal_contact.account_type.to_s)
         expect(data[0]["email"]).to eq(mohanlal_contact.email.to_s)
         expect(data[0]["address"]).to eq(mohanlal_contact.address.to_s)
-        expect(data[0]["contact_number_1"]).to eq(mohanlal_contact.contact_number_1.to_s)
-        expect(data[0]["contact_number_2"]).to eq(mohanlal_contact.contact_number_2.to_s)
-        expect(data[0]["contact_number_3"]).to eq(mohanlal_contact.contact_number_3.to_s)
-        expect(data[0]["contact_number_4"]).to eq(mohanlal_contact.contact_number_4.to_s)
-
+        expect(data[0]["contact_number"]).to eq(mohanlal_contact.contact_number.to_s)
+        
         profile_picture = mohanlal.profile_picture
 
         expect(data[0]["profile_picture"]["id"]).to eq(profile_picture.id)
@@ -279,11 +243,8 @@ RSpec.describe Usman::Api::V1::ContactsController, :type => :request do
         expect(data[1]["account_type"]).to eq(mammotty_contact.account_type.to_s)
         expect(data[1]["email"]).to eq(mammotty_contact.email.to_s)
         expect(data[1]["address"]).to eq(mammotty_contact.address.to_s)
-        expect(data[1]["contact_number_1"]).to eq(mammotty_contact.contact_number_1.to_s)
-        expect(data[1]["contact_number_2"]).to eq(mammotty_contact.contact_number_2.to_s)
-        expect(data[1]["contact_number_3"]).to eq(mammotty_contact.contact_number_3.to_s)
-        expect(data[1]["contact_number_4"]).to eq(mammotty_contact.contact_number_4.to_s)
-
+        expect(data[1]["contact_number"]).to eq(mammotty_contact.contact_number.to_s)
+        
         profile_picture = mammotty.profile_picture
 
         expect(data[1]["profile_picture"]["id"]).to eq(profile_picture.id)
@@ -320,10 +281,7 @@ RSpec.describe Usman::Api::V1::ContactsController, :type => :request do
         expect(data["account_type"]).to eq(mohanlal_contact.account_type.to_s)
         expect(data["email"]).to eq(mohanlal_contact.email.to_s)
         expect(data["address"]).to eq(mohanlal_contact.address.to_s)
-        expect(data["contact_number_1"]).to eq(mohanlal_contact.contact_number_1.to_s)
-        expect(data["contact_number_2"]).to eq(mohanlal_contact.contact_number_2.to_s)
-        expect(data["contact_number_3"]).to eq(mohanlal_contact.contact_number_3.to_s)
-        expect(data["contact_number_4"]).to eq(mohanlal_contact.contact_number_4.to_s)
+        expect(data["contact_number"]).to eq(mohanlal_contact.contact_number.to_s)
 
         expect(data["profile_picture"]["id"]).to eq("")
         expect(data["profile_picture"]["created_at"]).to eq("")
@@ -422,11 +380,8 @@ RSpec.describe Usman::Api::V1::ContactsController, :type => :request do
         expect(data["account_type"]).to eq(mohanlal_contact.account_type.to_s)
         expect(data["email"]).to eq(mohanlal_contact.email.to_s)
         expect(data["address"]).to eq(mohanlal_contact.address.to_s)
-        expect(data["contact_number_1"]).to eq(mohanlal_contact.contact_number_1.to_s)
-        expect(data["contact_number_2"]).to eq(mohanlal_contact.contact_number_2.to_s)
-        expect(data["contact_number_3"]).to eq(mohanlal_contact.contact_number_3.to_s)
-        expect(data["contact_number_4"]).to eq(mohanlal_contact.contact_number_4.to_s)
-
+        expect(data["contact_number"]).to eq(mohanlal_contact.contact_number.to_s)
+        
         profile_picture = mohanlal.profile_picture
 
         expect(data["profile_picture"]["id"]).to eq(profile_picture.id)
@@ -463,11 +418,8 @@ RSpec.describe Usman::Api::V1::ContactsController, :type => :request do
         expect(data["account_type"]).to eq(mohanlal_contact.account_type.to_s)
         expect(data["email"]).to eq(mohanlal_contact.email.to_s)
         expect(data["address"]).to eq(mohanlal_contact.address.to_s)
-        expect(data["contact_number_1"]).to eq(mohanlal_contact.contact_number_1.to_s)
-        expect(data["contact_number_2"]).to eq(mohanlal_contact.contact_number_2.to_s)
-        expect(data["contact_number_3"]).to eq(mohanlal_contact.contact_number_3.to_s)
-        expect(data["contact_number_4"]).to eq(mohanlal_contact.contact_number_4.to_s)
-
+        expect(data["contact_number"]).to eq(mohanlal_contact.contact_number.to_s)
+        
         expect(data["profile_picture"]["id"]).to eq("")
         expect(data["profile_picture"]["created_at"]).to eq("")
         expect(data["profile_picture"]["profile_id"]).to eq("")

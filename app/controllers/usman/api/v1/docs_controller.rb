@@ -230,16 +230,14 @@ module Usman
                                             "account_type": "com.mollywood",
                                             "email": "mohanlal@gmail.com",
                                             "address": "xyz, str, efg",
-                                            "contact_number_1": "87393993884",
-                                            "contact_number_2":"9846557465"
+                                            "contact_number": "87393993884"
                                           },
                                           {
                                             "name": "Mammukka",
                                             "account_type": "com.mollywood1",
                                             "email": "mammukka@gmail.com",
                                             "address": "xyz, str, efg",
-                                            "contact_number_1": "7046338475",
-                                            "contact_number_2":"8086500502"
+                                            "contact_number": "7046338475"
                                           }
                                         ]', 
                               default: "" 

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171127013615) do
+ActiveRecord::Schema.define(version: 20171212095623) do
 
   create_table "cities", id: :integer, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string "name", limit: 128
@@ -40,10 +40,10 @@ ActiveRecord::Schema.define(version: 20171127013615) do
     t.bigint "done_deal_user_id"
     t.bigint "registration_id"
     t.bigint "device_id"
-    t.string "contact_number_1", limit: 24, null: false
     t.string "contact_number_2", limit: 24
     t.string "contact_number_3", limit: 24
     t.string "contact_number_4", limit: 24
+    t.string "contact_number", limit: 24, null: false
     t.index ["device_id"], name: "index_contacts_on_device_id"
     t.index ["done_deal_user_id"], name: "index_contacts_on_done_deal_user_id"
     t.index ["owner_id"], name: "index_contacts_on_owner_id"

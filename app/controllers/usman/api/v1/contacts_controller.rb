@@ -15,12 +15,13 @@ module Usman
               else
                 contacts = []
                 params[:contacts].each do |cnt|
-                  contact = Usman::Contact.new
+                  formatted_number = cnt["contact_number"].gsub(' ','').gsub('(','').gsub(')','').gsub('-','').strip
+                  contact = Usman::Contact.where("contact_number = ?", formatted_number).first || Usman::Contact.where("email = ?", cnt["email"]).first || Usman::Contact.new
                   
-                  contact.name = cnt["name"]
-                  contact.account_type = cnt["account_type"]
-                  contact.email = cnt["email"]
-                  contact.contact_number = cnt["contact_number"]
+                  contact.name = cnt["name"] unless cnt["name"].blank?
+                  contact.account_type = cnt["account_type"] unless cnt["account_type"].blank?
+                  contact.email = cnt["email"] unless cnt["email"].blank?
+                  contact.contact_number = cnt["contact_number"] unless cnt["contact_number"].blank?
                   
                   contact.owner = @current_user
                   contact.done_deal_user = contact.get_done_deal_user

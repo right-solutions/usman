@@ -163,6 +163,112 @@ RSpec.describe Usman::Api::V1::ContactsController, :type => :request do
         expect(data[3]["email"]).to eq(contact_5.email.to_s)
         expect(data[3]["contact_number"]).to eq(contact_5.contact_number.to_s)
       end
+
+      it "should not save twice" do
+
+        mohanlal = FactoryGirl.create(:user, name: "Mohanlal")
+        reg = FactoryGirl.create(:verified_registration, country: country, city: city, user: mohanlal, dialing_prefix: "+91", mobile_number: "9880123123")
+        dev = FactoryGirl.create(:verified_device, registration: reg, api_token: SecureRandom.hex)
+
+        user = FactoryGirl.create(:approved_user, country: country, city: city)
+        reg = FactoryGirl.create(:verified_registration, country: country, city: city, user: user)
+        dev = FactoryGirl.create(:verified_device, registration: reg, api_token: SecureRandom.hex)
+        
+        # Saving for the first time
+        contact_1 = FactoryGirl.build(:contact, name: "Lalettan", email: "mohanlal@mollywood.com", account_type: "com.mollywood", contact_number: "+919880123123", )
+        contacts_data = [
+                          {
+                            name: contact_1.name,
+                            account_type: contact_1.account_type,
+                            email: contact_1.email,
+                            address: contact_1.address,
+                            contact_number: contact_1.contact_number
+                          }
+                        ]
+        headers = {
+          'HTTP_AUTHORIZATION' => ActionController::HttpAuthentication::Token.encode_credentials(dev.api_token)
+        }
+        post "/api/v1/contacts/sync", params: {contacts: contacts_data}, headers: headers
+        
+        expect(response.status).to eq(200)
+        response_body = JSON.parse(response.body)
+        expect(response_body["success"]).to eq(true)
+        expect(response_body["alert"]["heading"]).to eq("The Contacts has been synced successfully")
+        expect(response_body["alert"]["message"]).to eq("You may now store the done deal user id of these contacts returned in this response")
+        data = response_body['data']
+        expect(data).not_to be_blank
+
+        contact_1_obj = Usman::Contact.where("contact_number = '+919880123123'").first
+        expect(contact_1.name).to eq(contact_1_obj.name)
+        expect(contact_1.account_type).to eq(contact_1_obj.account_type)
+        expect(contact_1.email).to eq(contact_1_obj.email)
+        expect(contact_1.address).to eq(contact_1_obj.address)
+        expect(contact_1.contact_number).to eq(contact_1_obj.contact_number)
+
+        expect(Usman::Contact.count).to be(1)
+
+        # Trying to sync for the 2nd time with just contact number
+        contact_2 = FactoryGirl.build(:contact, name: "Lalettan", email: "", account_type: "com.mollywood", contact_number: "+919880123123", )
+        contacts_data = [
+                          {
+                            name: contact_2.name,
+                            account_type: contact_2.account_type,
+                            email: contact_2.email,
+                            address: contact_2.address,
+                            contact_number: contact_2.contact_number
+                          }
+                        ]
+        headers = {
+          'HTTP_AUTHORIZATION' => ActionController::HttpAuthentication::Token.encode_credentials(dev.api_token)
+        }
+        post "/api/v1/contacts/sync", params: {contacts: contacts_data}, headers: headers
+        
+        expect(response.status).to eq(200)
+        response_body = JSON.parse(response.body)
+        expect(response_body["success"]).to eq(true)
+        expect(response_body["alert"]["heading"]).to eq("The Contacts has been synced successfully")
+        expect(response_body["alert"]["message"]).to eq("You may now store the done deal user id of these contacts returned in this response")
+        data = response_body['data']
+        expect(data).not_to be_blank
+
+        expect(contact_2.name).to eq(contact_1_obj.name)
+        expect(contact_2.account_type).to eq(contact_1_obj.account_type)
+        expect(contact_2.address).to eq(contact_1_obj.address)
+        expect(contact_2.contact_number).to eq(contact_1_obj.contact_number)
+
+        expect(Usman::Contact.count).to be(1)
+
+        # Trying to sync for the 3rd time with email this time
+        contact_3 = FactoryGirl.build(:contact, name: "Lalettan", email: "mohanlal@mollywood.com", account_type: "com.mollywood", contact_number: "", )
+        contacts_data = [
+                          {
+                            name: contact_3.name,
+                            account_type: contact_3.account_type,
+                            email: contact_3.email,
+                            address: contact_3.address,
+                            contact_number: contact_3.contact_number
+                          }
+                        ]
+        headers = {
+          'HTTP_AUTHORIZATION' => ActionController::HttpAuthentication::Token.encode_credentials(dev.api_token)
+        }
+        post "/api/v1/contacts/sync", params: {contacts: contacts_data}, headers: headers
+        
+        expect(response.status).to eq(200)
+        response_body = JSON.parse(response.body)
+        expect(response_body["success"]).to eq(true)
+        expect(response_body["alert"]["heading"]).to eq("The Contacts has been synced successfully")
+        expect(response_body["alert"]["message"]).to eq("You may now store the done deal user id of these contacts returned in this response")
+        data = response_body['data']
+        expect(data).not_to be_blank
+
+        expect(contact_3.name).to eq(contact_1_obj.name)
+        expect(contact_3.account_type).to eq(contact_1_obj.account_type)
+        expect(contact_3.email).to eq(contact_1_obj.email)
+        expect(contact_3.address).to eq(contact_1_obj.address)
+        
+        expect(Usman::Contact.count).to be(1)
+      end
     end
 
     context 'Negative Cases' do

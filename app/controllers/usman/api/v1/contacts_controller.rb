@@ -13,7 +13,6 @@ module Usman
                   message: I18n.translate("api.profile.user_does_not_exists.message")
                 }
               else
-
                 contacts = []
                 params[:contacts].each do |cnt|
                   contact = Usman::Contact.new
@@ -101,11 +100,7 @@ module Usman
         end
 
         private
-
-        def permitted_params
-          params.permit(:name, :account_type, :email, :address, :contact_number)
-        end
-
+        
       end
     end
   end

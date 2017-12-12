@@ -67,6 +67,7 @@ class Usman::Contact < Usman::ApplicationRecord
   end
 
   def get_done_deal_user
+    return nil unless self.contact_number
     formatted_number = parse_phone_number(self.contact_number)
     reg = Registration.where("CONCAT_WS('', dialing_prefix, mobile_number) = ?", formatted_number).first
     return reg && reg.user ? reg.user : nil

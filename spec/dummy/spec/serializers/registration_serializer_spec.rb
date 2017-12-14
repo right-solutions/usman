@@ -4,7 +4,7 @@ RSpec.describe RegistrationSerializer, type: :serializer do
 
   describe "attributes" do
     it "should include registration and profile attributes - if it is a dummy user" do
-      reg = FactoryGirl.create(:verified_registration, city: nil)
+      reg = FactoryBot.create(:verified_registration, city: nil)
       reg.user = User.new(dummy: true)
       reg.user.generate_dummy_data(reg)
       reg.user.save
@@ -45,9 +45,9 @@ RSpec.describe RegistrationSerializer, type: :serializer do
     end
 
     it "should include profile attributes with profile picture" do
-      reg = FactoryGirl.create(:verified_registration)
-      nayan = FactoryGirl.create(:user, name: "Nayan Tara", gender: "female")
-      profile_picture = FactoryGirl.create(:profile_picture, imageable: nayan)
+      reg = FactoryBot.create(:verified_registration)
+      nayan = FactoryBot.create(:user, name: "Nayan Tara", gender: "female")
+      profile_picture = FactoryBot.create(:profile_picture, imageable: nayan)
       reg.user = nayan
       reg.save
 

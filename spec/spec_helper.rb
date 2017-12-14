@@ -7,7 +7,7 @@ require 'carrierWave'
 require 'carrierwave/orm/activerecord'
 #require 'rspec/autorun'
 require 'shoulda/matchers'
-require 'factory_girl_rails'
+require 'factory_bot_rails'
 
 
 # Load Dummy Factories

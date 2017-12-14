@@ -4,9 +4,9 @@ RSpec.describe OwnerSerializer, type: :sOwnererializer do
 
   describe "attributes" do
     it "should render the user object with profile attributes and registration" do
-      nayan = FactoryGirl.create(:user, name: "Nayan Tara")
-      profile_picture = FactoryGirl.create(:profile_picture, imageable: nayan)
-      reg = FactoryGirl.create(:registration, user: nayan)
+      nayan = FactoryBot.create(:user, name: "Nayan Tara")
+      profile_picture = FactoryBot.create(:profile_picture, imageable: nayan)
+      reg = FactoryBot.create(:registration, user: nayan)
     
       json_data = ActiveModelSerializers::SerializableResource.new(nayan, serializer: OwnerSerializer).to_json
       data = JSON.parse(json_data)
@@ -26,7 +26,7 @@ RSpec.describe OwnerSerializer, type: :sOwnererializer do
       expect(data["profile_picture"]["image_small_path"]).not_to be_blank
     end
     it "should render the user object without profile attributes and registration" do
-      nayan = FactoryGirl.create(:user, name: "Nayan Tara")
+      nayan = FactoryBot.create(:user, name: "Nayan Tara")
       
       json_data = ActiveModelSerializers::SerializableResource.new(nayan, serializer: OwnerSerializer).to_json
       data = JSON.parse(json_data)

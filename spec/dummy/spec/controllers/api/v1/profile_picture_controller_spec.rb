@@ -2,9 +2,9 @@ require "rails_helper"
 
 RSpec.describe Usman::Api::V1::ProfilePictureController, :type => :request do  
 
-  let(:user) { FactoryGirl.create(:approved_user) }
-  let(:reg) { FactoryGirl.create(:verified_registration, user: user) }
-  let(:dev) { FactoryGirl.create(:verified_device, registration: reg, api_token: SecureRandom.hex) }
+  let(:user) { FactoryBot.create(:approved_user) }
+  let(:reg) { FactoryBot.create(:verified_registration, user: user) }
+  let(:dev) { FactoryBot.create(:verified_device, registration: reg, api_token: SecureRandom.hex) }
   
   describe "profile_picture_base64" do
     context "Positive Case" do
@@ -129,7 +129,7 @@ RSpec.describe Usman::Api::V1::ProfilePictureController, :type => :request do
           image: fixture_file_upload('spec/dummy/spec/factories/test.jpeg', 'image.jpeg')
         }
 
-        profile_picture = FactoryGirl.create(:profile_picture, imageable: user)
+        profile_picture = FactoryBot.create(:profile_picture, imageable: user)
         
         headers = {
           'HTTP_AUTHORIZATION' => ActionController::HttpAuthentication::Token.encode_credentials(dev.api_token)
@@ -221,7 +221,7 @@ RSpec.describe Usman::Api::V1::ProfilePictureController, :type => :request do
           'HTTP_AUTHORIZATION' => ActionController::HttpAuthentication::Token.encode_credentials(dev.api_token)
         }
         
-        profile_picture = FactoryGirl.create(:profile_picture, imageable: user)
+        profile_picture = FactoryBot.create(:profile_picture, imageable: user)
         delete "/api/v1/profile/profile_picture", headers: headers, params: image_params
 
         expect(response.status).to eq(200)
@@ -254,8 +254,8 @@ RSpec.describe Usman::Api::V1::ProfilePictureController, :type => :request do
 
       it "should set proper errors if the profile doesn't exist" do
         
-        reg = FactoryGirl.create(:verified_registration, user: nil)
-        dev = FactoryGirl.create(:verified_device, registration: reg, api_token: SecureRandom.hex)
+        reg = FactoryBot.create(:verified_registration, user: nil)
+        dev = FactoryBot.create(:verified_device, registration: reg, api_token: SecureRandom.hex)
         
         headers = {
           'HTTP_AUTHORIZATION' => ActionController::HttpAuthentication::Token.encode_credentials(dev.api_token)

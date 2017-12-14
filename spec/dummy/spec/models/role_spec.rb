@@ -2,11 +2,11 @@ require 'spec_helper'
 
 RSpec.describe Role, type: :model do
 
-  let(:role) {FactoryGirl.build(:role)}
+  let(:role) {FactoryBot.build(:role)}
   
   context "Factory" do
     it "should validate all the factories" do
-      expect(FactoryGirl.build(:role).valid?).to be_truthy
+      expect(FactoryBot.build(:role).valid?).to be_truthy
     end
   end
 

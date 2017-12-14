@@ -2,20 +2,20 @@ require 'rails_helper'
 
 describe Usman::FeaturesController, :type => :controller do
 
-  let(:feature) {FactoryGirl.create(:feature)}
-  let(:site_role) {FactoryGirl.create(:role, name: "Site Admin")}
+  let(:feature) {FactoryBot.create(:feature)}
+  let(:site_role) {FactoryBot.create(:role, name: "Site Admin")}
   
-  let(:super_admin_user) {FactoryGirl.create(:super_admin_user)}
+  let(:super_admin_user) {FactoryBot.create(:super_admin_user)}
   let(:site_admin_user) { 
     site_role
-    user = FactoryGirl.create(:approved_user)
+    user = FactoryBot.create(:approved_user)
     user.add_role("Site Admin")
     user 
   }
-  let(:approved_user) {FactoryGirl.create(:approved_user)}
+  let(:approved_user) {FactoryBot.create(:approved_user)}
   
   describe "index" do
-    3.times { FactoryGirl.create(:published_feature) }
+    3.times { FactoryBot.create(:published_feature) }
     context "Positive Case" do
       it "super admin should be able to view the list of features" do
         session[:id] = super_admin_user.id
@@ -140,7 +140,7 @@ describe Usman::FeaturesController, :type => :controller do
     context "Positive Case" do
       it "super admin should be able to create a feature" do
         session[:id] = super_admin_user.id
-        feature_params = FactoryGirl.build(:feature, name: "Some Name").attributes
+        feature_params = FactoryBot.build(:feature, name: "Some Name").attributes
         expect do
           post :create, params: { use_route: 'usman', feature: feature_params }, xhr: true
         end.to change(Feature, :count).by(1)
@@ -150,7 +150,7 @@ describe Usman::FeaturesController, :type => :controller do
     describe "Negative Case" do
       it "site admin should not be able to create a feature" do
         session[:id] = site_admin_user.id
-        feature_params = FactoryGirl.build(:feature, name: "Some Name").attributes
+        feature_params = FactoryBot.build(:feature, name: "Some Name").attributes
         expect do
           post :create, params: { use_route: 'usman', feature: feature_params }, xhr: true
         end.to change(Feature, :count).by(0)
@@ -160,7 +160,7 @@ describe Usman::FeaturesController, :type => :controller do
 
       it "other users should not be able to create a feature" do
         session[:id] = approved_user.id
-        feature_params = FactoryGirl.build(:feature, name: "Some Name").attributes
+        feature_params = FactoryBot.build(:feature, name: "Some Name").attributes
         expect do
           post :create, params: { use_route: 'usman', feature: feature_params }, xhr: true
         end.to change(Feature, :count).by(0)
@@ -170,7 +170,7 @@ describe Usman::FeaturesController, :type => :controller do
 
       it "should redirect while creating a feature, if the user is not signed in" do
         session[:id] = nil
-        feature_params = FactoryGirl.build(:feature, name: "Some Name").attributes
+        feature_params = FactoryBot.build(:feature, name: "Some Name").attributes
         expect do
           post :create, params: { use_route: 'usman', feature: feature_params }, xhr: true
         end.to change(Feature, :count).by(0)
@@ -184,7 +184,7 @@ describe Usman::FeaturesController, :type => :controller do
     context "Positive Case" do
       it "super admin should be able to update a feature" do
         session[:id] = super_admin_user.id
-        feature = FactoryGirl.create(:feature, name: "Some Name")
+        feature = FactoryBot.create(:feature, name: "Some Name")
         feature_params = feature.attributes.clone
         feature_params["name"] = "Changed Name"
         expect do
@@ -197,7 +197,7 @@ describe Usman::FeaturesController, :type => :controller do
 
       it "site admin should not be able to update a feature" do
         session[:id] = site_admin_user.id
-        feature = FactoryGirl.create(:feature, name: "Some Name")
+        feature = FactoryBot.create(:feature, name: "Some Name")
         feature_params = feature.attributes.clone
         feature_params["name"] = "Changed Name"
         expect do
@@ -208,7 +208,7 @@ describe Usman::FeaturesController, :type => :controller do
 
       it "other users should not be able to update a feature" do
         session[:id] = approved_user.id
-        feature = FactoryGirl.create(:feature, name: "Some Name")
+        feature = FactoryBot.create(:feature, name: "Some Name")
         feature_params = feature.attributes.clone
         feature_params["name"] = "Changed Name"
         put :update, params: { use_route: 'usman', id: feature.id, feature: feature_params }, xhr: true
@@ -219,7 +219,7 @@ describe Usman::FeaturesController, :type => :controller do
 
       it "should redirect while updating a feature, if the user is not signed in" do
         session[:id] = nil
-        feature = FactoryGirl.create(:feature, name: "Some Name")
+        feature = FactoryBot.create(:feature, name: "Some Name")
         feature_params = feature.attributes.clone
         feature_params["name"] = "Changed Name"
         put :update, params: { use_route: 'usman', id: feature.id, feature: feature_params }, xhr: true

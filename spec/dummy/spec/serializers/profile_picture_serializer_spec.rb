@@ -3,7 +3,7 @@ require 'rails_helper'
 RSpec.describe ProfilePictureSerializer, type: :serializer do
   describe "attributes" do
     it "should include image attributes" do
-      profile_picture = FactoryGirl.create(:profile_picture)
+      profile_picture = FactoryBot.create(:profile_picture)
 
       json_data = ActiveModelSerializers::SerializableResource.new(profile_picture, serializer: ProfilePictureSerializer).to_json
       data = JSON.parse(json_data)

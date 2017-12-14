@@ -4,38 +4,38 @@ RSpec.describe Permission, type: :model do
 
   context "Factory" do
     it "should validate all the factories" do
-      expect(FactoryGirl.build(:permission).valid?).to be_truthy
-      expect(FactoryGirl.build(:create_permission).valid?).to be_truthy
-      expect(FactoryGirl.build(:update_permission).valid?).to be_truthy
-      expect(FactoryGirl.build(:delete_permission).valid?).to be_truthy
-      expect(FactoryGirl.build(:all_permission).valid?).to be_truthy
+      expect(FactoryBot.build(:permission).valid?).to be_truthy
+      expect(FactoryBot.build(:create_permission).valid?).to be_truthy
+      expect(FactoryBot.build(:update_permission).valid?).to be_truthy
+      expect(FactoryBot.build(:delete_permission).valid?).to be_truthy
+      expect(FactoryBot.build(:all_permission).valid?).to be_truthy
     end
 
     it "should set correct permissions" do
-      expect(FactoryGirl.build(:permission).can_create).to be_falsy
-      expect(FactoryGirl.build(:permission).can_read).to be_truthy
-      expect(FactoryGirl.build(:permission).can_update).to be_falsy
-      expect(FactoryGirl.build(:permission).can_delete).to be_falsy
+      expect(FactoryBot.build(:permission).can_create).to be_falsy
+      expect(FactoryBot.build(:permission).can_read).to be_truthy
+      expect(FactoryBot.build(:permission).can_update).to be_falsy
+      expect(FactoryBot.build(:permission).can_delete).to be_falsy
 
-      expect(FactoryGirl.build(:create_permission).can_create).to be_truthy
-      expect(FactoryGirl.build(:create_permission).can_read).to be_truthy
-      expect(FactoryGirl.build(:create_permission).can_update).to be_falsy
-      expect(FactoryGirl.build(:create_permission).can_delete).to be_falsy
+      expect(FactoryBot.build(:create_permission).can_create).to be_truthy
+      expect(FactoryBot.build(:create_permission).can_read).to be_truthy
+      expect(FactoryBot.build(:create_permission).can_update).to be_falsy
+      expect(FactoryBot.build(:create_permission).can_delete).to be_falsy
 
-      expect(FactoryGirl.build(:update_permission).can_create).to be_falsy
-      expect(FactoryGirl.build(:update_permission).can_read).to be_truthy
-      expect(FactoryGirl.build(:update_permission).can_update).to be_truthy
-      expect(FactoryGirl.build(:update_permission).can_delete).to be_falsy
+      expect(FactoryBot.build(:update_permission).can_create).to be_falsy
+      expect(FactoryBot.build(:update_permission).can_read).to be_truthy
+      expect(FactoryBot.build(:update_permission).can_update).to be_truthy
+      expect(FactoryBot.build(:update_permission).can_delete).to be_falsy
 
-      expect(FactoryGirl.build(:delete_permission).can_create).to be_falsy
-      expect(FactoryGirl.build(:delete_permission).can_read).to be_truthy
-      expect(FactoryGirl.build(:delete_permission).can_update).to be_falsy
-      expect(FactoryGirl.build(:delete_permission).can_delete).to be_truthy
+      expect(FactoryBot.build(:delete_permission).can_create).to be_falsy
+      expect(FactoryBot.build(:delete_permission).can_read).to be_truthy
+      expect(FactoryBot.build(:delete_permission).can_update).to be_falsy
+      expect(FactoryBot.build(:delete_permission).can_delete).to be_truthy
 
-      expect(FactoryGirl.build(:all_permission).can_create).to be_truthy
-      expect(FactoryGirl.build(:all_permission).can_read).to be_truthy
-      expect(FactoryGirl.build(:all_permission).can_update).to be_truthy
-      expect(FactoryGirl.build(:all_permission).can_delete).to be_truthy
+      expect(FactoryBot.build(:all_permission).can_create).to be_truthy
+      expect(FactoryBot.build(:all_permission).can_read).to be_truthy
+      expect(FactoryBot.build(:all_permission).can_update).to be_truthy
+      expect(FactoryBot.build(:all_permission).can_delete).to be_truthy
     end
   end
 

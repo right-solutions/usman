@@ -2,27 +2,27 @@ require 'spec_helper'
 
 RSpec.describe Registration, type: :model do
 
-  let(:registration) {FactoryGirl.build(:registration)}
+  let(:registration) {FactoryBot.build(:registration)}
   
   context "Factory" do
     it "should validate all the factories" do
-      expect(FactoryGirl.build(:registration).valid?).to be_truthy
+      expect(FactoryBot.build(:registration).valid?).to be_truthy
       
-      reg = FactoryGirl.create(:registration)
+      reg = FactoryBot.create(:registration)
       expect(reg.valid?).to be_truthy
       expect(reg.city).not_to be_nil
       expect(reg.country).not_to be_nil
       expect(reg.city.country).to eq(reg.country)
 
-      pending_registration = FactoryGirl.build(:pending_registration)
+      pending_registration = FactoryBot.build(:pending_registration)
       expect(pending_registration.status).to match("pending")
       expect(pending_registration.valid?).to be_truthy
 
-      verified_registration = FactoryGirl.build(:verified_registration)
+      verified_registration = FactoryBot.build(:verified_registration)
       expect(verified_registration.status).to match("verified")
       expect(verified_registration.valid?).to be_truthy
 
-      suspended_registration = FactoryGirl.build(:suspended_registration)
+      suspended_registration = FactoryBot.build(:suspended_registration)
       expect(suspended_registration.status).to match("suspended")
       expect(suspended_registration.valid?).to be_truthy
     end
@@ -56,11 +56,11 @@ RSpec.describe Registration, type: :model do
     it "search" do
       registration
 
-      user = FactoryGirl.create(:user, name: "Mahathma Gandhi")
-      mg = FactoryGirl.create(:registration, user: user, mobile_number: "123412345")
+      user = FactoryBot.create(:user, name: "Mahathma Gandhi")
+      mg = FactoryBot.create(:registration, user: user, mobile_number: "123412345")
 
-      user = FactoryGirl.create(:user, name: "Sardar Patel")
-      sp = FactoryGirl.create(:registration, user: user, mobile_number: "123456789")
+      user = FactoryBot.create(:user, name: "Sardar Patel")
+      sp = FactoryBot.create(:registration, user: user, mobile_number: "123456789")
 
       expect(Registration.search("Mahathma")).to match_array([mg])
       expect(Registration.search("Patel")).to match_array([sp])
@@ -71,17 +71,17 @@ RSpec.describe Registration, type: :model do
     end
 
     it "search registrations without user" do
-      u = FactoryGirl.create(:pending_registration, user: nil, mobile_number: "123412345")
+      u = FactoryBot.create(:pending_registration, user: nil, mobile_number: "123412345")
       expect(Registration.search("123412345")).to match_array([u])
     end
 
     it "scope pending" do
-      pending_registration = FactoryGirl.create(:pending_registration)
+      pending_registration = FactoryBot.create(:pending_registration)
       expect(Registration.pending.all).to match_array [pending_registration]
     end
 
     it "scope verified" do
-      verified_registration = FactoryGirl.create(:verified_registration)
+      verified_registration = FactoryBot.create(:verified_registration)
       expect(Registration.verified.all).to match_array [verified_registration]
     end
   end
@@ -89,14 +89,14 @@ RSpec.describe Registration, type: :model do
   context "Instance Methods" do
     context "Status Methods" do
       it "pending!" do
-        r = FactoryGirl.create(:verified_registration)
+        r = FactoryBot.create(:verified_registration)
         r.pending!
         expect(r.status).to match "pending"
         expect(r.pending?).to be_truthy
         expect(r.user.pending?).to be_truthy
 
         # If user is nil
-        r = FactoryGirl.create(:verified_registration, user: nil)
+        r = FactoryBot.create(:verified_registration, user: nil)
         r.pending!
         expect(r.status).to match "pending"
         expect(r.pending?).to be_truthy
@@ -104,13 +104,13 @@ RSpec.describe Registration, type: :model do
       end
 
       it "verify!" do
-        u = FactoryGirl.create(:pending_registration)
+        u = FactoryBot.create(:pending_registration)
         u.verify!
         expect(u.status).to match "verified"
         expect(u.verified?).to be_truthy
 
         # If user is nil
-        r = FactoryGirl.create(:pending_registration, user: nil)
+        r = FactoryBot.create(:pending_registration, user: nil)
         r.verify!
         expect(r.status).to match "verified"
         expect(r.verified?).to be_truthy
@@ -118,13 +118,13 @@ RSpec.describe Registration, type: :model do
       end
 
       it "suspend!" do
-        u = FactoryGirl.create(:verified_registration)
+        u = FactoryBot.create(:verified_registration)
         u.suspend!
         expect(u.status).to match "suspended"
         expect(u.suspended?).to be_truthy
 
         # If user is nil
-        r = FactoryGirl.create(:pending_registration, user: nil)
+        r = FactoryBot.create(:pending_registration, user: nil)
         r.suspend!
         expect(r.status).to match "suspended"
         expect(r.suspended?).to be_truthy
@@ -132,13 +132,13 @@ RSpec.describe Registration, type: :model do
       end
 
       it "delete!" do
-        u = FactoryGirl.create(:verified_registration)
+        u = FactoryBot.create(:verified_registration)
         u.delete!
         expect(u.status).to match "deleted"
         expect(u.deleted?).to be_truthy
 
         # If user is nil
-        r = FactoryGirl.create(:pending_registration, user: nil)
+        r = FactoryBot.create(:pending_registration, user: nil)
         r.delete!
         expect(r.status).to match "deleted"
         expect(r.deleted?).to be_truthy
@@ -150,7 +150,7 @@ RSpec.describe Registration, type: :model do
         skip "To Be Implemented"
       end
       it "display_name" do
-        r = FactoryGirl.create(:registration, dialing_prefix: "+961", mobile_number: "123412345")
+        r = FactoryBot.create(:registration, dialing_prefix: "+961", mobile_number: "123412345")
         expect(r.display_name).to match("+961 123412345")
       end
     end

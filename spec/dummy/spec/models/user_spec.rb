@@ -2,28 +2,28 @@ require 'spec_helper'
 
 RSpec.describe User, type: :model do
 
-  let(:user) {FactoryGirl.build(:user)}
-  let(:ram) {FactoryGirl.create(:user, name: "Ram", email: "ram@domain.com", username: "ram1234", designation: "Prince")}
-  let(:lakshman) {FactoryGirl.create(:user, name: "Lakshman", email: "lakshmanword@domain.com", username: "lakshman1234", designation: "Prince")}
-  let(:sita) {FactoryGirl.create(:user, name: "Sita", email: "sita@domain.com", username: "sita1234word", designation: "Princess")}
+  let(:user) {FactoryBot.build(:user)}
+  let(:ram) {FactoryBot.create(:user, name: "Ram", email: "ram@domain.com", username: "ram1234", designation: "Prince")}
+  let(:lakshman) {FactoryBot.create(:user, name: "Lakshman", email: "lakshmanword@domain.com", username: "lakshman1234", designation: "Prince")}
+  let(:sita) {FactoryBot.create(:user, name: "Sita", email: "sita@domain.com", username: "sita1234word", designation: "Princess")}
 
   context "Factory" do
     it "should validate all the factories" do
-      expect(FactoryGirl.build(:user).valid?).to be_truthy
+      expect(FactoryBot.build(:user).valid?).to be_truthy
 
-      pending_user = FactoryGirl.build(:pending_user)
+      pending_user = FactoryBot.build(:pending_user)
       expect(pending_user.status).to match("pending")
       expect(pending_user.valid?).to be_truthy
 
-      approved_user = FactoryGirl.build(:approved_user)
+      approved_user = FactoryBot.build(:approved_user)
       expect(approved_user.status).to match("approved")
       expect(approved_user.valid?).to be_truthy
 
-      suspended_user = FactoryGirl.build(:suspended_user)
+      suspended_user = FactoryBot.build(:suspended_user)
       expect(suspended_user.status).to match("suspended")
       expect(suspended_user.valid?).to be_truthy
 
-      super_admin_user = FactoryGirl.build(:super_admin_user)
+      super_admin_user = FactoryBot.build(:super_admin_user)
       expect(super_admin_user.super_admin).to be_truthy
       expect(super_admin_user.valid?).to be_truthy
     end
@@ -76,14 +76,14 @@ RSpec.describe User, type: :model do
 
   context "Delegates" do
     it "should delegate dialing_prefix & mobile_number to registration if registration exists" do
-      user = FactoryGirl.create(:approved_user)
-      reg = FactoryGirl.create(:registration, user: user)
+      user = FactoryBot.create(:approved_user)
+      reg = FactoryBot.create(:registration, user: user)
 
       expect(user.registration_dialing_prefix).to eq(reg.dialing_prefix)
       expect(user.registration_mobile_number).to eq(reg.mobile_number)
     end 
     it "should handle the delegation to dialing_prefix & mobile_number if doesn't exists" do
-      user = FactoryGirl.create(:approved_user)
+      user = FactoryBot.create(:approved_user)
       expect(user.registration_dialing_prefix).to be_nil
       expect(user.registration_mobile_number).to be_nil
     end 
@@ -110,17 +110,17 @@ RSpec.describe User, type: :model do
     end
 
     it "scope approved" do
-      approved_user = FactoryGirl.create(:approved_user)
+      approved_user = FactoryBot.create(:approved_user)
       expect(User.approved.all).to match_array [approved_user]
     end
 
     it "scope suspended" do
-      suspended_user = FactoryGirl.create(:suspended_user)
+      suspended_user = FactoryBot.create(:suspended_user)
       expect(User.suspended.all).to match_array [suspended_user]
     end
 
     it "scope deleted" do
-      deleted_user = FactoryGirl.create(:deleted_user)
+      deleted_user = FactoryBot.create(:deleted_user)
       expect(User.deleted.all).to match_array [deleted_user]
     end
 
@@ -136,14 +136,14 @@ RSpec.describe User, type: :model do
     context "Status Methods" do
 
       it "approve!" do
-        u = FactoryGirl.create(:pending_user)
+        u = FactoryBot.create(:pending_user)
         u.approve!
         expect(u.status).to match "approved"
         expect(u.approved?).to be_truthy
         
         # If Registration exists
-        u = FactoryGirl.create(:pending_user)
-        r = FactoryGirl.create(:pending_registration, user: u)
+        u = FactoryBot.create(:pending_user)
+        r = FactoryBot.create(:pending_registration, user: u)
         u.approve!
         expect(u.status).to match "approved"
         expect(u.approved?).to be_truthy
@@ -152,14 +152,14 @@ RSpec.describe User, type: :model do
       end
 
       it "pending!" do
-        u = FactoryGirl.create(:approved_user)
+        u = FactoryBot.create(:approved_user)
         u.pending!
         expect(u.status).to match "pending"
         expect(u.pending?).to be_truthy
 
         # If Registration exists
-        u = FactoryGirl.create(:approved_user)
-        r = FactoryGirl.create(:verified_registration, user: u)
+        u = FactoryBot.create(:approved_user)
+        r = FactoryBot.create(:verified_registration, user: u)
         u.pending!
         expect(u.status).to match "pending"
         expect(u.pending?).to be_truthy
@@ -168,14 +168,14 @@ RSpec.describe User, type: :model do
       end
 
       it "suspend!" do
-        u = FactoryGirl.create(:approved_user)
+        u = FactoryBot.create(:approved_user)
         u.suspend!
         expect(u.status).to match "suspended"
         expect(u.suspended?).to be_truthy
 
         # If Registration exists
-        u = FactoryGirl.create(:approved_user)
-        r = FactoryGirl.create(:verified_registration, user: u)
+        u = FactoryBot.create(:approved_user)
+        r = FactoryBot.create(:verified_registration, user: u)
         u.suspend!
         expect(u.status).to match "suspended"
         expect(u.suspended?).to be_truthy
@@ -184,14 +184,14 @@ RSpec.describe User, type: :model do
       end
 
       it "delete!" do
-        u = FactoryGirl.create(:approved_user)
+        u = FactoryBot.create(:approved_user)
         u.delete!
         expect(u.status).to match "deleted"
         expect(u.deleted?).to be_truthy
 
         # If Registration exists
-        u = FactoryGirl.create(:approved_user)
-        r = FactoryGirl.create(:verified_registration, user: u)
+        u = FactoryBot.create(:approved_user)
+        r = FactoryBot.create(:verified_registration, user: u)
         u.delete!
         expect(u.status).to match "deleted"
         expect(u.deleted?).to be_truthy
@@ -202,19 +202,19 @@ RSpec.describe User, type: :model do
 
     context "Gender Methods" do
       it "male?" do
-        u = FactoryGirl.build(:pending_user, gender: :male)
+        u = FactoryBot.build(:pending_user, gender: :male)
         expect(u.gender).to match "male"
         expect(u.male?).to be_truthy
       end
 
       it "female?" do
-        u = FactoryGirl.build(:pending_user, gender: :female)
+        u = FactoryBot.build(:pending_user, gender: :female)
         expect(u.gender).to match "female"
         expect(u.female?).to be_truthy
       end
 
       it "nogender?" do
-        u = FactoryGirl.build(:pending_user, gender: :nogender)
+        u = FactoryBot.build(:pending_user, gender: :nogender)
         expect(u.gender).to match "nogender"
         expect(u.nogender?).to be_truthy
       end
@@ -225,7 +225,7 @@ RSpec.describe User, type: :model do
       it "start_session and end session" do
 
         # Fresh user who has never started a session
-        user = FactoryGirl.create(:user)
+        user = FactoryBot.create(:user)
 
         expect(user.last_sign_in_at).to be_nil
         expect(user.last_sign_in_ip).to be_nil
@@ -279,8 +279,8 @@ RSpec.describe User, type: :model do
 
     context "Permission Methods" do
       it "set_permission & verify permission methods" do
-        authorised_user = FactoryGirl.create(:approved_user)
-        product_feature = FactoryGirl.create(:feature, name: "Products")
+        authorised_user = FactoryBot.create(:approved_user)
+        product_feature = FactoryBot.create(:feature, name: "Products")
         
         authorised_user.set_permission(product_feature)
         expect(authorised_user.can_create?(product_feature)).to be_falsy
@@ -309,7 +309,7 @@ RSpec.describe User, type: :model do
       end
 
       it "default_image_url" do
-        u = FactoryGirl.build(:pending_user)
+        u = FactoryBot.build(:pending_user)
         expect(u.default_image_url).to match("/assets/kuppayam/defaults/user-small.png")
         expect(u.default_image_url("large")).to match("/assets/kuppayam/defaults/user-large.png")
       end
@@ -323,7 +323,7 @@ RSpec.describe User, type: :model do
 
       it "generate_dummy_data" do
         u = User.new
-        r = FactoryGirl.create(:pending_registration)
+        r = FactoryBot.create(:pending_registration)
         u.generate_dummy_data(r)
         expect(u.username).not_to be_blank
         expect(u.password_digest).not_to be_blank
@@ -338,10 +338,10 @@ RSpec.describe User, type: :model do
 
   context "Private Instance Methods" do
     it "should_validate_password?" do
-      new_user = FactoryGirl.build(:pending_user)
+      new_user = FactoryBot.build(:pending_user)
       expect(new_user.send(:should_validate_password?)).to be_truthy
 
-      saved_user = FactoryGirl.create(:pending_user)
+      saved_user = FactoryBot.create(:pending_user)
       expect(saved_user.send(:should_validate_password?)).to be_falsy
 
       saved_user.password = "something"
@@ -349,7 +349,7 @@ RSpec.describe User, type: :model do
     end
 
     it "generate_auth_token" do
-      new_user = FactoryGirl.build(:pending_user)
+      new_user = FactoryBot.build(:pending_user)
       new_user.auth_token = nil
       new_user.send :generate_auth_token
       expect(new_user.auth_token).not_to be_nil

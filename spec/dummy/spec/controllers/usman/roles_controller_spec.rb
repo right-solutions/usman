@@ -2,23 +2,23 @@ require 'rails_helper'
 
 describe Usman::RolesController, :type => :controller do
 
-  let(:role_feature) {FactoryGirl.create(:published_feature, name: "Role")}
-  let(:role) {FactoryGirl.create(:role, name: "Some Name")}
-  let(:site_role) {FactoryGirl.create(:role, name: "Site Admin")}
+  let(:role_feature) {FactoryBot.create(:published_feature, name: "Role")}
+  let(:role) {FactoryBot.create(:role, name: "Some Name")}
+  let(:site_role) {FactoryBot.create(:role, name: "Site Admin")}
   
-  let(:super_admin_user) {FactoryGirl.create(:super_admin_user)}
+  let(:super_admin_user) {FactoryBot.create(:super_admin_user)}
   let(:site_admin_user) { 
     role_feature
     site_role
-    user = FactoryGirl.create(:approved_user)
+    user = FactoryBot.create(:approved_user)
     user.add_role("Site Admin")
     user.add_permission("Role", can_create: true, can_read: true, can_update: true, can_delete: true)
     user 
   }
-  let(:approved_user) {FactoryGirl.create(:approved_user)}
+  let(:approved_user) {FactoryBot.create(:approved_user)}
   
   describe "index" do
-    3.times { FactoryGirl.create(:role) }
+    3.times { FactoryBot.create(:role) }
     context "Positive Case" do
       it "site admin with permission should be able to view the list of roles" do
         session[:id] = site_admin_user.id
@@ -141,7 +141,7 @@ describe Usman::RolesController, :type => :controller do
     context "Positive Case" do
       it "site admin with permission should be able to create a role" do
         session[:id] = site_admin_user.id
-        role_params = FactoryGirl.build(:role, name: "Some Name").attributes
+        role_params = FactoryBot.build(:role, name: "Some Name").attributes
         expect do
           post :create, params: { use_route: 'usman', role: role_params }, xhr: true
         end.to change(Role, :count).by(1)
@@ -149,7 +149,7 @@ describe Usman::RolesController, :type => :controller do
       end
       it "super admin should be able to create a role" do
         session[:id] = super_admin_user.id
-        role_params = FactoryGirl.build(:role).attributes
+        role_params = FactoryBot.build(:role).attributes
         role_params[:name] = "Some Name"
         expect do
           post :create, params: { use_route: 'usman', role: role_params }, xhr: true
@@ -160,7 +160,7 @@ describe Usman::RolesController, :type => :controller do
     describe "Negative Case" do
       it "other users should not be able to create a role" do
         session[:id] = approved_user.id
-        role_params = FactoryGirl.build(:role, name: "Some Name").attributes
+        role_params = FactoryBot.build(:role, name: "Some Name").attributes
         expect do
           post :create, params: { use_route: 'usman', role: role_params }, xhr: true
         end.to change(Role, :count).by(0)
@@ -170,7 +170,7 @@ describe Usman::RolesController, :type => :controller do
 
       it "should redirect while creating a role, if the user is not signed in" do
         session[:id] = nil
-        role_params = FactoryGirl.build(:role, name: "Some Name").attributes
+        role_params = FactoryBot.build(:role, name: "Some Name").attributes
         expect do
           post :create, params: { use_route: 'usman', role: role_params }, xhr: true
         end.to change(Role, :count).by(0)
@@ -184,7 +184,7 @@ describe Usman::RolesController, :type => :controller do
     context "Positive Case" do
       it "site admin with permission should be able to update a role" do
         session[:id] = site_admin_user.id
-        role = FactoryGirl.create(:role, name: "Some Name")
+        role = FactoryBot.create(:role, name: "Some Name")
         role_params = role.attributes.clone
         role_params["name"] = "Changed Name"
         expect do
@@ -194,7 +194,7 @@ describe Usman::RolesController, :type => :controller do
       end
       it "super admin should be able to update a role" do
         session[:id] = super_admin_user.id
-        role = FactoryGirl.create(:role, name: "Some Name")
+        role = FactoryBot.create(:role, name: "Some Name")
         role_params = role.attributes.clone
         role_params["name"] = "Changed Name"
         expect do
@@ -206,7 +206,7 @@ describe Usman::RolesController, :type => :controller do
     describe "Negative Case" do
       it "other users should not be able to update a role" do
         session[:id] = approved_user.id
-        role = FactoryGirl.create(:role, name: "Some Name")
+        role = FactoryBot.create(:role, name: "Some Name")
         role_params = role.attributes.clone
         role_params["name"] = "Changed Name"
         put :update, params: { use_route: 'usman', id: role.id, role: role_params }, xhr: true
@@ -217,7 +217,7 @@ describe Usman::RolesController, :type => :controller do
 
       it "should redirect while updating a role, if the user is not signed in" do
         session[:id] = nil
-        role = FactoryGirl.create(:role, name: "Some Name")
+        role = FactoryBot.create(:role, name: "Some Name")
         role_params = role.attributes.clone
         role_params["name"] = "Changed Name"
         put :update, params: { use_route: 'usman', id: role.id, role: role_params }, xhr: true

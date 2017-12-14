@@ -2,22 +2,22 @@ require "rails_helper"
 
 RSpec.describe Usman::Api::V1::ContactsController, :type => :request do  
 
-  let(:country) {FactoryGirl.create(:country)}
-  let(:region) {FactoryGirl.create(:region, country: country)}
-  let(:city) {FactoryGirl.create(:city, region: region)}
+  let(:country) {FactoryBot.create(:country)}
+  let(:region) {FactoryBot.create(:region, country: country)}
+  let(:city) {FactoryBot.create(:city, region: region)}
 
   describe "sync" do
     context "Positive Case" do
       it "should sync all the new contacts and return empty array" do
-        user = FactoryGirl.create(:approved_user, country: country, city: city)
-        reg = FactoryGirl.create(:verified_registration, country: country, city: city, user: user)
-        dev = FactoryGirl.create(:verified_device, registration: reg, api_token: SecureRandom.hex)
+        user = FactoryBot.create(:approved_user, country: country, city: city)
+        reg = FactoryBot.create(:verified_registration, country: country, city: city, user: user)
+        dev = FactoryBot.create(:verified_device, registration: reg, api_token: SecureRandom.hex)
         
-        contact_1 = FactoryGirl.build(:contact, name: "Lalettan", email: "mohanlal@mollywood.com", account_type: "com.mollywood", contact_number: "+919880123123", )
-        contact_2 = FactoryGirl.build(:contact, name: "Mammukka", email: "mammotty@mollywood.com", account_type: "com.mollywood", contact_number: "+919880456456", )
-        contact_3 = FactoryGirl.build(:contact, name: "Ambili Chettan", email: nil, account_type: "com.mollywood", contact_number: "1345345345", )
-        contact_4 = FactoryGirl.build(:contact, name: "Shobhana", email: "shobhana@mollywood.com", account_type: "com.mollywood", contact_number: "+919880789789", )
-        contact_5 = FactoryGirl.build(:contact, name: "Seetha", email: nil, account_type: "com.mollywood", contact_number: "1345345345", )
+        contact_1 = FactoryBot.build(:contact, name: "Lalettan", email: "mohanlal@mollywood.com", account_type: "com.mollywood", contact_number: "+919880123123", )
+        contact_2 = FactoryBot.build(:contact, name: "Mammukka", email: "mammotty@mollywood.com", account_type: "com.mollywood", contact_number: "+919880456456", )
+        contact_3 = FactoryBot.build(:contact, name: "Ambili Chettan", email: nil, account_type: "com.mollywood", contact_number: "1345345345", )
+        contact_4 = FactoryBot.build(:contact, name: "Shobhana", email: "shobhana@mollywood.com", account_type: "com.mollywood", contact_number: "+919880789789", )
+        contact_5 = FactoryBot.build(:contact, name: "Seetha", email: nil, account_type: "com.mollywood", contact_number: "1345345345", )
         
         contacts_data = [
                           {
@@ -57,31 +57,31 @@ RSpec.describe Usman::Api::V1::ContactsController, :type => :request do
 
       it "should sync all the new contacts and return contacts who have already joined done deal" do
 
-        mohanlal = FactoryGirl.create(:user, name: "Mohanlal")
-        reg = FactoryGirl.create(:verified_registration, country: country, city: city, user: mohanlal, dialing_prefix: "+91", mobile_number: "9880123123")
-        dev = FactoryGirl.create(:verified_device, registration: reg, api_token: SecureRandom.hex)
+        mohanlal = FactoryBot.create(:user, name: "Mohanlal")
+        reg = FactoryBot.create(:verified_registration, country: country, city: city, user: mohanlal, dialing_prefix: "+91", mobile_number: "9880123123")
+        dev = FactoryBot.create(:verified_device, registration: reg, api_token: SecureRandom.hex)
         
-        mammotty = FactoryGirl.create(:user, name: "Mammotty")
-        reg = FactoryGirl.create(:verified_registration, country: country, city: city, user: mammotty, dialing_prefix: "+92", mobile_number: "9880123123")
-        dev = FactoryGirl.create(:verified_device, registration: reg, api_token: SecureRandom.hex)
+        mammotty = FactoryBot.create(:user, name: "Mammotty")
+        reg = FactoryBot.create(:verified_registration, country: country, city: city, user: mammotty, dialing_prefix: "+92", mobile_number: "9880123123")
+        dev = FactoryBot.create(:verified_device, registration: reg, api_token: SecureRandom.hex)
         
-        shobhana = FactoryGirl.create(:user, name: "Shobhana")
-        reg = FactoryGirl.create(:verified_registration, country: country, city: city, user: shobhana, dialing_prefix: "+93", mobile_number: "9880123123")
-        dev = FactoryGirl.create(:verified_device, registration: reg, api_token: SecureRandom.hex)
+        shobhana = FactoryBot.create(:user, name: "Shobhana")
+        reg = FactoryBot.create(:verified_registration, country: country, city: city, user: shobhana, dialing_prefix: "+93", mobile_number: "9880123123")
+        dev = FactoryBot.create(:verified_device, registration: reg, api_token: SecureRandom.hex)
 
-        seetha = FactoryGirl.create(:user, name: "Seetha")
-        reg = FactoryGirl.create(:verified_registration, country: country, city: city, user: seetha, dialing_prefix: "+94", mobile_number: "9880123123")
-        dev = FactoryGirl.create(:verified_device, registration: reg, api_token: SecureRandom.hex)
+        seetha = FactoryBot.create(:user, name: "Seetha")
+        reg = FactoryBot.create(:verified_registration, country: country, city: city, user: seetha, dialing_prefix: "+94", mobile_number: "9880123123")
+        dev = FactoryBot.create(:verified_device, registration: reg, api_token: SecureRandom.hex)
         
-        contact_1 = FactoryGirl.build(:contact, name: "Lalettan", email: "mohanlal@mollywood.com", account_type: "com.mollywood", contact_number: "+919880123123")
-        contact_2 = FactoryGirl.build(:contact, name: "Mammukka", email: "mammotty@mollywood.com", account_type: "com.mollywood", contact_number: "+929880123123")
-        contact_3 = FactoryGirl.build(:contact, name: "Ambili Chettan", email: "jagathy@mollywood.com", account_type: "com.mollywood", contact_number: "1345345345")
-        contact_4 = FactoryGirl.build(:contact, name: "Shobhana", email: "shobhana@mollywood.com", account_type: "com.mollywood", contact_number: "+939880123123")
-        contact_5 = FactoryGirl.build(:contact, name: "Seetha", email: "seetha@mollywood.com", account_type: "com.mollywood", contact_number: "+949880123123")
+        contact_1 = FactoryBot.build(:contact, name: "Lalettan", email: "mohanlal@mollywood.com", account_type: "com.mollywood", contact_number: "+919880123123")
+        contact_2 = FactoryBot.build(:contact, name: "Mammukka", email: "mammotty@mollywood.com", account_type: "com.mollywood", contact_number: "+929880123123")
+        contact_3 = FactoryBot.build(:contact, name: "Ambili Chettan", email: "jagathy@mollywood.com", account_type: "com.mollywood", contact_number: "1345345345")
+        contact_4 = FactoryBot.build(:contact, name: "Shobhana", email: "shobhana@mollywood.com", account_type: "com.mollywood", contact_number: "+939880123123")
+        contact_5 = FactoryBot.build(:contact, name: "Seetha", email: "seetha@mollywood.com", account_type: "com.mollywood", contact_number: "+949880123123")
 
-        user = FactoryGirl.create(:approved_user, country: country, city: city)
-        reg = FactoryGirl.create(:verified_registration, country: country, city: city, user: user)
-        dev = FactoryGirl.create(:verified_device, registration: reg, api_token: SecureRandom.hex)
+        user = FactoryBot.create(:approved_user, country: country, city: city)
+        reg = FactoryBot.create(:verified_registration, country: country, city: city, user: user)
+        dev = FactoryBot.create(:verified_device, registration: reg, api_token: SecureRandom.hex)
 
         contacts_data = [
                           {
@@ -166,16 +166,16 @@ RSpec.describe Usman::Api::V1::ContactsController, :type => :request do
 
       it "should not save twice" do
 
-        mohanlal = FactoryGirl.create(:user, name: "Mohanlal")
-        reg = FactoryGirl.create(:verified_registration, country: country, city: city, user: mohanlal, dialing_prefix: "+91", mobile_number: "9880123123")
-        dev = FactoryGirl.create(:verified_device, registration: reg, api_token: SecureRandom.hex)
+        mohanlal = FactoryBot.create(:user, name: "Mohanlal")
+        reg = FactoryBot.create(:verified_registration, country: country, city: city, user: mohanlal, dialing_prefix: "+91", mobile_number: "9880123123")
+        dev = FactoryBot.create(:verified_device, registration: reg, api_token: SecureRandom.hex)
 
-        user = FactoryGirl.create(:approved_user, country: country, city: city)
-        reg = FactoryGirl.create(:verified_registration, country: country, city: city, user: user)
-        dev = FactoryGirl.create(:verified_device, registration: reg, api_token: SecureRandom.hex)
+        user = FactoryBot.create(:approved_user, country: country, city: city)
+        reg = FactoryBot.create(:verified_registration, country: country, city: city, user: user)
+        dev = FactoryBot.create(:verified_device, registration: reg, api_token: SecureRandom.hex)
         
         # Saving for the first time
-        contact_1 = FactoryGirl.build(:contact, name: "Lalettan", email: "mohanlal@mollywood.com", account_type: "com.mollywood", contact_number: "+919880123123", )
+        contact_1 = FactoryBot.build(:contact, name: "Lalettan", email: "mohanlal@mollywood.com", account_type: "com.mollywood", contact_number: "+919880123123", )
         contacts_data = [
                           {
                             name: contact_1.name,
@@ -208,7 +208,7 @@ RSpec.describe Usman::Api::V1::ContactsController, :type => :request do
         expect(Usman::Contact.count).to be(1)
 
         # Trying to sync for the 2nd time with just contact number
-        contact_2 = FactoryGirl.build(:contact, name: "Lalettan", email: "", account_type: "com.mollywood", contact_number: "+919880123123", )
+        contact_2 = FactoryBot.build(:contact, name: "Lalettan", email: "", account_type: "com.mollywood", contact_number: "+919880123123", )
         contacts_data = [
                           {
                             name: contact_2.name,
@@ -239,7 +239,7 @@ RSpec.describe Usman::Api::V1::ContactsController, :type => :request do
         expect(Usman::Contact.count).to be(1)
 
         # Trying to sync for the 3rd time with email this time
-        contact_3 = FactoryGirl.build(:contact, name: "Lalettan", email: "mohanlal@mollywood.com", account_type: "com.mollywood", contact_number: "", )
+        contact_3 = FactoryBot.build(:contact, name: "Lalettan", email: "mohanlal@mollywood.com", account_type: "com.mollywood", contact_number: "", )
         contacts_data = [
                           {
                             name: contact_3.name,
@@ -292,27 +292,27 @@ RSpec.describe Usman::Api::V1::ContactsController, :type => :request do
   describe "index" do
     context "Positive Case" do
       it "should return a list of contacts of a user" do
-        user = FactoryGirl.create(:approved_user, country: country, city: city)
+        user = FactoryBot.create(:approved_user, country: country, city: city)
         
         # User Mohanlal
-        mohanlal = FactoryGirl.create(:approved_user, country: country, city: city)
-        profile_picture = FactoryGirl.create(:profile_picture, imageable: mohanlal)
-        reg = FactoryGirl.create(:verified_registration, country: country, city: city, user: mohanlal)
-        dev = FactoryGirl.create(:verified_device, registration: reg, api_token: SecureRandom.hex)
+        mohanlal = FactoryBot.create(:approved_user, country: country, city: city)
+        profile_picture = FactoryBot.create(:profile_picture, imageable: mohanlal)
+        reg = FactoryBot.create(:verified_registration, country: country, city: city, user: mohanlal)
+        dev = FactoryBot.create(:verified_device, registration: reg, api_token: SecureRandom.hex)
 
         # User Mammotty
-        mammotty = FactoryGirl.create(:approved_user, country: country, city: city)
-        profile_picture = FactoryGirl.create(:profile_picture, imageable: mammotty)
-        reg = FactoryGirl.create(:verified_registration, country: country, city: city, user: mammotty)
-        dev = FactoryGirl.create(:verified_device, registration: reg, api_token: SecureRandom.hex)
+        mammotty = FactoryBot.create(:approved_user, country: country, city: city)
+        profile_picture = FactoryBot.create(:profile_picture, imageable: mammotty)
+        reg = FactoryBot.create(:verified_registration, country: country, city: city, user: mammotty)
+        dev = FactoryBot.create(:verified_device, registration: reg, api_token: SecureRandom.hex)
         
         # Contacts for Mohanlal and Mammotty
-        mohanlal_contact = FactoryGirl.create(:contact, name: "Lalettan", done_deal_user: mohanlal, owner: user, email: "mohanlal@mollywood.com")
-        mammotty_contact = FactoryGirl.create(:contact, name: "Mammukka", done_deal_user: mammotty, owner: user, email: "mammotty@mollywood.com")
+        mohanlal_contact = FactoryBot.create(:contact, name: "Lalettan", done_deal_user: mohanlal, owner: user, email: "mohanlal@mollywood.com")
+        mammotty_contact = FactoryBot.create(:contact, name: "Mammukka", done_deal_user: mammotty, owner: user, email: "mammotty@mollywood.com")
 
         # Current User
-        reg = FactoryGirl.create(:verified_registration, country: country, city: city, user: user)
-        dev = FactoryGirl.create(:verified_device, registration: reg, api_token: SecureRandom.hex, user: user)
+        reg = FactoryBot.create(:verified_registration, country: country, city: city, user: user)
+        dev = FactoryBot.create(:verified_device, registration: reg, api_token: SecureRandom.hex, user: user)
         
         headers = {
           'HTTP_AUTHORIZATION' => ActionController::HttpAuthentication::Token.encode_credentials(dev.api_token)
@@ -361,12 +361,12 @@ RSpec.describe Usman::Api::V1::ContactsController, :type => :request do
       end
 
       it "should return the individual contact for a user - contact has not joined and doesn't have a profile picture" do
-        user = FactoryGirl.create(:approved_user, country: country, city: city)
+        user = FactoryBot.create(:approved_user, country: country, city: city)
         
-        reg = FactoryGirl.create(:verified_registration, country: country, city: city, user: user)
-        dev = FactoryGirl.create(:verified_device, registration: reg, api_token: SecureRandom.hex, user: user)
+        reg = FactoryBot.create(:verified_registration, country: country, city: city, user: user)
+        dev = FactoryBot.create(:verified_device, registration: reg, api_token: SecureRandom.hex, user: user)
 
-        mohanlal_contact = FactoryGirl.create(:contact, name: "Lalettan", owner: user)
+        mohanlal_contact = FactoryBot.create(:contact, name: "Lalettan", owner: user)
         
         headers = {
           'HTTP_AUTHORIZATION' => ActionController::HttpAuthentication::Token.encode_credentials(dev.api_token)
@@ -398,12 +398,12 @@ RSpec.describe Usman::Api::V1::ContactsController, :type => :request do
     end
     context 'Negative Cases' do
       it "should set proper errors if api token is not present" do
-        user = FactoryGirl.create(:approved_user, country: country, city: city)
+        user = FactoryBot.create(:approved_user, country: country, city: city)
         
-        reg = FactoryGirl.create(:verified_registration, country: country, city: city, user: user)
-        dev = FactoryGirl.create(:verified_device, registration: reg, api_token: SecureRandom.hex, user: user)
+        reg = FactoryBot.create(:verified_registration, country: country, city: city, user: user)
+        dev = FactoryBot.create(:verified_device, registration: reg, api_token: SecureRandom.hex, user: user)
 
-        mohanlal_contact = FactoryGirl.create(:contact, name: "Lalettan", owner: user)
+        mohanlal_contact = FactoryBot.create(:contact, name: "Lalettan", owner: user)
         
         get "/api/v1/contacts/#{mohanlal_contact.id}"
         
@@ -423,12 +423,12 @@ RSpec.describe Usman::Api::V1::ContactsController, :type => :request do
 
       it "should set proper errors if the profile didn't exist" do
         
-        reg = FactoryGirl.create(:verified_registration, country: country, city: city, user: nil)
-        dev = FactoryGirl.create(:verified_device, registration: reg, api_token: SecureRandom.hex)
+        reg = FactoryBot.create(:verified_registration, country: country, city: city, user: nil)
+        dev = FactoryBot.create(:verified_device, registration: reg, api_token: SecureRandom.hex)
 
-        user = FactoryGirl.build(:user)
+        user = FactoryBot.build(:user)
 
-        mohanlal_contact = FactoryGirl.create(:contact, name: "Lalettan", owner: user)
+        mohanlal_contact = FactoryBot.create(:contact, name: "Lalettan", owner: user)
 
         headers = {
           'HTTP_AUTHORIZATION' => ActionController::HttpAuthentication::Token.encode_credentials(dev.api_token)
@@ -455,17 +455,17 @@ RSpec.describe Usman::Api::V1::ContactsController, :type => :request do
   describe "show" do
     context "Positive Case" do
       it "should return the individual contact for a user - contact has joined and has a profile picture" do
-        user = FactoryGirl.create(:approved_user, country: country, city: city)
+        user = FactoryBot.create(:approved_user, country: country, city: city)
         
-        mohanlal = FactoryGirl.create(:approved_user, country: country, city: city)
-        profile_picture = FactoryGirl.create(:profile_picture, imageable: mohanlal)
-        reg = FactoryGirl.create(:verified_registration, country: country, city: city, user: mohanlal)
-        dev = FactoryGirl.create(:verified_device, registration: reg, api_token: SecureRandom.hex)
+        mohanlal = FactoryBot.create(:approved_user, country: country, city: city)
+        profile_picture = FactoryBot.create(:profile_picture, imageable: mohanlal)
+        reg = FactoryBot.create(:verified_registration, country: country, city: city, user: mohanlal)
+        dev = FactoryBot.create(:verified_device, registration: reg, api_token: SecureRandom.hex)
         
-        reg = FactoryGirl.create(:verified_registration, country: country, city: city, user: user)
-        dev = FactoryGirl.create(:verified_device, registration: reg, api_token: SecureRandom.hex, user: user)
+        reg = FactoryBot.create(:verified_registration, country: country, city: city, user: user)
+        dev = FactoryBot.create(:verified_device, registration: reg, api_token: SecureRandom.hex, user: user)
 
-        mohanlal_contact = FactoryGirl.create(:contact, name: "Lalettan", done_deal_user: mohanlal, owner: user)
+        mohanlal_contact = FactoryBot.create(:contact, name: "Lalettan", done_deal_user: mohanlal, owner: user)
         
         headers = {
           'HTTP_AUTHORIZATION' => ActionController::HttpAuthentication::Token.encode_credentials(dev.api_token)
@@ -498,12 +498,12 @@ RSpec.describe Usman::Api::V1::ContactsController, :type => :request do
       end
 
       it "should return the individual contact for a user - contact has not joined and doesn't have a profile picture" do
-        user = FactoryGirl.create(:approved_user, country: country, city: city)
+        user = FactoryBot.create(:approved_user, country: country, city: city)
         
-        reg = FactoryGirl.create(:verified_registration, country: country, city: city, user: user)
-        dev = FactoryGirl.create(:verified_device, registration: reg, api_token: SecureRandom.hex, user: user)
+        reg = FactoryBot.create(:verified_registration, country: country, city: city, user: user)
+        dev = FactoryBot.create(:verified_device, registration: reg, api_token: SecureRandom.hex, user: user)
 
-        mohanlal_contact = FactoryGirl.create(:contact, name: "Lalettan", owner: user)
+        mohanlal_contact = FactoryBot.create(:contact, name: "Lalettan", owner: user)
         
         headers = {
           'HTTP_AUTHORIZATION' => ActionController::HttpAuthentication::Token.encode_credentials(dev.api_token)
@@ -535,12 +535,12 @@ RSpec.describe Usman::Api::V1::ContactsController, :type => :request do
     end
     context 'Negative Cases' do
       it "should set proper errors if api token is not present" do
-        user = FactoryGirl.create(:approved_user, country: country, city: city)
+        user = FactoryBot.create(:approved_user, country: country, city: city)
         
-        reg = FactoryGirl.create(:verified_registration, country: country, city: city, user: user)
-        dev = FactoryGirl.create(:verified_device, registration: reg, api_token: SecureRandom.hex, user: user)
+        reg = FactoryBot.create(:verified_registration, country: country, city: city, user: user)
+        dev = FactoryBot.create(:verified_device, registration: reg, api_token: SecureRandom.hex, user: user)
 
-        mohanlal_contact = FactoryGirl.create(:contact, name: "Lalettan", owner: user)
+        mohanlal_contact = FactoryBot.create(:contact, name: "Lalettan", owner: user)
         
         get "/api/v1/contacts/#{mohanlal_contact.id}"
         
@@ -560,12 +560,12 @@ RSpec.describe Usman::Api::V1::ContactsController, :type => :request do
 
       it "should set proper errors if the profile didn't exist" do
         
-        reg = FactoryGirl.create(:verified_registration, country: country, city: city, user: nil)
-        dev = FactoryGirl.create(:verified_device, registration: reg, api_token: SecureRandom.hex)
+        reg = FactoryBot.create(:verified_registration, country: country, city: city, user: nil)
+        dev = FactoryBot.create(:verified_device, registration: reg, api_token: SecureRandom.hex)
 
-        user = FactoryGirl.build(:user)
+        user = FactoryBot.build(:user)
 
-        mohanlal_contact = FactoryGirl.create(:contact, name: "Lalettan", owner: user)
+        mohanlal_contact = FactoryBot.create(:contact, name: "Lalettan", owner: user)
 
         headers = {
           'HTTP_AUTHORIZATION' => ActionController::HttpAuthentication::Token.encode_credentials(dev.api_token)

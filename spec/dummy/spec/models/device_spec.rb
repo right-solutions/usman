@@ -2,21 +2,21 @@ require 'spec_helper'
 
 RSpec.describe Device, type: :model do
 
-  let(:device) {FactoryGirl.build(:device)}
+  let(:device) {FactoryBot.build(:device)}
   
   context "Factory" do
     it "should validate all the factories" do
-      expect(FactoryGirl.build(:device).valid?).to be_truthy
+      expect(FactoryBot.build(:device).valid?).to be_truthy
 
-      pending_device = FactoryGirl.build(:pending_device)
+      pending_device = FactoryBot.build(:pending_device)
       expect(pending_device.status).to match("pending")
       expect(pending_device.valid?).to be_truthy
 
-      verified_device = FactoryGirl.build(:verified_device)
+      verified_device = FactoryBot.build(:verified_device)
       expect(verified_device.status).to match("verified")
       expect(verified_device.valid?).to be_truthy
 
-      blocked_device = FactoryGirl.build(:blocked_device)
+      blocked_device = FactoryBot.build(:blocked_device)
       expect(blocked_device.status).to match("blocked")
       expect(blocked_device.valid?).to be_truthy
     end
@@ -82,13 +82,13 @@ RSpec.describe Device, type: :model do
 
       device
 
-      user = FactoryGirl.create(:user, name: "Mahathma Gandhi")
-      mgr = FactoryGirl.create(:registration, user: user, mobile_number: "123412345")
-      mgd = FactoryGirl.create(:device, user: user, registration: mgr, uuid: "1324", device_token: "6879", device_name: "Samsung Note", device_type: "Samsung Note 7")
+      user = FactoryBot.create(:user, name: "Mahathma Gandhi")
+      mgr = FactoryBot.create(:registration, user: user, mobile_number: "123412345")
+      mgd = FactoryBot.create(:device, user: user, registration: mgr, uuid: "1324", device_token: "6879", device_name: "Samsung Note", device_type: "Samsung Note 7")
 
-      user = FactoryGirl.create(:user, name: "Sardar Patel")
-      spr = FactoryGirl.create(:registration, user: user, mobile_number: "123456789")
-      spd = FactoryGirl.create(:device, user: user, registration: spr, uuid: "4231", device_token: "9786", device_name: "Nexus 7", device_type: "Nexus 7 Series")
+      user = FactoryBot.create(:user, name: "Sardar Patel")
+      spr = FactoryBot.create(:registration, user: user, mobile_number: "123456789")
+      spd = FactoryBot.create(:device, user: user, registration: spr, uuid: "4231", device_token: "9786", device_name: "Nexus 7", device_type: "Nexus 7 Series")
 
       expect(Device.search("Mahathma")).to match_array([mgd])
       expect(Device.search("123412345")).to match_array([mgd])
@@ -108,17 +108,17 @@ RSpec.describe Device, type: :model do
     end
 
     it "scope pending" do
-      pending_device = FactoryGirl.create(:pending_device)
+      pending_device = FactoryBot.create(:pending_device)
       expect(Device.pending.all).to match_array [pending_device]
     end
 
     it "scope verified" do
-      verified_device = FactoryGirl.create(:verified_device)
+      verified_device = FactoryBot.create(:verified_device)
       expect(Device.verified.all).to match_array [verified_device]
     end
 
     it "scope blocked" do
-      blocked_device = FactoryGirl.create(:blocked_device)
+      blocked_device = FactoryBot.create(:blocked_device)
       expect(Device.blocked.all).to match_array [blocked_device]
     end
   end
@@ -128,21 +128,21 @@ RSpec.describe Device, type: :model do
     context "Status Methods" do
 
       it "pending!" do
-        u = FactoryGirl.create(:verified_device)
+        u = FactoryBot.create(:verified_device)
         u.pending!
         expect(u.status).to match "pending"
         expect(u.pending?).to be_truthy
       end
 
       it "verify!" do
-        u = FactoryGirl.create(:pending_device)
+        u = FactoryBot.create(:pending_device)
         u.verify!
         expect(u.status).to match "verified"
         expect(u.verified?).to be_truthy
       end
 
       it "block!" do
-        u = FactoryGirl.create(:verified_device)
+        u = FactoryBot.create(:verified_device)
         u.block!
         expect(u.status).to match "blocked"
         expect(u.blocked?).to be_truthy
@@ -167,28 +167,28 @@ RSpec.describe Device, type: :model do
     context "Other Methods" do
       it "as_json" do
         # If verified, it should return api token
-        reg = FactoryGirl.create(:verified_registration)
-        dev = FactoryGirl.create(:verified_device, registration: reg)
+        reg = FactoryBot.create(:verified_registration)
+        dev = FactoryBot.create(:verified_device, registration: reg)
 
         expect(dev.as_json["api_token"]).to be_blank
         expect(dev.as_json["status"]).to eq("verified")
 
         # If pending or blocked, it should not return api token
-        reg = FactoryGirl.create(:pending_registration)
-        dev = FactoryGirl.create(:pending_device, registration: reg)
+        reg = FactoryBot.create(:pending_registration)
+        dev = FactoryBot.create(:pending_device, registration: reg)
 
         expect(dev.as_json["api_token"]).to be_blank
         expect(dev.as_json["status"]).to eq("pending")
 
         # If pending or blocked, it should not return api token
-        reg = FactoryGirl.create(:verified_registration)
-        dev = FactoryGirl.create(:blocked_device, registration: reg)
+        reg = FactoryBot.create(:verified_registration)
+        dev = FactoryBot.create(:blocked_device, registration: reg)
 
         expect(dev.as_json["api_token"]).to be_blank
         expect(dev.as_json["status"]).to eq("blocked")
       end
       it "display_name" do
-        r = FactoryGirl.create(:device, device_name: "Samsung Galaxy", uuid: "1234567890")
+        r = FactoryBot.create(:device, device_name: "Samsung Galaxy", uuid: "1234567890")
         expect(r.display_name).to match("Samsung Galaxy - 1234567890")
       end
     end

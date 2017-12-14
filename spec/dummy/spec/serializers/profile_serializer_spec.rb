@@ -4,8 +4,8 @@ RSpec.describe ProfileSerializer, type: :serializer do
 
   describe "attributes" do
     it "should include profile attributes with empty profile picture" do
-      nayan = FactoryGirl.create(:user, name: "Nayan Tara")
-      # profile_picture = FactoryGirl.create(:profile_picture, imageable: nayan)
+      nayan = FactoryBot.create(:user, name: "Nayan Tara")
+      # profile_picture = FactoryBot.create(:profile_picture, imageable: nayan)
   
       json_data = ActiveModelSerializers::SerializableResource.new(nayan, serializer: ProfileSerializer).to_json
       data = JSON.parse(json_data)
@@ -26,8 +26,8 @@ RSpec.describe ProfileSerializer, type: :serializer do
     end
 
     it "should include profile attributes with profile picture" do
-      nayan = FactoryGirl.create(:user, name: "Nayan Tara")
-      profile_picture = FactoryGirl.create(:profile_picture, imageable: nayan)
+      nayan = FactoryBot.create(:user, name: "Nayan Tara")
+      profile_picture = FactoryBot.create(:profile_picture, imageable: nayan)
   
       json_data = ActiveModelSerializers::SerializableResource.new(nayan, serializer: ProfileSerializer).to_json
       data = JSON.parse(json_data)

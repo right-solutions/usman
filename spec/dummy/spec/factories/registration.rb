@@ -1,6 +1,6 @@
 require 'pattana/factories.rb'
 
-FactoryGirl.define do
+FactoryBot.define do
 
   factory :registration do
 

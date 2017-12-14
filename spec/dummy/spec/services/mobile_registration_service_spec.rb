@@ -3,11 +3,11 @@ require 'rails_helper'
 describe Usman::MobileRegistrationService do
 
   # Registration & Device details without User (new registration case)
-  let(:country) {FactoryGirl.create(:country)}
-  let(:region) {FactoryGirl.create(:region, country: country)}
-  let(:city) {FactoryGirl.create(:city, region: region)}
-  let(:reg1) {FactoryGirl.build(:verified_registration, user: nil, city: city, country: country)}
-  let(:dev1) {FactoryGirl.build(:pending_device, user: nil, registration: reg1)}
+  let(:country) {FactoryBot.create(:country)}
+  let(:region) {FactoryBot.create(:region, country: country)}
+  let(:city) {FactoryBot.create(:city, region: region)}
+  let(:reg1) {FactoryBot.build(:verified_registration, user: nil, city: city, country: country)}
+  let(:dev1) {FactoryBot.build(:pending_device, user: nil, registration: reg1)}
   let(:params_1) {
                    { dialing_prefix: reg1.dialing_prefix, 
                       mobile_number: reg1.mobile_number,
@@ -23,8 +23,8 @@ describe Usman::MobileRegistrationService do
                     } 
                   }
   # Existing Registration with no device details
-  let(:reg2) {FactoryGirl.create(:verified_registration, city: city, country: country)}
-  let(:dev2) {FactoryGirl.build(:pending_device, registration: reg2)}
+  let(:reg2) {FactoryBot.create(:verified_registration, city: city, country: country)}
+  let(:dev2) {FactoryBot.build(:pending_device, registration: reg2)}
   let(:params_2) {
                    { dialing_prefix: reg2.dialing_prefix, 
                       mobile_number: reg2.mobile_number,
@@ -41,8 +41,8 @@ describe Usman::MobileRegistrationService do
                   }
 
   # Existing Registration with device details
-  let(:dev3) {FactoryGirl.create(:device, registration: reg2)}
-  let(:dev4) {FactoryGirl.create(:device, registration: reg2, uuid: "99813791")}
+  let(:dev3) {FactoryBot.create(:device, registration: reg2)}
+  let(:dev4) {FactoryBot.create(:device, registration: reg2, uuid: "99813791")}
   let(:params_3) {
                    { dialing_prefix: reg2.dialing_prefix, 
                       mobile_number: reg2.mobile_number,
@@ -327,7 +327,7 @@ describe Usman::MobileRegistrationService do
 
       it "should set proper errors for device is blocked" do
 
-        blocked_dev = FactoryGirl.create(:blocked_device, user: nil, registration: reg1)
+        blocked_dev = FactoryBot.create(:blocked_device, user: nil, registration: reg1)
         mrs = Usman::MobileRegistrationService.new({ 
                           dialing_prefix: reg1.dialing_prefix, 
                           mobile_number: reg1.mobile_number,

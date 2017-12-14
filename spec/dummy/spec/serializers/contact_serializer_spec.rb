@@ -4,12 +4,12 @@ RSpec.describe ContactSerializer, type: :serializer do
 
   describe "attributes" do
     it "should include contact attributes with empty profile picture" do
-      nayan = FactoryGirl.create(:user, name: "Nayan Tara")
-      reg = FactoryGirl.create(:verified_registration, user: nayan)
-      dev = FactoryGirl.create(:verified_device, registration: reg, api_token: SecureRandom.hex)
+      nayan = FactoryBot.create(:user, name: "Nayan Tara")
+      reg = FactoryBot.create(:verified_registration, user: nayan)
+      dev = FactoryBot.create(:verified_device, registration: reg, api_token: SecureRandom.hex)
 
-      contact = FactoryGirl.create(:contact, name: "Nayan", email: "nayan@mollywood.com", account_type: "com.mollywood", contact_number_2: "1234234234", contact_number_2: "2234234234", contact_number_3: "3234234234", contact_number_4: "4234234234", done_deal_user: nayan)
-      # profile_picture = FactoryGirl.create(:profile_picture, imageable: nayan)
+      contact = FactoryBot.create(:contact, name: "Nayan", email: "nayan@mollywood.com", account_type: "com.mollywood", contact_number_2: "1234234234", contact_number_2: "2234234234", contact_number_3: "3234234234", contact_number_4: "4234234234", done_deal_user: nayan)
+      # profile_picture = FactoryBot.create(:profile_picture, imageable: nayan)
   
       json_data = ActiveModelSerializers::SerializableResource.new(contact, serializer: ContactSerializer).to_json
       data = JSON.parse(json_data)
@@ -31,12 +31,12 @@ RSpec.describe ContactSerializer, type: :serializer do
     end
 
     it "should include profile attributes with profile picture" do
-      nayan = FactoryGirl.create(:user, name: "Nayan Tara")
-      reg = FactoryGirl.create(:verified_registration, user: nayan)
-      dev = FactoryGirl.create(:verified_device, registration: reg, api_token: SecureRandom.hex)
+      nayan = FactoryBot.create(:user, name: "Nayan Tara")
+      reg = FactoryBot.create(:verified_registration, user: nayan)
+      dev = FactoryBot.create(:verified_device, registration: reg, api_token: SecureRandom.hex)
 
-      contact = FactoryGirl.create(:contact, name: "Nayan", email: "nayan@mollywood.com", account_type: "com.mollywood", contact_number_2: "1234234234", contact_number_2: "2234234234", contact_number_3: "3234234234", contact_number_4: "4234234234", done_deal_user: nayan)
-      profile_picture = FactoryGirl.create(:profile_picture, imageable: nayan)
+      contact = FactoryBot.create(:contact, name: "Nayan", email: "nayan@mollywood.com", account_type: "com.mollywood", contact_number_2: "1234234234", contact_number_2: "2234234234", contact_number_3: "3234234234", contact_number_4: "4234234234", done_deal_user: nayan)
+      profile_picture = FactoryBot.create(:profile_picture, imageable: nayan)
   
       json_data = ActiveModelSerializers::SerializableResource.new(contact, serializer: ContactSerializer).to_json
       data = JSON.parse(json_data)

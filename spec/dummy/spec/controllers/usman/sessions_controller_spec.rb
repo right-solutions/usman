@@ -2,9 +2,9 @@ require 'rails_helper'
 
 describe Usman::SessionsController, :type => :controller do
 
-  let(:approved_user) {FactoryGirl.create(:approved_user)}
-  let(:pending_user) {FactoryGirl.create(:pending_user)}
-  let(:suspended_user) {FactoryGirl.create(:suspended_user)}
+  let(:approved_user) {FactoryBot.create(:approved_user)}
+  let(:pending_user) {FactoryBot.create(:pending_user)}
+  let(:suspended_user) {FactoryBot.create(:suspended_user)}
 
   describe "sign_in" do
     context "Positive Case" do

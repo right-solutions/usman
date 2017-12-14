@@ -2,27 +2,27 @@ require 'rails_helper'
 
 describe Usman::UsersController, :type => :controller do
 
-  let(:user_feature) {FactoryGirl.create(:published_feature, name: "User")}
-  let(:user) {FactoryGirl.create(:user)}
-  let(:suspended_user) {FactoryGirl.create(:suspended_user)}
+  let(:user_feature) {FactoryBot.create(:published_feature, name: "User")}
+  let(:user) {FactoryBot.create(:user)}
+  let(:suspended_user) {FactoryBot.create(:suspended_user)}
   
-  let(:site_role) {FactoryGirl.create(:role, name: "Site Admin")}
+  let(:site_role) {FactoryBot.create(:role, name: "Site Admin")}
   
-  let(:super_admin_user) {FactoryGirl.create(:super_admin_user)}
+  let(:super_admin_user) {FactoryBot.create(:super_admin_user)}
   let(:site_admin_user) { 
     user_feature
     site_role
-    user = FactoryGirl.create(:approved_user)
+    user = FactoryBot.create(:approved_user)
     user.add_role("Site Admin")
     user.add_permission("User", can_create: true, can_read: true, can_update: true, can_delete: true)
     user 
   }
-  let(:approved_user) {FactoryGirl.create(:approved_user)}
+  let(:approved_user) {FactoryBot.create(:approved_user)}
   
   describe "index" do
-    3.times { FactoryGirl.create(:approved_user) }
-    2.times { FactoryGirl.create(:pending_user) }
-    1.times { FactoryGirl.create(:suspended_user) }
+    3.times { FactoryBot.create(:approved_user) }
+    2.times { FactoryBot.create(:pending_user) }
+    1.times { FactoryBot.create(:suspended_user) }
     context "Positive Case" do
       it "site admin should be able to view the list of users" do
         session[:id] = site_admin_user.id
@@ -146,7 +146,7 @@ describe Usman::UsersController, :type => :controller do
     context "Positive Case" do
       it "site admin should be able to create a user" do
         session[:id] = site_admin_user.id
-        user_params = FactoryGirl.build(:user).attributes
+        user_params = FactoryBot.build(:user).attributes
         user_params[:name] = "Some Name"
         user_params[:password] = "Password@1"
         user_params[:password_confirmation] = "Password@1"
@@ -157,7 +157,7 @@ describe Usman::UsersController, :type => :controller do
       end
       it "super admin should be able to create a user" do
         session[:id] = super_admin_user.id
-        user_params = FactoryGirl.build(:user).attributes
+        user_params = FactoryBot.build(:user).attributes
         user_params[:name] = "Some Name"
         user_params[:password] = "Password@1"
         user_params[:password_confirmation] = "Password@1"
@@ -170,7 +170,7 @@ describe Usman::UsersController, :type => :controller do
     describe "Negative Case" do
       it "other users should not be able to create a user" do
         session[:id] = approved_user.id
-        user_params = FactoryGirl.build(:user).attributes
+        user_params = FactoryBot.build(:user).attributes
         expect do
           post :create, params: { use_route: 'usman', user: user_params }, xhr: true
         end.to change(User, :count).by(0)
@@ -180,7 +180,7 @@ describe Usman::UsersController, :type => :controller do
 
       it "should redirect while creating a user, if the user is not signed in" do
         session[:id] = nil
-        user_params = FactoryGirl.build(:user).attributes
+        user_params = FactoryBot.build(:user).attributes
         expect do
           post :create, params: { use_route: 'usman', user: user_params }, xhr: true
         end.to change(User, :count).by(0)
@@ -194,7 +194,7 @@ describe Usman::UsersController, :type => :controller do
     context "Positive Case" do
       it "site admin should be able to update a user" do
         session[:id] = site_admin_user.id
-        user = FactoryGirl.create(:approved_user, name: "Some Name")
+        user = FactoryBot.create(:approved_user, name: "Some Name")
         user_params = user.attributes.clone
         user_params["name"] = "Changed Name"
         expect do
@@ -204,7 +204,7 @@ describe Usman::UsersController, :type => :controller do
       end
       it "super admin should be able to update a user" do
         session[:id] = super_admin_user.id
-        user = FactoryGirl.create(:approved_user, name: "Some Name")
+        user = FactoryBot.create(:approved_user, name: "Some Name")
         user_params = user.attributes.clone
         user_params["name"] = "Changed Name"
         expect do
@@ -216,7 +216,7 @@ describe Usman::UsersController, :type => :controller do
     describe "Negative Case" do
       it "other users should not be able to update a user" do
         session[:id] = approved_user.id
-        user = FactoryGirl.create(:approved_user, name: "Some Name")
+        user = FactoryBot.create(:approved_user, name: "Some Name")
         user_params = user.attributes.clone
         user_params["name"] = "Changed Name"
         put :update, params: { use_route: 'usman', id: user.id, user: user_params }, xhr: true
@@ -227,7 +227,7 @@ describe Usman::UsersController, :type => :controller do
 
       it "should redirect while updating a user, if the user is not signed in" do
         session[:id] = nil
-        user = FactoryGirl.create(:approved_user, name: "Some Name")
+        user = FactoryBot.create(:approved_user, name: "Some Name")
         user_params = user.attributes.clone
         user_params["name"] = "Changed Name"
         put :update, params: { use_route: 'usman', id: user.id, user: user_params }, xhr: true

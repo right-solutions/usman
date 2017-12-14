@@ -2,11 +2,11 @@ require 'spec_helper'
 
 RSpec.describe Usman::Contact, type: :model do
 
-  let(:contact) {FactoryGirl.build(:contact)}
+  let(:contact) {FactoryBot.build(:contact)}
   
   context "Factory" do
     it "should validate all the factories" do
-      expect(FactoryGirl.build(:contact).valid?).to be_truthy
+      expect(FactoryBot.build(:contact).valid?).to be_truthy
     end
   end
 
@@ -47,9 +47,9 @@ RSpec.describe Usman::Contact, type: :model do
   context "Class Methods" do
     it "search" do
 
-      mkg = FactoryGirl.create(:contact, name: "Mohandas Karamchand Gandhi", email: "gandhi@india.com", contact_number:
+      mkg = FactoryBot.create(:contact, name: "Mohandas Karamchand Gandhi", email: "gandhi@india.com", contact_number:
        "1234123412", account_type: "com.google")
-      svp = FactoryGirl.create(:contact, name: "Sardar Vallabhai Patel", email: "sardar.patel@india.com", contact_number:
+      svp = FactoryBot.create(:contact, name: "Sardar Vallabhai Patel", email: "sardar.patel@india.com", contact_number:
        "4567456745", account_type: "com.google")
       
       expect(Usman::Contact.search("Mohandas")).to match_array([mkg])
@@ -67,48 +67,48 @@ RSpec.describe Usman::Contact, type: :model do
   context "Instance Methods" do
     context "Other Methods" do
       it "display_name" do
-        c = FactoryGirl.create(:contact, name: "Rama Krishnan")
+        c = FactoryBot.create(:contact, name: "Rama Krishnan")
         expect(c.display_name).to match("Rama Krishnan")
       end
 
       it "get_done_deal_user" do
-        mohanlal = FactoryGirl.create(:user, name: "Mohanlal")
-        reg = FactoryGirl.create(:verified_registration, user: mohanlal, dialing_prefix: "+91", mobile_number: "9880123123")
-        dev = FactoryGirl.create(:verified_device, registration: reg, api_token: SecureRandom.hex)
+        mohanlal = FactoryBot.create(:user, name: "Mohanlal")
+        reg = FactoryBot.create(:verified_registration, user: mohanlal, dialing_prefix: "+91", mobile_number: "9880123123")
+        dev = FactoryBot.create(:verified_device, registration: reg, api_token: SecureRandom.hex)
         
-        mammotty = FactoryGirl.create(:user, name: "Mammotty")
-        reg = FactoryGirl.create(:verified_registration, user: mammotty, dialing_prefix: "+92", mobile_number: "9880123123")
-        dev = FactoryGirl.create(:verified_device, registration: reg, api_token: SecureRandom.hex)
+        mammotty = FactoryBot.create(:user, name: "Mammotty")
+        reg = FactoryBot.create(:verified_registration, user: mammotty, dialing_prefix: "+92", mobile_number: "9880123123")
+        dev = FactoryBot.create(:verified_device, registration: reg, api_token: SecureRandom.hex)
         
-        shobhana = FactoryGirl.create(:user, name: "Shobhana")
-        reg = FactoryGirl.create(:verified_registration, user: shobhana, dialing_prefix: "+971", mobile_number: "9880123123")
-        dev = FactoryGirl.create(:verified_device, registration: reg, api_token: SecureRandom.hex)
+        shobhana = FactoryBot.create(:user, name: "Shobhana")
+        reg = FactoryBot.create(:verified_registration, user: shobhana, dialing_prefix: "+971", mobile_number: "9880123123")
+        dev = FactoryBot.create(:verified_device, registration: reg, api_token: SecureRandom.hex)
 
-        seetha = FactoryGirl.create(:user, name: "Seetha")
-        reg = FactoryGirl.create(:verified_registration, user: seetha, dialing_prefix: "+91", mobile_number: "9880234234")
-        dev = FactoryGirl.create(:verified_device, registration: reg, api_token: SecureRandom.hex)
+        seetha = FactoryBot.create(:user, name: "Seetha")
+        reg = FactoryBot.create(:verified_registration, user: seetha, dialing_prefix: "+91", mobile_number: "9880234234")
+        dev = FactoryBot.create(:verified_device, registration: reg, api_token: SecureRandom.hex)
         
-        contact = FactoryGirl.build(:contact, name: "Lalettan", email: "mohanlal@mollywood.com", account_type: "com.mollywood", contact_number:
+        contact = FactoryBot.build(:contact, name: "Lalettan", email: "mohanlal@mollywood.com", account_type: "com.mollywood", contact_number:
          "+919880123123")
         ddo = contact.get_done_deal_user
         expect(ddo).to eq(mohanlal)
 
-        contact = FactoryGirl.build(:contact, name: "Mammukka", email: "mammotty@mollywood.com", account_type: "com.mollywood", contact_number:
+        contact = FactoryBot.build(:contact, name: "Mammukka", email: "mammotty@mollywood.com", account_type: "com.mollywood", contact_number:
          "+9719880123123")
         ddo = contact.get_done_deal_user
         expect(ddo).to eq(shobhana)
 
-        contact = FactoryGirl.build(:contact, name: "Mammukka", email: "mammotty@mollywood.com", account_type: "com.mollywood", contact_number:
+        contact = FactoryBot.build(:contact, name: "Mammukka", email: "mammotty@mollywood.com", account_type: "com.mollywood", contact_number:
          "+971 9880-123123")
         ddo = contact.get_done_deal_user
         expect(ddo).to eq(shobhana)
 
-        contact = FactoryGirl.build(:contact, name: "Mammukka", email: "mammotty@mollywood.com", account_type: "com.mollywood", contact_number:
+        contact = FactoryBot.build(:contact, name: "Mammukka", email: "mammotty@mollywood.com", account_type: "com.mollywood", contact_number:
          "+971 9880 123-123")
         ddo = contact.get_done_deal_user
         expect(ddo).to eq(shobhana)
 
-        contact = FactoryGirl.build(:contact, name: "Mammukka", email: "mammotty@mollywood.com", account_type: "com.mollywood", contact_number:
+        contact = FactoryBot.build(:contact, name: "Mammukka", email: "mammotty@mollywood.com", account_type: "com.mollywood", contact_number:
          "+971 (9880) 123-123")
         ddo = contact.get_done_deal_user
         expect(ddo).to eq(shobhana)

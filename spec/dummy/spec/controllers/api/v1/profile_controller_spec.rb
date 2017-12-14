@@ -1,20 +1,20 @@
 require "rails_helper"
 
 RSpec.describe Usman::Api::V1::RegistrationsController, :type => :request do  
-  let(:india) {FactoryGirl.create(:country, name: "India")}
-  let(:kerala) {FactoryGirl.create(:region, country: india, name: "Kerala")}
-  let(:cochin) {FactoryGirl.create(:city, region: kerala, name: "Cochin")}
+  let(:india) {FactoryBot.create(:country, name: "India")}
+  let(:kerala) {FactoryBot.create(:region, country: india, name: "Kerala")}
+  let(:cochin) {FactoryBot.create(:city, region: kerala, name: "Cochin")}
   
-  let(:uae) {FactoryGirl.create(:country, name: "United Arab Emirates")}
-  let(:dubai) {FactoryGirl.create(:city, country: uae, name: "Dubai")}
+  let(:uae) {FactoryBot.create(:country, name: "United Arab Emirates")}
+  let(:dubai) {FactoryBot.create(:city, country: uae, name: "Dubai")}
 
   describe "create_profile" do
     context "Positive Case" do
       it "should create the profile" do
-        reg = FactoryGirl.create(:verified_registration, country: india, city: cochin, user: nil)
-        dev = FactoryGirl.create(:verified_device, registration: reg, api_token: SecureRandom.hex)
+        reg = FactoryBot.create(:verified_registration, country: india, city: cochin, user: nil)
+        dev = FactoryBot.create(:verified_device, registration: reg, api_token: SecureRandom.hex)
         
-        user = FactoryGirl.build(:user)
+        user = FactoryBot.build(:user)
         
         profile_data = {
                           name: user.name,
@@ -62,9 +62,9 @@ RSpec.describe Usman::Api::V1::RegistrationsController, :type => :request do
       end
 
       it "should create the profile and save a profile picture" do
-        reg = FactoryGirl.create(:verified_registration, country: india, city: cochin, user: nil)
-        dev = FactoryGirl.create(:verified_device, registration: reg, api_token: SecureRandom.hex)
-        user = FactoryGirl.build(:user)
+        reg = FactoryBot.create(:verified_registration, country: india, city: cochin, user: nil)
+        dev = FactoryBot.create(:verified_device, registration: reg, api_token: SecureRandom.hex)
+        user = FactoryBot.build(:user)
         
         profile_data = {
                           name: user.name,
@@ -123,9 +123,9 @@ RSpec.describe Usman::Api::V1::RegistrationsController, :type => :request do
       end
 
       it "should create the profile even if profile picture is invalid" do
-        reg = FactoryGirl.create(:verified_registration, country: india, city: cochin, user: nil)
-        dev = FactoryGirl.create(:verified_device, registration: reg, api_token: SecureRandom.hex)
-        user = FactoryGirl.build(:user)
+        reg = FactoryBot.create(:verified_registration, country: india, city: cochin, user: nil)
+        dev = FactoryBot.create(:verified_device, registration: reg, api_token: SecureRandom.hex)
+        user = FactoryBot.build(:user)
         
         profile_data = {
                           name: user.name,
@@ -186,9 +186,9 @@ RSpec.describe Usman::Api::V1::RegistrationsController, :type => :request do
     end
     context 'Negative Cases' do
       it "should set proper errors if api token is not present" do
-        user = FactoryGirl.create(:user)
-        reg = FactoryGirl.create(:verified_registration, country: india, city: cochin, user: user)
-        dev = FactoryGirl.create(:verified_device, registration: reg, api_token: SecureRandom.hex)
+        user = FactoryBot.create(:user)
+        reg = FactoryBot.create(:verified_registration, country: india, city: cochin, user: user)
+        dev = FactoryBot.create(:verified_device, registration: reg, api_token: SecureRandom.hex)
         
         profile_data = {
                           name: user.name,
@@ -216,9 +216,9 @@ RSpec.describe Usman::Api::V1::RegistrationsController, :type => :request do
       end
 
       it "should set proper errors if the profile already exists" do
-        user = FactoryGirl.create(:approved_user)
-        reg = FactoryGirl.create(:verified_registration, country: india, city: cochin, user: user)
-        dev = FactoryGirl.create(:verified_device, registration: reg, api_token: SecureRandom.hex)
+        user = FactoryBot.create(:approved_user)
+        reg = FactoryBot.create(:verified_registration, country: india, city: cochin, user: user)
+        dev = FactoryBot.create(:verified_device, registration: reg, api_token: SecureRandom.hex)
         
         profile_data = {
                           name: user.name,
@@ -250,9 +250,9 @@ RSpec.describe Usman::Api::V1::RegistrationsController, :type => :request do
       end
 
       it "should set proper errors if the inputs are not correct" do
-        user = FactoryGirl.build(:user)
-        reg = FactoryGirl.create(:verified_registration, country: india, city: cochin, user: nil)
-        dev = FactoryGirl.create(:verified_device, registration: reg, api_token: SecureRandom.hex)
+        user = FactoryBot.build(:user)
+        reg = FactoryBot.create(:verified_registration, country: india, city: cochin, user: nil)
+        dev = FactoryBot.create(:verified_device, registration: reg, api_token: SecureRandom.hex)
         
         profile_data = {}
 
@@ -281,11 +281,11 @@ RSpec.describe Usman::Api::V1::RegistrationsController, :type => :request do
   describe "update_profile" do
     context "Positive Case" do
       it "should update the profile" do
-        user = FactoryGirl.create(:approved_user, dummy: true)
-        profile_picture = FactoryGirl.create(:profile_picture, imageable: user)
+        user = FactoryBot.create(:approved_user, dummy: true)
+        profile_picture = FactoryBot.create(:profile_picture, imageable: user)
 
-        reg = FactoryGirl.create(:verified_registration, country: india, city: cochin, user: user)
-        dev = FactoryGirl.create(:verified_device, registration: reg, api_token: SecureRandom.hex)
+        reg = FactoryBot.create(:verified_registration, country: india, city: cochin, user: user)
+        dev = FactoryBot.create(:verified_device, registration: reg, api_token: SecureRandom.hex)
         
         profile_data = {
                           name: user.name,
@@ -338,11 +338,11 @@ RSpec.describe Usman::Api::V1::RegistrationsController, :type => :request do
         expect(data["profile_picture"]["image_small_path"]).not_to be_blank
       end
       it "should update the profile and save a profile picture" do
-        user = FactoryGirl.create(:approved_user)
-        profile_picture = FactoryGirl.create(:profile_picture, imageable: user)
+        user = FactoryBot.create(:approved_user)
+        profile_picture = FactoryBot.create(:profile_picture, imageable: user)
 
-        reg = FactoryGirl.create(:verified_registration, country: india, city: cochin, user: user)
-        dev = FactoryGirl.create(:verified_device, registration: reg, api_token: SecureRandom.hex)
+        reg = FactoryBot.create(:verified_registration, country: india, city: cochin, user: user)
+        dev = FactoryBot.create(:verified_device, registration: reg, api_token: SecureRandom.hex)
         
         profile_data = {
                           name: user.name,
@@ -394,9 +394,9 @@ RSpec.describe Usman::Api::V1::RegistrationsController, :type => :request do
         expect(data["profile_picture"]["image_small_path"]).not_to be_blank
       end
       it "should update the profile even if profile picture is invalid" do
-        user = FactoryGirl.create(:approved_user)
-        reg = FactoryGirl.create(:verified_registration, country: india, city: cochin, user: user)
-        dev = FactoryGirl.create(:verified_device, registration: reg, api_token: SecureRandom.hex)
+        user = FactoryBot.create(:approved_user)
+        reg = FactoryBot.create(:verified_registration, country: india, city: cochin, user: user)
+        dev = FactoryBot.create(:verified_device, registration: reg, api_token: SecureRandom.hex)
         
         profile_data = {
                           name: user.name,
@@ -454,9 +454,9 @@ RSpec.describe Usman::Api::V1::RegistrationsController, :type => :request do
     end
     context 'Negative Cases' do
       it "should set proper errors if api token is not present" do
-        user = FactoryGirl.create(:user)
-        reg = FactoryGirl.create(:verified_registration, country: india, city: cochin, user: user)
-        dev = FactoryGirl.create(:verified_device, registration: reg, api_token: SecureRandom.hex)
+        user = FactoryBot.create(:user)
+        reg = FactoryBot.create(:verified_registration, country: india, city: cochin, user: user)
+        dev = FactoryBot.create(:verified_device, registration: reg, api_token: SecureRandom.hex)
         
         profile_data = {
                           name: user.name,
@@ -484,10 +484,10 @@ RSpec.describe Usman::Api::V1::RegistrationsController, :type => :request do
       end
       it "should set proper errors if the profile didn't exist" do
         
-        reg = FactoryGirl.create(:verified_registration, country: india, city: cochin, user: nil)
-        dev = FactoryGirl.create(:verified_device, registration: reg, api_token: SecureRandom.hex)
+        reg = FactoryBot.create(:verified_registration, country: india, city: cochin, user: nil)
+        dev = FactoryBot.create(:verified_device, registration: reg, api_token: SecureRandom.hex)
         
-        user = FactoryGirl.build(:user)
+        user = FactoryBot.build(:user)
 
         profile_data = {
                           name: user.name,
@@ -518,9 +518,9 @@ RSpec.describe Usman::Api::V1::RegistrationsController, :type => :request do
         data = response_body['data']
       end
       it "should set proper errors if the inputs are not correct" do
-        user = FactoryGirl.build(:approved_user)
-        reg = FactoryGirl.create(:verified_registration, country: india, city: cochin, user: user)
-        dev = FactoryGirl.create(:verified_device, registration: reg, api_token: SecureRandom.hex)
+        user = FactoryBot.build(:approved_user)
+        reg = FactoryBot.create(:verified_registration, country: india, city: cochin, user: user)
+        dev = FactoryBot.create(:verified_device, registration: reg, api_token: SecureRandom.hex)
         
         profile_data = {}
 
@@ -550,10 +550,10 @@ RSpec.describe Usman::Api::V1::RegistrationsController, :type => :request do
   describe "profile" do
     context "Positive Case" do
       it "should return the profile details along with picture" do
-        user = FactoryGirl.create(:approved_user, country: india, city: cochin)
-        profile_picture = FactoryGirl.create(:profile_picture, imageable: user)
-        reg = FactoryGirl.create(:verified_registration, country: india, city: cochin, user: user)
-        dev = FactoryGirl.create(:verified_device, registration: reg, api_token: SecureRandom.hex)
+        user = FactoryBot.create(:approved_user, country: india, city: cochin)
+        profile_picture = FactoryBot.create(:profile_picture, imageable: user)
+        reg = FactoryBot.create(:verified_registration, country: india, city: cochin, user: user)
+        dev = FactoryBot.create(:verified_device, registration: reg, api_token: SecureRandom.hex)
         
         headers = {
           'HTTP_AUTHORIZATION' => ActionController::HttpAuthentication::Token.encode_credentials(dev.api_token)
@@ -594,9 +594,9 @@ RSpec.describe Usman::Api::V1::RegistrationsController, :type => :request do
     end
     context 'Negative Cases' do
       it "should set proper errors if api token is not present" do
-        user = FactoryGirl.create(:user)
-        reg = FactoryGirl.create(:verified_registration, country: india, city: cochin, user: user)
-        dev = FactoryGirl.create(:verified_device, registration: reg, api_token: SecureRandom.hex)
+        user = FactoryBot.create(:user)
+        reg = FactoryBot.create(:verified_registration, country: india, city: cochin, user: user)
+        dev = FactoryBot.create(:verified_device, registration: reg, api_token: SecureRandom.hex)
         
         profile_data = {
                           name: user.name,
@@ -625,10 +625,10 @@ RSpec.describe Usman::Api::V1::RegistrationsController, :type => :request do
 
       it "should set proper errors if the profile didn't exist" do
         
-        reg = FactoryGirl.create(:verified_registration, country: india, city: cochin, user: nil)
-        dev = FactoryGirl.create(:verified_device, registration: reg, api_token: SecureRandom.hex)
+        reg = FactoryBot.create(:verified_registration, country: india, city: cochin, user: nil)
+        dev = FactoryBot.create(:verified_device, registration: reg, api_token: SecureRandom.hex)
         
-        user = FactoryGirl.build(:user)
+        user = FactoryBot.build(:user)
 
         profile_data = {
                           name: user.name,

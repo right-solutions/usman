@@ -2,9 +2,9 @@ require "rails_helper"
 
 RSpec.describe Usman::Api::V1::RegistrationsController, :type => :request do  
 
-  let(:country) {FactoryGirl.create(:country)}
-  let(:region) {FactoryGirl.create(:region, country: country)}
-  let(:city) {FactoryGirl.create(:city, region: region)}
+  let(:country) {FactoryBot.create(:country)}
+  let(:region) {FactoryBot.create(:region, country: country)}
+  let(:city) {FactoryBot.create(:city, region: region)}
 
   describe "register" do
     context "Positive Case" do
@@ -58,7 +58,7 @@ RSpec.describe Usman::Api::V1::RegistrationsController, :type => :request do
       end
 
       it "should register and reuse an existing registration information" do
-        reg = FactoryGirl.create(:verified_registration)
+        reg = FactoryBot.create(:verified_registration)
         uuid = SecureRandom.hex
         device_token = SecureRandom.hex
         registration_data = {
@@ -108,8 +108,8 @@ RSpec.describe Usman::Api::V1::RegistrationsController, :type => :request do
       end
 
       it "should reuse existing registration & device information" do
-        reg = FactoryGirl.create(:verified_registration)
-        dev = FactoryGirl.create(:verified_device, registration: reg, user: reg.user)
+        reg = FactoryBot.create(:verified_registration)
+        dev = FactoryBot.create(:verified_device, registration: reg, user: reg.user)
         
         registration_data = {
                               country_id: reg.country.id, 
@@ -199,7 +199,7 @@ RSpec.describe Usman::Api::V1::RegistrationsController, :type => :request do
       end
 
       it "should set proper errors when registration information is missing" do
-        dev = FactoryGirl.build(:pending_device, registration: nil)
+        dev = FactoryBot.build(:pending_device, registration: nil)
         post "/api/v1/register", params: {
                                             uuid: dev.uuid,
                                             device_token: dev.device_token,
@@ -226,8 +226,8 @@ RSpec.describe Usman::Api::V1::RegistrationsController, :type => :request do
 
       it "should set proper errors for device is blocked" do
 
-        reg = FactoryGirl.create(:registration)
-        dev = FactoryGirl.create(:blocked_device, registration: reg)
+        reg = FactoryBot.create(:registration)
+        dev = FactoryBot.create(:blocked_device, registration: reg)
         post "/api/v1/register", params: {
                                             dialing_prefix: reg.dialing_prefix, 
                                             mobile_number: reg.mobile_number,
@@ -258,8 +258,8 @@ RSpec.describe Usman::Api::V1::RegistrationsController, :type => :request do
   describe "resend_otp" do
     context "Positive Case" do
       it "should resend the otp for valid inputs" do
-        reg = FactoryGirl.create(:registration)
-        dev = FactoryGirl.create(:pending_device, registration: reg)
+        reg = FactoryBot.create(:registration)
+        dev = FactoryBot.create(:pending_device, registration: reg)
         post "/api/v1/resend_otp", params: {
                                           uuid: dev.uuid,
                                           dialing_prefix: reg.dialing_prefix, 
@@ -277,8 +277,8 @@ RSpec.describe Usman::Api::V1::RegistrationsController, :type => :request do
         expect(response_body["alert"]["message"]).to  eq("Check your mobile for new message from us")
       end
       it "should resend the otp even if the device is verified" do
-        reg = FactoryGirl.create(:registration)
-        dev = FactoryGirl.create(:verified_device, registration: reg)
+        reg = FactoryBot.create(:registration)
+        dev = FactoryBot.create(:verified_device, registration: reg)
         post "/api/v1/resend_otp", params: {
                                           uuid: dev.uuid,
                                           dialing_prefix: reg.dialing_prefix, 
@@ -298,8 +298,8 @@ RSpec.describe Usman::Api::V1::RegistrationsController, :type => :request do
     end
     context "Negative Case" do
       it "should respond with proper errors if no parameters are passed" do
-        reg = FactoryGirl.create(:registration)
-        dev = FactoryGirl.create(:pending_device, registration: reg)
+        reg = FactoryBot.create(:registration)
+        dev = FactoryBot.create(:pending_device, registration: reg)
         post "/api/v1/resend_otp", params: {}
 
         expect(response.status).to eq(200)
@@ -330,8 +330,8 @@ RSpec.describe Usman::Api::V1::RegistrationsController, :type => :request do
       end
 
       it "should respond with proper errors if uuid is not registered" do
-        reg = FactoryGirl.create(:registration)
-        dev = FactoryGirl.create(:pending_device, registration: reg)
+        reg = FactoryBot.create(:registration)
+        dev = FactoryBot.create(:pending_device, registration: reg)
         post "/api/v1/resend_otp", params: {
           dialing_prefix: reg.dialing_prefix,
           mobile_number: reg.mobile_number,
@@ -351,8 +351,8 @@ RSpec.describe Usman::Api::V1::RegistrationsController, :type => :request do
       end
 
       it "should respond with proper errors if the device is blocked" do
-        reg = FactoryGirl.create(:registration)
-        dev = FactoryGirl.create(:blocked_device, registration: reg)
+        reg = FactoryBot.create(:registration)
+        dev = FactoryBot.create(:blocked_device, registration: reg)
         post "/api/v1/resend_otp", params: {
                                           uuid: dev.uuid,
                                           dialing_prefix: reg.dialing_prefix, 
@@ -375,11 +375,11 @@ RSpec.describe Usman::Api::V1::RegistrationsController, :type => :request do
   describe "verify" do
     context "Positive Case" do
       it "should verify an otp verification request from a pending device" do
-        reg = FactoryGirl.create(:pending_registration, city: nil)
+        reg = FactoryBot.create(:pending_registration, city: nil)
         reg.user = User.new(dummy: true)
         reg.user.generate_dummy_data(reg)
         reg.user.save
-        dev = FactoryGirl.create(:pending_device, registration: reg)
+        dev = FactoryBot.create(:pending_device, registration: reg)
 
         # Generating a new OTP
         dev.generate_otp
@@ -430,9 +430,9 @@ RSpec.describe Usman::Api::V1::RegistrationsController, :type => :request do
         expect(data["profile"]["profile_picture"]["image_small_path"]).to be_blank
       end
       it "should verify the otp if the device is verified, tac is accpted and return the api token" do
-        user = FactoryGirl.create(:approved_user, name: "Some User", gender: "male")
-        reg = FactoryGirl.create(:verified_registration, user: user)
-        dev = FactoryGirl.create(:verified_device, registration: reg)
+        user = FactoryBot.create(:approved_user, name: "Some User", gender: "male")
+        reg = FactoryBot.create(:verified_registration, user: user)
+        dev = FactoryBot.create(:verified_device, registration: reg)
 
         # Generating a new OTP
         dev.generate_otp
@@ -485,8 +485,8 @@ RSpec.describe Usman::Api::V1::RegistrationsController, :type => :request do
     context "Negative Case" do
       it "should respond with proper errors if no parameters are passed" do
         
-        reg = FactoryGirl.create(:pending_registration)
-        dev = FactoryGirl.create(:pending_device, registration: reg)
+        reg = FactoryBot.create(:pending_registration)
+        dev = FactoryBot.create(:pending_device, registration: reg)
         
         # Generating a new OTP
         dev.generate_otp
@@ -507,8 +507,8 @@ RSpec.describe Usman::Api::V1::RegistrationsController, :type => :request do
       end
 
       it "should respond with proper errors if mobile number is not registered" do
-        reg = FactoryGirl.create(:pending_registration)
-        dev = FactoryGirl.create(:pending_device, registration: reg)
+        reg = FactoryBot.create(:pending_registration)
+        dev = FactoryBot.create(:pending_device, registration: reg)
 
         # Generating a new OTP
         dev.generate_otp
@@ -533,8 +533,8 @@ RSpec.describe Usman::Api::V1::RegistrationsController, :type => :request do
       end
 
       it "should respond with proper errors if uuid is not registered" do
-        reg = FactoryGirl.create(:verified_registration)
-        dev = FactoryGirl.create(:pending_device, registration: reg)
+        reg = FactoryBot.create(:verified_registration)
+        dev = FactoryBot.create(:pending_device, registration: reg)
 
         # Generating a new OTP
         dev.generate_otp
@@ -560,8 +560,8 @@ RSpec.describe Usman::Api::V1::RegistrationsController, :type => :request do
       end
 
       it "should respond with proper errors if the device is blocked" do
-        reg = FactoryGirl.create(:registration)
-        dev = FactoryGirl.create(:blocked_device, registration: reg)
+        reg = FactoryBot.create(:registration)
+        dev = FactoryBot.create(:blocked_device, registration: reg)
         post "/api/v1/verify_otp", params: {
                                           otp: dev.otp,
                                           dialing_prefix: reg.dialing_prefix, 
@@ -586,8 +586,8 @@ RSpec.describe Usman::Api::V1::RegistrationsController, :type => :request do
     context "Positive Case" do
       it "should accept the terms and conditions if the device is verified and all inputs are valid" do
         
-        reg = FactoryGirl.create(:verified_registration)
-        dev = FactoryGirl.create(:verified_device, registration: reg)
+        reg = FactoryBot.create(:verified_registration)
+        dev = FactoryBot.create(:verified_device, registration: reg)
         
         post "/api/v1/accept_tac", params: {
                                           terms_and_conditions: true,
@@ -617,8 +617,8 @@ RSpec.describe Usman::Api::V1::RegistrationsController, :type => :request do
     end
     context "Negative Case" do
       it "should not accept the terms and conditions if the device is not verified" do
-        reg = FactoryGirl.create(:pending_registration)
-        dev = FactoryGirl.create(:pending_device, registration: reg)
+        reg = FactoryBot.create(:pending_registration)
+        dev = FactoryBot.create(:pending_device, registration: reg)
         
         post "/api/v1/accept_tac", params: {
                                           terms_and_conditions: true,
@@ -640,8 +640,8 @@ RSpec.describe Usman::Api::V1::RegistrationsController, :type => :request do
       end
 
       it "should respond with proper errors if no params are passed" do
-        reg = FactoryGirl.create(:verified_registration)
-        dev = FactoryGirl.create(:verified_device, registration: reg)
+        reg = FactoryBot.create(:verified_registration)
+        dev = FactoryBot.create(:verified_device, registration: reg)
         
         post "/api/v1/accept_tac", params: {}
 
@@ -659,8 +659,8 @@ RSpec.describe Usman::Api::V1::RegistrationsController, :type => :request do
       end
 
       it "should respond with proper errors if T&C is not accepted" do
-        reg = FactoryGirl.create(:verified_registration)
-        dev = FactoryGirl.create(:verified_device, registration: reg)
+        reg = FactoryBot.create(:verified_registration)
+        dev = FactoryBot.create(:verified_device, registration: reg)
         post "/api/v1/accept_tac", params: {
                                           terms_and_conditions: false,
                                           uuid: dev.uuid,
@@ -687,8 +687,8 @@ RSpec.describe Usman::Api::V1::RegistrationsController, :type => :request do
     context "Positive Case" do
       it "should store the last accessed api and the time" do
         
-        reg = FactoryGirl.create(:verified_registration)
-        dev = FactoryGirl.create(:verified_device, registration: reg)
+        reg = FactoryBot.create(:verified_registration)
+        dev = FactoryBot.create(:verified_device, registration: reg)
         
         post "/api/v1/accept_tac", params: {
                                           terms_and_conditions: true,
@@ -719,9 +719,9 @@ RSpec.describe Usman::Api::V1::RegistrationsController, :type => :request do
   describe "send_otp_to_change_number" do
     context "Positive Case" do
       it "should send the otp to change the number" do
-        user = FactoryGirl.create(:approved_user)
-        reg = FactoryGirl.create(:verified_registration, country: country, city: city, user: user)
-        dev = FactoryGirl.create(:verified_device, registration: reg, api_token: SecureRandom.hex)
+        user = FactoryBot.create(:approved_user)
+        reg = FactoryBot.create(:verified_registration, country: country, city: city, user: user)
+        dev = FactoryBot.create(:verified_device, registration: reg, api_token: SecureRandom.hex)
         
         headers = {
           'HTTP_AUTHORIZATION' => ActionController::HttpAuthentication::Token.encode_credentials(dev.api_token)
@@ -759,8 +759,8 @@ RSpec.describe Usman::Api::V1::RegistrationsController, :type => :request do
       end
 
       it "should set proper errors if the profile didn't exist" do
-        reg = FactoryGirl.create(:verified_registration, country: country, city: city, user: nil)
-        dev = FactoryGirl.create(:verified_device, registration: reg, api_token: SecureRandom.hex)
+        reg = FactoryBot.create(:verified_registration, country: country, city: city, user: nil)
+        dev = FactoryBot.create(:verified_device, registration: reg, api_token: SecureRandom.hex)
         
         headers = {
           'HTTP_AUTHORIZATION' => ActionController::HttpAuthentication::Token.encode_credentials(dev.api_token)
@@ -783,9 +783,9 @@ RSpec.describe Usman::Api::V1::RegistrationsController, :type => :request do
       end
 
       it "should respond with proper errors if no parameters are passed" do
-        user = FactoryGirl.create(:approved_user)
-        reg = FactoryGirl.create(:verified_registration, country: country, city: city, user: user)
-        dev = FactoryGirl.create(:verified_device, registration: reg, api_token: SecureRandom.hex)
+        user = FactoryBot.create(:approved_user)
+        reg = FactoryBot.create(:verified_registration, country: country, city: city, user: user)
+        dev = FactoryBot.create(:verified_device, registration: reg, api_token: SecureRandom.hex)
         
         headers = {
           'HTTP_AUTHORIZATION' => ActionController::HttpAuthentication::Token.encode_credentials(dev.api_token)
@@ -805,9 +805,9 @@ RSpec.describe Usman::Api::V1::RegistrationsController, :type => :request do
       end
 
       it "should respond with proper errors if the device is blocked" do
-        user = FactoryGirl.create(:approved_user)
-        reg = FactoryGirl.create(:verified_registration, country: country, city: city, user: user)
-        dev = FactoryGirl.create(:blocked_device, registration: reg, api_token: SecureRandom.hex)
+        user = FactoryBot.create(:approved_user)
+        reg = FactoryBot.create(:verified_registration, country: country, city: city, user: user)
+        dev = FactoryBot.create(:blocked_device, registration: reg, api_token: SecureRandom.hex)
         
         headers = {
           'HTTP_AUTHORIZATION' => ActionController::HttpAuthentication::Token.encode_credentials(dev.api_token)
@@ -831,9 +831,9 @@ RSpec.describe Usman::Api::V1::RegistrationsController, :type => :request do
   describe "change_number" do
     context "Positive Case" do
       it "should change the number" do
-        user = FactoryGirl.create(:approved_user)
-        reg = FactoryGirl.create(:verified_registration, country: country, city: city, user: user, dialing_prefix: "+91", mobile_number: "9880123456")
-        dev = FactoryGirl.create(:verified_device, registration: reg, api_token: SecureRandom.hex, user: user)
+        user = FactoryBot.create(:approved_user)
+        reg = FactoryBot.create(:verified_registration, country: country, city: city, user: user, dialing_prefix: "+91", mobile_number: "9880123456")
+        dev = FactoryBot.create(:verified_device, registration: reg, api_token: SecureRandom.hex, user: user)
         
         dev.generate_otp
 
@@ -889,8 +889,8 @@ RSpec.describe Usman::Api::V1::RegistrationsController, :type => :request do
       end
 
       it "should set proper errors if the profile didn't exist" do
-        reg = FactoryGirl.create(:verified_registration, country: country, city: city, user: nil, dialing_prefix: "+91", mobile_number: "9880123456")
-        dev = FactoryGirl.create(:verified_device, registration: reg, api_token: SecureRandom.hex, user: nil)
+        reg = FactoryBot.create(:verified_registration, country: country, city: city, user: nil, dialing_prefix: "+91", mobile_number: "9880123456")
+        dev = FactoryBot.create(:verified_device, registration: reg, api_token: SecureRandom.hex, user: nil)
         
         headers = {
           'HTTP_AUTHORIZATION' => ActionController::HttpAuthentication::Token.encode_credentials(dev.api_token)
@@ -913,9 +913,9 @@ RSpec.describe Usman::Api::V1::RegistrationsController, :type => :request do
       end
 
       it "should respond with proper errors if otp passed is invalid" do
-        user = FactoryGirl.create(:approved_user)
-        reg = FactoryGirl.create(:verified_registration, country: country, city: city, user: user, dialing_prefix: "+91", mobile_number: "9880123456")
-        dev = FactoryGirl.create(:verified_device, registration: reg, api_token: SecureRandom.hex, user: user)
+        user = FactoryBot.create(:approved_user)
+        reg = FactoryBot.create(:verified_registration, country: country, city: city, user: user, dialing_prefix: "+91", mobile_number: "9880123456")
+        dev = FactoryBot.create(:verified_device, registration: reg, api_token: SecureRandom.hex, user: user)
         
         dev.generate_otp
         
@@ -947,9 +947,9 @@ RSpec.describe Usman::Api::V1::RegistrationsController, :type => :request do
       end
 
       it "should respond with proper errors if no proper parameters are passed" do
-        user = FactoryGirl.create(:approved_user)
-        reg = FactoryGirl.create(:verified_registration, country: country, city: city, user: user, dialing_prefix: "+91", mobile_number: "9880123456")
-        dev = FactoryGirl.create(:verified_device, registration: reg, api_token: SecureRandom.hex, user: user)
+        user = FactoryBot.create(:approved_user)
+        reg = FactoryBot.create(:verified_registration, country: country, city: city, user: user, dialing_prefix: "+91", mobile_number: "9880123456")
+        dev = FactoryBot.create(:verified_device, registration: reg, api_token: SecureRandom.hex, user: user)
         
         dev.generate_otp
 
@@ -1028,9 +1028,9 @@ RSpec.describe Usman::Api::V1::RegistrationsController, :type => :request do
       end
 
       it "should respond with proper errors if the device is blocked" do
-        user = FactoryGirl.create(:approved_user)
-        reg = FactoryGirl.create(:verified_registration, country: country, city: city, user: user)
-        dev = FactoryGirl.create(:blocked_device, registration: reg, api_token: SecureRandom.hex)
+        user = FactoryBot.create(:approved_user)
+        reg = FactoryBot.create(:verified_registration, country: country, city: city, user: user)
+        dev = FactoryBot.create(:blocked_device, registration: reg, api_token: SecureRandom.hex)
         
         headers = {
           'HTTP_AUTHORIZATION' => ActionController::HttpAuthentication::Token.encode_credentials(dev.api_token)
@@ -1062,9 +1062,9 @@ RSpec.describe Usman::Api::V1::RegistrationsController, :type => :request do
   describe "delete_account" do
     context "Positive Case" do
       it "should mark the account as deleted" do
-        user = FactoryGirl.create(:approved_user)
-        reg = FactoryGirl.create(:verified_registration, country: country, city: city, user: user, dialing_prefix: "+91", mobile_number: "9880123456")
-        dev = FactoryGirl.create(:verified_device, registration: reg, api_token: SecureRandom.hex, user: user)
+        user = FactoryBot.create(:approved_user)
+        reg = FactoryBot.create(:verified_registration, country: country, city: city, user: user, dialing_prefix: "+91", mobile_number: "9880123456")
+        dev = FactoryBot.create(:verified_device, registration: reg, api_token: SecureRandom.hex, user: user)
         
         headers = {
           'HTTP_AUTHORIZATION' => ActionController::HttpAuthentication::Token.encode_credentials(dev.api_token)
@@ -1108,8 +1108,8 @@ RSpec.describe Usman::Api::V1::RegistrationsController, :type => :request do
       end
 
       it "should set proper errors if the profile didn't exist" do
-        reg = FactoryGirl.create(:verified_registration, country: country, city: city, user: nil, dialing_prefix: "+91", mobile_number: "9880123456")
-        dev = FactoryGirl.create(:verified_device, registration: reg, api_token: SecureRandom.hex, user: nil)
+        reg = FactoryBot.create(:verified_registration, country: country, city: city, user: nil, dialing_prefix: "+91", mobile_number: "9880123456")
+        dev = FactoryBot.create(:verified_device, registration: reg, api_token: SecureRandom.hex, user: nil)
         
         headers = {
           'HTTP_AUTHORIZATION' => ActionController::HttpAuthentication::Token.encode_credentials(dev.api_token)

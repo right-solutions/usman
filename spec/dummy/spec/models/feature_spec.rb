@@ -2,29 +2,29 @@ require 'spec_helper'
 
 RSpec.describe Feature, type: :model do
 
-  let(:feature) {FactoryGirl.build(:feature)}
+  let(:feature) {FactoryBot.build(:feature)}
 
-  let(:published_feature) {FactoryGirl.build(:published_feature)}
-  let(:unpublished_feature) {FactoryGirl.build(:unpublished_feature)}
-  let(:removed_feature) {FactoryGirl.build(:removed_feature)}
+  let(:published_feature) {FactoryBot.build(:published_feature)}
+  let(:unpublished_feature) {FactoryBot.build(:unpublished_feature)}
+  let(:removed_feature) {FactoryBot.build(:removed_feature)}
 
-  let(:photo_gallery) {FactoryGirl.create(:published_feature, name: "Photo Gallery")}
-  let(:video_gallery) {FactoryGirl.create(:published_feature, name: "Video Gallery")}
-  let(:brands) {FactoryGirl.create(:published_feature, name: "Brands")}
+  let(:photo_gallery) {FactoryBot.create(:published_feature, name: "Photo Gallery")}
+  let(:video_gallery) {FactoryBot.create(:published_feature, name: "Video Gallery")}
+  let(:brands) {FactoryBot.create(:published_feature, name: "Brands")}
   
   context "Factory" do
     it "should validate all the factories" do
-      expect(FactoryGirl.build(:feature).valid?).to be_truthy
+      expect(FactoryBot.build(:feature).valid?).to be_truthy
       
-      published_feature = FactoryGirl.build(:published_feature)
+      published_feature = FactoryBot.build(:published_feature)
       expect(published_feature.status).to match("published")
       expect(published_feature.valid?).to be_truthy
 
-      unpublished_feature = FactoryGirl.build(:unpublished_feature)
+      unpublished_feature = FactoryBot.build(:unpublished_feature)
       expect(unpublished_feature.status).to match("unpublished")
       expect(unpublished_feature.valid?).to be_truthy
 
-      removed_feature = FactoryGirl.build(:removed_feature)
+      removed_feature = FactoryBot.build(:removed_feature)
       expect(removed_feature.status).to match("removed")
       expect(removed_feature.valid?).to be_truthy
     end
@@ -61,13 +61,13 @@ RSpec.describe Feature, type: :model do
 
     it "scope unpublished" do
       arr = [photo_gallery, video_gallery, brands]
-      unpublished_feature = FactoryGirl.create(:unpublished_feature)
+      unpublished_feature = FactoryBot.create(:unpublished_feature)
       expect(Feature.unpublished.all).to match_array [unpublished_feature]
     end
 
     it "scope removed" do
       arr = [photo_gallery, video_gallery, brands]
-      removed_feature = FactoryGirl.create(:removed_feature)
+      removed_feature = FactoryBot.create(:removed_feature)
       expect(Feature.removed.all).to match_array [removed_feature]
     end
 
@@ -82,21 +82,21 @@ RSpec.describe Feature, type: :model do
 
     context "Status Methods" do
       it "publish!" do
-        u = FactoryGirl.create(:unpublished_feature)
+        u = FactoryBot.create(:unpublished_feature)
         u.publish!
         expect(u.status).to match "published"
         expect(u.published?).to be_truthy
       end
 
       it "unpublish!" do
-        u = FactoryGirl.create(:published_feature)
+        u = FactoryBot.create(:published_feature)
         u.unpublish!
         expect(u.status).to match "unpublish"
         expect(u.unpublished?).to be_truthy
       end
 
       it "remove!" do
-        u = FactoryGirl.create(:unpublished_feature)
+        u = FactoryBot.create(:unpublished_feature)
         u.remove!
         expect(u.status).to match "removed"
         expect(u.removed?).to be_truthy

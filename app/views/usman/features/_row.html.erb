@@ -1,5 +1,4 @@
 <tr id="tr_feature_<%= feature.id %>">
-          
   <th scope="row" style="text-align: center;">
     <% if i < 0 %>
       <i class="fa fa-check text-success"></i>
@@ -7,6 +6,10 @@
       <%= i + 1 + (@per_page.to_i * (@current_page.to_i - 1)) %>
     <% end %>
   </th>
+
+  <td class="display-image">
+    <%= display_thumbnail(feature, method_name: "cover_image.image.small_square.url", image_width: "50") %>
+  </td>
   
   <td class="feature-name"><%= link_to feature.display_name, feature_path(feature), remote: true %></td>
 
@@ -23,5 +26,4 @@
     <%= display_manage_links(feature, @current_user) %>
   </td>
   <% end %>
-
 </tr>

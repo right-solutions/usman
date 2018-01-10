@@ -2,12 +2,8 @@
 <% delete_link = user_path(id: user.id) %>
 
 <tr id="tr_user_<%= user.id %>">
-
-  <!-- <td class="user-cb">
-    <input type="checkbox" class="cbr" name="users[]" value="1" checked />
-  </td> -->
-
-  <th scope="row" style="text-align: center;">
+          
+  <th scope="row" style="" class="hidden-sm hidden-xs">
     <% if i < 0 %>
       <i class="fa fa-check text-success"></i>
     <% else %>
@@ -15,17 +11,25 @@
     <% end %>
   </th>
 
-  <td class="user-image hidden-xs hidden-sm">
+  <td class="">
     <%= link_to(user_path(user), remote: true) do %>
-              <%= display_image(user, "profile_picture.image.small.url", width: "120", height: "auto", class: "img-rectangle", alt: user.display_name) %>
-            <% end %>
+      <%= display_image(user, "profile_picture.image.small.url", width: "40", height: "auto", class: "img-rectangle", alt: user.display_name) %>
+    <% end %>
   </td>
 
-  <td class="user-name"><%= link_to user.name, user_path(user), remote: true %></td>
-
-  <td class="hidden-xs hidden-sm"><%= link_to user.username, user_path(user), remote: true %></td>
-
-  <td class="hidden-xs hidden-sm"><%= link_to user.email, user_path(user), remote: true, class: "email" %></td>
+  <td class="user-name">
+    <%= link_to user.name, user_path(user), remote: true %>
+    <% if user.pending? %>
+      <span class="ml-5 mt-5 label label-default">Pending</span>
+    <% elsif user.approved? %>
+      <span class="ml-5 mt-5 label label-success">Approved</span>
+    <% elsif user.suspended? %>
+      <span class="ml-5 mt-5 label label-danger">Suspended</span>
+    <% end %>
+    <br>
+    <%= link_to user.username, user_path(user), remote: true, style: "color: red" %><br>
+    <%= link_to user.email, user_path(user), remote: true, class: "email" %>
+  </td>
 
   <% if @current_user.super_admin? %>
     <td class="hidden-xs hidden-sm">
@@ -38,34 +42,24 @@
       <% end %>
     </td>
   <% else %>
-    <td class="user-name">
+    <td class="hidden-xs hidden-sm">
       <% user.roles.collect(&:name).each do |r| %>
         <span class="ml-5 label label-primary"><%= r %></span>
       <% end %>
     </td>
   <% end %>
 
-  <td>
-  	<% if user.pending? %>
-  		<span class="ml-5 mt-5 label label-default">Pending</span>
-  	<% elsif user.approved? %>
-  		<span class="ml-5 mt-5 label label-success">Approved</span>
-  	<% elsif user.suspended? %>
-  		<span class="ml-5 mt-5 label label-danger">Suspended</span>
-  	<% end %>
-  </td>
-
   <% if display_manage_links? %>
-    <td class="action-links" style="width:15%">
+    <td class="action-links hidden-xs hidden-sm" style="width:15%">
 
       <%= link_to raw("<i class=\"linecons-pencil\"></i> Edit User"), edit_link, :remote=>true, class: "edit" if user.can_be_edited? && display_edit_links? %>
 
-      <%= link_to raw("<i class=\"linecons-trash\"></i> Delete"), delete_link, method: :delete, role: "menuitem", tabindex: "-1", data: { confirm: 'Are you sure?' }, :remote=>true, class: "delete" if user.can_be_deleted? && (@current_user != user) && display_delete_links? %>
+      <%= link_to raw("<i class=\"linecons-trash\"></i> Delete"), delete_link, method: :delete, role: "menuitem", tabindex: "-1", data: { confirm: 'Are you sure?' }, :remote=>true, class: "delete" if @current_user.super_admin? && user.can_be_deleted? && (@current_user != user) %>
     </td>
   <% end %>
 
   <% if display_edit_links? %>
-    <td class="action-links" style="width:15%">
+    <td class="action-links hidden-xs hidden-sm" style="width:15%">
 
       <!-- Approve -->
       <%= link_to raw("<i class=\"fa fa-circle-o mr-5\"></i> Approve"), update_status_user_path(:id =>user.id, :status =>'approved'), :method =>'PUT', :remote=>true, role: "menuitem", tabindex: "-1" if user.can_be_approved? && (@current_user != user) %>
@@ -77,6 +71,6 @@
       <%= link_to raw("<i class=\"fa fa-edit mr-5\"></i> Suspend"), update_status_user_path(:id =>user.id, :status =>'suspended'), :method =>'PUT', :remote=>true, role: "menuitem", tabindex: "-1" if user.can_be_suspended? && (@current_user != user) %>
     </td>
   <% end %>
-  
+
 </tr>
 

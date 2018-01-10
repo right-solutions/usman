@@ -2,6 +2,28 @@ module Usman
   class FeaturesController < ResourceController
 
     before_action :require_super_admin
+
+    def update_permission
+      @permission = Permission.find_by_id(params[:permission_id])
+      @user = User.find_by_id(params[:user_id])
+      if @permission
+        begin
+          @permission.toggle!(params[:permission_for])
+          @success = true
+        rescue
+          @success = false
+        end
+      else
+        @permission = Permission.new(user: @user, can_read: false, feature_id: params[:id])
+        @permission.assign_attributes(params[:permission_for] => true)
+        if @permission.valid?
+          @permission.save
+          @success = true
+        else
+          @success = false
+        end
+      end
+    end
     
     private
 
@@ -61,10 +83,10 @@ module Usman
     def resource_controller_configuration
       {
         page_title: "Features",
-        js_view_path: "/kuppayam/workflows/parrot",
+        js_view_path: "/kuppayam/workflows/peacock",
         view_path: "/usman/features",
-        show_modal_after_create: false,
-        show_modal_after_update: false
+        show_modal_after_create: true,
+        show_modal_after_update: true
       }
     end
 

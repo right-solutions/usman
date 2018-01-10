@@ -80,217 +80,128 @@
 
 	  </div>
 	  <% end %>
-
 	</div>
 
-	<%= clear_tag(50) %>
+	<%= clear_tag(30) %>
 
-	<ul class="nav nav-pills">
-	  <li class="active">
-	    <a href="#profile_info" data-toggle="tab" aria-expanded="true">
-	      <span class="visible-xs"><i class="fa-info"></i></span>
-	      <span class="hidden-xs">Profile Info</span>
-	    </a>
-	  </li>
+	<div><strong class="fs-18">Profile Info</strong></div>
+	<hr>
+  <div class="table-responsive mt-30"> 
+    <table class="table table-striped table-condensed table-bordered"> 
+			<tbody>
+				
+				<tr><th>Name</th><td><%= @user.name %></td></tr>
+				<tr><th>Username</th><td><%= @user.username %></td></tr>
 
-	  <li class="">
-	    <a href="#registration_info" data-toggle="tab" aria-expanded="true">
-	      <span class="visible-xs"><i class="fa-info"></i></span>
-	      <span class="hidden-xs">Registration Info</span>
-	    </a>
-	  </li>
+				<tr><th>Email</th><td><%= @user.email %></td></tr>
+				<tr><th>Phone</th><td><%= @user.phone %></td></tr>
+				
+				<tr><th>City</th><td><%= @user.city.try(:display_name) %></td></tr>
+				<tr><th>Country</th><td><%= @user.country.try(:display_name) %></td></tr>
 
-	  <% if @current_user.super_admin? %>
-	  <li class="">
-	    <a href="#technical_details" data-toggle="tab" aria-expanded="false">
-	      <span class="visible-xs"><i class="fa-database"></i></span>
-	      <span class="hidden-xs">Technical Details</span>
-	    </a>
-	  </li>
-	  <% end %>
-	</ul>
+				<tr><th>Gender</th><td><%= @user.gender %></td></tr>
+				<tr><th>Date of Birth</th><td><%= @user.date_of_birth.strftime("%m/%d/%Y") if @user.date_of_birth %></td></tr>
 
-	<div class="tab-content">
-	  <div class="tab-pane active" id="profile_info" style="border: 1px solid #000;min-height:200px;padding:20px;margin-bottom:20px;">
-	      
-	    <%= clear_tag(20) %>
-	    <div class="table-responsive mt-30"> 
-		    <table class="table table-striped table-condensed table-bordered"> 
-					<tbody>
-						
-						<tr>
-							<th>Name</th><td><%= @user.name %></td>
-							<th>Username</th><td><%= @user.username %></td>
-						</tr>
-
-						<tr>
-							<th>Email</th><td><%= @user.email %></td>
-							<th>Phone</th><td><%= @user.phone %></td>
-						</tr>
-
-						<tr>
-							<th>City</th><td><%= @user.city.try(:display_name) %></td>
-							<th>Country</th><td><%= @user.country.try(:display_name) %></td>
-						</tr>
-
-						<tr>
-							<th>Gender</th><td><%= @user.gender %></td>
-							<th>Date of Birth</th><td><%= @user.date_of_birth.strftime("%m/%d/%Y") if @user.date_of_birth %></td>
-						</tr>
-
-						<tr>
-							<th>Designation</th><td><%= @user.designation %></td>
-							<th>Status</th><td>
-								<% if @user.pending? %>
-									<span class="label label-default">Pending</span>
-								<% elsif @user.approved? %>
-									<span class="label label-success">Approved</span>
-								<% elsif @user.suspended? %>
-									<span class="label label-danger">Suspended</span>
-								<% end %>
-							</td>
-						</tr>
-
-						<% if @current_user.super_admin? %>
-						<tr>
-							<th>Dummy?</th><td><%= @user.dummy.to_s.titleize %></td>
-							<th>Super Admin</th><td><%= @user.super_admin?.to_s.titleize %></td>
-						</tr>
+				<tr><th>Designation</th><td><%= @user.designation %></td></tr>
+				<tr><th>Status</th><td>
+						<% if @user.pending? %>
+							<span class="label label-default">Pending</span>
+						<% elsif @user.approved? %>
+							<span class="label label-success">Approved</span>
+						<% elsif @user.suspended? %>
+							<span class="label label-danger">Suspended</span>
 						<% end %>
-						
-					</tbody>
-				</table>
-			</div>
+					</td>
+				</tr>
 
-		</div>
-
-		<div class="tab-pane" id="registration_info" style="border: 1px solid #000;min-height:200px;padding:20px;margin-bottom:20px;">
-	      
-	    <%= clear_tag(20) %>
-
-	    <% if @registration %>
-
-	    <div class="table-responsive mt-30"> 
-		    <table class="table table-striped table-condensed table-bordered"> 
-					<tbody>
-						
-						<tr>
-							<th>ID</th><td><%= @registration.id %></td>
-							<th>User / Profile ID</th><td><%= @registration.user_id %></td>
-						</tr>
-
-						<tr>
-							<th>Status</th><td>
-								<% if @registration.pending? %>
-									<span class="label label-default">Pending</span>
-								<% elsif @registration.verified? %>
-									<span class="label label-success">Verified</span>
-								<% elsif @registration.suspended? %>
-		    				  <span class="label label-danger">Suspended</span>
-								<% end %>
-							</td>
-							<th></th><td></td>
-						</tr>
-
-						<tr>
-							<th>Country</th><td><%= @registration.country.try(:display_name) %></td>
-							<th>City</th><td><%= @registration.city.try(:display_name) %></td>
-						</tr>
-
-						<tr>
-							<th>Dialing Prefix</th><td><%= @registration.dialing_prefix %></td>
-							<th>Mobile Number</th><td><%= @registration.mobile_number %></td>
-						</tr>
-						
-						<tr>
-							<th>Created At</th><td><%= @registration.created_at.strftime("%m/%d/%Y - %H:%M:%S") if @registration.created_at %></td>
-							<th>Updated At</th><td><%= @registration.updated_at.strftime("%m/%d/%Y - %H:%M:%S") if @registration.updated_at %></td>
-						</tr>
-						
-					</tbody>
-				</table>
-			</div>
-
-			<% end %>
-
-		</div>
-
-		<% if @current_user.super_admin? %>
-		<div class="tab-pane" id="technical_details" style="border: 1px solid #000;min-height:200px;padding:20px;margin-bottom:20px;">
-	    
-	    <%= clear_tag(20) %>
-
-	    <div class="table-responsive"> 
-				<table class="table table-striped table-condensed table-bordered mb-30"> 
-					<tbody>
-						
-						<tr>
-							<th>Super Admin?</th><td><%= @user.super_admin.to_s.upcase %></td>
-							<th>Status</th><td><%= @user.status.titleize %></td>
-						</tr>
-
-						<tr>
-							<th style="width:20%;">Sign In Count</th><td style="width:30%;"><%= @user.sign_in_count %></td>
-							<th style="width:20%;">Remember User</th><td style="width:30%;"><%= @user.remember_created_at.strftime("%m/%d/%Y - %H:%M:%S") if @user.remember_created_at %></td>
-						</tr>
-
-						<tr>
-							<th>Current Sign In At</th><td><%= @user.current_sign_in_at.strftime("%m/%d/%Y - %H:%M:%S") if @user.current_sign_in_at %></td>
-							<th>Last Sign In At</th><td><%= @user.last_sign_in_at.strftime("%m/%d/%Y - %H:%M:%S") if @user.last_sign_in_at %></td>
-						</tr>
-
-						<tr>
-							<th>Current Sign In IP</th><td><%= @user.current_sign_in_ip %></td>
-							<th>Last Sign In IP</th><td><%= @user.last_sign_in_ip %></td>
-						</tr>
-
-					</tbody>
-				</table>
-
-				<table class="table table-striped table-condensed table-bordered"> 
-					<tbody>
-
-						<tr>
-							<th style="width:20%;">Reset Password Token</th><td style="width:30%;"><%= @user.reset_password_token %></td>
-							<th style="width:20%;">Reset Password Sent At</th><td style="width:30%;"><%= @user.reset_password_sent_at.strftime("%m/%d/%Y - %H:%M:%S") if @user.reset_password_sent_at %></td>
-						</tr>
-
-						<tr>
-							<th>Locked At</th><td colspan="3"><%= @user.locked_at.strftime("%m/%d/%Y - %H:%M:%S") if @user.locked_at %></td>
-						</tr>
-
-						<tr>
-							<th>Failed Attempts</th><td><%= @user.failed_attempts %></td>
-							<th>Unlock Token</th><td><%= @user.unlock_token %></td>
-						</tr>
-
-						<tr>
-							<th>Confirmation Token</th><td><%= @user.confirmation_token %></td>
-							<th>Confirmation Token Sent At</th><td><%= @user.confirmed_at.strftime("%m/%d/%Y - %H:%M:%S") if @user.confirmed_at %></td>
-						</tr>
-
-						<tr>
-							<th>Confirmation Sent At</th><td><%= @user.confirmation_sent_at.strftime("%m/%d/%Y - %H:%M:%S") if @user.confirmation_sent_at %></td>
-							<th>Uncomfirmed Email</th><td><%= @user.unconfirmed_email %></td>
-						</tr>
-
-						<tr>
-							<th>Auth Token</th><td><%= @user.auth_token %></td>
-							<th>Token Created At</th><td><%= @user.token_created_at.strftime("%m/%d/%Y - %H:%M:%S") if @user.token_created_at %></td>
-						</tr>
-
-						<tr>
-							<th>Created At</th><td><%= @user.created_at.strftime("%m/%d/%Y - %H:%M:%S") if @user.created_at %></td>
-							<th>Updated At</th><td><%= @user.updated_at.strftime("%m/%d/%Y - %H:%M:%S") if @user.updated_at %></td>
-						</tr>
-						
-					</tbody>
-				</table>
-			</div>
-	  </div>
-	  <% end %>
-
+				<% if @current_user.super_admin? %>
+				<tr><th>Dummy?</th><td><%= @user.dummy.to_s.titleize %></td></tr>
+				<tr><th>Super Admin</th><td><%= @user.super_admin?.to_s.titleize %></td></tr>
+				<% end %>
+				
+			</tbody>
+		</table>
 	</div>
+
+	<% if @registration %>
+	<div><strong class="fs-18">Mobile Registration Info</strong></div>
+	<hr>
+	<div class="table-responsive mt-30"> 
+    <table class="table table-striped table-condensed table-bordered">
+			<tbody>
+				
+				<tr><th>ID</th><td><%= @registration.id %></td></tr>
+				<tr><th>User / Profile ID</th><td><%= @registration.user_id %></td></tr>
+
+				<tr><th>Status</th>
+				<td><% if @registration.pending? %>
+							<span class="label label-default">Pending</span>
+						<% elsif @registration.verified? %>
+							<span class="label label-success">Verified</span>
+						<% elsif @registration.suspended? %>
+    				  <span class="label label-danger">Suspended</span>
+						<% end %>
+				</td></tr>
+
+				<tr><th>Country</th><td><%= @registration.country.try(:display_name) %></td></tr>
+				<tr><th>City</th><td><%= @registration.city.try(:display_name) %></td></tr>
+
+				<tr><th>Dialing Prefix</th><td><%= @registration.dialing_prefix %></td></tr>
+				<tr><th>Mobile Number</th><td><%= @registration.mobile_number %></td></tr>
+				
+				<tr><th>Created At</th><td><%= @registration.created_at.strftime("%m/%d/%Y - %H:%M:%S") if @registration.created_at %></td></tr>
+				<tr><th>Updated At</th><td><%= @registration.updated_at.strftime("%m/%d/%Y - %H:%M:%S") if @registration.updated_at %></td></tr>
+				
+			</tbody>
+		</table>
+	</div>
+	<% end %>
+
+	<% if @current_user.super_admin? %>
+	<div><strong class="fs-18">Technical Details</strong></div>
+	<hr>
+	<div class="table-responsive"> 
+		<table class="table table-striped table-condensed table-bordered mb-30"> 
+			<tbody>
+				
+				<tr><th>Super Admin?</th><td><%= @user.super_admin.to_s.upcase %></td></tr>
+				<tr><th>Status</th><td><%= @user.status.titleize %></td></tr>
+
+				<tr><th style="width:20%;">Sign In Count</th><td style="width:30%;"><%= @user.sign_in_count %></td></tr>
+				<tr><th style="width:20%;">Remember User</th><td style="width:30%;"><%= @user.remember_created_at.strftime("%m/%d/%Y - %H:%M:%S") if @user.remember_created_at %></td></tr>
+
+				<tr><th>Current Sign In At</th><td><%= @user.current_sign_in_at.strftime("%m/%d/%Y - %H:%M:%S") if @user.current_sign_in_at %></td></tr>
+				<tr><th>Last Sign In At</th><td><%= @user.last_sign_in_at.strftime("%m/%d/%Y - %H:%M:%S") if @user.last_sign_in_at %></td></tr>
+
+				<tr><th>Current Sign In IP</th><td><%= @user.current_sign_in_ip %></td></tr>
+				<tr><th>Last Sign In IP</th><td><%= @user.last_sign_in_ip %></td></tr>
+
+				<tr><th style="width:20%;">Reset Password Token</th><td style="width:30%;"><%= @user.reset_password_token %></td></tr>
+				<tr><th style="width:20%;">Reset Password Sent At</th><td style="width:30%;"><%= @user.reset_password_sent_at.strftime("%m/%d/%Y - %H:%M:%S") if @user.reset_password_sent_at %></td></tr>
+
+				<tr><th>Locked At</th><td colspan="3"><%= @user.locked_at.strftime("%m/%d/%Y - %H:%M:%S") if @user.locked_at %></td>
+				</tr>
+
+				<tr><th>Failed Attempts</th><td><%= @user.failed_attempts %></td></tr>
+				<tr><th>Unlock Token</th><td><%= @user.unlock_token %></td></tr>
+
+				<tr><th>Confirmation Token</th><td><%= @user.confirmation_token %></td></tr>
+				<tr><th>Confirmation Token Sent At</th><td><%= @user.confirmed_at.strftime("%m/%d/%Y - %H:%M:%S") if @user.confirmed_at %></td></tr>
+
+				<tr><th>Confirmation Sent At</th><td><%= @user.confirmation_sent_at.strftime("%m/%d/%Y - %H:%M:%S") if @user.confirmation_sent_at %></td></tr>
+				<tr><th>Uncomfirmed Email</th><td><%= @user.unconfirmed_email %></td>
+
+				<tr><th>Auth Token</th><td><%= @user.auth_token %></td></tr>
+				<tr><th>Token Created At</th><td><%= @user.token_created_at.strftime("%m/%d/%Y - %H:%M:%S") if @user.token_created_at %></td></tr>
+
+				<tr><th>Created At</th><td><%= @user.created_at.strftime("%m/%d/%Y - %H:%M:%S") if @user.created_at %></td></tr>
+				<tr><th>Updated At</th><td><%= @user.updated_at.strftime("%m/%d/%Y - %H:%M:%S") if @user.updated_at %></td></tr>
+				
+			</tbody>
+		</table>
+	</div>
+	<% end %>
+
 
 	<%= link_to "Close", "#", onclick: "closeLargeModal();", class: "btn btn-primary pull-right" %>
 

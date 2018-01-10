@@ -35,74 +35,42 @@
 
 	</div>
 
-	<%= clear_tag(50) %>
+	<%= clear_tag(30) %>
 
-	<ul class="nav nav-pills">
+	<div><strong class="fs-18">Users</strong></div>
+	<hr>
 
-		<li class="active">
-	    <a href="#user_roles" data-toggle="tab" aria-expanded="false">
-	      <span class="visible-xs"><i class="fa-database"></i></span>
-	      <span class="hidden-xs">Users</span>
-	    </a>
-	  </li>
+  <div id="div_user_action_buttons">
+    <div class="row">
+      <div class="col-md-6">
+        <%= theme_button('Add a User', 'plus', new_role_user_path(@role), classes: "pull-left mr-10", btn_type: "success") if @current_user.has_create_permission?(Role) %>
 
-	  <li class="">
-	    <a href="#technical_details" data-toggle="tab" aria-expanded="false">
-	      <span class="visible-xs"><i class="fa-database"></i></span>
-	      <span class="hidden-xs">Technical Details</span>
-	    </a>
-	  </li>
-	</ul>
-
-	<div class="tab-content">
-
-		<div class="tab-pane active" id="user_roles" style="border: 1px solid #000;min-height:200px;padding:20px;margin-bottom:20px;max-height: 400px;overflow-y: auto;">
-	    
-	    <%= clear_tag(20) %>
-
-	    <div id="div_user_action_buttons">
-        <div class="row">
-          <div class="col-md-6">
-            <%= theme_button('Add a User', 'plus', new_role_user_path(@role), classes: "pull-left mr-10", btn_type: "success") if @current_user.has_create_permission?(Role) %>
-
-            <%= theme_button('Refresh', 'refresh', role_users_path(@role), classes: "pull-left mr-10", btn_type: "white") %>
-          </div>
-          <div class="col-md-6">
-            <%= search_form_kuppayam(User, role_users_path(@role), text: "") %>
-          </div>
-        </div>
+        <%= theme_button('Refresh', 'refresh', role_users_path(@role), classes: "pull-left mr-10", btn_type: "white") %>
       </div>
-      
-      <%= clear_tag(10) %>
-
-      <div id="div_user_index">
-      	<%= render :partial=>"usman/user_roles/index" %>
+      <div class="col-md-6">
+        <%= search_form_kuppayam(User, role_users_path(@role), text: "") %>
       </div>
-	  </div>
+    </div>
+  </div>
+  <%= clear_tag(10) %>
+  <div id="div_user_index">
+  	<%= render :partial=>"usman/user_roles/index" %>
+  </div>
 
-	  <div class="tab-pane" id="technical_details">
-	    
-	    <%= clear_tag(20) %>
-
-	    <div class="table-responsive"> 
-				<table class="table table-striped table-condensed table-bordered mb-30"> 
-					<tbody>
-						
-						<tr>
-							<th>ID</th><td colspan="3"><%= @role.id %></td>
-						</tr>
-						
-						<tr>
-							<th>Created At</th><td><%= @role.created_at.strftime("%m/%d/%Y - %H:%M:%S") if @role.created_at %></td>
-							<th>Updated At</th><td><%= @role.updated_at.strftime("%m/%d/%Y - %H:%M:%S") if @role.updated_at %></td>
-						</tr>
-
-					</tbody>
-				</table>
-			</div>
-	  </div>
-
+	<% if @current_user.super_admin? %>
+	<%= clear_tag(30) %>
+	<div><strong class="fs-18">Technical Details</strong></div>
+	<hr>
+	<div class="table-responsive"> 
+		<table class="table table-striped table-condensed table-bordered mb-30"> 
+			<tbody>
+				<tr><th>ID</th><td colspan="3"><%= @role.id %></td></tr>
+				<tr><th>Created At</th><td><%= @role.created_at.strftime("%m/%d/%Y - %H:%M:%S") if @role.created_at %></td>
+				<tr><th>Updated At</th><td><%= @role.updated_at.strftime("%m/%d/%Y - %H:%M:%S") if @role.updated_at %></td></tr>
+			</tbody>
+		</table>
 	</div>
+	<% end %>
 
 	<%= link_to "Close", "#", onclick: "closeLargeModal();", class: "btn btn-primary pull-right" %>
 

@@ -6,10 +6,13 @@ class Feature < Usman::ApplicationRecord
   # Associations
   has_many :permissions
   has_many :users, through: :permissions
-  # has_one :feature_image, :as => :imageable, :dependent => :destroy, :class_name => "Image::FeatureImage"
-
+  has_one :cover_image, :as => :imageable, :dependent => :destroy, :class_name => "Image::CoverImage"
+  
 	# Validations
 	validates :name, presence: true, length: {minimum: 3, maximum: 250}
+
+
+  
 	
   # ------------------
   # Class Methods
@@ -20,7 +23,7 @@ class Feature < Usman::ApplicationRecord
   # == Examples
   #   >>> feature.search(query)
   #   => ActiveRecord::Relation object
-  scope :search, lambda {|query| where("LOWER(name) LIKE LOWER('%#{query}%')")
+  scope :search, lambda {|query| where("LOWER(name) LIKE LOWER('%#{query.singularize}%')")
                         }
 
   scope :categorisable, -> { where(categorisable: true) }

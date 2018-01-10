@@ -14,20 +14,7 @@
               <%= theme_button('Add a Feature', 'plus', new_feature_path(), classes: "pull-left mr-10", btn_type: "success") if @current_user.has_create_permission?(Feature) %>
 
               <%= theme_button('Refresh', 'refresh', features_path(), classes: "pull-left mr-10", btn_type: "white") %>
-
-              <!-- Single button -->
-              <div class="ml-10 btn-group hidden">
-                <button type="button" class="btn btn-white dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                  More Actions <span class="caret"></span>
-                </button>
-                <ul class="dropdown-menu">
-                  <li><a href="#">Import Users</a></li>
-                  <li><a href="#">Import History</a></li>
-                  <li role="separator" class="divider"></li>
-                  <li><a href="#">Export Users</a></li>
-                </ul>
-              </div>
-
+              
             </div>
             <div class="col-md-6">
               <%= search_form_kuppayam(Feature, features_path, text: @filters[:query]) %>
@@ -47,3 +34,23 @@
   </div>
 
 </div>
+
+<script type="text/javascript">
+  $(document).on('change', 'input.permission-checkbox[type="checkbox"]', function(e) {
+    var userId = $(this).attr("data-user-id");
+    var permissionId = $(this).attr("data-permission-id");
+    var permissionFor = $(this).attr("data-permission-for");
+    var featureId = $(this).attr("data-feature-id");
+    $.ajax({
+      type: "PUT",
+      url: "/admin/features/"+ featureId +"/update_permission",
+      data: { user_id: userId, permission_for: permissionFor, permission_id: permissionId, value: $(this).val() },
+      success: function(response){
+        $(".post-votes-count").text("100");
+      },
+      error: function(response){
+        alert("Error:" + response);
+      }
+    })
+  });
+</script>

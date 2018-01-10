@@ -2,18 +2,19 @@
 
   <div class="row">
     
-    <!-- <div class="col-md-3 col-sm-12 col-xs-12" style="border-right:1px solid #f1f1f1;">
-    	<%# if display_edit_links? %>
-	  		<%#= edit_image(@feature, 
-	          "feature_image.image.large.url",
-	          upload_image_link(@feature, :feature_image, nil ),
-	          remove_image_link(@feature, :feature_image, nil ),
-	          image_options: {assoc_name: :feature_image }) %>
-	    <%# else %>
-	    	<%#= display_image(@user, "feature_image.image.large.url", class: "img-inline", alt: @feature.display_name) %>
-	    <%# end %>
-    </div> -->
-    <div class="col-md-9 col-sm-12 col-xs-12" style="border-right:1px solid #f1f1f1;">
+    <div class="col-md-3 col-sm-6 col-xs-12" style="border-right:1px solid #f1f1f1;">
+    	<% if display_edit_links? %>
+	  		<%= edit_image(@feature, 
+	          "cover_image.image.small_square.url",
+	          upload_image_link(@feature, :cover_image, nil ),
+	          remove_image_link(@feature, :cover_image, nil ),
+	          image_options: {assoc_name: :cover_image }) %>
+	    <% else %>
+	    	<%= display_image(@feature, "feature_image.image.small_square.url", class: "img-inline", alt: @feature.display_name) %>
+	    <% end %>
+    </div>
+    <div class="col-md-6 col-sm-6 col-xs-12" style="border-right:1px solid #f1f1f1;">
+        <div class="visible-sm visible-xs mt-30"></div>
     		<%= theme_panel_heading(@feature.display_name) %>
       	<%= theme_panel_sub_heading(@feature.name, "#") %>
       	<%= clear_tag(10) %>
@@ -24,12 +25,8 @@
 								<th>Categorisable</th><td><%= @feature.categorisable ? "Yes" : "No" %></td>
 							</tr>
 							<tr>
-								<th>Created At</th><td><%= @feature.created_at.strftime("%m/%d/%Y - %H:%M:%S") if @feature.created_at %></td>
+								<th>Status</th><td><%= display_publishable_status(@feature) %></td>
 							</tr>
-							<tr>
-								<th>Updated At</th><td><%= @feature.updated_at.strftime("%m/%d/%Y - %H:%M:%S") if @feature.updated_at %></td>
-							</tr>
-							
 						</tbody>
 					</table>
 				</div>
@@ -45,6 +42,54 @@
   </div>
 
   <%= clear_tag(30) %>
-  <%= link_to "Close", "#", onclick: "closeGenericModal();", class: "btn btn-primary pull-right" %>
+
+  <div><strong class="fs-18">User Permissions</strong></div>
+	<hr>
+	
+	<div id="div_user_action_buttons">
+    <div class="row">
+      <div class="col-md-6">
+        <%#= theme_button('Add a User', 'plus', new_role_user_path(@role), classes: "pull-left mr-10", btn_type: "success") if @current_user.has_create_permission?(Role) %>
+
+        <%#= theme_button('Refresh', 'refresh', role_users_path(@role), classes: "pull-left mr-10", btn_type: "white") %>
+      </div>
+      <div class="col-md-6">
+        <%#= search_form_kuppayam(User, role_users_path(@role), text: "") %>
+      </div>
+    </div>
+  </div>
+  
+  <%= clear_tag(10) %>
+
+  <div id="div_permissions_index">
+  	<%= render :partial=>"permissions" %>
+  </div>
+
+  <%= clear_tag(30) %>
+
+	<% if @current_user.super_admin? %>
+	<div><strong class="fs-18">Technical Details</strong></div>
+	<hr>
+	<div class="table-responsive"> 
+		<table class="table table-striped table-condensed table-bordered mb-30"> 
+			<tbody>
+				
+				<tr>
+          <th>ID</th><td><%= @feature.id %></td>
+          <th>Class Name</th><td><%= @feature.name %></td>
+        </tr>
+
+        <tr>
+					<th>Created At</th><td><%= @feature.created_at.strftime("%m/%d/%Y - %H:%M:%S") if @feature.created_at %></td>
+					<th>Updated At</th><td><%= @feature.updated_at.strftime("%m/%d/%Y - %H:%M:%S") if @feature.updated_at %></td>
+				</tr>
+
+			</tbody>
+		</table>
+	</div>
+	<% end %>
+
+	<%= clear_tag(10) %>
+  <%= link_to "Close", "#", onclick: "closeLargeModal();", class: "btn btn-primary pull-right" %>
   <%= clear_tag(10) %>
 </div>

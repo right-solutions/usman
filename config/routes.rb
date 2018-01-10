@@ -38,6 +38,7 @@ Usman::Engine.routes.draw do
   
     resources :features do
       member do
+        put :update_permission, as:  :update_permission
         put :update_status, as:  :update_status
       end
     end

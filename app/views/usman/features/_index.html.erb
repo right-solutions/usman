@@ -2,13 +2,14 @@
 	<table class="table table-hover members-table middle-align">
 	  <thead> 
 			<tr> 
-				<th style="text-align: center;width:60px">#</th> 
+				<th style="text-align: center;width:60px" class="hidden-sm hidden-xs">#</th>
+				<th style="text-align: center;width:100px"><i class="fa fa-photo"></i></th> 
 				<th>Name</th>
-				<th>Class Name</th>
-				<th>Categorisable</th>
-				<th style="width:100px;">Status</th>
+				<th class="hidden-sm hidden-xs">Class Name</th>
+				<th class="hidden-sm hidden-xs">Categorisable</th>
+				<th style="width:100px;" class="hidden-sm hidden-xs">Status</th>
 				<% if display_manage_links? %>
-				<th style="text-align: center;" colspan="2">Actions</th>
+				<th style="text-align: center;" colspan="2" class="hidden-sm hidden-xs">Actions</th>
 				<% end %>
 			</tr> 
 		</thead>
@@ -17,19 +18,23 @@
 	  		
 	  		<tr id="tr_feature_<%= feature.id %>">
 		      
-		      <th scope="row" style="text-align: center;">
+		      <th scope="row" style="text-align: center;" class="hidden-sm hidden-xs">
 				    <% if i < 0 %>
 				      <i class="fa fa-check text-success"></i>
 				    <% else %>
 				      <%= i + 1 + (@per_page.to_i * (@current_page.to_i - 1)) %>
 				    <% end %>
 				  </th>
+
+				  <td class="display-image">
+						<%= display_thumbnail(feature, method_name: "cover_image.image.small_square.url", image_width: "50") %>
+					</td>
 		      
 		      <td class="feature-name"><%= link_to feature.display_name, feature_path(feature), remote: true %></td>
 
-					<td class="feature-name"><%= link_to feature.name, feature_path(feature), remote: true %></td>
+					<td class="feature-name hidden-sm hidden-xs"><%= link_to feature.name, feature_path(feature), remote: true %></td>
 
-					<td><%= feature.display_categorisable %></td>
+					<td class="hidden-sm hidden-xs"><%= feature.display_categorisable %></td>
 
 					<td class="hidden-sm hidden-xs"><%= display_publishable_status(feature) %></td>
 

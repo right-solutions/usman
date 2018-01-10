@@ -1,0 +1,6 @@
+// Showing Growl Like Message
+<% if @success %>
+	notifySuccess("Permission Changed", "Permission Changed for User '<%= @user.name %>'");
+<% else %>
+	notifyError("Unexpected Failure!", "Permission was not changed for User '<%= @user.name %>'");
+<% end %>

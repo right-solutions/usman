@@ -73,7 +73,7 @@ module Usman
           object_filter: true,
           select_label: 'Select Feature',
           current_value: @feature,
-          values: Feature.order(:name).all,
+          values: Feature.published.order(:name).all,
           current_filters: @filters,
           url_method_name: 'permissions_url',
           filters_to_remove: [:feature],

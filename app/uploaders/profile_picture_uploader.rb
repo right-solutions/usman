@@ -5,11 +5,11 @@ class ProfilePictureUploader < ImageUploader
   end
 
 	version :large do
-    process :resize_to_fill => [400, 400]
+    process :resize_to_fill => [800, 800]
   end
 
   version :small do
-    process :resize_to_fill => [100, 100]
+    process :resize_to_fill => [200, 200]
   end
   
 end

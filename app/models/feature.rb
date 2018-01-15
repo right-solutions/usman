@@ -1,5 +1,14 @@
 class Feature < Usman::ApplicationRecord
   
+  # Constants
+  FEATURE_ICONS = {
+    "Dhatu::Product" => "fa-square",
+    "Dhatu::Service" => "fa-glass",
+    "Dhatu::Project" => "fa-rocket",
+    "Dhatu::BlogPost" => "fa-newspaper-o",
+    "Dhatu::Price" => "fa-dollar"
+  }
+
   # Including the State Machine Methods
   include Publishable
 

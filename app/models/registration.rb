@@ -111,7 +111,6 @@ class Registration < ApplicationRecord
   #   => "pending"
   def pending!
     self.update_attribute(:status, PENDING)
-    self.user.update_attribute(:status, PENDING) if self.user
   end
 
   # change the status to :verified
@@ -121,7 +120,6 @@ class Registration < ApplicationRecord
   #   => "verified"
   def verify!
     self.update_attribute(:status, VERIFIED)
-    self.user.update_attribute(:status, VERIFIED) if self.user
   end
 
   # change the status to :suspended
@@ -131,7 +129,6 @@ class Registration < ApplicationRecord
   #   => "suspended"
   def suspend!
     self.update_attribute(:status, SUSPENDED)
-    self.user.update_attribute(:status, SUSPENDED) if self.user
   end
 
   # change the status to :deleted
@@ -141,7 +138,6 @@ class Registration < ApplicationRecord
   #   => "deleted"
   def delete!
     self.update_attribute(:status, DELETED)
-    self.user.update_attribute(:status, DELETED) if self.user
   end
 
   # Permission Methods

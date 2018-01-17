@@ -8,7 +8,7 @@
 				<th>Device Name</th>
 				<th>Device Type</th>
 				<% if display_delete_links? %>
-				<th style="text-align: center;" colspan="2">Actions</th> 
+				<th style="text-align: center;">Actions</th> 
 				<% end %>
 			</tr>  
 		</thead>
@@ -42,7 +42,7 @@
 					
 					<% if display_delete_links? %>
 					<% delete_link = registration_device_path(@registration, device) %>
-					<td class="action-links" style="width:10%"> -->
+					<td class="action-links" style="width:10%">
 
 		      	<%= link_to raw("<i class=\"linecons-trash\"></i> Remove Role"), delete_link, method: :delete, device: "menuitem", tabindex: "-1", data: { confirm: 'Are you sure?' }, :remote=>true, class: "delete" %>
 

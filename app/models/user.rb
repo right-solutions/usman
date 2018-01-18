@@ -405,7 +405,7 @@ class User < Usman::ApplicationRecord
   end
 
   def has_read_permission?(class_name)
-    return true if self.super_admin
+    return true if self.super_admin?
     feature = Feature.published.find_by_name(class_name.to_s)
     if feature
       permission = self.permissions.where("feature_id =?", feature.id).first
@@ -416,7 +416,7 @@ class User < Usman::ApplicationRecord
   end
 
   def has_create_permission?(class_name)
-    return true if self.super_admin
+    return true if self.super_admin?
     feature = Feature.published.find_by_name(class_name.to_s)
     if feature
       permission = self.permissions.where("feature_id =?", feature.id).first
@@ -427,7 +427,7 @@ class User < Usman::ApplicationRecord
   end
 
   def has_update_permission?(class_name)
-    return true if self.super_admin
+    return true if self.super_admin?
     feature = Feature.published.find_by_name(class_name.to_s)
     if feature
       permission = self.permissions.where("feature_id =?", feature.id).first
@@ -438,7 +438,7 @@ class User < Usman::ApplicationRecord
   end
 
   def has_delete_permission?(class_name)
-    return true if self.super_admin
+    return true if self.super_admin?
     feature = Feature.published.find_by_name(class_name.to_s)
     if feature
       permission = self.permissions.where("feature_id =?", feature.id).first

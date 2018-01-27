@@ -44,10 +44,6 @@ class Permission < Usman::ApplicationRecord
     feature = Feature.find_by_name(hsh[:feature].to_s.strip)
     
     unless feature
-      binding.pry
-    end
-    
-    unless feature
       summary = "Feature '#{hsh[:feature].to_s.strip}' doesn't exist"
       error_object.errors << { summary: summary }
       return error_object

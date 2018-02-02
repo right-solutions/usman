@@ -8,7 +8,7 @@
 												").
 						joins("RIGHT JOIN permissions p on users.id = p.user_id").where("p.feature_id = ?", @feature.id).all %>
 
-<% @users = User.normal_users.page(@current_page).per(@per_page) %>
+<% @users = User.normal_users.approved.page(@current_page).per(@per_page) %>
 
 <div class="table-responsive"> 
 	<table class="table table-hover members-table middle-align">

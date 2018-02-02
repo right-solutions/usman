@@ -460,7 +460,7 @@ class User < Usman::ApplicationRecord
   end
 
   def default_image_url(size="small")
-    "/assets/kuppayam/defaults/user-#{size}.png"
+    "kuppayam/defaults/user-#{size}.png"
   end
 
   def generate_username_and_password

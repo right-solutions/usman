@@ -30,7 +30,7 @@
 
               <%= theme_button('Refresh', 'refresh', users_path(sa: params[:sa]), classes: "pull-left mr-10", btn_type: "white") %>
 
-              <%= theme_button('Manage Roles', 'nothing linecons-graduation-cap', roles_path(), classes: "pull-left mr-10", btn_type: "white", remote: false) if @current_user.has_create_permission?(Role) %>
+              <%= theme_button('Manage Roles', 'nothing fa-graduation-cap', roles_path(), classes: "pull-left mr-10", btn_type: "white", remote: false) if @current_user.has_create_permission?(Role) %>
 
               <!-- Single button -->
               <div class="ml-10 btn-group hidden">

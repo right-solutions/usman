@@ -63,9 +63,9 @@
 					<% delete_link = registration_path(id: registration.id) %>
 
 					<td class="action-links" style="width:10%">
-		      	<%#= link_to raw("<i class=\"linecons-pencil\"></i> Edit Registration"), edit_link, :remote=>true, class: "edit" if registration.can_be_edited? and display_edit_links? %>
+		      	<%#= link_to raw("<i class=\"fa-pencil\"></i> Edit Registration"), edit_link, :remote=>true, class: "edit" if registration.can_be_edited? and display_edit_links? %>
 
-		        <%= link_to raw("<i class=\"linecons-trash\"></i> Delete"), delete_link, method: :delete, registration: "menuitem", tabindex: "-1", data: { confirm: 'Are you sure?' }, :remote=>true, class: "delete" if registration.can_be_deleted? and display_delete_links? %>
+		        <%= link_to raw("<i class=\"fa-trash\"></i> Delete"), delete_link, method: :delete, registration: "menuitem", tabindex: "-1", data: { confirm: 'Are you sure?' }, :remote=>true, class: "delete" if registration.can_be_deleted? and display_delete_links? %>
 		      </td>
 		      <% end %>
 

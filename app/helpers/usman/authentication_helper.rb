@@ -15,7 +15,7 @@ module Usman
     end
 
     def permission_denied
-      render :file => "layouts/kuppayam/401", layout: 'layouts/kuppayam/blank_with_nav', :status => :unauthorized
+      render :file => "layouts/kuppayam/xenon/401", layout: 'layouts/kuppayam/xenon/blank_with_nav', :status => :unauthorized
     end
     
     # Returns the default URL to which the system should redirect the user after successful authentication

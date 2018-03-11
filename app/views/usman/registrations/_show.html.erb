@@ -55,9 +55,9 @@
 	  	<%# edit_link = edit_registration_path(id: @registration.id) %>
 			<%# delete_link = registration_path(id: @registration.id) %>
 
-			<%#= link_to raw("<i class=\"linecons-pencil\"></i> Edit Registration"), edit_link, :remote=>true, class: "btn btn-block btn-success" if @current_device.super_admin? and @registration.can_be_edited? %>
+			<%#= link_to raw("<i class=\"fa-pencil\"></i> Edit Registration"), edit_link, :remote=>true, class: "btn btn-block btn-success" if @current_device.super_admin? and @registration.can_be_edited? %>
 
-	    <%#= link_to raw("<i class=\"linecons-trash\"></i> Delete Registration"), delete_link, method: :delete, registration: "menuitem", tabindex: "-1", data: { confirm: 'Are you sure?' }, :remote=>true, class: "btn btn-block btn-danger btn-only-hover" if @current_device.super_admin? and @registration.can_be_deleted? %>
+	    <%#= link_to raw("<i class=\"fa-trash\"></i> Delete Registration"), delete_link, method: :delete, registration: "menuitem", tabindex: "-1", data: { confirm: 'Are you sure?' }, :remote=>true, class: "btn btn-block btn-danger btn-only-hover" if @current_device.super_admin? and @registration.can_be_deleted? %>
 
 	    <div class="visible-sm visible-xs mb-50"></div>
 

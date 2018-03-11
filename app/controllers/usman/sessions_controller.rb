@@ -3,7 +3,7 @@ module Usman
 
     include Usman::AuthenticationHelper
     
-    layout 'kuppayam/blank'
+    layout 'kuppayam/xenon/blank'
 
     rescue_from ActionController::InvalidAuthenticityToken, :with => :rescue_from_invalid_authenticity_token
 
@@ -90,11 +90,11 @@ module Usman
     end
 
     def stylesheet_filename
-      @stylesheet_filename = "kuppayam"
+      @stylesheet_filename = "kuppayam-xenon"
     end
 
     def javascript_filename
-      @javascript_filename = "kuppayam"
+      @javascript_filename = "kuppayam-xenon"
     end
 
   end

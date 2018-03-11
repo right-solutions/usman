@@ -31,9 +31,9 @@
 					<% if display_manage_links? %>
 
 				  <td class="action-links hidden-xs hidden-sm" style="width:10%">
-				    <%= link_to raw("<i class=\"linecons-pencil\"></i> Edit Role"), edit_link, :remote=>true, class: "edit" if role.can_be_edited? and display_edit_links? %>
+				    <%= link_to raw("<i class=\"fa-pencil\"></i> Edit Role"), edit_link, :remote=>true, class: "edit" if role.can_be_edited? and display_edit_links? %>
 
-				    <%= link_to raw("<i class=\"linecons-trash\"></i> Delete"), delete_link, method: :delete, role: "menuitem", tabindex: "-1", data: { confirm: 'Are you sure?' }, :remote=>true, class: "delete" if role.can_be_deleted? and display_delete_links? %>
+				    <%= link_to raw("<i class=\"fa-trash\"></i> Delete"), delete_link, method: :delete, role: "menuitem", tabindex: "-1", data: { confirm: 'Are you sure?' }, :remote=>true, class: "delete" if role.can_be_deleted? and display_delete_links? %>
 				  </td>
 
 				  <% end %>

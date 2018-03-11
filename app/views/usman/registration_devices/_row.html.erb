@@ -26,7 +26,7 @@
   <% delete_link = registration_device_path(@registration, device) %>
   <td class="action-links" style="width:10%"> -->
 
-    <%= link_to raw("<i class=\"linecons-trash\"></i> Remove Role"), delete_link, method: :delete, device: "menuitem", tabindex: "-1", data: { confirm: 'Are you sure?' }, :remote=>true, class: "delete" %>
+    <%= link_to raw("<i class=\"fa-trash\"></i> Remove Role"), delete_link, method: :delete, device: "menuitem", tabindex: "-1", data: { confirm: 'Are you sure?' }, :remote=>true, class: "delete" %>
 
   </td>
   <% end %>

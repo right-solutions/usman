@@ -23,9 +23,9 @@
 	  	<% edit_link = edit_role_path(id: @role.id) %>
 			<% delete_link = role_path(id: @role.id) %>
 
-			<%= link_to raw("<i class=\"linecons-pencil\"></i> Edit Role"), edit_link, :remote=>true, class: "btn btn-block btn-success" if @current_user.super_admin? and @role.can_be_edited? and display_edit_links? %>
+			<%= link_to raw("<i class=\"fa-pencil\"></i> Edit Role"), edit_link, :remote=>true, class: "btn btn-block btn-success" if @current_user.super_admin? and @role.can_be_edited? and display_edit_links? %>
 
-	    <%= link_to raw("<i class=\"linecons-trash\"></i> Delete Role"), delete_link, method: :delete, role: "menuitem", tabindex: "-1", data: { confirm: 'Are you sure?' }, :remote=>true, class: "btn btn-block btn-danger btn-only-hover" if @current_user.super_admin? and @role.can_be_deleted? and display_delete_links? %>
+	    <%= link_to raw("<i class=\"fa-trash\"></i> Delete Role"), delete_link, method: :delete, role: "menuitem", tabindex: "-1", data: { confirm: 'Are you sure?' }, :remote=>true, class: "btn btn-block btn-danger btn-only-hover" if @current_user.super_admin? and @role.can_be_deleted? and display_delete_links? %>
 
 	    <div class="visible-sm visible-xs mb-50"></div>
 

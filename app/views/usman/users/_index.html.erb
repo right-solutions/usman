@@ -68,9 +68,9 @@
 					<% if display_manage_links? %>
 				    <td class="action-links hidden-xs hidden-sm" style="width:15%">
 
-				      <%= link_to raw("<i class=\"linecons-pencil\"></i> Edit User"), edit_link, :remote=>true, class: "edit" if user.can_be_edited? && display_edit_links? %>
+				      <%= link_to raw("<i class=\"fa-pencil\"></i> Edit User"), edit_link, :remote=>true, class: "edit" if user.can_be_edited? && display_edit_links? %>
 
-				      <%= link_to raw("<i class=\"linecons-trash\"></i> Delete"), delete_link, method: :delete, role: "menuitem", tabindex: "-1", data: { confirm: 'Are you sure?' }, :remote=>true, class: "delete" if @current_user.super_admin? && user.can_be_deleted? && (@current_user != user) %>
+				      <%= link_to raw("<i class=\"fa-trash\"></i> Delete"), delete_link, method: :delete, role: "menuitem", tabindex: "-1", data: { confirm: 'Are you sure?' }, :remote=>true, class: "delete" if @current_user.super_admin? && user.can_be_deleted? && (@current_user != user) %>
 				    </td>
 				  <% end %>
 

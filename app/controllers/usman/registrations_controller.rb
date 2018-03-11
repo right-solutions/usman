@@ -63,10 +63,10 @@ module Usman
     def breadcrumbs_configuration
       {
         heading: "Manage Registrations",
-        icon: "linecons-mobile",
+        icon: "fa-mobile",
         description: "Listing all Registrations",
         links: [{name: "Home", link: breadcrumb_home_path, icon: 'fa-home'}, 
-                  {name: "Manage Registrations", link: registrations_path, icon: 'linecons-mobile', active: true}]
+                  {name: "Manage Registrations", link: registrations_path, icon: 'fa-mobile', active: true}]
       }
     end
 

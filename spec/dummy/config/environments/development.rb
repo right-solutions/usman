@@ -18,7 +18,7 @@ Rails.application.configure do
 
     config.cache_store = :memory_store
     config.public_file_server.headers = {
-      'Cache-Control' => 'public, max-age=172800'
+      'Cache-Control' => "public, max-age=#{2.days.seconds.to_i}"
     }
   else
     config.action_controller.perform_caching = false
@@ -26,11 +26,62 @@ Rails.application.configure do
     config.cache_store = :null_store
   end
 
-  # Don't care if the mailer can't send.
-  config.action_mailer.raise_delivery_errors = false
+  #SES Mailer
+  # config.action_mailer.smtp_settings = {
+  #   :address => "sanoop@rightsolutions.ae",
+  #   :port => 587,
+  #   :user_name => "sanoop", #Your SMTP user
+  #   :password => "myid1729", #Your SMTP password
+  #   :authentication => :login,
+  #   :enable_starttls_auto => true
+  # }
 
+  # config.action_mailer.smtp_settings = {
+  #   :address => "email-smtp.eu-west-1.amazonaws.com",
+  #   :port => 587,
+  #   :user_name => "AKIAJF233HBRKGKZG7RQ", #Your SMTP user
+  #   :password => "Al5jmcj3OtHrm0fhJInlJnifySaT7REfxH4HY8gDOBj7", #Your SMTP password
+  #   :authentication => :login,
+  #   :enable_starttls_auto => true
+  # }
+
+  # Send in blue
+  # config.action_mailer.smtp_settings = {
+  #   :address => "smtp-relay.sendinblue.com",
+  #   :port => 587,
+  #   :user_name => "krishna@rightsolutions.ae", #Your SMTP user
+  #   :password => "SJmERvck7OtKyCjB", #Your SMTP password
+  #   :authentication => :login,
+  #   :enable_starttls_auto => true
+  # }
+
+  config.action_mailer.default_url_options = { :host => 'localhost:3000' }
+  config.action_mailer.perform_deliveries = true
+  config.action_mailer.raise_delivery_errors = true
   config.action_mailer.perform_caching = false
+  config.action_mailer.delivery_method = :smtp
 
+  config.action_mailer.smtp_settings = {
+    address: "smtp.mailgun.org",
+    port: 587,
+    domain: "notifier.sbidu.com",
+    user_name: "postmaster@notifier.sbidu.com",
+    password: "1044bccc0637290732949bcb7b4fb281",
+    authentication: 'plain',
+    enable_starttls_auto: true
+  }
+
+  # Gmail
+  # config.action_mailer.smtp_settings = {
+  #   address: "smtp.gmail.com",
+  #   port: 465,
+  #   domain: "gmail.com",
+  #   user_name: "asd@gmail.com",
+  #   password: "",
+  #   authentication: 'plain',
+  #   enable_starttls_auto: true
+  # }
+  
   # Print deprecation notices to the Rails logger.
   config.active_support.deprecation = :log
 
@@ -45,10 +96,13 @@ Rails.application.configure do
   # Suppress logger output for asset requests.
   config.assets.quiet = true
 
+  # Local Precompilation - http://guides.rubyonrails.org/asset_pipeline.html#local-precompilation
+  config.assets.prefix = "/dev-assets"
+
   # Raises error for missing translations
   # config.action_view.raise_on_missing_translations = true
 
   # Use an evented file watcher to asynchronously detect changes in source code,
   # routes, locales, etc. This feature depends on the listen gem.
-  # config.file_watcher = ActiveSupport::EventedFileUpdateChecker
+  config.file_watcher = ActiveSupport::EventedFileUpdateChecker
 end

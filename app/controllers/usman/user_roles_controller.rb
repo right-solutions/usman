@@ -113,7 +113,7 @@ module Usman
         collection_name: :users,
         item_name: :user,
         class: User,
-        feature_class: Role,
+        feature_name: Role,
         show_modal_after_create: false,
         show_modal_after_update: false,
         page_title: "Manage User Roles",

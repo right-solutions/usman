@@ -9,7 +9,7 @@ namespace 'usman' do
       desc "Import all data in sequence"
       task 'all' => :environment do
 
-        import_list = ["users", "permissions"]
+        import_list = ["users", "permissions", "users_roles"]
         
         import_list.each do |item|
           print "Importing #{item.titleize} \t".yellow
@@ -44,12 +44,29 @@ namespace 'usman' do
         end
       end
 
+      desc "Import Users Roles"
+      task :users_roles => :environment do
+        verbose = true
+        verbose = false if ["false", "f","0","no","n"].include?(ENV["verbose"].to_s.downcase.strip)
+
+        destroy_all = false
+        destroy_all = true if ["true", "t","1","yes","y"].include?(ENV["destroy_all"].to_s.downcase.strip)
+        
+        path = Rails.root.join('db', 'data', "users_roles.csv")
+        path = Usman::Engine.root.join('db', 'data', "users_roles.csv") unless File.exists?(path)
+        
+        # FIXME - Don't know how to clean up a HABTM intermediate table contents
+        # cls_name.constantize.destroy_all if destroy_all
+        User.import_roles_data_file(path, true, verbose)
+        puts "Importing Completed".green if verbose
+      end
+
       namespace 'dummy' do
         
         desc "Import all dummy data in sequence"
         task 'all' => :environment do
 
-          import_list = ["users", "permissions"]
+          import_list = ["users", "permissions", "users_roles"]
           
           import_list.each do |item|
             print "Loading #{item.split(':').last.titleize} \t".yellow
@@ -82,6 +99,23 @@ namespace 'usman' do
             cls_name.constantize.import_data_file(path, true, verbose)
             puts "Importing Completed".green if verbose
           end
+        end
+
+        desc "Import Users Roles"
+        task :users_roles => :environment do
+          verbose = true
+          verbose = false if ["false", "f","0","no","n"].include?(ENV["verbose"].to_s.downcase.strip)
+
+          destroy_all = false
+          destroy_all = true if ["true", "t","1","yes","y"].include?(ENV["destroy_all"].to_s.downcase.strip)
+          
+          path = Rails.root.join('db', 'data', "users_roles.csv")
+          path = Usman::Engine.root.join('db', 'data', 'dummy', "users_roles.csv") unless File.exists?(path)
+          
+          # FIXME - Don't know how to clean up a HABTM intermediate table contents
+          # cls_name.constantize.destroy_all if destroy_all
+          User.import_roles_data_file(path, true, verbose)
+          puts "Importing Completed".green if verbose
         end
       end
 

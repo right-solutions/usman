@@ -27,8 +27,6 @@ describe Usman::SmsService do
         expect(ss.error_heading).to be_nil
         expect(ss.error_message).to be_nil
         expect(ss.error_details).to be_empty
-
-        #binding.pry
       end
     end
 

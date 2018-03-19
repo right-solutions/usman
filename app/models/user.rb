@@ -152,6 +152,77 @@ class User < Usman::ApplicationRecord
     return error_object
   end
 
+  def self.save_role_data(hsh)
+
+    # Initializing error hash for displaying all errors altogether
+    error_object = Kuppayam::Importer::ErrorHash.new
+
+    return if hsh[:user].blank? || hsh[:role].blank?
+
+    user = User.find_by_username(hsh[:user])
+    role = Role.find_by_name(hsh[:role])
+
+    return if user.blank? || role.blank?
+
+    begin
+      user.add_role(role)
+    rescue Exception => e
+      summary = "uncaught #{e} exception while handling connection: #{e.message}"
+      details = "Stack trace: #{e.backtrace.map {|l| "  #{l}\n"}.join}"
+      error_object.errors << { summary: summary, details: details }        
+    end
+    
+    return error_object
+  end
+
+  def self.import_roles_data_file(csv_path, single_transaction=true, verbose=true)
+    print_memory_usage do
+      print_time_spent do
+        if File.exists?(csv_path)
+          if File.extname(csv_path) == ".csv"
+            puts "CSV file found at '#{csv_path.to_s}'.".green if verbose
+            
+            errors = []
+            sum = 0
+
+            # , encoding: 'windows-1251:utf-8', :row_sep => :auto
+            if single_transaction
+              ActiveRecord::Base.transaction do 
+                CSV.foreach(csv_path, headers: true, header_converters: :symbol, skip_blanks: true) do |row|
+                  error_object = save_role_data(row)
+                  errors << error_object if error_object
+                  error_object.print_dot if error_object && verbose
+                  sum += 1
+                end
+              end
+            else
+              CSV.foreach(csv_path, headers: true, header_converters: :symbol, skip_blanks: true) do |row|
+                error_object = save_role_data(row)
+                errors << error_object if error_object
+                error_object.print_dot if error_object && verbose
+                sum += 1
+              end
+            end
+            puts "\tScanned #{sum} rows".yellow
+
+            if verbose
+              puts ""
+              errors.each do |error_object|
+                error_object.print_all if error_object
+              end
+            end
+
+          else
+            puts "Unsupported File encountered'#{path.to_s}'.".red if verbose
+            return
+          end
+        else
+          puts "Import File not found at '#{path.to_s}'.".red if verbose
+        end
+      end
+    end
+  end
+
   # ------------------
   # Instance Methods
   # ------------------

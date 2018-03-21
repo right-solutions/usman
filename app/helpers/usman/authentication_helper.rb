@@ -116,6 +116,19 @@ module Usman
       end
     end
 
+    def require_role
+      return true if @current_user && @current_user.super_admin?
+      unless @current_user && @current_user.roles.any?
+        respond_to do |format|
+          format.html { permission_denied }
+          format.js {
+            set_params_hsh
+            render(:partial => 'usman/sessions/sign_in.js.erb', :handlers => [:erb], :formats => [:js])
+          }
+        end
+      end
+    end
+
     def require_site_admin
       return true if @current_user && @current_user.super_admin?
       unless @current_user && @current_user.has_role?("Site Admin")

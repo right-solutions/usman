@@ -3,9 +3,9 @@ require 'spec_helper'
 RSpec.describe User, type: :model do
 
   let(:user) {FactoryBot.build(:user)}
-  let(:ram) {FactoryBot.create(:user, name: "Ram", email: "ram@domain.com", username: "ram1234", designation: "Prince")}
-  let(:lakshman) {FactoryBot.create(:user, name: "Lakshman", email: "lakshmanword@domain.com", username: "lakshman1234", designation: "Prince")}
-  let(:sita) {FactoryBot.create(:user, name: "Sita", email: "sita@domain.com", username: "sita1234word", designation: "Princess")}
+  let(:ram) {FactoryBot.create(:user, name: "Ram", email: "ram@domain.com", username: "ram1234", designation_name: "Prince")}
+  let(:lakshman) {FactoryBot.create(:user, name: "Lakshman", email: "lakshmanword@domain.com", username: "lakshman1234", designation_name: "Prince")}
+  let(:sita) {FactoryBot.create(:user, name: "Sita", email: "sita@domain.com", username: "sita1234word", designation_name: "Princess")}
 
   context "Factory" do
     it "should validate all the factories" do

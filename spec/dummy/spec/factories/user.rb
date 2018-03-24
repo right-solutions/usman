@@ -10,7 +10,9 @@ FactoryBot.define do
     email
 
     phone "123-456-7890"
-    designation "My Designation"
+    designation_name "My Designation"
+    organisation_name "My Organisation"
+
     date_of_birth "01/01/1980"
     
     password_digest { SecureRandom.hex }

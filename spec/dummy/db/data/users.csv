@@ -1,4 +1,4 @@
-name,username,designation,email,phone,super_admin,status
+name,username,designation_name,email,phone,super_admin,status
 Krishna Prasad Varma,kpvarma,Site Admin,krishna@rightsolutions.ae,,TRUE,approved
 Junaid Ramzan,junaid.ramzan,Site Admin,junaid.ramzan@gmail.com,,TRUE,approved
 Sanoop S Nair,sanoop,Site Admin,sanoop@rightsolutions.io,,TRUE,approved

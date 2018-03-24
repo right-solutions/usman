@@ -8,7 +8,8 @@ class CreateUsers < ActiveRecord::Migration[5.0]
       t.string :username, :null => false, :limit=>32
       t.string :email, :null => false
       t.string :phone, :null => true, :limit=>24
-      t.string :designation, :null => true, :limit=>56
+      t.string :designation_name, :null => true, :limit=>56
+      t.string :organisation_name, :null => true, :limit=>56
 
       t.boolean :super_admin, :null => true, default: false
 

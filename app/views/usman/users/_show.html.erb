@@ -23,7 +23,7 @@
 	  	<div class="visible-sm visible-xs mt-50"></div>
 
 	  	<%= theme_panel_heading(@user.name) %>
-	    <%= theme_panel_sub_heading(@user.designation, "#") if @user.designation %>
+	    <%= theme_panel_sub_heading(@user.designation_name, "#") if @user.designation_name %>
 	    
 	    <%= clear_tag(10) %>
 
@@ -102,8 +102,8 @@
 				<tr><th>Gender</th><td><%= @user.gender %></td></tr>
 				<tr><th>Date of Birth</th><td><%= @user.date_of_birth.strftime("%m/%d/%Y") if @user.date_of_birth %></td></tr>
 
-				<tr><th>Designation</th><td><%= @user.designation %></td></tr>
-				<tr><th>Organisation</th><td><%= @user.organisation %></td></tr>
+				<tr><th>Designation</th><td><%= @user.designation_name %></td></tr>
+				<tr><th>Organisation</th><td><%= @user.organisation_name %></td></tr>
 
 				<tr><th>Status</th><td>
 						<% if @user.pending? %>

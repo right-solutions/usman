@@ -136,7 +136,7 @@ module Usman
     end
 
     def permitted_params
-      params.require(:user).permit(:name, :username, :email, :designation, :phone, :password, :password_confirmation)
+      params.require(:user).permit(:name, :username, :email, :designation_name, :phone, :password, :password_confirmation)
     end
 
     def set_navs

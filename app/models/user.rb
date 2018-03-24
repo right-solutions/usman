@@ -96,8 +96,8 @@ class User < Usman::ApplicationRecord
                                         LOWER(users.username) LIKE LOWER('%#{query}%') OR\
                                         LOWER(users.email) LIKE LOWER('%#{query}%') OR\
                                         LOWER(users.phone) LIKE LOWER('%#{query}%') OR\
-                                        LOWER(users.designation) LIKE LOWER('%#{query}%') OR\
-                                        LOWER(users.organisation) LIKE LOWER('%#{query}%')")
+                                        LOWER(users.designation_name) LIKE LOWER('%#{query}%') OR\
+                                        LOWER(users.organisation_name) LIKE LOWER('%#{query}%')")
                         }
 
   scope :status, lambda { |status| where("LOWER(status)='#{status}'") }
@@ -123,8 +123,8 @@ class User < Usman::ApplicationRecord
     user = User.find_by_username(hsh[:username]) || User.new
     user.name = hsh[:name]
     user.username = hsh[:username]
-    user.designation = hsh[:designation]
-    user.organisation = hsh[:organisation]
+    user.designation_name = hsh[:designation_name]
+    user.organisation_name = hsh[:organisation_name]
     user.email = hsh[:email]
     user.phone = hsh[:phone]
 

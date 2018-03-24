@@ -165,7 +165,7 @@
 						</tr>
 
 						<tr>
-							<th>Designation</th><td><%= @user.try(:designation) %></td>
+							<th>Designation</th><td><%= @user.try(:designation_name) %></td>
 							<th>Status</th><td>
 								<% if @user.pending? %>
 									<span class="label label-default">Pending</span>

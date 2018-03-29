@@ -109,7 +109,7 @@ namespace 'usman' do
           destroy_all = false
           destroy_all = true if ["true", "t","1","yes","y"].include?(ENV["destroy_all"].to_s.downcase.strip)
           
-          path = Rails.root.join('db', 'data', "users_roles.csv")
+          path = Rails.root.join('db', 'data', 'dummy', "users_roles.csv")
           path = Usman::Engine.root.join('db', 'data', 'dummy', "users_roles.csv") unless File.exists?(path)
           
           # FIXME - Don't know how to clean up a HABTM intermediate table contents

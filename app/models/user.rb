@@ -120,17 +120,17 @@ class User < Usman::ApplicationRecord
 
     return if hsh[:name].blank?
 
-    user = User.find_by_username(hsh[:username]) || User.new
-    user.name = hsh[:name]
-    user.username = hsh[:username]
-    user.designation_name = hsh[:designation_name]
-    user.organisation_name = hsh[:organisation_name]
-    user.email = hsh[:email]
-    user.phone = hsh[:phone]
+    user = User.find_by_username(hsh[:username].to_s.strip) || User.new
+    user.name = hsh[:name].to_s.strip
+    user.username = hsh[:username].to_s.strip
+    user.designation_name = hsh[:designation_name].to_s.strip
+    user.organisation_name = hsh[:organisation_name].to_s.strip
+    user.email = hsh[:email].to_s.strip
+    user.phone = hsh[:phone].to_s.strip
 
     user.super_admin = ["true", "t","1","yes","y"].include?(hsh[:super_admin].to_s.downcase.strip)
+    user.status = hsh[:status].to_s.strip == "" ? APPROVED : hsh[:status].to_s.strip
 
-    user.status = hsh[:status]
     user.assign_default_password
 
     # Initializing error hash for displaying all errors altogether
@@ -214,11 +214,11 @@ class User < Usman::ApplicationRecord
             end
 
           else
-            puts "Unsupported File encountered'#{path.to_s}'.".red if verbose
+            puts "Unsupported File encountered'#{csv_path.to_s}'.".red if verbose
             return
           end
         else
-          puts "Import File not found at '#{path.to_s}'.".red if verbose
+          puts "Import File not found at '#{csv_path.to_s}'.".red if verbose
         end
       end
     end

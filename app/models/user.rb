@@ -102,6 +102,7 @@ class User < Usman::ApplicationRecord
 
   scope :status, lambda { |status| where("LOWER(status)='#{status}'") }
 
+  scope :pending_or_approved, -> { where(status: [PENDING, APPROVED]) }
   scope :pending, -> { where(status: PENDING) }
   scope :approved, -> { where(status: APPROVED) }
   scope :suspended, -> { where(status: SUSPENDED) }
@@ -413,7 +414,7 @@ class User < Usman::ApplicationRecord
   end
 
   def can_be_marked_as_pending?
-    approved? or suspended?
+    approved? or suspended? or deleted?
   end
 
   def can_be_suspended?
@@ -421,7 +422,7 @@ class User < Usman::ApplicationRecord
   end
 
   def can_be_deleted?
-    suspended?
+    suspended? or pending?
   end
 
   def can_be_edited?

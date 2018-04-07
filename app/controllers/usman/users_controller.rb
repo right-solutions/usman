@@ -12,6 +12,8 @@ module Usman
         @user.approve!
       when "suspended"
         @user.suspend!
+      when "deleted"
+        @user.delete!
       end
       set_notification(true, I18n.t('status.success'), I18n.t('state.changed', item: default_item_name.titleize, new_state: @r_object.status))
       render_row

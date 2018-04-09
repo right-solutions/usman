@@ -555,6 +555,14 @@ class User < Usman::ApplicationRecord
     self.dummy = true
   end
 
+  def display_last_signed_in
+    if self.current_sign_in_at
+      self.current_sign_in_at.strftime("%b %d %Y - %H:%M:%S")
+    elsif self.last_sign_in_at
+      self.last_sign_in_at.strftime("%b %d %Y - %H:%M:%S")
+    end
+  end
+
   # Image Configuration
   # -------------------
   def image_configuration

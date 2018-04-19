@@ -1,3 +1,3 @@
 module Usman
-  VERSION = '0.4.1.pre.materialize'
+  VERSION = '0.4.2.pre.materialize'
 end

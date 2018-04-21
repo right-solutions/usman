@@ -33,7 +33,7 @@ module Usman
     end
 
     def get_collections
-      @relation = Feature.where("")
+      @relation = Feature.includes(:cover_image).where("")
 
       parse_filters
       apply_filters

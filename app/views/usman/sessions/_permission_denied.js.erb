@@ -1,3 +1,3 @@
-var heading = "Permission Denied";
-var bodyContent = "Permission Denied";
-showGenericModal(heading, bodyContent);
+var heading = "Access Denied";
+var bodyContent = "<%= escape_javascript(render(:partial=>'/layouts/kuppayam/materialize/permission_denied', locals: {show_popup_close_button: true})) %>";
+showGenericModal(heading, bodyContent, true);

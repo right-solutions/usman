@@ -17,7 +17,6 @@ module Usman
     def permission_denied
       file_path = "layouts/kuppayam/#{@current_layout}/401"
       layout_path = "layouts/kuppayam/#{@current_layout}/blank_with_nav"
-
       render :file => file_path, layout: layout_path, :status => :unauthorized
     end
     

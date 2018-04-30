@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171212095623) do
+ActiveRecord::Schema.define(version: 20180429151547) do
 
   create_table "cities", id: :integer, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string "name", limit: 128
@@ -23,9 +23,9 @@ ActiveRecord::Schema.define(version: 20171212095623) do
     t.integer "population"
     t.integer "priority", default: 1000
     t.boolean "show_in_api", default: false
+    t.boolean "operational", default: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.boolean "operational", default: false
     t.index ["country_id"], name: "index_cities_on_country_id"
     t.index ["iso_code"], name: "index_cities_on_iso_code"
     t.index ["region_id"], name: "index_cities_on_region_id"
@@ -70,9 +70,9 @@ ActiveRecord::Schema.define(version: 20171212095623) do
     t.string "languages", limit: 256
     t.integer "priority", default: 1000
     t.boolean "show_in_api", default: false
+    t.boolean "operational", default: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.boolean "operational", default: false
     t.index ["fips"], name: "index_countries_on_fips"
     t.index ["iso_alpha_2"], name: "index_countries_on_iso_alpha_2"
     t.index ["iso_alpha_3"], name: "index_countries_on_iso_alpha_3"
@@ -166,9 +166,9 @@ ActiveRecord::Schema.define(version: 20171212095623) do
     t.decimal "longitude", precision: 10, scale: 6
     t.integer "priority", default: 1000
     t.boolean "show_in_api", default: false
+    t.boolean "operational", default: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.boolean "operational", default: false
     t.index ["country_id"], name: "index_regions_on_country_id"
     t.index ["iso_code"], name: "index_regions_on_iso_code"
   end
@@ -208,7 +208,8 @@ ActiveRecord::Schema.define(version: 20171212095623) do
     t.string "username", limit: 32, null: false
     t.string "email", null: false
     t.string "phone", limit: 24
-    t.string "designation", limit: 56
+    t.string "designation_name", limit: 56
+    t.string "organisation_name", limit: 56
     t.boolean "super_admin", default: false
     t.string "status", limit: 16, default: "pending", null: false
     t.string "password_digest", null: false
@@ -231,8 +232,7 @@ ActiveRecord::Schema.define(version: 20171212095623) do
     t.datetime "token_created_at"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.bigint "registration_id"
-    t.string "gender"
+    t.string "gender", default: "nogender"
     t.date "date_of_birth"
     t.boolean "dummy", default: false
     t.integer "country_id"
@@ -240,10 +240,8 @@ ActiveRecord::Schema.define(version: 20171212095623) do
     t.index ["auth_token"], name: "index_users_on_auth_token", unique: true
     t.index ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true
     t.index ["email"], name: "index_users_on_email", unique: true
-    t.index ["registration_id"], name: "index_users_on_registration_id"
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
     t.index ["unlock_token"], name: "index_users_on_unlock_token", unique: true
   end
 
-  add_foreign_key "users", "registrations"
 end

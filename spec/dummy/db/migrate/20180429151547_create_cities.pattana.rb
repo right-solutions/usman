@@ -18,6 +18,7 @@ class CreateCities < ActiveRecord::Migration[5.0]
 
       t.integer :priority, default: 1000
       t.boolean :show_in_api, default: false
+      t.boolean :operational, default: false
 
       t.timestamps
     end

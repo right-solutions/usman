@@ -449,13 +449,22 @@ class User < Usman::ApplicationRecord
   end
 
   def has_role?(role)
-    role = Role.find_by_name(role) if role.is_a?(String)
-    if role && role.persisted?
-      return true if self.super_admin
-      self.roles.exists?(:id => [role.id])
+    return true if self.super_admin
+    
+    case role
+
+    when String
+      self.roles.where(name: role).count > 0
+    when Integer
+      self.roles.where(id: role).count > 0
+    when Array
+      self.roles.where(name: role).count > 0
+    when Role
+      self.roles.where(id: role.id).count > 0
     else
       return false
     end
+
   end
 
   # Permission Methods

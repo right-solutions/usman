@@ -310,8 +310,8 @@ RSpec.describe User, type: :model do
 
       it "default_image_url" do
         u = FactoryBot.build(:pending_user)
-        expect(u.default_image_url).to match("/assets/kuppayam/defaults/user-small.png")
-        expect(u.default_image_url("large")).to match("/assets/kuppayam/defaults/user-large.png")
+        expect(u.default_image_url).to match("kuppayam/defaults/user-small.png")
+        expect(u.default_image_url("large")).to match("kuppayam/defaults/user-large.png")
       end
 
       it "generate_username_and_password" do

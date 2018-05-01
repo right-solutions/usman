@@ -98,6 +98,25 @@ module Usman
       return @current_user
     end
 
+    def current_permissions
+      return @current_permissions unless @current_permissions.nil?
+      @current_permissions = @current_user.permissions.includes(:feature).all
+    end
+
+    def current_feature
+      return @current_feature unless @current_feature.nil?
+      return if @resource_options.nil?
+      feature_name = @resource_options[:feature_name] || @resource_options[:class]
+      @current_feature = Feature.published.find_by_name(feature_name)
+    end
+
+
+    def current_permission
+      return @current_permission unless @current_permission.nil?
+      feature_id = current_feature ? current_feature.id : -1
+      @current_permission = @current_user.permissions.where("feature_id = ?", feature_id).first
+    end
+
     # This method is usually used as a before filter to secure some of the actions which requires the user to be signed in.
     def require_user
       current_user
@@ -198,13 +217,6 @@ module Usman
           }
         end
       end
-    end
-
-    def current_permission
-      feature_name = @resource_options[:feature_name] || @resource_options[:class]
-      @current_feature = Feature.published.find_by_name(feature_name)
-      feature_id = @current_feature ? @current_feature.id : -1
-      @current_permission = @current_user.permissions.where("feature_id = ?", feature_id).first
     end
 
     # -------------------

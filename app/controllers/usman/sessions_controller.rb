@@ -3,8 +3,6 @@ module Usman
 
     include Usman::AuthenticationHelper
     
-    layout 'kuppayam/xenon/blank'
-
     rescue_from ActionController::InvalidAuthenticityToken, :with => :rescue_from_invalid_authenticity_token
 
     before_action :current_user
@@ -88,14 +86,6 @@ module Usman
     def user_params
       params[:user].permit(:password, :password_confirmation, :reset_password_token)
     end
-
-    def stylesheet_filename
-      @stylesheet_filename = "kuppayam-xenon"
-    end
-
-    def javascript_filename
-      @javascript_filename = "kuppayam-xenon"
-    end
-
+    
   end
 end

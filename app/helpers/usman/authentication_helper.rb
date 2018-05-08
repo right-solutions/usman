@@ -106,7 +106,7 @@ module Usman
     def current_feature
       return @current_feature unless @current_feature.nil?
       return if @resource_options.nil?
-      feature_name = @resource_options[:feature_name] || @resource_options[:class]
+      feature_name = @resource_options[:feature_name] || @resource_options[:class].try(:name)
       @current_feature = Feature.published.find_by_name(feature_name)
     end
 

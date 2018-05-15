@@ -453,7 +453,7 @@ module Usman
 
         def set_nav_items
           @nav_items = {
-            register: { nav_class: "docs/usman/register", icon_class: "fa-group", url: usman.docs_api_v1_register_path, text: "Registraions API"},
+            register: { nav_class: "docs/usman/register", icon_class: "fa-user", url: usman.docs_api_v1_register_path, text: "Registraions API"},
             resend_otp: { nav_class: "docs/usman/resend_otp", icon_class: "fa-send", url: usman.docs_api_v1_resend_otp_path, text: "Resend OTP API"},
             verify_otp: { nav_class: "docs/usman/verify_otp", icon_class: "fa-thumbs-up", url: usman.docs_api_v1_verify_otp_path, text: "Verify OTP API"},
             accept_tac: { nav_class: "docs/usman/accept_tac", icon_class: "fa-check-square-o", url: usman.docs_api_v1_accept_tac_path, text: "Accept T&C API"},
@@ -474,7 +474,7 @@ module Usman
 
         def set_tab_items
           @tab_items = {
-            usman: { nav_class: "docs/usman", icon_class: "fa-group", url: usman.docs_api_v1_register_path, text: "User APIs"}
+            usman: { nav_class: "docs/usman", icon_class: "fa-user", url: usman.docs_api_v1_register_path, text: "User APIs"}
           }
         end
 

@@ -6,6 +6,7 @@
 
       <div class="form-inputs mb-30 mt-30">
         <%= theme_form_field(@feature, :name, label: "Class Name") %>
+        <%= theme_form_field(@feature, :feature_category, label: "Feature Category") %>
         <%= theme_form_field(@feature, :categorisable, required: false, html_options: {type: :checkbox}) %>
       </div>
     

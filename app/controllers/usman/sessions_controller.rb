@@ -86,6 +86,10 @@ module Usman
     def user_params
       params[:user].permit(:password, :password_confirmation, :reset_password_token)
     end
-    
+
+    def determine_layout
+      "kuppayam/#{@current_layout}/blank"
+    end
+
   end
 end

@@ -1,0 +1,40 @@
+<%
+	usman_items = {
+		users: {
+			text: "Users",
+			icon_class: "fa-user",
+			url: usman.users_url,
+			has_permission: @current_user.has_read_permission?(User)
+		},
+		registrations: {
+			text: "Registrations",
+			icon_class: "fa-mobile",
+			url: usman.registrations_url,
+			has_permission: @current_user.has_read_permission?(Registration)
+		},
+		roles: {
+			text: "Roles",
+			icon_class: "fa-graduation-cap",
+			url: usman.roles_url,
+			has_permission: @current_user.has_read_permission?(Role)
+		},
+		permissions: {
+			text: "Permissions",
+			icon_class: "fa-lock",
+			url: usman.permissions_url,
+			has_permission: @current_user.has_read_permission?(Permission)
+		},
+	}
+%>
+
+<% if (usman_items.map{|x, y| y[:has_permission] }).compact.uniq.any? %>
+
+<h3 class="text-gray mt-50 mb-10">
+	Manage User <br>
+	<small class="text-muted">Manage Users, Role and much more...</small>
+</h3>
+<hr class="mb-30" style="border-top:1px solid #ddd;">
+
+<%= render partial: "/layouts/dashboard/materialize/items", locals: { items: usman_items } %>
+
+<% end %>

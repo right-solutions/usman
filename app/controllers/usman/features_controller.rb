@@ -4,22 +4,21 @@ module Usman
     before_action :require_super_admin
 
     def update_permission
-      @permission = Permission.find_by_id(params[:permission_id])
       @user = User.find_by_id(params[:user_id])
-      if @permission
-        begin
-          @permission.toggle!(params[:permission_for])
-          @success = true
-        rescue
-          @success = false
-        end
-      else
-        @permission = Permission.new(user: @user, can_read: false, feature_id: params[:id])
+      @permission = Permission.find_by_id(params[:permission_id]) || Permission.where(user: @user, feature_id: params[:id]).first || Permission.new(user: @user, can_read: false, feature_id: params[:id])
+      if @permission.new_record?
         @permission.assign_attributes(params[:permission_for] => true)
         if @permission.valid?
           @permission.save
           @success = true
         else
+          @success = false
+        end
+      else
+        begin
+          @permission.toggle!(params[:permission_for])
+          @success = true
+        rescue
           @success = false
         end
       end
@@ -33,6 +32,7 @@ module Usman
     end
 
     def get_collections
+      @feature_categories = Feature.select("DISTINCT feature_category").map(&:feature_category)
       @relation = Feature.includes(:cover_image).where("")
 
       parse_filters
@@ -47,6 +47,10 @@ module Usman
       @relation = @relation.search(@query) if @query
       @relation = @relation.status(@status) if @status
       
+      # Set first feature category as default feature category
+      @feature_category = @feature_categories.first if @feature_category.blank?
+      @relation = @relation.where(feature_category: @feature_category)
+
       @order_by = "created_at desc" unless @order_by
       @relation = @relation.order(@order_by)
     end
@@ -55,7 +59,8 @@ module Usman
       @filter_settings = {
         string_filters: [
           { filter_name: :query },
-          { filter_name: :status }
+          { filter_name: :status },
+          { filter_name: :feature_category },
         ],
         boolean_filters: [],
         reference_filters: [],
@@ -68,13 +73,13 @@ module Usman
         status: {
           object_filter: false,
           select_label: "Select Status",
-          display_hash: Feature::STATUS,
+          display_hash: Feature::STATUS_REVERSE,
           current_value: @status,
-          values: Feature::STATUS_REVERSE,
+          values: Feature::STATUS,
           current_filters: @filters,
           filters_to_remove: [],
           filters_to_add: {},
-          url_method_name: 'users_url',
+          url_method_name: 'features_url',
           show_all_filter_on_top: true
         }
       }
@@ -101,7 +106,7 @@ module Usman
     end
 
     def permitted_params
-      params.require(:feature).permit(:name, :categorisable)
+      params.require(:feature).permit(:name, :categorisable, :feature_category)
     end
 
     def set_navs

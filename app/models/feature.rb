@@ -18,10 +18,8 @@ class Feature < Usman::ApplicationRecord
   has_one :cover_image, :as => :imageable, :dependent => :destroy, :class_name => "Image::CoverImage"
   
 	# Validations
-	validates :name, presence: true, length: {minimum: 3, maximum: 250}
-
-
-  
+  validates :name, presence: true, length: {minimum: 3, maximum: 250}
+	validates :feature_category, presence: true, length: {minimum: 2, maximum: 64}
 	
   # ------------------
   # Class Methods

@@ -3,8 +3,6 @@ module Usman
     
     include Usman::AuthenticationHelper
 
-    layout 'kuppayam/xenon/admin'
-    
     before_action :current_user
     before_action :require_user
 
@@ -12,14 +10,6 @@ module Usman
     
     private
 
-    def stylesheet_filename
-      @stylesheet_filename = "kuppayam-xenon"
-    end
-
-    def javascript_filename
-      @javascript_filename = "kuppayam-xenon"
-    end
-    
     def set_default_title
       set_title("Usman Admin | User Management Module")
     end

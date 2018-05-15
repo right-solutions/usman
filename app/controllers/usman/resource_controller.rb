@@ -20,6 +20,7 @@ module Usman
       @filter_param_mapping[:super_admin] = :sa
       @filter_param_mapping[:user] = :us
       @filter_param_mapping[:feature] = :ft
+      @filter_param_mapping[:feature_category] = :fc
     end
   end
 end

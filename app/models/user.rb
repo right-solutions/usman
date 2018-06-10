@@ -454,13 +454,17 @@ class User < Usman::ApplicationRecord
     case role
 
     when String
-      self.roles.where(name: role).count > 0
+      # self.roles.where(name: role).count > 0
+      self.roles.select{|x| x.name == role }.count > 0
     when Integer
-      self.roles.where(id: role).count > 0
+      # self.roles.where(id: role).count > 0
+      self.roles.select{|x| x.id == role }.count > 0
     when Array
-      self.roles.where(name: role).count > 0
+      # self.roles.where(name: role).count > 0
+      self.roles.select{|x| role.include?(x.name) }.count > 0
     when Role
-      self.roles.where(id: role.id).count > 0
+      # self.roles.where(id: role.id).count > 0
+      self.roles.select{|x| x == role }.count > 0
     else
       return false
     end

@@ -103,6 +103,7 @@ class User < Usman::ApplicationRecord
   scope :status, lambda { |status| where("LOWER(status)='#{status}'") }
 
   scope :pending_or_approved, -> { where(status: [PENDING, APPROVED]) }
+  scope :pending_or_approved_or_suspended_or_deleted, -> { where(status: [PENDING, APPROVED, SUSPENDED, DELETED]) }
   scope :pending, -> { where(status: PENDING) }
   scope :approved, -> { where(status: APPROVED) }
   scope :suspended, -> { where(status: SUSPENDED) }
